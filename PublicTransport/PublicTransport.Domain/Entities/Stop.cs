@@ -58,6 +58,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Identifies whether this stop object represents a stop or station.
         /// </summary>
+        [Required]
         public bool IsStation { get; set; }
     }
 }

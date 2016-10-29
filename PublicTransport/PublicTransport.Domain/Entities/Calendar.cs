@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PublicTransport.Domain.Entities
@@ -9,6 +10,14 @@ namespace PublicTransport.Domain.Entities
     /// </summary>
     public class Calendar : Entity
     {
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        public Calendar()
+        {
+            CalendarDates = new List<CalendarDate>();
+        }
+
         /// <summary>
         ///     Contains a binary value that indicates whether the service is valid for all Mondays in the date range.
         /// </summary>
@@ -63,5 +72,10 @@ namespace PublicTransport.Domain.Entities
         /// </summary>
         [Required]
         public DateTime EndDate { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="CalendarDate" />s that this calendar references.
+        /// </summary>
+        public IList<CalendarDate> CalendarDates { get; set; }
     }
 }

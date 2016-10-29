@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Entities\Agency.cs" />
     <Compile Include="Entities\Calendar.cs" />
-    <Compile Include="Entities\CalendarDates.cs" />
+    <Compile Include="Entities\CalendarDate.cs" />
     <Compile Include="Entities\City.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\FareAttribute.cs" />

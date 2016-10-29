@@ -1,7 +1,7 @@
 ﻿namespace PublicTransport.Domain.Enums
 {
     /// <summary>
-    ///     Indicates the type of exception specified as an <see cref="Entities.CalendarDates" /> object.
+    ///     Indicates the type of exception specified as an <see cref="Entities.CalendarDate" /> object.
     /// </summary>
     public enum ExceptionType
     {
