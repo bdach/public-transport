@@ -10,7 +10,7 @@ namespace PublicTransport.Domain.Entities
     ///     identifiers, to group them together into zones. This can be used together with <see cref="FareAttribute" />s and
     ///     <see cref="FareRule" />s for zone-based ticketing.
     /// </summary>
-    public class Stop
+    public class Stop : Entity
     {
         /// <summary>
         ///     Contains the name of a stop or station. Please use a name that people will understand in the local and tourist

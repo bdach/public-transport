@@ -53,8 +53,7 @@ namespace PublicTransport.Domain.Entities
         /// </summary>
         [Required]
         public bool Saturday { get; set; }
-
-
+        
         /// <summary>
         ///     Contains a binary value that indicates whether the service is valid for all Sundays in the date range.
         /// </summary>

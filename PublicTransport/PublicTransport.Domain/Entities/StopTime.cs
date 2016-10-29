@@ -8,7 +8,7 @@ namespace PublicTransport.Domain.Entities
     ///     A StopTime defines when a vehicle arrives at a location, how long it stays there, and when it departs. StopTimes
     ///     define the path and schedule of <see cref="Entities.Trip" />s.
     /// </summary>
-    public class StopTime
+    public class StopTime : Entity
     {
         /// <summary>
         ///     Contains an ID that identifies a <see cref="Entities.Trip" />.
