@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PublicTransport.Domain
+namespace PublicTransport.Domain.Entities
 {
     public abstract class Entity
     {

@@ -49,11 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agency.cs" />
-    <Compile Include="Entity.cs" />
+    <Compile Include="Entities\Agency.cs" />
+    <Compile Include="Entities\Calendar.cs" />
+    <Compile Include="Entities\CalendarDates.cs" />
+    <Compile Include="Entities\City.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\FareAttribute.cs" />
+    <Compile Include="Entities\FareRule.cs" />
+    <Compile Include="Entities\Street.cs" />
+    <Compile Include="Entities\Zone.cs" />
+    <Compile Include="Enums\ExceptionType.cs" />
     <Compile Include="Enums\RouteType.cs" />
+    <Compile Include="Enums\TransferCount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Route.cs" />
+    <Compile Include="Entities\Route.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
