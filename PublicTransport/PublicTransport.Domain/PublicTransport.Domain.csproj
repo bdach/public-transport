@@ -56,7 +56,10 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\FareAttribute.cs" />
     <Compile Include="Entities\FareRule.cs" />
+    <Compile Include="Entities\Stop.cs" />
+    <Compile Include="Entities\StopTime.cs" />
     <Compile Include="Entities\Street.cs" />
+    <Compile Include="Entities\Trip.cs" />
     <Compile Include="Entities\Zone.cs" />
     <Compile Include="Enums\ExceptionType.cs" />
     <Compile Include="Enums\RouteType.cs" />
