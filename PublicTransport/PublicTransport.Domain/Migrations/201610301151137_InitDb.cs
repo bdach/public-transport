@@ -85,7 +85,7 @@ namespace PublicTransport.Domain.Migrations
                         Version = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Zones", t => t.DestinationId, cascadeDelete: true)
+                .ForeignKey("dbo.Zones", t => t.DestinationId, cascadeDelete: false)
                 .ForeignKey("dbo.Zones", t => t.OriginId, cascadeDelete: false)
                 .ForeignKey("dbo.Routes", t => t.RouteId, cascadeDelete: true)
                 .Index(t => t.RouteId)
@@ -116,6 +116,27 @@ namespace PublicTransport.Domain.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Agencies", t => t.AgencyId, cascadeDelete: true)
                 .Index(t => t.AgencyId);
+            
+            CreateTable(
+                "dbo.Roles",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.Int(nullable: false),
+                        Version = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Users",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserName = c.String(),
+                        Password = c.String(),
+                        Version = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Stops",
@@ -199,6 +220,19 @@ namespace PublicTransport.Domain.Migrations
                 .Index(t => t.Calendar_Id)
                 .Index(t => t.CalendarDate_Id);
             
+            CreateTable(
+                "dbo.UserRoles",
+                c => new
+                    {
+                        User_Id = c.Int(nullable: false),
+                        Role_Id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.User_Id, t.Role_Id })
+                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.Role_Id, cascadeDelete: true)
+                .Index(t => t.User_Id)
+                .Index(t => t.Role_Id);
+            
         }
         
         public override void Down()
@@ -211,6 +245,8 @@ namespace PublicTransport.Domain.Migrations
             DropForeignKey("dbo.Stops", "StreetId", "dbo.Streets");
             DropForeignKey("dbo.Streets", "CityId", "dbo.Cities");
             DropForeignKey("dbo.Stops", "ParentStationId", "dbo.Stops");
+            DropForeignKey("dbo.UserRoles", "Role_Id", "dbo.Roles");
+            DropForeignKey("dbo.UserRoles", "User_Id", "dbo.Users");
             DropForeignKey("dbo.FareAttributes", "FareRuleId", "dbo.FareRules");
             DropForeignKey("dbo.FareRules", "RouteId", "dbo.Routes");
             DropForeignKey("dbo.Routes", "AgencyId", "dbo.Agencies");
@@ -218,6 +254,8 @@ namespace PublicTransport.Domain.Migrations
             DropForeignKey("dbo.FareRules", "DestinationId", "dbo.Zones");
             DropForeignKey("dbo.CalendarCalendarDates", "CalendarDate_Id", "dbo.CalendarDates");
             DropForeignKey("dbo.CalendarCalendarDates", "Calendar_Id", "dbo.Calendars");
+            DropIndex("dbo.UserRoles", new[] { "Role_Id" });
+            DropIndex("dbo.UserRoles", new[] { "User_Id" });
             DropIndex("dbo.CalendarCalendarDates", new[] { "CalendarDate_Id" });
             DropIndex("dbo.CalendarCalendarDates", new[] { "Calendar_Id" });
             DropIndex("dbo.Trips", new[] { "ServiceId" });
@@ -233,11 +271,14 @@ namespace PublicTransport.Domain.Migrations
             DropIndex("dbo.FareRules", new[] { "OriginId" });
             DropIndex("dbo.FareRules", new[] { "RouteId" });
             DropIndex("dbo.FareAttributes", new[] { "FareRuleId" });
+            DropTable("dbo.UserRoles");
             DropTable("dbo.CalendarCalendarDates");
             DropTable("dbo.Trips");
             DropTable("dbo.StopTimes");
             DropTable("dbo.Streets");
             DropTable("dbo.Stops");
+            DropTable("dbo.Users");
+            DropTable("dbo.Roles");
             DropTable("dbo.Routes");
             DropTable("dbo.Zones");
             DropTable("dbo.FareRules");

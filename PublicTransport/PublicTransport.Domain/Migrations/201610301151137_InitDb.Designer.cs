@@ -13,7 +13,7 @@ namespace PublicTransport.Domain.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201610292228233_InitDb"; }
+            get { return "201610301151137_InitDb"; }
         }
         
         string IMigrationMetadata.Source

@@ -57,17 +57,20 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\FareAttribute.cs" />
     <Compile Include="Entities\FareRule.cs" />
+    <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Stop.cs" />
     <Compile Include="Entities\StopTime.cs" />
     <Compile Include="Entities\Street.cs" />
     <Compile Include="Entities\Trip.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Zone.cs" />
     <Compile Include="Enums\ExceptionType.cs" />
+    <Compile Include="Enums\RoleType.cs" />
     <Compile Include="Enums\RouteType.cs" />
     <Compile Include="Enums\TransferCount.cs" />
-    <Compile Include="Migrations\201610292228233_InitDb.cs" />
-    <Compile Include="Migrations\201610292228233_InitDb.Designer.cs">
-      <DependentUpon>201610292228233_InitDb.cs</DependentUpon>
+    <Compile Include="Migrations\201610301151137_InitDb.cs" />
+    <Compile Include="Migrations\201610301151137_InitDb.Designer.cs">
+      <DependentUpon>201610301151137_InitDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,8 +81,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610292228233_InitDb.resx">
-      <DependentUpon>201610292228233_InitDb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610301151137_InitDb.resx">
+      <DependentUpon>201610301151137_InitDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
