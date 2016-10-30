@@ -29,5 +29,20 @@ namespace PublicTransport.Domain.Entities
         ///     Contains the REGON number of the transit agency.
         /// </summary>
         public string Regon { get; set; }
+
+        /// <summary>
+        ///     Contains the ID number of the <see cref="Entities.Street" /> the agency is located on.
+        /// </summary>
+        public int? StreetId { get; set; }
+
+        /// <summary>
+        ///     Contains the <see cref="Entities.Street" /> the agency is located on.
+        /// </summary>
+        public Street Street { get; set; }
+
+        /// <summary>
+        ///     Contains the street number of the agency.
+        /// </summary>
+        public string StreetNumber { get; set; }
     }
 }
