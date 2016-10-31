@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PublicTransport.Domain.Entities
 {
@@ -38,6 +39,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the <see cref="Entities.Street" /> the agency is located on.
         /// </summary>
+        [ForeignKey("StreetId")]
         public Street Street { get; set; }
 
         /// <summary>
