@@ -51,6 +51,12 @@
   <ItemGroup>
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AgencyService.cs" />
+    <Compile Include="Services\CalendarDateService.cs" />
+    <Compile Include="Services\CalendarService.cs" />
+    <Compile Include="Services\CityService.cs" />
+    <Compile Include="Services\FareAttributeService.cs" />
+    <Compile Include="Services\FareRuleService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\RouteService.cs" />
     <Compile Include="Services\StopService.cs" />
