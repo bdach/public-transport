@@ -34,7 +34,10 @@ namespace PublicTransport.Client.Views
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (EditStreetViewModel) value; }
+            set {
+                ViewModel = (EditStreetViewModel) value;
+                ViewModel.Suggestions.ItemsAdded.Subscribe(_ => City.IsDropDownOpen = true);
+            }
         }
     }
 }

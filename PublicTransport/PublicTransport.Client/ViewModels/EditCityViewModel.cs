@@ -26,12 +26,6 @@ namespace PublicTransport.Client.ViewModels
         private City _city;
 
         /// <summary>
-        ///     The status of the operation.
-        ///     TODO: Move this to a Notification view model.
-        /// </summary>
-        private string _status;
-
-        /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
@@ -53,8 +47,6 @@ namespace PublicTransport.Client.ViewModels
                 var city = await Task.Run(() => _cityService.Create(City));
                 return city;
             });
-            // On completion: Display message.
-            AddCity.Subscribe(city => Status = $"City {city.Name} saved to database.");
             // On exceptions: Display error.
             // TODO: This should be handled somehow.
             AddCity.ThrownExceptions.Subscribe(ex => UserError.Throw("Cannot connect to database", ex));
@@ -67,16 +59,6 @@ namespace PublicTransport.Client.ViewModels
             Close = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.NavigateBack.ExecuteAsync());
 
             #endregion
-
-            #region Notification hiding
-
-            // Upon displaying the status, wait three seconds and clear it.
-            this.WhenAnyValue(vm => vm.Status)
-                .Where(s => s.Length > 0)
-                .Throttle(TimeSpan.FromSeconds(3), RxApp.MainThreadScheduler)
-                .Subscribe(s => Status = "");
-
-            #endregion
         }
 
         /// <summary>
@@ -86,15 +68,6 @@ namespace PublicTransport.Client.ViewModels
         {
             get { return _city; }
             set { this.RaiseAndSetIfChanged(ref _city, value); }
-        }
-
-        /// <summary>
-        ///     Property for the status field.
-        /// </summary>
-        public string Status
-        {
-            get { return _status; }
-            set { this.RaiseAndSetIfChanged(ref _status, value); }
         }
 
         /// <summary>

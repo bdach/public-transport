@@ -92,8 +92,8 @@ namespace PublicTransport.Client.ViewModels
             #region Querying DB for suggestions
 
             this.WhenAnyValue(vm => vm.CityName)
-                .Where(e => e != Street?.City?.Name)
-                .Throttle(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler)
+                .Where(e => e != Street?.City?.Name && !string.IsNullOrEmpty(_cityName))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
             #endregion
