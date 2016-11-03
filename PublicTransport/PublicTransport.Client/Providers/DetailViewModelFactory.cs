@@ -22,7 +22,7 @@ namespace PublicTransport.Client.Providers
             switch (option)
             {
                 case MenuOption.City:
-                    return new EditCityViewModel(screen);
+                    return new FilterCityViewModel(screen);
                 case MenuOption.Street:
                     return new EditStreetViewModel(screen);
                 default:

@@ -41,9 +41,6 @@ namespace PublicTransport.Client.ViewModels
         /// <param name="screen">The screen the view model should appear on.</param>
         public EditStreetViewModel(IScreen screen)
         {
-            // This is added to fix problems with ReactiveList.AddRange (multiple notifications firing)
-            RxApp.SupportsRangeNotifications = false;
-
             #region Field/property initialization
 
             HostScreen = screen;
