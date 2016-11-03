@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using PublicTransport.Client.Providers;
 using PublicTransport.Client.ViewModels;
 using PublicTransport.Client.Views;
 using ReactiveUI;

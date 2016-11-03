@@ -7,7 +7,11 @@
         xmlns:local="clr-namespace:PublicTransport.Client.Views"
         mc:Ignorable="d"
         Title="Public Transport" Height="720" Width="1280">
-    <Grid>
-        <rui:RoutedViewHost x:Name="ContentView" Width="Auto"></rui:RoutedViewHost>
-    </Grid>
+    <DockPanel>
+        <rui:ViewModelViewHost x:Name="Menu"
+                               Width="250"
+                               DockPanel.Dock="Left"
+                               VerticalContentAlignment="Stretch" />
+        <rui:RoutedViewHost x:Name="ContentView" Width="Auto" />
+    </DockPanel>
 </Window>
