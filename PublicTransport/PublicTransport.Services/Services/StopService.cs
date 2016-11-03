@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -87,6 +88,21 @@ namespace PublicTransport.Services
 
                 db.Entry(old).State = EntityState.Deleted;
                 db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
+        /// </summary>
+        /// <param name="routeId">Id of the <see cref="Route"/>.</param>
+        /// <returns>
+        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
+        /// </returns>
+        public List<Stop> GetStopsByRouteId(int routeId)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                return db.StopTimes.Where(x => x.Trip.RouteId == routeId).Select(x => x.Stop).Distinct().ToList();
             }
         }
     }

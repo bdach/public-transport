@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -87,6 +88,21 @@ namespace PublicTransport.Services
 
                 db.Entry(old).State = EntityState.Deleted;
                 db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        ///     Return a list of <see cref="Street"/>s whose names contain provided string.
+        /// </summary>
+        /// <param name="str">String which has to be present in the name.</param>
+        /// <returns>
+        ///     Return a list of <see cref="Street"/>s whose names contain provided string.
+        /// </returns>
+        public List<Street> GetStreetsContainingString(string str)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                return db.Streets.Where(x => x.Name.Contains(str)).Take(5).ToList();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -87,6 +88,37 @@ namespace PublicTransport.Services
 
                 db.Entry(old).State = EntityState.Deleted;
                 db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/>.
+        /// </summary>
+        /// <param name="stopId">Id of the <see cref="Stop" />.</param>
+        /// <returns>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/>.
+        /// </returns>
+        public List<StopTime> GetFullTimetableByStopId(int stopId)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                return db.StopTimes.Where(x => x.StopId == stopId).ToList();
+            }
+        }
+
+        /// <summary>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
+        /// </summary>
+        /// <param name="stopId">Id of the <see cref="Stop" />.</param>
+        /// <param name="routeId">Id of the <see cref="Route" />.</param>
+        /// <returns>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
+        /// </returns>
+        public List<StopTime> GetRouteTimetableByStopId(int stopId, int routeId)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                return db.StopTimes.Where(x => x.StopId == stopId && x.Trip.RouteId == routeId).ToList();
             }
         }
     }

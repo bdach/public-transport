@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -87,6 +88,21 @@ namespace PublicTransport.Services
 
                 db.Entry(old).State = EntityState.Deleted;
                 db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        ///     Returns a list of <see cref="Route" />s associated with a certain <see cref="Agency" />.
+        /// </summary>
+        /// <param name="agencyId">Id of the <see cref="Agency" />.</param>
+        /// <returns>
+        ///     Returns a list of <see cref="Route" />s associated with a certain <see cref="Agency" />.
+        /// </returns>
+        public List<Route> GetRoutesByAgencyId(int agencyId)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                return db.Routes.Where(x => x.AgencyId == agencyId).ToList();
             }
         }
     }
