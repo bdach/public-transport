@@ -6,22 +6,23 @@ using ReactiveUI;
 namespace PublicTransport.Client.Views
 {
     /// <summary>
-    /// Interaction logic for PlaceholderView.xaml
+    ///     Interaction logic for PlaceholderView.xaml
     /// </summary>
     public partial class PlaceholderView : UserControl, IViewFor<PlaceholderViewModel>
     {
         public static readonly DependencyProperty PlaceholderViewModelProperty = DependencyProperty.Register(
-            "PlaceholderViewModel", typeof(PlaceholderViewModel), typeof(PlaceholderView), new PropertyMetadata(default(PlaceholderViewModel)));
+            "PlaceholderViewModel", typeof(PlaceholderViewModel), typeof(PlaceholderView),
+            new PropertyMetadata(default(PlaceholderViewModel)));
+
+        public PlaceholderView()
+        {
+            InitializeComponent();
+        }
 
         public PlaceholderViewModel PlaceholderViewModel
         {
             get { return (PlaceholderViewModel) GetValue(PlaceholderViewModelProperty); }
             set { SetValue(PlaceholderViewModelProperty, value); }
-        }
-
-        public PlaceholderView()
-        {
-            InitializeComponent();
         }
 
         object IViewFor.ViewModel

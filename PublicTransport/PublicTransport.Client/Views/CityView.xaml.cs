@@ -1,37 +1,36 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using PublicTransport.Client.ViewModels;
+using PublicTransport.Domain.Entities;
 using ReactiveUI;
 
 namespace PublicTransport.Client.Views
 {
     /// <summary>
-    /// Interaction logic for CityView.xaml
+    ///     Interaction logic for CityView.xaml
     /// </summary>
-    public partial class CityView : UserControl, IViewFor<CityViewModel>
+    public partial class CityView : UserControl, IViewFor<City>
     {
-        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(CityViewModel), typeof(CityView), new PropertyMetadata(default(CityViewModel)));
-
-        public CityViewModel ViewModel
-        {
-            get { return (CityViewModel) GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
-        }
+        public static readonly DependencyProperty CityProperty = DependencyProperty.Register(
+            "City", typeof(City), typeof(CityView), new PropertyMetadata(default(City)));
 
         public CityView()
         {
             InitializeComponent();
-            this.Bind(ViewModel, vm => vm.City.Name, v => v.Name.Text);
-            this.Bind(ViewModel, vm => vm.Status, v => v.Status.Text);
-            this.BindCommand(ViewModel, vm => vm.AddCity, v => v.Save);
-            this.BindCommand(ViewModel, vm => vm.Close, v => v.Close);
+            this.Bind(City, c => c.Name, v => v.Name.Text);
+        }
+
+        public City City
+        {
+            get { return (City) GetValue(CityProperty); }
+            set { SetValue(CityProperty, value); }
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (CityViewModel)value; }
+            set { ViewModel = (City) value; }
         }
+
+        public City ViewModel { get; set; }
     }
 }

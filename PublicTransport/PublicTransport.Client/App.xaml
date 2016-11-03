@@ -19,7 +19,10 @@
         <Style TargetType="{x:Type Button}"
                BasedOn="{StaticResource BaseStyle}" />
         <Style TargetType="{x:Type ComboBox}"
-               BasedOn="{StaticResource BaseStyle}" />
+               BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="IsEditable"
+                    Value="True" />
+        </Style>
         <Style x:Key="Header"
                TargetType="StackPanel">
             <Setter Property="Background"
