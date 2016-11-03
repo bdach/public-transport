@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using PublicTransport.Client.Providers;
+using PublicTransport.Client.ViewModels;
+using PublicTransport.Client.Views;
+using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client
 {
@@ -13,5 +12,19 @@ namespace PublicTransport.Client
     /// </summary>
     public partial class App : Application
     {
+        public static AppBootstrapper Bootstrapper;
+        public static ShellView ShellView;
+
+        public App()
+        {
+            Bootstrapper = new AppBootstrapper();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ShellView = (ShellView) Locator.Current.GetService<IViewFor<ShellViewModel>>();
+            ShellView.Show();
+        }
     }
 }

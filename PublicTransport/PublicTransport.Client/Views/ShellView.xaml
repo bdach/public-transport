@@ -1,0 +1,17 @@
+﻿<Window x:Class="PublicTransport.Client.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:rui="clr-namespace:ReactiveUI;assembly=ReactiveUI"
+        xmlns:local="clr-namespace:PublicTransport.Client.Views"
+        mc:Ignorable="d"
+        Title="Public Transport" Height="720" Width="1280">
+    <DockPanel>
+        <rui:ViewModelViewHost x:Name="Menu"
+                               Width="250"
+                               DockPanel.Dock="Left"
+                               VerticalContentAlignment="Stretch" />
+        <rui:RoutedViewHost x:Name="ContentView" Width="Auto" />
+    </DockPanel>
+</Window>
