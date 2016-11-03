@@ -57,7 +57,14 @@
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\FareAttributeService.cs" />
     <Compile Include="Services\FareRuleService.cs" />
+    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\RouteService.cs" />
+    <Compile Include="Services\StopService.cs" />
+    <Compile Include="Services\StopTimeService.cs" />
+    <Compile Include="Services\StreetService.cs" />
+    <Compile Include="Services\TripService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\ZoneService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PublicTransport.Domain\PublicTransport.Domain.csproj">

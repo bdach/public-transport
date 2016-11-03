@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201610301938056_ExtendAgency.Designer.cs">
       <DependentUpon>201610301938056_ExtendAgency.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611031838357_RequiredCityName.cs" />
+    <Compile Include="Migrations\201611031838357_RequiredCityName.Designer.cs">
+      <DependentUpon>201611031838357_RequiredCityName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -90,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610301938056_ExtendAgency.resx">
       <DependentUpon>201610301938056_ExtendAgency.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611031838357_RequiredCityName.resx">
+      <DependentUpon>201611031838357_RequiredCityName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,6 @@
-﻿namespace PublicTransport.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PublicTransport.Domain.Entities
 {
     /// <summary>
     ///     Represents a city or other starting/destination point.
@@ -8,6 +10,7 @@
         /// <summary>
         ///     Contains the name of the city.
         /// </summary>
+        [Required]
         public string Name { get; set; }
     }
 }
