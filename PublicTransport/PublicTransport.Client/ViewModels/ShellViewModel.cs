@@ -58,12 +58,8 @@ namespace PublicTransport.Client.ViewModels
             HostScreen.Router.CurrentViewModel.Subscribe(cvm =>
             {
                 var detailViewModel = cvm as IDetailViewModel;
-                if (detailViewModel == null)
-                {
-                    return;
-                }
                 MenuViewModel.SelectedOption =
-                    MenuViewModel.Menu.FirstOrDefault(item => item.Item.Option == detailViewModel.AssociatedMenuOption);
+                    MenuViewModel.Menu.FirstOrDefault(item => item.Item.Option == detailViewModel?.AssociatedMenuOption);
             });
 
             #endregion

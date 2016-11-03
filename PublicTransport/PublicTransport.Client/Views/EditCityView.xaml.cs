@@ -18,7 +18,6 @@ namespace PublicTransport.Client.Views
         {
             InitializeComponent();
             this.Bind(ViewModel, vm => vm.City.Name, v => v.Name.Text);
-            this.Bind(ViewModel, vm => vm.Status, v => v.Status.Text);
             this.BindCommand(ViewModel, vm => vm.AddCity, v => v.Save);
             this.BindCommand(ViewModel, vm => vm.Close, v => v.Close);
         }

@@ -17,7 +17,7 @@ namespace PublicTransport.Client.Views
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Menu, v => v.SidebarMenu.ItemsSource);
-            this.Bind(ViewModel, vm => vm.SelectedOption, v => v.SidebarMenu.SelectedValue);
+            this.Bind(ViewModel, vm => vm.SelectedOption, v => v.SidebarMenu.SelectedItem);
         }
 
         public MenuViewModel ViewModel
