@@ -28,23 +28,24 @@ namespace PublicTransport.Client.ViewModels
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        public EditCityViewModel(IScreen screen)
+        /// <param name="city">City to be edited. If a city is to be added, this parameter is null (can be left out).</param>
+        public EditCityViewModel(IScreen screen, City city = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _city = new City();
             _cityService = new CityService();
+            var serviceMethod = city == null ? new Func<City, City>(_cityService.Create) : _cityService.Update;
+            _city = city ?? new City();
 
             #endregion
 
-            #region AddCity command
+            #region AddCityButton command
 
             // Action: Use the service to save to the database.
             AddCity = ReactiveCommand.CreateAsyncTask(async _ =>
             {
-                var city = await Task.Run(() => _cityService.Create(City));
-                return city;
+                return await Task.Run(() => serviceMethod(City));
             });
             // On exceptions: Display error.
             // TODO: This should be handled somehow.

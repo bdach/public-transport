@@ -49,6 +49,7 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.EditStreetViewModel" /> view model.
         /// </summary>
-        Street
+        Street,
+        Agency
     }
 }

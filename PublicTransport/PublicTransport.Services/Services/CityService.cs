@@ -60,7 +60,6 @@ namespace PublicTransport.Services
                 {
                     throw new EntryNotFoundException();
                 }
-
                 db.Entry(old).CurrentValues.SetValues(city);
                 db.SaveChanges();
                 return city;

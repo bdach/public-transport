@@ -36,7 +36,9 @@ namespace PublicTransport.Client.ViewModels
             var city = new MenuItemViewModel(cityItem);
             var streetItem = new MenuItem("Streets", MenuOption.Street);
             var street = new MenuItemViewModel(streetItem);
-            Menu = new ReactiveList<MenuItemViewModel> {city, street};
+            var agencyItem = new MenuItem("Agencies", MenuOption.Agency);
+            var agency = new MenuItemViewModel(agencyItem);
+            Menu = new ReactiveList<MenuItemViewModel> {city, street, agency};
         }
     }
 }

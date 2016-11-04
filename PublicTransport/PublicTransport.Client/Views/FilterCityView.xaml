@@ -9,7 +9,11 @@
         <StackPanel Style="{StaticResource Header}">
             <TextBlock>Find Cities...</TextBlock>
         </StackPanel>
-        <StackPanel Style="{StaticResource Footer}" />
+        <StackPanel Style="{StaticResource Footer}">
+            <Button x:Name="AddCityButton">Add New</Button>
+            <Button x:Name="DeleteCityButton">Delete Selected</Button>
+            <Button x:Name="EditCityButton">Edit Selected</Button>
+        </StackPanel>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -30,12 +34,12 @@
                        Grid.Column="0">City name contains</TextBlock>
             <TextBox Grid.Row="1"
                      Grid.Column="1" 
-                     x:Name="NameFilter" />
+                     x:Name="NameFilterTextBox" />
             <ListView Margin="10"
                       Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      x:Name="Cities">
+                      x:Name="CitiesListView">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -52,8 +56,8 @@
                             <TextBlock Text="{Binding Name}"
                                        Margin="10"
                                        FontSize="14" />
-                            <Button Grid.Column="1" x:Name="Edit">Edit</Button>
-                            <Button Grid.Column="2" x:Name="Delete">Delete</Button>
+                            <!--<Button Grid.Column="1" x:Name="Edit">Edit</Button>-->
+                            <!--<Button Grid.Column="2" x:Name="Delete">Delete</Button>-->
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

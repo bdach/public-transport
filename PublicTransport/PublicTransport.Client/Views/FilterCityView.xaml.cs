@@ -22,8 +22,12 @@ namespace PublicTransport.Client.Views
         public FilterCityView()
         {
             InitializeComponent();
-            this.OneWayBind(ViewModel, vm => vm.Cities, v => v.Cities.ItemsSource);
-            this.Bind(ViewModel, vm => vm.NameFilter, v => v.NameFilter.Text);
+            this.OneWayBind(ViewModel, vm => vm.Cities, v => v.CitiesListView.ItemsSource);
+            this.Bind(ViewModel, vm => vm.NameFilter, v => v.NameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.SelectedCity, v => v.CitiesListView.SelectedItem);
+            this.BindCommand(ViewModel, vm => vm.DeleteCity, v => v.DeleteCityButton);
+            this.BindCommand(ViewModel, vm => vm.AddCity, v => v.AddCityButton);
+            this.BindCommand(ViewModel, vm => vm.EditCity, v => v.EditCityButton);
         }
 
         object IViewFor.ViewModel

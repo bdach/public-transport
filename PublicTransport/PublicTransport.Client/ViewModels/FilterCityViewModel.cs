@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
@@ -10,44 +12,152 @@ using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels
 {
+    /// <summary>
+    ///     View model responsible for filtering cities.
+    /// </summary>
     public class FilterCityViewModel : ReactiveObject, IDetailViewModel
     {
+        /// <summary>
+        ///     <see cref="CityService" /> used to fetch data from database.
+        /// </summary>
         private readonly CityService _cityService;
+
+        /// <summary>
+        ///     String containing the city name filter.
+        /// </summary>
         private string _nameFilter;
 
+        /// <summary>
+        ///     <see cref="City" /> object currently selected in the view.
+        /// </summary>
+        private City _selectedCity;
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="screen">Screen to display view model on.</param>
         public FilterCityViewModel(IScreen screen)
         {
+            #region Field/property initialization
+
             HostScreen = screen;
             _cityService = new CityService();
             Cities = new ReactiveList<City>();
 
-            FilterCities = ReactiveCommand.CreateAsyncTask(async _ =>
-            {
-                return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter));
-            });
+            #endregion
+
+            #region City filtering command
+
+            FilterCities =
+                ReactiveCommand.CreateAsyncTask(
+                    async _ => { return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter)); });
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
                 Cities.AddRange(result);
             });
 
+            #endregion
+
+            #region Updating the list of filtered cities upon filter string change
+
             this.WhenAnyValue(vm => vm.NameFilter)
                 .Where(s => !string.IsNullOrEmpty(s))
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterCities);
+
+            #endregion
+
+            #region Delete city command
+
+            // TODO: Maybe prompt for confirmation?
+            DeleteCity = ReactiveCommand.CreateAsyncTask(async _ =>
+            {
+                await Task.Run(() => _cityService.Delete(SelectedCity));
+                return Unit.Default;
+            });
+            DeleteCity.Subscribe(_ => SelectedCity = null);
+            DeleteCity.InvokeCommand(FilterCities);
+            DeleteCity.ThrownExceptions.Subscribe(e => UserError.Throw("Please select a value"));
+
+            #endregion
+
+            #region Add/edit commands
+
+            AddCity =
+                ReactiveCommand.CreateAsyncObservable(
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
+            EditCity =
+                ReactiveCommand.CreateAsyncObservable(
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
+
+            #endregion
+
+            #region Updating the list of cities upon navigating back to this view model
+
+            HostScreen.Router.NavigateBack
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this)
+                .InvokeCommand(FilterCities);
+
+            #endregion
         }
 
-        public string UrlPathSegment => AssociatedMenuOption.ToString();
-        public IScreen HostScreen { get; }
-        public MenuOption AssociatedMenuOption => MenuOption.City;
+        /// <summary>
+        ///     Reactive list containing the filtered <see cref="City" /> objects.
+        /// </summary>
         public ReactiveList<City> Cities { get; set; }
+
+        /// <summary>
+        ///     Command responsible for filtering out cities in accordance with the <see cref="NameFilter" />.
+        /// </summary>
         public ReactiveCommand<List<City>> FilterCities { get; protected set; }
+
+        /// <summary>
+        ///     Command responsible for launching the city editing view.
+        /// </summary>
         public ReactiveCommand<object> EditCity { get; protected set; }
 
+        /// <summary>
+        ///     Command responsible for deleting the city.
+        /// </summary>
+        public ReactiveCommand<Unit> DeleteCity { get; protected set; }
+
+        /// <summary>
+        ///     Command responsible for launching the city adding view.
+        /// </summary>
+        public ReactiveCommand<object> AddCity { get; protected set; }
+
+        /// <summary>
+        ///     Property containing the name filter.
+        /// </summary>
         public string NameFilter
         {
             get { return _nameFilter; }
             set { this.RaiseAndSetIfChanged(ref _nameFilter, value); }
         }
+
+        /// <summary>
+        ///     Property exposing the currently selected <see cref="City" />.
+        /// </summary>
+        public City SelectedCity
+        {
+            get { return _selectedCity; }
+            set { this.RaiseAndSetIfChanged(ref _selectedCity, value); }
+        }
+
+        /// <summary>
+        ///     String uniquely identifying the current view model.
+        /// </summary>
+        public string UrlPathSegment => AssociatedMenuOption.ToString();
+
+        /// <summary>
+        ///     Host screen to display on.
+        /// </summary>
+        public IScreen HostScreen { get; }
+
+        /// <summary>
+        ///     Gets the <see cref="MenuOption" /> enum value that associates a menu item with the concrete view model.
+        /// </summary>
+        public MenuOption AssociatedMenuOption => MenuOption.City;
     }
 }

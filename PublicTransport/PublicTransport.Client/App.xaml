@@ -23,7 +23,7 @@
         <Style TargetType="{x:Type Button}"
                BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Padding"
-                    Value="5" />
+                    Value="10" />
         </Style>
         <Style TargetType="{x:Type ComboBox}"
                BasedOn="{StaticResource BaseStyle}">
@@ -61,9 +61,31 @@
                             Value="14" />
                 </Style>
                 <Style TargetType="{x:Type Button}"
-                       BasedOn="{StaticResource BaseStyle}">
+                       BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="FontSize"
                             Value="14" />
+                    <Setter Property="Margin"
+                            Value="5" />
+                    <Setter Property="Background" Value="Goldenrod"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" 
+                                        BorderBrush="Sienna" 
+                                        BorderThickness="1" 
+                                        Margin="{Binding Margin, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center" 
+                                                      Margin="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="DarkGoldenrod"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </Style.Resources>
         </Style>

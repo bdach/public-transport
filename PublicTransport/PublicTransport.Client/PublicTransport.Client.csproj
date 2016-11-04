@@ -95,6 +95,7 @@
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Providers\DetailViewModelFactory.cs" />
+    <Compile Include="ViewModels\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\EditCityViewModel.cs" />
     <Compile Include="ViewModels\FilterCityViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
@@ -104,6 +105,9 @@
     <Compile Include="ViewModels\EditStreetViewModel.cs" />
     <Compile Include="Views\CityView.xaml.cs">
       <DependentUpon>CityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditAgencyView.xaml.cs">
+      <DependentUpon>EditAgencyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
@@ -128,6 +132,10 @@
       <DependentUpon>EditStreetView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
