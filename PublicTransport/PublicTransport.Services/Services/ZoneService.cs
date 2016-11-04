@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing zones.
     /// </summary>
-    public class ZoneService
+    public class ZoneService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="Zone" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Zone" /> object corresponding to the inserted record.</returns>
         public Zone Create(Zone zone)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Zones.Add(zone);
-                db.SaveChanges();
-                return zone;
-            }
+            _db.Zones.Add(zone);
+            _db.SaveChanges();
+            return zone;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Zone Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Zones.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Zones.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Zone Update(Zone zone)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(zone.Id);
+            if (old == null)
             {
-                var old = Read(zone.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(zone);
-                db.SaveChanges();
-                return zone;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(zone);
+            _db.SaveChanges();
+            return zone;
         }
 
         /// <summary>
@@ -77,17 +72,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Zone zone)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(zone.Id);
+            if (old == null)
             {
-                var old = Read(zone.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

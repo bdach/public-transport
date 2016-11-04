@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -10,8 +11,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing cities.
     /// </summary>
-    public class CityService
+    public class CityService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts an <see cref="City" /> record into the database.
         /// </summary>
@@ -19,12 +23,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="City" /> object corresponding to the inserted record.</returns>
         public City Create(City city)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Cities.Add(city);
-                db.SaveChanges();
-                return city;
-            }
+            _db.Cities.Add(city);
+            _db.SaveChanges();
+            return city;
         }
 
         /// <summary>
@@ -37,10 +38,7 @@ namespace PublicTransport.Services
         /// </returns>
         public City Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Cities.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Cities.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public City Update(City city)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(city.Id);
+            if (old == null)
             {
-                var old = Read(city.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(city);
-                db.SaveChanges();
-                return city;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(city);
+            _db.SaveChanges();
+            return city;
         }
 
         /// <summary>
@@ -76,17 +71,14 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(City city)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(city.Id);
+            if (old == null)
             {
-                var old = Read(city.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
         }
 
         /// <summary>
@@ -102,6 +94,16 @@ namespace PublicTransport.Services
             {
                 return db.Cities.Where(x => x.Name.Contains(str)).Take(5).ToList();
             }
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

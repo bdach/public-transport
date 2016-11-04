@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing fare rules.
     /// </summary>
-    public class FareRuleService
+    public class FareRuleService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts an <see cref="FareRule" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="FareRule" /> object corresponding to the inserted record.</returns>
         public FareRule Create(FareRule fareRule)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.FareRules.Add(fareRule);
-                db.SaveChanges();
-                return fareRule;
-            }
+            _db.FareRules.Add(fareRule);
+            _db.SaveChanges();
+            return fareRule;
         }
 
         /// <summary>
@@ -37,10 +38,7 @@ namespace PublicTransport.Services
         /// </returns>
         public FareRule Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.FareRules.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.FareRules.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public FareRule Update(FareRule fareRule)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(fareRule.Id);
+            if (old == null)
             {
-                var old = Read(fareRule.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(fareRule);
-                db.SaveChanges();
-                return fareRule;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(fareRule);
+            _db.SaveChanges();
+            return fareRule;
         }
 
         /// <summary>
@@ -76,17 +71,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(FareRule fareRule)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(fareRule.Id);
+            if (old == null)
             {
-                var old = Read(fareRule.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing user roles.
     /// </summary>
-    public class RoleService
+    public class RoleService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="Role" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Role" /> object corresponding to the inserted record.</returns>
         public Role Create(Role role)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Roles.Add(role);
-                db.SaveChanges();
-                return role;
-            }
+            _db.Roles.Add(role);
+            _db.SaveChanges();
+            return role;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Role Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Roles.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Roles.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Role Update(Role role)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(role.Id);
+            if (old == null)
             {
-                var old = Read(role.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(role);
-                db.SaveChanges();
-                return role;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(role);
+            _db.SaveChanges();
+            return role;
         }
 
         /// <summary>
@@ -77,17 +72,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Role role)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(role.Id);
+            if (old == null)
             {
-                var old = Read(role.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

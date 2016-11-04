@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing agencies.
     /// </summary>
-    public class AgencyService
+    public class AgencyService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts an <see cref="Agency" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Agency" /> object corresponding to the inserted record.</returns>
         public Agency Create(Agency agency)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Agencies.Add(agency);
-                db.SaveChanges();
-                return agency;
-            }
+            _db.Agencies.Add(agency);
+            _db.SaveChanges();
+            return agency;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Agency Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Agencies.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Agencies.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Agency Update(Agency agency)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(agency.Id);
+            if (old == null)
             {
-                var old = Read(agency.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(agency);
-                db.SaveChanges();
-                return agency;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(agency);
+            _db.SaveChanges();
+            return agency;
         }
 
         /// <summary>
@@ -77,17 +72,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Agency agency)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(agency.Id);
+            if (old == null)
             {
-                var old = Read(agency.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }
