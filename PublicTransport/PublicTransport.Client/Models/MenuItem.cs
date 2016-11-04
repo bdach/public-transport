@@ -50,6 +50,10 @@
         ///     Represents the <see cref="ViewModels.EditStreetViewModel" /> view model.
         /// </summary>
         Street,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.EditAgencyViewModel" /> view model.
+        /// </summary>
         Agency
     }
 }

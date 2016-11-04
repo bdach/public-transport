@@ -90,10 +90,7 @@ namespace PublicTransport.Services
         /// </returns>
         public List<City> GetCitiesContainingString(string str)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Cities.Where(x => x.Name.Contains(str)).Take(5).ToList();
-            }
+            return _db.Cities.Where(x => x.Name.Contains(str)).Take(10).ToList();
         }
 
         /// <summary>

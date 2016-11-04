@@ -40,7 +40,7 @@ namespace PublicTransport.Client.ViewModels
 
             #endregion
 
-            #region AddCityButton command
+            #region AddCity command
 
             // Action: Use the service to save to the database.
             AddCity = ReactiveCommand.CreateAsyncTask(async _ =>

@@ -92,7 +92,7 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Street> GetStreetsContainingString(string str)
         {
-            return _db.Streets.Where(x => x.Name.Contains(str)).Take(5).ToList();
+            return _db.Streets.Where(x => x.Name.Contains(str)).Include(x => x.City).Take(10).ToList();
         }
 
         /// <summary>

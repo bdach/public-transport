@@ -16,7 +16,7 @@ namespace PublicTransport.Client.Views
 
         public EditStreetViewModel ViewModel
         {
-            get { return (EditStreetViewModel) GetValue(ViewModelProperty); }
+            get { return (EditStreetViewModel)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
@@ -29,13 +29,15 @@ namespace PublicTransport.Client.Views
             this.Bind(ViewModel, vm => vm.CityName, v => v.City.Text);
             this.OneWayBind(ViewModel, vm => vm.Suggestions, v => v.City.ItemsSource);
             this.Bind(ViewModel, vm => vm.Street.City, v => v.City.SelectedItem);
+            this.BindCommand(ViewModel, vm => vm.Close, v => v.Close);
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set {
-                ViewModel = (EditStreetViewModel) value;
+            set
+            {
+                ViewModel = (EditStreetViewModel)value;
                 ViewModel.Suggestions.ItemsAdded.Subscribe(_ => City.IsDropDownOpen = true);
             }
         }

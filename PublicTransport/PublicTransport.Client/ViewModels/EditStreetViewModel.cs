@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
@@ -39,7 +40,8 @@ namespace PublicTransport.Client.ViewModels
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        public EditStreetViewModel(IScreen screen)
+        /// <param name="street">Street to be edited. If a steet is to be added, this parameter is null (can be left out).</param>
+        public EditStreetViewModel(IScreen screen, Street street = null)
         {
             #region Field/property initialization
 
@@ -47,7 +49,9 @@ namespace PublicTransport.Client.ViewModels
             Suggestions = new ReactiveList<City>();
             _cityService = new CityService();
             _streetService = new StreetService();
-            _street = new Street();
+            var serviceMethod = street == null ? new Func<Street, Street>(_streetService.Create) : _streetService.Update;
+            _street = street ?? new Street();
+            _cityName = _street?.City?.Name;
 
             #endregion
 
@@ -64,8 +68,11 @@ namespace PublicTransport.Client.ViewModels
             {
                 Street.CityId = Street.City?.Id ?? 0;
                 Street.City = null;
-                return await Task.Run(() => _streetService.Create(Street));
+                return await Task.Run(() => serviceMethod(Street));
             });
+            // On exceptions: Display error.
+            // TODO: This should be handled somehow.
+            //AddStreet.ThrownExceptions.Subscribe(ex => UserError.Throw("Cannot connect to database", ex));
 
             #endregion
 
@@ -86,12 +93,19 @@ namespace PublicTransport.Client.ViewModels
 
             #endregion
 
-            #region Querying DB for suggestions
+            #region Querying database for suggestions
 
             this.WhenAnyValue(vm => vm.CityName)
                 .Where(e => e != Street?.City?.Name && !string.IsNullOrEmpty(_cityName))
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
+
+            #endregion
+
+            #region Close command
+
+            // On activation, go back one step in the navigation stack.
+            Close = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.NavigateBack.ExecuteAsync());
 
             #endregion
         }
@@ -115,6 +129,11 @@ namespace PublicTransport.Client.ViewModels
         ///     Command responsible for saving the <see cref="Street" /> object to the database.
         /// </summary>
         public ReactiveCommand<Street> AddStreet { get; protected set; }
+
+        /// <summary>
+        ///     Command closing the current detail view model.
+        /// </summary>
+        public ReactiveCommand<Unit> Close { get; }
 
         /// <summary>
         ///     Property for the <see cref="Domain.Entities.Street" /> being edited in the window.

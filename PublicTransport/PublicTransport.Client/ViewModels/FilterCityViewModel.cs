@@ -48,9 +48,10 @@ namespace PublicTransport.Client.ViewModels
 
             #region City filtering command
 
-            FilterCities =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => { return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter)); });
+            FilterCities = ReactiveCommand.CreateAsyncTask(async _ =>
+            {
+                return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter));
+            });
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
@@ -84,12 +85,8 @@ namespace PublicTransport.Client.ViewModels
 
             #region Add/edit commands
 
-            AddCity =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
-            EditCity =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
+            AddCity = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
+            EditCity = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
 
             #endregion
 

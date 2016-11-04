@@ -98,6 +98,7 @@
     <Compile Include="ViewModels\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\EditCityViewModel.cs" />
     <Compile Include="ViewModels\FilterCityViewModel.cs" />
+    <Compile Include="ViewModels\FilterStreetViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
@@ -114,6 +115,9 @@
     </Compile>
     <Compile Include="Views\FilterCityView.xaml.cs">
       <DependentUpon>FilterCityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FilterStreetView.xaml.cs">
+      <DependentUpon>FilterStreetView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
@@ -144,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FilterCityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FilterStreetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

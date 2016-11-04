@@ -14,6 +14,7 @@
         <StackPanel Style="{StaticResource Footer}">
             <Button x:Name="Save">Save</Button>
             <Button x:Name="ToCity">Navigate to city</Button>
+            <Button x:Name="Close">Close</Button>
         </StackPanel>
         <Grid>
             <Grid.RowDefinitions>

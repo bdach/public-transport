@@ -24,7 +24,7 @@ namespace PublicTransport.Client.Providers
                 case MenuOption.City:
                     return new FilterCityViewModel(screen);
                 case MenuOption.Street:
-                    return new EditStreetViewModel(screen);
+                    return new FilterStreetViewModel(screen);
                 case MenuOption.Agency:
                     return new EditAgencyViewModel(screen);
                 default:

@@ -11,8 +11,13 @@ namespace PublicTransport.Client.Views
     public partial class EditCityView : UserControl, IViewFor<EditCityViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(EditCityViewModel), typeof(EditCityView),
-            new PropertyMetadata(default(EditCityViewModel)));
+            "ViewModel", typeof(EditCityViewModel), typeof(EditCityView), new PropertyMetadata(default(EditCityViewModel)));
+
+        public EditCityViewModel ViewModel
+        {
+            get { return (EditCityViewModel)GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
+        }
 
         public EditCityView()
         {
@@ -22,16 +27,10 @@ namespace PublicTransport.Client.Views
             this.BindCommand(ViewModel, vm => vm.Close, v => v.Close);
         }
 
-        public EditCityViewModel ViewModel
-        {
-            get { return (EditCityViewModel) GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
-        }
-
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (EditCityViewModel) value; }
+            set { ViewModel = (EditCityViewModel)value; }
         }
     }
 }
