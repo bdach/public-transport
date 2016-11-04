@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing calendar dates.
     /// </summary>
-    public class CalendarDateService
+    public class CalendarDateService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts an <see cref="CalendarDate" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="CalendarDate" /> object corresponding to the inserted record.</returns>
         public CalendarDate Create(CalendarDate calendarDate)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.CalendarDates.Add(calendarDate);
-                db.SaveChanges();
-                return calendarDate;
-            }
+            _db.CalendarDates.Add(calendarDate);
+            _db.SaveChanges();
+            return calendarDate;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public CalendarDate Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.CalendarDates.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.CalendarDates.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public CalendarDate Update(CalendarDate calendarDate)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(calendarDate.Id);
+            if (old == null)
             {
-                var old = Read(calendarDate.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(calendarDate);
-                db.SaveChanges();
-                return calendarDate;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(calendarDate);
+            _db.SaveChanges();
+            return calendarDate;
         }
 
         /// <summary>
@@ -77,17 +72,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(CalendarDate calendar)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(calendar.Id);
+            if (old == null)
             {
-                var old = Read(calendar.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing users.
     /// </summary>
-    public class UserService
+    public class UserService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="User" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
         public User Create(User user)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Users.Add(user);
-                db.SaveChanges();
-                return user;
-            }
+            _db.Users.Add(user);
+            _db.SaveChanges();
+            return user;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public User Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Users.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Users.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public User Update(User user)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(user.Id);
+            if (old == null)
             {
-                var old = Read(user.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(user);
-                db.SaveChanges();
-                return user;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(user);
+            _db.SaveChanges();
+            return user;
         }
 
         /// <summary>
@@ -77,17 +72,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(User user)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(user.Id);
+            if (old == null)
             {
-                var old = Read(user.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing trips.
     /// </summary>
-    public class TripService
+    public class TripService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="Trip" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Trip" /> object corresponding to the inserted record.</returns>
         public Trip Create(Trip trip)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Trips.Add(trip);
-                db.SaveChanges();
-                return trip;
-            }
+            _db.Trips.Add(trip);
+            _db.SaveChanges();
+            return trip;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Trip Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Trips.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Trips.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Trip Update(Trip trip)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(trip.Id);
+            if (old == null)
             {
-                var old = Read(trip.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(trip);
-                db.SaveChanges();
-                return trip;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(trip);
+            _db.SaveChanges();
+            return trip;
         }
 
         /// <summary>
@@ -77,17 +72,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Trip trip)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(trip.Id);
+            if (old == null)
             {
-                var old = Read(trip.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

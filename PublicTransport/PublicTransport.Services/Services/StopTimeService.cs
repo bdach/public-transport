@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -10,8 +11,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing stop times.
     /// </summary>
-    public class StopTimeService
+    public class StopTimeService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="StopTime" /> record into the database.
         /// </summary>
@@ -19,12 +23,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="StopTime" /> object corresponding to the inserted record.</returns>
         public StopTime Create(StopTime stopTime)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.StopTimes.Add(stopTime);
-                db.SaveChanges();
-                return stopTime;
-            }
+            _db.StopTimes.Add(stopTime);
+            _db.SaveChanges();
+            return stopTime;
         }
 
         /// <summary>
@@ -37,10 +38,7 @@ namespace PublicTransport.Services
         /// </returns>
         public StopTime Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.StopTimes.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.StopTimes.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -54,18 +52,15 @@ namespace PublicTransport.Services
         /// </exception>
         public StopTime Update(StopTime stopTime)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(stopTime.Id);
+            if (old == null)
             {
-                var old = Read(stopTime.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(stopTime);
-                db.SaveChanges();
-                return stopTime;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(stopTime);
+            _db.SaveChanges();
+            return stopTime;
         }
 
         /// <summary>
@@ -78,17 +73,14 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(StopTime stopTime)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(stopTime.Id);
+            if (old == null)
             {
-                var old = Read(stopTime.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
         }
 
         /// <summary>
@@ -100,10 +92,7 @@ namespace PublicTransport.Services
         /// </returns>
         public List<StopTime> GetFullTimetableByStopId(int stopId)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.StopTimes.Where(x => x.StopId == stopId).ToList();
-            }
+            return _db.StopTimes.Where(x => x.StopId == stopId).ToList();
         }
 
         /// <summary>
@@ -116,10 +105,17 @@ namespace PublicTransport.Services
         /// </returns>
         public List<StopTime> GetRouteTimetableByStopId(int stopId, int routeId)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.StopTimes.Where(x => x.StopId == stopId && x.Trip.RouteId == routeId).ToList();
-            }
+            return _db.StopTimes.Where(x => x.StopId == stopId && x.Trip.RouteId == routeId).ToList();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

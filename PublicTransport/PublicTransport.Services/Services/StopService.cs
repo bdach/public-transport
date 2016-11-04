@@ -12,6 +12,9 @@ namespace PublicTransport.Services
     /// </summary>
     public class StopService
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="Stop" /> record into the database.
         /// </summary>
@@ -19,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Stop" /> object corresponding to the inserted record.</returns>
         public Stop Create(Stop stop)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Stops.Add(stop);
-                db.SaveChanges();
-                return stop;
-            }
+            _db.Stops.Add(stop);
+            _db.SaveChanges();
+            return stop;
         }
 
         /// <summary>
@@ -37,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Stop Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Stops.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Stops.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -54,18 +51,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Stop Update(Stop stop)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(stop.Id);
+            if (old == null)
             {
-                var old = Read(stop.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(stop);
-                db.SaveChanges();
-                return stop;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(stop);
+            _db.SaveChanges();
+            return stop;
         }
 
         /// <summary>
@@ -78,17 +72,14 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Stop stop)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(stop.Id);
+            if (old == null)
             {
-                var old = Read(stop.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
         }
 
         /// <summary>
@@ -100,10 +91,17 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Stop> GetStopsByRouteId(int routeId)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.StopTimes.Where(x => x.Trip.RouteId == routeId).Select(x => x.Stop).Distinct().ToList();
-            }
+            return _db.StopTimes.Where(x => x.Trip.RouteId == routeId).Select(x => x.Stop).Distinct().ToList();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

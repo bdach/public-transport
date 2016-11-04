@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -10,8 +11,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing streets.
     /// </summary>
-    public class StreetService
+    public class StreetService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="Street" /> record into the database.
         /// </summary>
@@ -19,12 +23,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Street" /> object corresponding to the inserted record.</returns>
         public Street Create(Street street)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Streets.Add(street);
-                db.SaveChanges();
-                return street;
-            }
+            _db.Streets.Add(street);
+            _db.SaveChanges();
+            return street;
         }
 
         /// <summary>
@@ -37,10 +38,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Street Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Streets.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Streets.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -54,18 +52,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Street Update(Street street)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(street.Id);
+            if (old == null)
             {
-                var old = Read(street.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(street);
-                db.SaveChanges();
-                return street;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(street);
+            _db.SaveChanges();
+            return street;
         }
 
         /// <summary>
@@ -78,17 +73,14 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Street street)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(street.Id);
+            if (old == null)
             {
-                var old = Read(street.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
         }
 
         /// <summary>
@@ -100,10 +92,17 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Street> GetStreetsContainingString(string str)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Streets.Where(x => x.Name.Contains(str)).Take(5).ToList();
-            }
+            return _db.Streets.Where(x => x.Name.Contains(str)).Take(5).ToList();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

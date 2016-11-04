@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -9,8 +10,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing fare attributes.
     /// </summary>
-    public class FareAttributeService
+    public class FareAttributeService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts an <see cref="FareAttribute" /> record into the database.
         /// </summary>
@@ -18,12 +22,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="FareAttribute" /> object corresponding to the inserted record.</returns>
         public FareAttribute Create(FareAttribute fareAttribute)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.FareAttributes.Add(fareAttribute);
-                db.SaveChanges();
-                return fareAttribute;
-            }
+            _db.FareAttributes.Add(fareAttribute);
+            _db.SaveChanges();
+            return fareAttribute;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace PublicTransport.Services
         /// </returns>
         public FareAttribute Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.FareAttributes.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.FareAttributes.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -52,18 +50,15 @@ namespace PublicTransport.Services
         /// </exception>
         public FareAttribute Update(FareAttribute fareAttribute)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(fareAttribute.Id);
+            if (old == null)
             {
-                var old = Read(fareAttribute.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(fareAttribute);
-                db.SaveChanges();
-                return fareAttribute;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(fareAttribute);
+            _db.SaveChanges();
+            return fareAttribute;
         }
 
         /// <summary>
@@ -75,17 +70,24 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(FareAttribute fareAttribute)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(fareAttribute.Id);
+            if (old == null)
             {
-                var old = Read(fareAttribute.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

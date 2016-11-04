@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -10,8 +11,11 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing routes.
     /// </summary>
-    public class RouteService
+    public class RouteService : IDisposable
     {
+        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private bool _disposed;
+
         /// <summary>
         ///     Inserts a <see cref="Route" /> record into the database.
         /// </summary>
@@ -19,12 +23,9 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="Route" /> object corresponding to the inserted record.</returns>
         public Route Create(Route route)
         {
-            using (var db = new PublicTransportContext())
-            {
-                db.Routes.Add(route);
-                db.SaveChanges();
-                return route;
-            }
+            _db.Routes.Add(route);
+            _db.SaveChanges();
+            return route;
         }
 
         /// <summary>
@@ -37,10 +38,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Route Read(int id)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Routes.FirstOrDefault(u => u.Id == id);
-            }
+            return _db.Routes.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -54,18 +52,15 @@ namespace PublicTransport.Services
         /// </exception>
         public Route Update(Route route)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(route.Id);
+            if (old == null)
             {
-                var old = Read(route.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).CurrentValues.SetValues(route);
-                db.SaveChanges();
-                return route;
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).CurrentValues.SetValues(route);
+            _db.SaveChanges();
+            return route;
         }
 
         /// <summary>
@@ -78,17 +73,14 @@ namespace PublicTransport.Services
         /// </exception>
         public void Delete(Route route)
         {
-            using (var db = new PublicTransportContext())
+            var old = Read(route.Id);
+            if (old == null)
             {
-                var old = Read(route.Id);
-                if (old == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                db.Entry(old).State = EntityState.Deleted;
-                db.SaveChanges();
+                throw new EntryNotFoundException();
             }
+
+            _db.Entry(old).State = EntityState.Deleted;
+            _db.SaveChanges();
         }
 
         /// <summary>
@@ -100,10 +92,17 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Route> GetRoutesByAgencyId(int agencyId)
         {
-            using (var db = new PublicTransportContext())
-            {
-                return db.Routes.Where(x => x.AgencyId == agencyId).ToList();
-            }
+                return _db.Routes.Where(x => x.AgencyId == agencyId).ToList();
+        }
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }
