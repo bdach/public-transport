@@ -10,19 +10,19 @@ namespace PublicTransport.Client.Views
     /// </summary>
     public partial class CityView : UserControl, IViewFor<City>
     {
-        public static readonly DependencyProperty CityProperty = DependencyProperty.Register(
-            "City", typeof(City), typeof(CityView), new PropertyMetadata(default(City)));
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
+            "ViewModel", typeof(City), typeof(CityView), new PropertyMetadata(default(City)));
 
         public CityView()
         {
             InitializeComponent();
-            this.Bind(City, c => c.Name, v => v.Name.Text);
+            this.Bind(ViewModel, c => c.Name, v => v.Name.Text);
         }
 
-        public City City
+        public City ViewModel
         {
-            get { return (City) GetValue(CityProperty); }
-            set { SetValue(CityProperty, value); }
+            get { return (City) GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
         }
 
         object IViewFor.ViewModel
@@ -30,7 +30,5 @@ namespace PublicTransport.Client.Views
             get { return ViewModel; }
             set { ViewModel = (City) value; }
         }
-
-        public City ViewModel { get; set; }
     }
 }

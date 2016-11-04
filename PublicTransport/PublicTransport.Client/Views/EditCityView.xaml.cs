@@ -22,9 +22,9 @@ namespace PublicTransport.Client.Views
         public EditCityView()
         {
             InitializeComponent();
-            this.Bind(ViewModel, vm => vm.City.Name, v => v.Name.Text);
-            this.BindCommand(ViewModel, vm => vm.AddCity, v => v.Save);
-            this.BindCommand(ViewModel, vm => vm.Close, v => v.Close);
+            this.Bind(ViewModel, vm => vm.City.Name, v => v.NameTextBox.Text);
+            this.BindCommand(ViewModel, vm => vm.SaveCity, v => v.SaveButton);
+            this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
         }
 
         object IViewFor.ViewModel

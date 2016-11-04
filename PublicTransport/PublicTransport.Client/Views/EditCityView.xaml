@@ -10,9 +10,8 @@
             <TextBlock>Add City...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="Save">Save</Button>
-            <Button x:Name="Close">Close</Button>
-            <TextBlock x:Name="Status" />
+            <Button x:Name="SaveButton">Save</Button>
+            <Button x:Name="CloseButton">Close</Button>
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -26,7 +25,7 @@
             <TextBlock Style="{StaticResource TextBoxLabel}">City name</TextBlock>
             <TextBox Grid.Row="0"
                      Grid.Column="1"
-                     x:Name="Name" />
+                     x:Name="NameTextBox" />
         </Grid>
     </DockPanel>
 </UserControl>

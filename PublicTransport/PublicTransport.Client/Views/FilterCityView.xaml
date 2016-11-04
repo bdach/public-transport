@@ -39,28 +39,8 @@
                       Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      x:Name="CitiesListView">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="entities:City">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}"
-                                       Margin="10"
-                                       FontSize="14" />
-                            <!--<Button Grid.Column="1" x:Name="Edit">Edit</Button>-->
-                            <!--<Button Grid.Column="2" x:Name="Delete">Delete</Button>-->
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                      x:Name="CitiesListView"
+                      FontSize="16">
             </ListView>
         </Grid>
     </DockPanel>

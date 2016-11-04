@@ -46,6 +46,8 @@ namespace PublicTransport.Client.ViewModels
 
             #endregion
 
+            var canExecuteOnSelectedItem = this.WhenAnyValue(vm => vm.SelectedStreet).Select(c => c != null);
+            
             #region Street filtering command
 
             FilterStreets = ReactiveCommand.CreateAsyncTask(async _ =>
@@ -72,7 +74,7 @@ namespace PublicTransport.Client.ViewModels
             #region Delete street command
 
             // TODO: Maybe prompt for confirmation?
-            DeleteStreet = ReactiveCommand.CreateAsyncTask(async _ =>
+            DeleteStreet = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
                 await Task.Run(() => _streetService.Delete(SelectedStreet));
                 return Unit.Default;
@@ -86,7 +88,7 @@ namespace PublicTransport.Client.ViewModels
             #region Add/edit commands
 
             AddStreet = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen)));
-            EditStreet = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
+            EditStreet = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
 
             #endregion
 

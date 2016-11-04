@@ -58,6 +58,7 @@ namespace PublicTransport.Services
                 throw new EntryNotFoundException();
             }
 
+            _db.Cities.Attach(street.City);
             _db.Entry(old).CurrentValues.SetValues(street);
             _db.SaveChanges();
             return street;

@@ -32,6 +32,11 @@ namespace PublicTransport.Client.ViewModels
         private string _cityName;
 
         /// <summary>
+        ///     <see cref="City" /> selected by the user in the drop-down menu.
+        /// </summary>
+        private City _selectedCity;
+
+        /// <summary>
         ///     <see cref="Domain.Entities.Street" /> objects to be saved to the database.
         /// </summary>
         private Street _street;
@@ -62,23 +67,25 @@ namespace PublicTransport.Client.ViewModels
 
             #endregion
 
-            #region AddStreet command
+            #region SaveStreet command
 
-            AddStreet = ReactiveCommand.CreateAsyncTask(async _ =>
+            var canSaveStreet = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
+            SaveStreet = ReactiveCommand.CreateAsyncTask(canSaveStreet, async _ =>
             {
-                Street.CityId = Street.City?.Id ?? 0;
-                Street.City = null;
+                Street.City = SelectedCity;
                 return await Task.Run(() => serviceMethod(Street));
             });
             // On exceptions: Display error.
             // TODO: This should be handled somehow.
-            //AddStreet.ThrownExceptions.Subscribe(ex => UserError.Throw("Cannot connect to database", ex));
+            //SaveStreet.ThrownExceptions.Subscribe(ex => UserError.Throw("Cannot connect to database", ex));
 
             #endregion
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
+            var canUpdateSuggestions = this.WhenAnyValue<EditStreetViewModel, bool, string>(vm => vm.CityName,
+                s => !string.IsNullOrWhiteSpace(s));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ =>
             {
                 var suggestions = await Task.Run(() => _cityService.GetCitiesContainingString(CityName));
                 return suggestions;
@@ -96,7 +103,7 @@ namespace PublicTransport.Client.ViewModels
             #region Querying database for suggestions
 
             this.WhenAnyValue(vm => vm.CityName)
-                .Where(e => e != Street?.City?.Name && !string.IsNullOrEmpty(_cityName))
+                .Where(e => e != SelectedCity?.Name)
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
@@ -128,7 +135,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     Command responsible for saving the <see cref="Street" /> object to the database.
         /// </summary>
-        public ReactiveCommand<Street> AddStreet { get; protected set; }
+        public ReactiveCommand<Street> SaveStreet { get; protected set; }
 
         /// <summary>
         ///     Command closing the current detail view model.
@@ -142,6 +149,15 @@ namespace PublicTransport.Client.ViewModels
         {
             get { return _street; }
             set { this.RaiseAndSetIfChanged(ref _street, value); }
+        }
+
+        /// <summary>
+        ///     <see cref="City" /> selected by the user in the drop-down menu.
+        /// </summary>
+        public City SelectedCity
+        {
+            get { return _selectedCity; }
+            set { this.RaiseAndSetIfChanged(ref _selectedCity, value); }
         }
 
         /// <summary>

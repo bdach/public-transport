@@ -46,9 +46,12 @@ namespace PublicTransport.Client.ViewModels
 
             #endregion
 
+            var canExecuteOnSelectedItem = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
+
             #region City filtering command
 
-            FilterCities = ReactiveCommand.CreateAsyncTask(async _ =>
+            var canFilterCities = this.WhenAnyValue(vm => vm.NameFilter).Select(s => !string.IsNullOrWhiteSpace(s));
+            FilterCities = ReactiveCommand.CreateAsyncTask(canFilterCities, async _ =>
             {
                 return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter));
             });
@@ -63,7 +66,6 @@ namespace PublicTransport.Client.ViewModels
             #region Updating the list of filtered cities upon filter string change
 
             this.WhenAnyValue(vm => vm.NameFilter)
-                .Where(s => !string.IsNullOrEmpty(s))
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterCities);
 
@@ -72,7 +74,7 @@ namespace PublicTransport.Client.ViewModels
             #region Delete city command
 
             // TODO: Maybe prompt for confirmation?
-            DeleteCity = ReactiveCommand.CreateAsyncTask(async _ =>
+            DeleteCity = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
                 await Task.Run(() => _cityService.Delete(SelectedCity));
                 return Unit.Default;
@@ -86,7 +88,7 @@ namespace PublicTransport.Client.ViewModels
             #region Add/edit commands
 
             AddCity = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
-            EditCity = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
+            EditCity = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
 
             #endregion
 

@@ -39,37 +39,7 @@
                       Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      x:Name="StreetsListView">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="entities:Street">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <!--<TextBlock Text="{Binding Name}"
-                                       Margin="10"
-                                       FontSize="14" />-->
-                            <TextBlock Margin="10" FontSize="14">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}, {1}">
-                                        <Binding Path="Name" />
-                                        <Binding Path="City.Name" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                            <!--<Button Grid.Column="1" x:Name="Edit">Edit</Button>-->
-                            <!--<Button Grid.Column="2" x:Name="Delete">Delete</Button>-->
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                      x:Name="StreetsListView" />
         </Grid>
     </DockPanel>
 </UserControl>

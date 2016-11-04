@@ -36,6 +36,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new EditAgencyView(), typeof(IViewFor<EditAgencyViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
+            Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
         }
 
         /// <summary>
