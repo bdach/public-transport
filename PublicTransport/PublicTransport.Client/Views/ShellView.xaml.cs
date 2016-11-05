@@ -17,6 +17,7 @@ namespace PublicTransport.Client.Views
             InitializeComponent();
             ViewModel = viewModel;
             this.OneWayBind(ViewModel, vm => vm.MenuViewModel, v => v.Menu.ViewModel);
+            this.OneWayBind(ViewModel, vm => vm.NotificationViewModel, v => v.NotificationPanel.ViewModel);
             this.Bind(ViewModel, vm => vm.HostScreen.Router, v => v.ContentView.Router);
         }
 

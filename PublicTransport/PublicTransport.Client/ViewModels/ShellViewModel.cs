@@ -29,6 +29,7 @@ namespace PublicTransport.Client.ViewModels
             HostScreen = screen;
             _viewModelFactory = factory;
             _placeholder = new PlaceholderViewModel(screen);
+            NotificationViewModel = new NotificationViewModel();
             MenuViewModel = new MenuViewModel();
 
             #endregion
@@ -69,6 +70,11 @@ namespace PublicTransport.Client.ViewModels
         ///     Menu view model.
         /// </summary>
         public MenuViewModel MenuViewModel { get; set; }
+
+        /// <summary>
+        ///     View model responsible for displaying notifications.
+        /// </summary>
+        public NotificationViewModel NotificationViewModel { get; set; }
 
         /// <summary>
         ///     String uniquely identifying the current view model.

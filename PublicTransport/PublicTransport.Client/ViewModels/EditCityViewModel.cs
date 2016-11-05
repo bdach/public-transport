@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
@@ -42,15 +41,15 @@ namespace PublicTransport.Client.ViewModels
             #endregion
 
             #region SaveCity command
-            
+
             // Action: Use the service to save to the database.
-            SaveCity = ReactiveCommand.CreateAsyncTask(async _ =>
-            {
-                return await Task.Run(() => serviceMethod(City));
-            });
+            SaveCity = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(City)); });
             // On exceptions: Display error.
-            // TODO: This should be handled somehow.
-            SaveCity.ThrownExceptions.Subscribe(ex => UserError.Throw("Cannot connect to database", ex));
+            SaveCity.ThrownExceptions.Subscribe(
+                ex =>
+                    UserError.Throw(
+                        "The currently edited city cannot be saved to the database. Please contact the administrator.",
+                        ex));
 
             #endregion
 

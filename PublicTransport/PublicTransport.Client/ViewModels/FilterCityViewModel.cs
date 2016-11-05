@@ -51,15 +51,17 @@ namespace PublicTransport.Client.ViewModels
             #region City filtering command
 
             var canFilterCities = this.WhenAnyValue(vm => vm.NameFilter).Select(s => !string.IsNullOrWhiteSpace(s));
-            FilterCities = ReactiveCommand.CreateAsyncTask(canFilterCities, async _ =>
-            {
-                return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter));
-            });
+            FilterCities = ReactiveCommand.CreateAsyncTask(canFilterCities,
+                async _ => { return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter)); });
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
                 Cities.AddRange(result);
             });
+            FilterCities.ThrownExceptions.Subscribe(
+                e =>
+                    UserError.Throw(
+                        "Cannot fetch city data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -81,14 +83,18 @@ namespace PublicTransport.Client.ViewModels
             });
             DeleteCity.Subscribe(_ => SelectedCity = null);
             DeleteCity.InvokeCommand(FilterCities);
-            DeleteCity.ThrownExceptions.Subscribe(e => UserError.Throw("Please select a value"));
+            DeleteCity.ThrownExceptions.Subscribe(
+                e => UserError.Throw("Cannot delete the selected city. Please contact the system administrator.", e));
 
             #endregion
 
             #region Add/edit commands
 
-            AddCity = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
-            EditCity = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
+            AddCity =
+                ReactiveCommand.CreateAsyncObservable(
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
+            EditCity = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
+                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
 
             #endregion
 
