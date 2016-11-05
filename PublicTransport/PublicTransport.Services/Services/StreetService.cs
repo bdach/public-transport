@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -38,7 +39,7 @@ namespace PublicTransport.Services
         /// </returns>
         public Street Read(int id)
         {
-            return _db.Streets.FirstOrDefault(u => u.Id == id);
+            return _db.Streets.Include(u => u.City).FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -57,8 +58,6 @@ namespace PublicTransport.Services
             {
                 throw new EntryNotFoundException();
             }
-
-            _db.Cities.Attach(street.City);
             _db.Entry(old).CurrentValues.SetValues(street);
             _db.SaveChanges();
             return street;
@@ -85,15 +84,17 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Return a list of <see cref="Street"/>s whose names contain provided string.
+        /// Filters out <see cref="Street"/> objects, using values from the supplied <see cref="IStreetFilter"/> object to perform the query.
         /// </summary>
-        /// <param name="str">String which has to be present in the name.</param>
-        /// <returns>
-        ///     Return a list of <see cref="Street"/>s whose names contain provided string.
-        /// </returns>
-        public List<Street> GetStreetsContainingString(string str)
+        /// <param name="streetFilter">Object containing the query parameters.</param>
+        /// <returns>List of items satisfying the supplied query.</returns>
+        public List<Street> FilterStreets(IStreetFilter streetFilter)
         {
-            return _db.Streets.Where(x => x.Name.Contains(str)).Include(x => x.City).Take(10).ToList();
+            return _db.Streets.Include(x => x.City)
+                .Where(x => x.Name.Contains(streetFilter.StreetNameFilter))
+                .Where(x => x.City.Name.Contains(streetFilter.CityNameFilter))
+                .Take(20)
+                .ToList();
         }
 
         /// <summary>

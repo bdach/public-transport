@@ -18,6 +18,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -34,9 +35,15 @@
                        Grid.Column="0">Street name contains</TextBlock>
             <TextBox Grid.Row="1"
                      Grid.Column="1" 
-                     x:Name="NameFilterTextBox" />
+                     x:Name="StreetNameFilterTextBox" />
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="2"
+                       Grid.Column="0">City name contains</TextBlock>
+            <TextBox Grid.Row="2"
+                     Grid.Column="1" 
+                     x:Name="CityNameFilterTextBox" />
             <ListView Margin="10"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
                       x:Name="StreetsListView" />

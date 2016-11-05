@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataTransfer\StreetFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />

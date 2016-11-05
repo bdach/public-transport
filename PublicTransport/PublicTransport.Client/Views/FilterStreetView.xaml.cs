@@ -23,7 +23,8 @@ namespace PublicTransport.Client.Views
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Streets, v => v.StreetsListView.ItemsSource);
-            this.Bind(ViewModel, vm => vm.NameFilter, v => v.NameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StreetFilter.StreetNameFilter, v => v.StreetNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StreetFilter.CityNameFilter, v => v.CityNameFilterTextBox.Text);
             this.Bind(ViewModel, vm => vm.SelectedStreet, v => v.StreetsListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.AddStreet, v => v.AddStreetButton);
             this.BindCommand(ViewModel, vm => vm.EditStreet, v => v.EditStreetButton);
