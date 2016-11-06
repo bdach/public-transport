@@ -9,6 +9,10 @@
         Title="Public Transport" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
+        <rui:ViewModelViewHost x:Name="NotificationPanel"
+                               DockPanel.Dock="Top"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch" />
         <rui:ViewModelViewHost x:Name="Menu"
                                Width="250"
                                DockPanel.Dock="Left"

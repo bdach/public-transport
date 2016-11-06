@@ -59,6 +59,8 @@ namespace PublicTransport.Client.ViewModels
                 Streets.Clear();
                 Streets.AddRange(result);
             });
+            FilterStreets.ThrownExceptions.Subscribe(
+                e => UserError.Throw("Cannot fetch street data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -81,7 +83,7 @@ namespace PublicTransport.Client.ViewModels
             });
             DeleteStreet.Subscribe(_ => SelectedStreet = null);
             DeleteStreet.InvokeCommand(FilterStreets);
-            DeleteStreet.ThrownExceptions.Subscribe(e => UserError.Throw("Please select a value"));
+            DeleteStreet.ThrownExceptions.Subscribe(e => UserError.Throw("Cannot delete the selected city. Please contact the system administrator.", e));
 
             #endregion
 

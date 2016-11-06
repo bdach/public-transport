@@ -81,8 +81,11 @@ namespace PublicTransport.Client.ViewModels
                 return result;
             });
             // On exceptions: Display error.
-            // TODO: This should be handled somehow.
-            //SaveStreet.ThrownExceptions.Subscribe(ex => UserError.Throw("Cannot connect to database", ex));
+            SaveStreet.ThrownExceptions.Subscribe(
+                ex =>
+                    UserError.Throw(
+                        "The currently edited street cannot be saved to the database. Please contact the system administrator.",
+                        ex));
 
             #endregion
 
@@ -101,7 +104,7 @@ namespace PublicTransport.Client.ViewModels
                 Suggestions.AddRange(results);
             });
             UpdateSuggestions.ThrownExceptions
-                .Subscribe(ex => UserError.Throw("Cannot connect to database"));
+                .Subscribe(ex => UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 
