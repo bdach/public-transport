@@ -6,11 +6,12 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services;
 using ReactiveUI;
 
-namespace PublicTransport.Client.ViewModels
+namespace PublicTransport.Client.ViewModels.Filter
 {
     /// <summary>
     ///     View model responsible for filtering cities.

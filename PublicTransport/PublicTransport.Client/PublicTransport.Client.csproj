@@ -98,36 +98,36 @@
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Providers\DetailViewModelFactory.cs" />
-    <Compile Include="ViewModels\EditAgencyViewModel.cs" />
-    <Compile Include="ViewModels\EditCityViewModel.cs" />
-    <Compile Include="ViewModels\FilterAgencyViewModel.cs" />
-    <Compile Include="ViewModels\FilterCityViewModel.cs" />
-    <Compile Include="ViewModels\FilterStreetViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterStreetViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\EditStreetViewModel.cs" />
-    <Compile Include="Views\AgencyView.xaml.cs">
+    <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
+    <Compile Include="Views\Entities\AgencyView.xaml.cs">
       <DependentUpon>AgencyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CityView.xaml.cs">
+    <Compile Include="Views\Entities\CityView.xaml.cs">
       <DependentUpon>CityView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditAgencyView.xaml.cs">
+    <Compile Include="Views\Edit\EditAgencyView.xaml.cs">
       <DependentUpon>EditAgencyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditCityView.xaml.cs">
+    <Compile Include="Views\Edit\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FilterAgencyView.xaml.cs">
+    <Compile Include="Views\Filter\FilterAgencyView.xaml.cs">
       <DependentUpon>FilterAgencyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FilterCityView.xaml.cs">
+    <Compile Include="Views\Filter\FilterCityView.xaml.cs">
       <DependentUpon>FilterCityView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FilterStreetView.xaml.cs">
+    <Compile Include="Views\Filter\FilterStreetView.xaml.cs">
       <DependentUpon>FilterStreetView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MenuView.xaml.cs">
@@ -146,37 +146,37 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\EditStreetView.xaml.cs">
+    <Compile Include="Views\Edit\EditStreetView.xaml.cs">
       <DependentUpon>EditStreetView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StreetView.xaml.cs">
+    <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\AgencyView.xaml">
+    <Page Include="Views\Entities\AgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CityView.xaml">
+    <Page Include="Views\Entities\CityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditAgencyView.xaml">
+    <Page Include="Views\Edit\EditAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditCityView.xaml">
+    <Page Include="Views\Edit\EditCityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FilterAgencyView.xaml">
+    <Page Include="Views\Filter\FilterAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FilterCityView.xaml">
+    <Page Include="Views\Filter\FilterCityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FilterStreetView.xaml">
+    <Page Include="Views\Filter\FilterStreetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,11 +196,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditStreetView.xaml">
+    <Page Include="Views\Edit\EditStreetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StreetView.xaml">
+    <Page Include="Views\Entities\StreetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,6 +243,7 @@
       <Name>PublicTransport.Services</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

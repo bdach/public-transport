@@ -3,7 +3,7 @@ using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 
-namespace PublicTransport.Client.ViewModels
+namespace PublicTransport.Client.ViewModels.Edit
 {
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {

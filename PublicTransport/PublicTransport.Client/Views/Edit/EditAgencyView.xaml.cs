@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using PublicTransport.Client.ViewModels;
+using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 
-namespace PublicTransport.Client.Views
+namespace PublicTransport.Client.Views.Edit
 {
     /// <summary>
     /// Interaction logic for EditAgencyView.xaml

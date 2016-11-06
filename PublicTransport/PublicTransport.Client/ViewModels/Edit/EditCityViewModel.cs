@@ -7,7 +7,7 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Services;
 using ReactiveUI;
 
-namespace PublicTransport.Client.ViewModels
+namespace PublicTransport.Client.ViewModels.Edit
 {
     /// <summary>
     ///     View model for adding <see cref="Domain.Entities.City" /> objects to the database.

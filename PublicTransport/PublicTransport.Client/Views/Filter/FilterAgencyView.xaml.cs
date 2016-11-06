@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using PublicTransport.Client.ViewModels;
+using PublicTransport.Client.ViewModels.Filter;
 using ReactiveUI;
 
-namespace PublicTransport.Client.Views
+namespace PublicTransport.Client.Views.Filter
 {
     /// <summary>
     /// Interaction logic for FilterAgencyView.xaml

@@ -9,7 +9,7 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Services;
 using ReactiveUI;
 
-namespace PublicTransport.Client.ViewModels
+namespace PublicTransport.Client.ViewModels.Edit
 {
     /// <summary>
     ///     View model for saving <see cref="Domain.Entities.Street" /> objects to the database.

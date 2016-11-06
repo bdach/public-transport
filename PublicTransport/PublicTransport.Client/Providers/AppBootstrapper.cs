@@ -1,5 +1,9 @@
 ﻿using PublicTransport.Client.ViewModels;
+using PublicTransport.Client.ViewModels.Edit;
+using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Client.Views;
+using PublicTransport.Client.Views.Edit;
+using PublicTransport.Client.Views.Filter;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 using Splat;
