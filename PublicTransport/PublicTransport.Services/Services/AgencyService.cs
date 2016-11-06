@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -14,6 +16,19 @@ namespace PublicTransport.Services
     {
         private readonly PublicTransportContext _db = new PublicTransportContext();
         private bool _disposed;
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _db.Dispose();
+            _disposed = true;
+        }
 
         /// <summary>
         ///     Inserts an <see cref="Agency" /> record into the database.
@@ -83,13 +98,21 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Selects all the <see cref="Agency" /> objects that match all the criteria specified by the
+        ///     <see cref="IAgencyFilter" /> object. The returned agencies' name, street name and city name strings all contain the
+        ///     parameters supplied in the <see cref="filter" /> parameter.
         /// </summary>
-        public void Dispose()
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>List of items satisfying the supplied query.</returns>
+        public List<Agency> FilterAgencies(IAgencyFilter filter)
         {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
+            return _db.Agencies.Include(a => a.Street)
+                .Include(a => a.Street.City)
+                .Where(a => a.Name.Contains(filter.AgencyNameFilter))
+                .Where(a => a.Street.Name.Contains(filter.StreetNameFilter))
+                .Where(a => a.Street.City.Name.Contains(filter.CityNameFilter))
+                .Take(20)
+                .ToList();
         }
     }
 }

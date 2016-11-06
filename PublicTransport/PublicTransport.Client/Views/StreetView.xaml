@@ -7,8 +7,10 @@
              mc:Ignorable="d" >
     <StackPanel>
         <TextBlock x:Name="StreetNameTextBlock"
-                   Style="{StaticResource PrimaryText}" />
+                   Style="{StaticResource PrimaryText}"
+                   Text="{Binding Name}" />
         <TextBlock x:Name="CityNameTextBlock"
-                   Style="{StaticResource DetailText}" />
+                   Style="{StaticResource DetailText}"
+                   Text="{Binding City.Name}" />
     </StackPanel>
 </UserControl>

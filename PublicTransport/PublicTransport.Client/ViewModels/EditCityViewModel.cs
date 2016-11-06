@@ -83,7 +83,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     String uniquely identifying the current view model.
         /// </summary>
-        public string UrlPathSegment => AssociatedMenuOption.ToString();
+        public string UrlPathSegment => "EditCity";
 
         /// <summary>
         ///     Host screen to display on.

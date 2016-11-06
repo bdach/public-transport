@@ -26,7 +26,7 @@ namespace PublicTransport.Client.Providers
                 case MenuOption.Street:
                     return new FilterStreetViewModel(screen);
                 case MenuOption.Agency:
-                    return new EditAgencyViewModel(screen);
+                    return new FilterAgencyViewModel(screen);
                 default:
                     throw new InvalidOperationException("Could not locate view model for this option");
             }

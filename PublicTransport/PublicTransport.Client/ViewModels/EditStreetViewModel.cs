@@ -180,7 +180,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     String uniquely identifying the current view model.
         /// </summary>
-        public string UrlPathSegment => AssociatedMenuOption.ToString();
+        public string UrlPathSegment => "EditStreet";
 
         /// <summary>
         ///     Host screen to display on.

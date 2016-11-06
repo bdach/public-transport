@@ -1,21 +1,23 @@
-﻿<UserControl x:Class="PublicTransport.Client.Views.FilterStreetView"
+﻿<UserControl x:Class="PublicTransport.Client.Views.FilterAgencyView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:entities="clr-namespace:PublicTransport.Domain.Entities;assembly=PublicTransport.Domain"
-             mc:Ignorable="d" >
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PublicTransport.Client.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <StackPanel Style="{StaticResource Header}">
-            <TextBlock>Find Streets...</TextBlock>
+            <TextBlock>Find Agencies...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="AddStreetButton">Add New</Button>
-            <Button x:Name="DeleteStreetButton">Delete Selected</Button>
-            <Button x:Name="EditStreetButton">Edit Selected</Button>
+            <Button x:Name="AddAgencyButton">Add New</Button>
+            <Button x:Name="DeleteAgencyButton">Delete Selected</Button>
+            <Button x:Name="EditAgencyButton">Edit Selected</Button>
         </StackPanel>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -25,21 +27,30 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Style="{StaticResource TextBoxLabel}"
-                       Grid.Column="0">Street name contains</TextBlock>
+                       Grid.Row="0"
+                       Grid.Column="0">Agency name contains</TextBlock>
             <TextBox Grid.Row="0"
                      Grid.Column="1" 
-                     x:Name="StreetNameFilterTextBox" />
+                     x:Name="AgencyNameFilterTextBox" />
             <TextBlock Style="{StaticResource TextBoxLabel}"
                        Grid.Row="1"
                        Grid.Column="0">City name contains</TextBlock>
             <TextBox Grid.Row="1"
                      Grid.Column="1" 
                      x:Name="CityNameFilterTextBox" />
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="2"
+                       Grid.Column="0">Street name contains</TextBlock>
+            <TextBox Grid.Row="2"
+                     Grid.Column="1" 
+                     x:Name="StreetNameFilterTextBox" />
             <ListView Margin="10"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      x:Name="StreetsListView" />
+                      x:Name="AgenciesListView"
+                      FontSize="16">
+            </ListView>
         </Grid>
-    </DockPanel>
+        </DockPanel>
 </UserControl>

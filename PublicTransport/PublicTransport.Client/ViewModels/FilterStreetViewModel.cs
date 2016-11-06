@@ -52,7 +52,7 @@ namespace PublicTransport.Client.ViewModels
 
             #region Street filtering command
 
-            FilterStreets = ReactiveCommand.CreateAsyncTask(this.WhenAnyValue(vm => vm.StreetFilter.IsValid),
+            FilterStreets = ReactiveCommand.CreateAsyncTask(
                 async _ => { return await Task.Run(() => _streetService.FilterStreets(StreetFilter)); });
             FilterStreets.Subscribe(result =>
             {
@@ -66,7 +66,7 @@ namespace PublicTransport.Client.ViewModels
 
             #region Updating the list of filtered streets upon filter string change
 
-            this.WhenAnyValue(vm => vm.StreetFilter.CityNameFilter, vm => vm.StreetFilter.StreetNameFilter)
+            this.WhenAnyValue(vm => vm.StreetFilter.StreetNameFilter, vm => vm.StreetFilter.CityNameFilter)
                 .Where(_ => StreetFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterStreets);
@@ -109,7 +109,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     Reactive list containing the filtered <see cref="Street" /> objects.
         /// </summary>
-        public ReactiveList<Street> Streets { get; set; }
+        public ReactiveList<Street> Streets { get; protected set; }
 
         /// <summary>
         ///     Command responsible for filtering out streets in accordance with the <see cref="StreetNameFilter" />.

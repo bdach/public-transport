@@ -50,9 +50,9 @@ namespace PublicTransport.Client.ViewModels
 
             #region City filtering command
 
-            var canFilterCities = this.WhenAnyValue(vm => vm.NameFilter).Select(s => !string.IsNullOrWhiteSpace(s));
-            FilterCities = ReactiveCommand.CreateAsyncTask(canFilterCities,
-                async _ => { return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter)); });
+            FilterCities =
+                ReactiveCommand.CreateAsyncTask(
+                    async _ => { return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter)); });
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
@@ -110,7 +110,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     Reactive list containing the filtered <see cref="City" /> objects.
         /// </summary>
-        public ReactiveList<City> Cities { get; set; }
+        public ReactiveList<City> Cities { get; protected set; }
 
         /// <summary>
         ///     Command responsible for filtering out cities in accordance with the <see cref="NameFilter" />.

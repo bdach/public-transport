@@ -1,4 +1,5 @@
-﻿using PublicTransport.Services.DataTransfer;
+﻿using System.Reactive.Linq;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.DataTransfer
@@ -6,13 +7,8 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.Street" /> objects.
     /// </summary>
-    public class StreetFilter : ReactiveObject, IStreetFilter
+    public class StreetFilter : ReactiveObject, IStreetFilter, IReactiveFilter
     {
-        /// <summary>
-        ///     Determines whether the query is valid.
-        /// </summary>
-        private readonly ObservableAsPropertyHelper<bool> _isValid;
-
         /// <summary>
         ///     City name filter.
         /// </summary>
@@ -24,19 +20,10 @@ namespace PublicTransport.Client.DataTransfer
         private string _streetNameFilter = "";
 
         /// <summary>
-        ///     Constructor.
-        /// </summary>
-        public StreetFilter()
-        {
-            _isValid = this.WhenAnyValue(x => x.StreetNameFilter, x => x.CityNameFilter,
-                    (s, c) => !string.IsNullOrWhiteSpace(s) || !string.IsNullOrWhiteSpace(c))
-                .ToProperty(this, x => x.IsValid);
-        }
-
-        /// <summary>
         ///     Determines whether the query is valid.
         /// </summary>
-        public bool IsValid => _isValid.Value;
+        public bool IsValid
+            => !string.IsNullOrWhiteSpace(CityNameFilter) || !string.IsNullOrWhiteSpace(StreetNameFilter);
 
         /// <summary>
         ///     Street name filter.

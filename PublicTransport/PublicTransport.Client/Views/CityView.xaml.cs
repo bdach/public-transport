@@ -16,7 +16,6 @@ namespace PublicTransport.Client.Views
         public CityView()
         {
             InitializeComponent();
-            this.Bind(ViewModel, c => c.Name, v => v.Name.Text);
         }
 
         public City ViewModel

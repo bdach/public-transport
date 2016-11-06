@@ -91,6 +91,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataTransfer\AgencyFilter.cs" />
+    <Compile Include="DataTransfer\IReactiveFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Providers\DetailViewModelFactory.cs" />
     <Compile Include="ViewModels\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\EditCityViewModel.cs" />
+    <Compile Include="ViewModels\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\FilterCityViewModel.cs" />
     <Compile Include="ViewModels\FilterStreetViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
@@ -106,6 +109,9 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\EditStreetViewModel.cs" />
+    <Compile Include="Views\AgencyView.xaml.cs">
+      <DependentUpon>AgencyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CityView.xaml.cs">
       <DependentUpon>CityView.xaml</DependentUpon>
     </Compile>
@@ -114,6 +120,9 @@
     </Compile>
     <Compile Include="Views\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FilterAgencyView.xaml.cs">
+      <DependentUpon>FilterAgencyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FilterCityView.xaml.cs">
       <DependentUpon>FilterCityView.xaml</DependentUpon>
@@ -143,6 +152,10 @@
     <Compile Include="Views\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AgencyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditCityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FilterAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

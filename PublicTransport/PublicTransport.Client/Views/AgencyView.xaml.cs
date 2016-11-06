@@ -6,20 +6,20 @@ using ReactiveUI;
 namespace PublicTransport.Client.Views
 {
     /// <summary>
-    /// Interaction logic for StreetView.xaml
+    /// Interaction logic for AgencyView.xaml
     /// </summary>
-    public partial class StreetView : UserControl, IViewFor<Street>
+    public partial class AgencyView : UserControl, IViewFor<Agency>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(Street), typeof(StreetView), new PropertyMetadata(default(Street)));
+            "ViewModel", typeof(Agency), typeof(AgencyView), new PropertyMetadata(default(Agency)));
 
-        public Street ViewModel
+        public Agency ViewModel
         {
-            get { return (Street) GetValue(ViewModelProperty); }
+            get { return (Agency) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
-        public StreetView()
+        public AgencyView()
         {
             InitializeComponent();
         }
@@ -27,7 +27,7 @@ namespace PublicTransport.Client.Views
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (Street) value; }
+            set { ViewModel = (Agency) value; }
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Domain.Entities;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels
 {
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {
-        public EditAgencyViewModel(IScreen screen)
+        public EditAgencyViewModel(IScreen screen, Agency agency = null)
         {
             HostScreen = screen;
         }

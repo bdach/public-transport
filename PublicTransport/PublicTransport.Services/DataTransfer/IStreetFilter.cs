@@ -1,5 +1,9 @@
 ﻿namespace PublicTransport.Services.DataTransfer
 {
+    /// <summary>
+    ///     Data transfer object interface.
+    ///     Used by the <see cref="StreetService" /> to perform filtering.
+    /// </summary>
     public interface IStreetFilter
     {
         /// <summary>

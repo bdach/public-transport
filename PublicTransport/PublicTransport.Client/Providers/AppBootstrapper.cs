@@ -28,16 +28,19 @@ namespace PublicTransport.Client.Providers
                 () => new ShellView(Locator.Current.GetService<ShellViewModel>()), typeof(IViewFor<ShellViewModel>));
             // View model views.
             Locator.CurrentMutable.Register(() => new MenuView(), typeof(IViewFor<MenuViewModel>));
+            Locator.CurrentMutable.Register(() => new NotificationView(), typeof(IViewFor<NotificationViewModel>));
+            Locator.CurrentMutable.Register(() => new PlaceholderView(), typeof(IViewFor<PlaceholderViewModel>));
+
             Locator.CurrentMutable.Register(() => new FilterCityView(), typeof(IViewFor<FilterCityViewModel>));
             Locator.CurrentMutable.Register(() => new EditCityView(), typeof(IViewFor<EditCityViewModel>));
             Locator.CurrentMutable.Register(() => new FilterStreetView(), typeof(IViewFor<FilterStreetViewModel>));
             Locator.CurrentMutable.Register(() => new EditStreetView(), typeof(IViewFor<EditStreetViewModel>));
-            Locator.CurrentMutable.Register(() => new PlaceholderView(), typeof(IViewFor<PlaceholderViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterAgencyView(), typeof(IViewFor<FilterAgencyViewModel>));
             Locator.CurrentMutable.Register(() => new EditAgencyView(), typeof(IViewFor<EditAgencyViewModel>));
-            Locator.CurrentMutable.Register(() => new NotificationView(), typeof(IViewFor<NotificationViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
+            Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
         }
 
         /// <summary>
