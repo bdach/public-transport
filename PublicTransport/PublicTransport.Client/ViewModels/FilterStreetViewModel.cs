@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
@@ -23,15 +24,15 @@ namespace PublicTransport.Client.ViewModels
         private readonly StreetService _streetService;
 
         /// <summary>
-        ///     String containing the street name filter.
-        /// </summary>
-        private string _nameFilter;
-
-        /// <summary>
         ///     <see cref="Street" /> object currently selected in the view.
         /// </summary>
         private Street _selectedStreet;
-        
+
+        /// <summary>
+        ///     <see cref="DataTransfer.StreetFilter" /> object containing the query parameters.
+        /// </summary>
+        private StreetFilter _streetFilter;
+
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -42,18 +43,17 @@ namespace PublicTransport.Client.ViewModels
 
             HostScreen = screen;
             _streetService = new StreetService();
+            _streetFilter = new StreetFilter();
             Streets = new ReactiveList<Street>();
 
             #endregion
 
             var canExecuteOnSelectedItem = this.WhenAnyValue(vm => vm.SelectedStreet).Select(c => c != null);
-            
+
             #region Street filtering command
 
-            FilterStreets = ReactiveCommand.CreateAsyncTask(async _ =>
-            {
-                return await Task.Run(() => _streetService.GetStreetsContainingString(NameFilter));
-            });
+            FilterStreets = ReactiveCommand.CreateAsyncTask(this.WhenAnyValue(vm => vm.StreetFilter.IsValid),
+                async _ => { return await Task.Run(() => _streetService.FilterStreets(StreetFilter)); });
             FilterStreets.Subscribe(result =>
             {
                 Streets.Clear();
@@ -64,8 +64,8 @@ namespace PublicTransport.Client.ViewModels
 
             #region Updating the list of filtered streets upon filter string change
 
-            this.WhenAnyValue(vm => vm.NameFilter)
-                .Where(s => !string.IsNullOrEmpty(s))
+            this.WhenAnyValue(vm => vm.StreetFilter.CityNameFilter, vm => vm.StreetFilter.StreetNameFilter)
+                .Where(_ => StreetFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterStreets);
 
@@ -87,8 +87,11 @@ namespace PublicTransport.Client.ViewModels
 
             #region Add/edit commands
 
-            AddStreet = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen)));
-            EditStreet = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
+            AddStreet =
+                ReactiveCommand.CreateAsyncObservable(
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen)));
+            EditStreet = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
+                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
 
             #endregion
 
@@ -107,10 +110,10 @@ namespace PublicTransport.Client.ViewModels
         public ReactiveList<Street> Streets { get; set; }
 
         /// <summary>
-        ///     Command responsible for filtering out streets in accordance with the <see cref="NameFilter" />.
+        ///     Command responsible for filtering out streets in accordance with the <see cref="StreetNameFilter" />.
         /// </summary>
         public ReactiveCommand<List<Street>> FilterStreets { get; protected set; }
-        
+
         /// <summary>
         ///     Command responsible for launching the street adding view.
         /// </summary>
@@ -127,12 +130,12 @@ namespace PublicTransport.Client.ViewModels
         public ReactiveCommand<Unit> DeleteStreet { get; protected set; }
 
         /// <summary>
-        ///     Property containing the name filter.
+        ///     <see cref="DataTransfer.StreetFilter" /> object containing the query parameters.
         /// </summary>
-        public string NameFilter
+        public StreetFilter StreetFilter
         {
-            get { return _nameFilter; }
-            set { this.RaiseAndSetIfChanged(ref _nameFilter, value); }
+            get { return _streetFilter; }
+            set { this.RaiseAndSetIfChanged(ref _streetFilter, value); }
         }
 
         /// <summary>

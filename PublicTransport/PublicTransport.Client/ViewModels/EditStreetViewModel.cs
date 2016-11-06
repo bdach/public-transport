@@ -56,6 +56,7 @@ namespace PublicTransport.Client.ViewModels
             _streetService = new StreetService();
             var serviceMethod = street == null ? new Func<Street, Street>(_streetService.Create) : _streetService.Update;
             _street = street ?? new Street();
+            _selectedCity = street?.City;
             _cityName = _street?.City?.Name;
 
             #endregion
@@ -72,8 +73,12 @@ namespace PublicTransport.Client.ViewModels
             var canSaveStreet = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
             SaveStreet = ReactiveCommand.CreateAsyncTask(canSaveStreet, async _ =>
             {
+                // TODO: This is needed because of different contexts in this and CityService. Maybe consider grouping services into super-services and injecting context by ctor?
+                Street.City = null;
+                Street.CityId = SelectedCity.Id;
+                var result = await Task.Run(() => serviceMethod(Street));
                 Street.City = SelectedCity;
-                return await Task.Run(() => serviceMethod(Street));
+                return result;
             });
             // On exceptions: Display error.
             // TODO: This should be handled somehow.
@@ -83,7 +88,7 @@ namespace PublicTransport.Client.ViewModels
 
             #region UpdateSuggestions command
 
-            var canUpdateSuggestions = this.WhenAnyValue<EditStreetViewModel, bool, string>(vm => vm.CityName,
+            var canUpdateSuggestions = this.WhenAnyValue(vm => vm.CityName,
                 s => !string.IsNullOrWhiteSpace(s));
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ =>
             {
