@@ -101,7 +101,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of streets upon navigating back to this view model
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && StreetFilter.IsValid)
                 .InvokeCommand(FilterStreets);
 
             #endregion

@@ -102,7 +102,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of agencies upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && AgencyFilter.IsValid)
                 .InvokeCommand(FilterAgencies);
 
             #endregion

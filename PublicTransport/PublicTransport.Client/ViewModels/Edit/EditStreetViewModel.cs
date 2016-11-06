@@ -61,17 +61,18 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
+            var citySelected = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
+
             #region DisplayCityView command
 
-            DisplayCityView = ReactiveCommand.Create();
-            DisplayCityView.Subscribe(_ => { HostScreen.Router.Navigate.Execute(new EditCityViewModel(screen)); });
+            DisplayCityView = ReactiveCommand.CreateAsyncObservable(citySelected,
+                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
 
             #endregion
 
             #region SaveStreet command
 
-            var canSaveStreet = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
-            SaveStreet = ReactiveCommand.CreateAsyncTask(canSaveStreet, async _ =>
+            SaveStreet = ReactiveCommand.CreateAsyncTask(citySelected, async _ =>
             {
                 // TODO: This is needed because of different contexts in this and CityService. Maybe consider grouping services into super-services and injecting context by ctor?
                 Street.City = null;
@@ -180,7 +181,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     String uniquely identifying the current view model.
         /// </summary>
-        public string UrlPathSegment => "EditStreet";
+        public string UrlPathSegment => AssociatedMenuOption.ToString();
 
         /// <summary>
         ///     Host screen to display on.

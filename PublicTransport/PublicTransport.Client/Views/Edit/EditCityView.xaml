@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <StackPanel Style="{StaticResource Header}">
-            <TextBlock>Add City...</TextBlock>
+            <TextBlock>Editing City...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
             <Button x:Name="SaveButton">Save</Button>
