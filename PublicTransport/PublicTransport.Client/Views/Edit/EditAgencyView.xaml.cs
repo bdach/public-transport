@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 

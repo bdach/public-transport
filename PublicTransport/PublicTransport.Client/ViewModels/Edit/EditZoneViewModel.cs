@@ -9,6 +9,9 @@ using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
 {
+    /// <summary>
+    ///     View model for adding <see cref="Domain.Entities.Zone" /> objects to the database.
+    /// </summary>
     public class EditZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>

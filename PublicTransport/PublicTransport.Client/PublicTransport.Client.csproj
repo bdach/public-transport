@@ -93,6 +93,7 @@
     </ApplicationDefinition>
     <Compile Include="DataTransfer\AgencyFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
+    <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
@@ -100,9 +101,11 @@
     <Compile Include="Providers\DetailViewModelFactory.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditStopViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditZoneViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterStopViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterStreetViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterZoneViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
@@ -111,6 +114,9 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
+    <Compile Include="Views\Edit\EditStopView.xaml.cs">
+      <DependentUpon>EditStopView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Edit\EditZoneView.xaml.cs">
       <DependentUpon>EditZoneView.xaml</DependentUpon>
     </Compile>
@@ -163,6 +169,10 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Edit\EditStopView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Edit\EditZoneView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

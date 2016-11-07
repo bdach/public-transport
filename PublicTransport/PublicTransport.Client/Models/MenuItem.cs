@@ -59,6 +59,11 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditZoneViewModel" /> view model.
         /// </summary>
-        Zone
+        Zone,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditStopViewModel" /> view model.
+        /// </summary>
+        Stop
     }
 }

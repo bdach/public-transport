@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -102,6 +103,24 @@ namespace PublicTransport.Services
             if (_disposed) return;
             _db.Dispose();
             _disposed = true;
+        }
+
+        /// <summary>
+        ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
+        ///     <see cref="IStopFilter" /> object. The returned name strings all contain the
+        ///     parameters supplied in the <see cref="filter" /> parameter.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>List of items satisfying the supplied query.</returns>
+        public List<Stop> FilterStops(IStopFilter filter)
+        {
+            return _db.Stops.Include(s => s.Street.City).Include(s => s.Zone).Include(s => s.ParentStation)
+                .Where(s => s.Name.Contains(filter.StopNameFilter))
+                .Where(s => s.Street.Name.Contains(filter.StreetNameFilter))
+                .Where(s => s.Street.City.Name.Contains(filter.CityNameFilter))
+                .Where(s => s.Zone.Name.Contains(filter.ZoneNameFilter))
+                .Where(s => s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
+                .Take(20).ToList();
         }
     }
 }

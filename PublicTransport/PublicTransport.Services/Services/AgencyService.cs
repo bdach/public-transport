@@ -106,13 +106,11 @@ namespace PublicTransport.Services
         /// <returns>List of items satisfying the supplied query.</returns>
         public List<Agency> FilterAgencies(IAgencyFilter filter)
         {
-            return _db.Agencies.Include(a => a.Street)
-                .Include(a => a.Street.City)
+            return _db.Agencies.Include(a => a.Street.City)
                 .Where(a => a.Name.Contains(filter.AgencyNameFilter))
                 .Where(a => a.Street.Name.Contains(filter.StreetNameFilter))
                 .Where(a => a.Street.City.Name.Contains(filter.CityNameFilter))
-                .Take(20)
-                .ToList();
+                .Take(20).ToList();
         }
     }
 }

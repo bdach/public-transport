@@ -13,6 +13,9 @@ using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
+    /// <summary>
+    ///     View model responsible for filtering zones.
+    /// </summary>
     public class FilterZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
@@ -66,6 +69,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of filtered zones upon filter string change
 
             this.WhenAnyValue(vm => vm.NameFilter)
+                .Where(s => !string.IsNullOrEmpty(s))
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterZones);
 
