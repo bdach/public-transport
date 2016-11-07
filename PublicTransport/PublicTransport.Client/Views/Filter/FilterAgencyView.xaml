@@ -49,8 +49,7 @@
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
                       x:Name="AgenciesListView"
-                      FontSize="16">
-            </ListView>
+                      FontSize="16" />
         </Grid>
         </DockPanel>
 </UserControl>

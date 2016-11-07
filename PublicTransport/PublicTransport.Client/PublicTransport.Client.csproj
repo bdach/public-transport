@@ -93,6 +93,7 @@
     </ApplicationDefinition>
     <Compile Include="DataTransfer\AgencyFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
+    <Compile Include="DataTransfer\RouteFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterRouteViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterStreetViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
@@ -121,11 +123,17 @@
     <Compile Include="Views\Edit\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Entities\RouteView.xaml.cs">
+      <DependentUpon>RouteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Filter\FilterAgencyView.xaml.cs">
       <DependentUpon>FilterAgencyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Filter\FilterCityView.xaml.cs">
       <DependentUpon>FilterCityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Filter\FilterRouteView.xaml.cs">
+      <DependentUpon>FilterRouteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Filter\FilterStreetView.xaml.cs">
       <DependentUpon>FilterStreetView.xaml</DependentUpon>
@@ -168,11 +176,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Entities\RouteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Filter\FilterAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filter\FilterCityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filter\FilterRouteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

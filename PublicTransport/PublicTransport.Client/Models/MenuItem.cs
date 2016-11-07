@@ -42,18 +42,23 @@
     public enum MenuOption
     {
         /// <summary>
-        ///     Represents the <see cref="ViewModels.Edit.EditCityViewModel" /> view model.
+        ///     Represents the <see cref="ViewModels.Filter.FilterCityViewModel" /> view model.
         /// </summary>
         City,
 
         /// <summary>
-        ///     Represents the <see cref="ViewModels.Edit.EditStreetViewModel" /> view model.
+        ///     Represents the <see cref="ViewModels.Filter.FilterStreetViewModel" /> view model.
         /// </summary>
         Street,
 
         /// <summary>
-        ///     Represents the <see cref="ViewModels.Edit.EditAgencyViewModel" /> view model.
+        ///     Represents the <see cref="ViewModels.Filter.FilterAgencyViewModel" /> view model.
         /// </summary>
-        Agency
+        Agency,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Filter.FilterRouteViewModel" /> view model.
+        /// </summary>
+        Route
     }
 }

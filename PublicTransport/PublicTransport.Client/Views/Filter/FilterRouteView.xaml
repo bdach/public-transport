@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.Filter.FilterRouteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:enums="clr-namespace:PublicTransport.Domain.Enums;assembly=PublicTransport.Domain"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <DockPanel>
+        <StackPanel Style="{StaticResource Header}">
+            <TextBlock>Find Routes...</TextBlock>
+        </StackPanel>
+        <StackPanel Style="{StaticResource Footer}">
+            <Button x:Name="AddRouteButton">Add New</Button>
+            <Button x:Name="DeleteRouteButton">Delete Selected</Button>
+            <Button x:Name="EditRouteButton">Edit Selected</Button>
+        </StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="0"
+                       Grid.Column="0">Agency name contains</TextBlock>
+            <TextBox Grid.Row="0"
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2"
+                     x:Name="AgencyNameFilterTextBox" />
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="1"
+                       Grid.Column="0">Short route name contains</TextBlock>
+            <TextBox Grid.Row="1"
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2"
+                     x:Name="ShortRouteNameFilterTextBox" />
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="2"
+                       Grid.Column="0">Long route name contains</TextBlock>
+            <TextBox Grid.Row="2"
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2"
+                     x:Name="LongRouteNameFilterTextBox" />
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="3"
+                       Grid.Column="0">Transportation type is</TextBlock>
+            <ComboBox Style="{StaticResource EnumComboBox}"
+                      Grid.Row="3"
+                      Grid.Column="1"
+                      x:Name="RouteTypesComboBox">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="enums:RouteType">
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Grid.Row="3"
+                    Grid.Column="2"
+                    x:Name="ClearRouteTypeButton"
+                    Padding="0">Clear</Button>
+            <ListView Margin="10"
+                      Grid.Row="4"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      x:Name="RoutesListView"
+                      FontSize="16" />
+        </Grid>
+    </DockPanel>
+</UserControl>

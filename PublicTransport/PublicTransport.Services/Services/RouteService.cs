@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -93,6 +94,17 @@ namespace PublicTransport.Services
         public List<Route> GetRoutesByAgencyId(int agencyId)
         {
                 return _db.Routes.Where(x => x.AgencyId == agencyId).ToList();
+        }
+
+        public List<Route> FilterRoutes(IRouteFilter filter)
+        {
+            return _db.Routes.Include(r => r.Agency)
+                .Where(r => r.ShortName.Contains(filter.ShortNameFilter))
+                .Where(r => r.LongName.Contains(filter.LongNameFilter))
+                .Where(r => r.Agency.Name.Contains(filter.AgencyNameFilter))
+                .Where(r => !filter.RouteTypeFilter.HasValue || r.RouteType == filter.RouteTypeFilter.Value)
+                .Take(20)
+                .ToList();
         }
 
         /// <summary>

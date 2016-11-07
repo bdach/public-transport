@@ -37,7 +37,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="screen"></param>
+        /// <param name="screen">Screen to display the view model on.</param>
         public FilterAgencyViewModel(IScreen screen)
         {
             #region Field/property initialization
@@ -89,7 +89,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             DeleteAgency.Subscribe(_ => SelectedAgency = null);
             DeleteAgency.InvokeCommand(FilterAgencies);
             DeleteAgency.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected city. Please contact the system administrator.", e));
+                e => UserError.Throw("Cannot delete the selected agency. Please contact the system administrator.", e));
 
             #endregion
 
@@ -127,7 +127,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The list of <see cref="Agency" /> objects currently displayed by the user.
+        ///     The list of <see cref="Agency" /> objects currently displayed to the user.
         /// </summary>
         public ReactiveList<Agency> Agencies { get; protected set; }
 

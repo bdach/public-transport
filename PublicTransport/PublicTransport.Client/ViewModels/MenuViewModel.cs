@@ -1,4 +1,7 @@
-﻿using PublicTransport.Client.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PublicTransport.Client.Models;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels
@@ -32,13 +35,16 @@ namespace PublicTransport.Client.ViewModels
         public MenuViewModel()
         {
             // TODO: Preferably change this to something more resilient and flexible.
-            var cityItem = new MenuItem("Cities", MenuOption.City);
-            var city = new MenuItemViewModel(cityItem);
-            var streetItem = new MenuItem("Streets", MenuOption.Street);
-            var street = new MenuItemViewModel(streetItem);
-            var agencyItem = new MenuItem("Agencies", MenuOption.Agency);
-            var agency = new MenuItemViewModel(agencyItem);
-            Menu = new ReactiveList<MenuItemViewModel> {city, street, agency};
+            var menuItems = new List<Tuple<string, MenuOption>>
+            {
+                new Tuple<string, MenuOption>("Cities", MenuOption.City),
+                new Tuple<string, MenuOption>("Streets", MenuOption.Street),
+                new Tuple<string, MenuOption>("Agencies", MenuOption.Agency),
+                new Tuple<string, MenuOption>("Routes", MenuOption.Route)
+            };
+            Menu =
+                new ReactiveList<MenuItemViewModel>(
+                    menuItems.Select(item => new MenuItemViewModel(new MenuItem(item.Item1, item.Item2))));
         }
     }
 }
