@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="StreetService" /> used for persisting the agency.
+        ///     <see cref="StreetService" /> used for searching for streets.
         /// </summary>
         private readonly StreetService _streetService;
 
@@ -41,7 +41,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="agency">City to be edited. If a city is to be added, this parameter should be left null.</param>
+        /// <param name="agency">Agency to be edited. If an agency is to be added, this parameter should be left null.</param>
         public EditAgencyViewModel(IScreen screen, Agency agency = null)
         {
             #region Field/property initialization
@@ -67,7 +67,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
-            #region SaveAgency command
+            #region SaveRoute command
 
             SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ =>
             {

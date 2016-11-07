@@ -28,6 +28,7 @@ namespace PublicTransport.Client.Views.Filter
             this.Bind(ViewModel, vm => vm.RouteFilter.ShortNameFilter, v => v.ShortRouteNameFilterTextBox.Text);
             this.Bind(ViewModel, vm => vm.RouteFilter.LongNameFilter, v => v.LongRouteNameFilterTextBox.Text);
             this.Bind(ViewModel, vm => vm.RouteFilter.RouteTypeFilter, v => v.RouteTypesComboBox.SelectedItem);
+            this.Bind(ViewModel, vm => vm.SelectedRoute, v => v.RoutesListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.AddRoute, v => v.AddRouteButton);
             this.BindCommand(ViewModel, vm => vm.EditRoute, v => v.EditRouteButton);
             this.BindCommand(ViewModel, vm => vm.DeleteRoute, v => v.DeleteRouteButton);

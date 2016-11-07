@@ -101,6 +101,7 @@
     <Compile Include="Providers\DetailViewModelFactory.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditRouteViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterRouteViewModel.cs" />
@@ -111,6 +112,9 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
+    <Compile Include="Views\Edit\EditRouteView.xaml.cs">
+      <DependentUpon>EditRouteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Entities\AgencyView.xaml.cs">
       <DependentUpon>AgencyView.xaml</DependentUpon>
     </Compile>
@@ -160,6 +164,10 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Edit\EditRouteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Entities\AgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

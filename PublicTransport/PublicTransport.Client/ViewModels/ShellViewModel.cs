@@ -43,6 +43,7 @@ namespace PublicTransport.Client.ViewModels
                 .Where(e => e != null)
                 .Subscribe(e =>
                 {
+                    // TODO: Fix this to use the menu enum instead
                     if (e.Item.Option.ToString() == HostScreen.Router.NavigationStack.Last().UrlPathSegment)
                     {
                         return;

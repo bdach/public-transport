@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
 using PublicTransport.Services;
@@ -93,7 +94,16 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
-            // TODO: add, edit
+            #region Adding/editing routes
+
+            AddRoute =
+                ReactiveCommand.CreateAsyncObservable(
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen)));
+            EditRoute =
+                ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, SelectedRoute)));
+
+            #endregion
 
             #region Clearing enum choice
 
