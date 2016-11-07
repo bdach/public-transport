@@ -3,6 +3,7 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Client.Views;
 using PublicTransport.Client.Views.Edit;
+using PublicTransport.Client.Views.Entities;
 using PublicTransport.Client.Views.Filter;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
@@ -54,6 +55,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
             Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<Zone>));
+            Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
         }
 
         /// <summary>

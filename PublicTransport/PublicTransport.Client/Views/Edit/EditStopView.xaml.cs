@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Edit;
@@ -36,6 +37,22 @@ namespace PublicTransport.Client.Views.Edit
             this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
             this.BindCommand(ViewModel, vm => vm.DisplayStreetView, v => v.ToStreetButton);
             this.BindCommand(ViewModel, vm => vm.SaveStop, v => v.SaveButton);
+
+            this.WhenAnyValue(v => v.IsStationCheckBox.IsChecked)
+                .Where(b => b.HasValue)
+                .Select(b => b.Value)
+                .Subscribe(b =>
+                {
+                    ParentStationComboBox.IsEnabled = !b;
+                    ParentStationComboBox.SelectedItem = null;
+                });
+
+            this.WhenAnyObservable(v => v.ViewModel.UpdateStreetSuggestions)
+                .Subscribe(_ => StreetComboBox.IsDropDownOpen = true);
+            this.WhenAnyObservable(v => v.ViewModel.UpdateZoneSuggestions)
+                .Subscribe(_ => ZoneComboBox.IsDropDownOpen = true);
+            this.WhenAnyObservable(v => v.ViewModel.UpdateParentStationSuggestions)
+                .Subscribe(_ => ParentStationComboBox.IsDropDownOpen = true);
         }
 
         public EditStopViewModel ViewModel
@@ -50,9 +67,6 @@ namespace PublicTransport.Client.Views.Edit
             set
             {
                 ViewModel = (EditStopViewModel)value;
-                ViewModel.StreetSuggestions.ItemsAdded.Subscribe(_ => StreetComboBox.IsDropDownOpen = true);
-                ViewModel.ZoneSuggestions.ItemsAdded.Subscribe(_ => ZoneComboBox.IsDropDownOpen = true);
-                ViewModel.ParentStationSuggestions.ItemsAdded.Subscribe(_ => ParentStationComboBox.IsDropDownOpen = true);
             }
         }
     }

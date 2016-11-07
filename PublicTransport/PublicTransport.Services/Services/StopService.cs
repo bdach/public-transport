@@ -118,8 +118,9 @@ namespace PublicTransport.Services
                 .Where(s => s.Name.Contains(filter.StopNameFilter))
                 .Where(s => s.Street.Name.Contains(filter.StreetNameFilter))
                 .Where(s => s.Street.City.Name.Contains(filter.CityNameFilter))
-                .Where(s => s.Zone.Name.Contains(filter.ZoneNameFilter))
-                .Where(s => s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
+                .Where(s => s.Zone == null || s.Zone.Name.Contains(filter.ZoneNameFilter))
+                .Where(s => s.ParentStation == null || s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
+                .Where(s => !filter.OnlyStations || s.IsStation)
                 .Take(20).ToList();
         }
     }
