@@ -32,7 +32,7 @@ namespace PublicTransport.Client.Providers
                 case MenuOption.Zone:
                     return new FilterZoneViewModel(screen);
                 case MenuOption.Stop:
-                    return new EditStopViewModel(screen);
+                    return new FilterStopViewModel(screen);
                 default:
                     throw new InvalidOperationException("Could not locate view model for this option");
             }

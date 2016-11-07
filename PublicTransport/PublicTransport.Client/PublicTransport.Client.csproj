@@ -141,6 +141,9 @@
     <Compile Include="Views\Filter\FilterCityView.xaml.cs">
       <DependentUpon>FilterCityView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Filter\FilterStopView.xaml.cs">
+      <DependentUpon>FilterStopView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Filter\FilterStreetView.xaml.cs">
       <DependentUpon>FilterStreetView.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filter\FilterCityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filter\FilterStopView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
