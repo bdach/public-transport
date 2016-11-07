@@ -169,9 +169,6 @@
     <Compile Include="Views\Entities\RouteView.xaml.cs">
       <DependentUpon>RouteView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Entities\StopView.xaml.cs">
-      <DependentUpon>StopView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Filter\FilterAgencyView.xaml.cs">
       <DependentUpon>FilterAgencyView.xaml</DependentUpon>
     </Compile>
@@ -272,10 +269,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Entities\RouteView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Entities\StopView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

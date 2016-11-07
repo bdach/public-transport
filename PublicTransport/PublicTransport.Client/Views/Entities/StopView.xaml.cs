@@ -15,7 +15,7 @@ namespace PublicTransport.Client.Views.Entities
 
         public Stop ViewModel
         {
-            get { return (Stop) GetValue(ViewModelProperty); }
+            get { return (Stop)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
@@ -27,7 +27,7 @@ namespace PublicTransport.Client.Views.Entities
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (Stop) value; }
+            set { ViewModel = (Stop)value; }
         }
     }
 }

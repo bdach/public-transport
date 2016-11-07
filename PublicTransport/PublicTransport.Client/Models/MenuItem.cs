@@ -57,11 +57,6 @@
         Agency,
 
         /// <summary>
-        ///     Represents the <see cref="ViewModels.Filter.FilterRouteViewModel" /> view model.
-        /// </summary>
-        Agency,
-
-        /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditZoneViewModel" /> view model.
         /// </summary>
         Zone,
