@@ -18,6 +18,11 @@
         /// <summary>
         ///     Passenger may transfer twice.
         /// </summary>
-        Two
+        Two,
+
+        /// <summary>
+        ///     Passenger may transfer without limitations.
+        /// </summary>
+        Unlimited
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -80,6 +81,18 @@ namespace PublicTransport.Services
 
             _db.Entry(old).State = EntityState.Deleted;
             _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Return a list of <see cref="Zone"/> whose names contain provided string.
+        /// </summary>
+        /// <param name="str">String which has to be present in the name.</param>
+        /// <returns>
+        ///     Return a list of <see cref="Zone"/>s whose names contain provided string.
+        /// </returns>
+        public List<Zone> GetZonesContainingString(string str)
+        {
+            return _db.Zones.Where(x => x.Name.Contains(str)).Take(10).ToList();
         }
 
         /// <summary>

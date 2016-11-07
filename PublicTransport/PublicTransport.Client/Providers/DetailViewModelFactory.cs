@@ -29,6 +29,12 @@ namespace PublicTransport.Client.Providers
                     return new FilterStreetViewModel(screen);
                 case MenuOption.Agency:
                     return new FilterAgencyViewModel(screen);
+                case MenuOption.Zone:
+                    return new FilterZoneViewModel(screen);
+                case MenuOption.Stop:
+                    return new FilterStopViewModel(screen);
+                case MenuOption.Fare:
+                    return new FilterFareViewModel(screen);
                 case MenuOption.Route:
                     return new FilterRouteViewModel(screen);
                 case MenuOption.Trip:

@@ -59,7 +59,33 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.Filter.FilterRouteViewModel" /> view model.
         /// </summary>
+        Agency,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditZoneViewModel" /> view model.
+        /// </summary>
+        Zone,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditStopViewModel" /> view model.
+        /// </summary>
+        Stop,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditFareViewModel" /> view model.
+        /// </summary>
+        Fare,
+
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditRouteViewModel" /> view model.
+        /// </summary>
         Route,
+
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditTripViewModel" /> view model.
+        /// </summary>
         Trip
     }
 }

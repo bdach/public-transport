@@ -6,28 +6,28 @@ using ReactiveUI;
 namespace PublicTransport.Client.Views.Entities
 {
     /// <summary>
-    ///     Interaction logic for CityView.xaml
+    /// Interaction logic for ZoneView.xaml
     /// </summary>
-    public partial class CityView : UserControl, IViewFor<City>
+    public partial class ZoneView : UserControl, IViewFor<Zone>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(City), typeof(CityView), new PropertyMetadata(default(City)));
+            "ViewModel", typeof(Zone), typeof(ZoneView), new PropertyMetadata(default(Zone)));
 
-        public CityView()
+        public ZoneView()
         {
             InitializeComponent();
         }
 
-        public City ViewModel
+        public Zone ViewModel
         {
-            get { return (City) GetValue(ViewModelProperty); }
+            get { return (Zone)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (City) value; }
+            set { ViewModel = (Zone)value; }
         }
     }
 }

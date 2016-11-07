@@ -15,6 +15,7 @@ namespace PublicTransport.Client.ViewModels
         /// Currently selected menu item, represented as a <see cref="MenuItemViewModel"/>.
         /// </summary>
         private MenuItemViewModel _selectedOption;
+
         /// <summary>
         /// List of all menu items.
         /// </summary>
@@ -41,7 +42,10 @@ namespace PublicTransport.Client.ViewModels
                 new Tuple<string, MenuOption>("Streets", MenuOption.Street),
                 new Tuple<string, MenuOption>("Agencies", MenuOption.Agency),
                 new Tuple<string, MenuOption>("Routes", MenuOption.Route),
-                new Tuple<string, MenuOption>("Trips", MenuOption.Trip)
+                new Tuple<string, MenuOption>("Trips", MenuOption.Trip),
+                new Tuple<string, MenuOption>("Stops", MenuOption.Stop),
+                new Tuple<string, MenuOption>("Zones", MenuOption.Zone),
+                new Tuple<string, MenuOption>("Fares", MenuOption.Fare)
             };
             Menu =
                 new ReactiveList<MenuItemViewModel>(

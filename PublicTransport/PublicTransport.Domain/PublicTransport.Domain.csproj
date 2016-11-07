@@ -80,6 +80,10 @@
     <Compile Include="Migrations\201611031838357_RequiredCityName.Designer.cs">
       <DependentUpon>201611031838357_RequiredCityName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611072008272_RequiredTransferCount.cs" />
+    <Compile Include="Migrations\201611072008272_RequiredTransferCount.Designer.cs">
+      <DependentUpon>201611072008272_RequiredTransferCount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -97,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611031838357_RequiredCityName.resx">
       <DependentUpon>201611031838357_RequiredCityName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611072008272_RequiredTransferCount.resx">
+      <DependentUpon>201611072008272_RequiredTransferCount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

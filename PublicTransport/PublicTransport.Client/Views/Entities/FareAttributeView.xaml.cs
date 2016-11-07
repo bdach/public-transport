@@ -6,28 +6,28 @@ using ReactiveUI;
 namespace PublicTransport.Client.Views.Entities
 {
     /// <summary>
-    ///     Interaction logic for CityView.xaml
+    /// Interaction logic for FareAttributeView.xaml
     /// </summary>
-    public partial class CityView : UserControl, IViewFor<City>
+    public partial class FareAttributeView : UserControl, IViewFor<FareAttribute>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(City), typeof(CityView), new PropertyMetadata(default(City)));
+            "ViewModel", typeof(FareAttribute), typeof(FareAttributeView), new PropertyMetadata(default(FareAttribute)));
 
-        public CityView()
+        public FareAttributeView()
         {
             InitializeComponent();
         }
 
-        public City ViewModel
+        public FareAttribute ViewModel
         {
-            get { return (City) GetValue(ViewModelProperty); }
+            get { return (FareAttribute)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (City) value; }
+            set { ViewModel = (FareAttribute)value; }
         }
     }
 }
