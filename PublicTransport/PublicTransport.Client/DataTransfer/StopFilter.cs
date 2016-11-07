@@ -33,6 +33,8 @@ namespace PublicTransport.Client.DataTransfer
         /// </summary>
         private string _parentStationNameFilter = "";
 
+        private bool _onlyStations;
+
         /// <summary>
         ///     Stop name filter.
         /// </summary>
@@ -76,6 +78,15 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _parentStationNameFilter; }
             set { this.RaiseAndSetIfChanged(ref _parentStationNameFilter, value); }
+        }
+
+        /// <summary>
+        ///     Limits the search query only to stops which are stations.
+        /// </summary>
+        public bool OnlyStations
+        {
+            get { return _onlyStations; }
+            set { this.RaiseAndSetIfChanged(ref _onlyStations, value); }
         }
 
         // TODO: allow filtering by IsStation

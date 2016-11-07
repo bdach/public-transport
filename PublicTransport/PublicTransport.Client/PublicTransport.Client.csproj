@@ -132,6 +132,9 @@
     <Compile Include="Views\Edit\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Entities\StopView.xaml.cs">
+      <DependentUpon>StopView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Entities\ZoneView.xaml.cs">
       <DependentUpon>ZoneView.xaml</DependentUpon>
     </Compile>
@@ -193,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Edit\EditCityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Entities\StopView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

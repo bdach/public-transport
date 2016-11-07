@@ -87,6 +87,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             _streetFilter = new StreetFilter();
             _parentStationFilter = new StopFilter();
+            _parentStationFilter.OnlyStations = true;
 
             var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopService.Create) : _stopService.Update;
             _stop = _stop ?? new Stop();
@@ -101,8 +102,6 @@ namespace PublicTransport.Client.ViewModels.Edit
             #endregion
 
             var streetSelected = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
-            var allSelected = this.WhenAnyValue(vm => vm.SelectedStreet, vm => vm.SelectedZone, vm => vm.SelectedParentStation,
-                (s, z, ps) => s != null && z != null && (!Stop.IsStation || SelectedParentStation != null));
 
             #region DisplayStreetView command
 
@@ -113,7 +112,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region SaveStop command
 
-            SaveStop = ReactiveCommand.CreateAsyncTask(allSelected, async _ =>
+            SaveStop = ReactiveCommand.CreateAsyncTask(streetSelected, async _ =>
             {
                 // TODO: Fix this when refactoring services.
                 Stop.Street = null;

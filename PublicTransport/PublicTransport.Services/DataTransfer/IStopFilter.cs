@@ -30,5 +30,10 @@
         ///     Contains the parent station name string filter parameter.
         /// </summary>
         string ParentStationNameFilter { get; set; }
+
+        /// <summary>
+        ///     Limits the search query only to stops which are stations.
+        /// </summary>
+        bool OnlyStations { get; set; }
     }
 }
