@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.Edit.EditTripView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PublicTransport.Client.Views.Edit"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel>
+        <StackPanel Style="{StaticResource Header}">
+            <TextBlock>Editing Trip...</TextBlock>
+        </StackPanel>
+        <StackPanel Style="{StaticResource Footer}">
+            <Button x:Name="SaveButton">Save</Button>
+            <Button x:Name="CloseButton">Close</Button>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Route</TextBlock>
+            <ComboBox x:Name="RouteComboBox" 
+                      Grid.Row="0"
+                      Grid.Column="1"
+                      Height="Auto"
+                      TextSearch.TextPath="ShortName" />
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Headsign</TextBlock>
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     x:Name="HeadsignTextBox" />
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Short name</TextBlock>
+            <TextBox Grid.Row="2"
+                     Grid.Column="1"
+                     x:Name="ShortNameTextBox" />
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Schedule details</TextBlock>
+            <Button Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    x:Name="EditScheduleButton">Edit...</Button>
+        </Grid>
+    </DockPanel>
+</UserControl>

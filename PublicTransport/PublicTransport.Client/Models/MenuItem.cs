@@ -59,6 +59,7 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.Filter.FilterRouteViewModel" /> view model.
         /// </summary>
-        Route
+        Route,
+        Trip
     }
 }

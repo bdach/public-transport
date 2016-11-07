@@ -2,6 +2,7 @@
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels;
+using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using ReactiveUI;
 
@@ -30,6 +31,8 @@ namespace PublicTransport.Client.Providers
                     return new FilterAgencyViewModel(screen);
                 case MenuOption.Route:
                     return new FilterRouteViewModel(screen);
+                case MenuOption.Trip:
+                    return new EditTripViewModel(screen);
                 default:
                     throw new InvalidOperationException("Could not locate view model for this option");
             }

@@ -40,7 +40,8 @@ namespace PublicTransport.Client.ViewModels
                 new Tuple<string, MenuOption>("Cities", MenuOption.City),
                 new Tuple<string, MenuOption>("Streets", MenuOption.Street),
                 new Tuple<string, MenuOption>("Agencies", MenuOption.Agency),
-                new Tuple<string, MenuOption>("Routes", MenuOption.Route)
+                new Tuple<string, MenuOption>("Routes", MenuOption.Route),
+                new Tuple<string, MenuOption>("Trips", MenuOption.Trip)
             };
             Menu =
                 new ReactiveList<MenuItemViewModel>(
