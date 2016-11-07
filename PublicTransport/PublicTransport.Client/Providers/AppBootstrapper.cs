@@ -7,6 +7,10 @@ using PublicTransport.Client.Views.Filter;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 using Splat;
+using AgencyView = PublicTransport.Client.Views.Entities.AgencyView;
+using CityView = PublicTransport.Client.Views.Entities.CityView;
+using StreetView = PublicTransport.Client.Views.Entities.StreetView;
+using ZoneView = PublicTransport.Client.Views.Entities.ZoneView;
 
 namespace PublicTransport.Client.Providers
 {
@@ -41,10 +45,13 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new EditStreetView(), typeof(IViewFor<EditStreetViewModel>));
             Locator.CurrentMutable.Register(() => new FilterAgencyView(), typeof(IViewFor<FilterAgencyViewModel>));
             Locator.CurrentMutable.Register(() => new EditAgencyView(), typeof(IViewFor<EditAgencyViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterZoneView(), typeof(IViewFor<FilterZoneViewModel>));
+            Locator.CurrentMutable.Register(() => new EditZoneView(), typeof(IViewFor<EditZoneViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
+            Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<Zone>));
         }
 
         /// <summary>

@@ -54,6 +54,11 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditAgencyViewModel" /> view model.
         /// </summary>
-        Agency
+        Agency,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditZoneViewModel" /> view model.
+        /// </summary>
+        Zone
     }
 }

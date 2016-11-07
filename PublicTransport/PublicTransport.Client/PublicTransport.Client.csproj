@@ -100,15 +100,20 @@
     <Compile Include="Providers\DetailViewModelFactory.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditZoneViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterStreetViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterZoneViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
+    <Compile Include="Views\Edit\EditZoneView.xaml.cs">
+      <DependentUpon>EditZoneView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Entities\AgencyView.xaml.cs">
       <DependentUpon>AgencyView.xaml</DependentUpon>
     </Compile>
@@ -121,6 +126,9 @@
     <Compile Include="Views\Edit\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Entities\ZoneView.xaml.cs">
+      <DependentUpon>ZoneView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Filter\FilterAgencyView.xaml.cs">
       <DependentUpon>FilterAgencyView.xaml</DependentUpon>
     </Compile>
@@ -129,6 +137,9 @@
     </Compile>
     <Compile Include="Views\Filter\FilterStreetView.xaml.cs">
       <DependentUpon>FilterStreetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Filter\FilterZoneView.xaml.cs">
+      <DependentUpon>FilterZoneView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
@@ -152,6 +163,10 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Edit\EditZoneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Entities\AgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -168,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Entities\ZoneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Filter\FilterAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -177,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filter\FilterStreetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filter\FilterZoneView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 
-namespace PublicTransport.Client.Views
+namespace PublicTransport.Client.Views.Entities
 {
     /// <summary>
     /// Interaction logic for StreetView.xaml
