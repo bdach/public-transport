@@ -86,11 +86,10 @@ namespace PublicTransport.Client.ViewModels.Edit
             _stopService = new StopService();
 
             _streetFilter = new StreetFilter();
-            _parentStationFilter = new StopFilter();
-            _parentStationFilter.OnlyStations = true;
+            _parentStationFilter = new StopFilter {OnlyStations = true};
 
             var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopService.Create) : _stopService.Update;
-            _stop = _stop ?? new Stop();
+            _stop = stop ?? new Stop();
             _selectedStreet = _stop?.Street;
             _selectedZone = _stop?.Zone;
             _selectedParentStation = _stop?.ParentStation;
