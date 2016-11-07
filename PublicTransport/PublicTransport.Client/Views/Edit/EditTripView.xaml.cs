@@ -24,13 +24,17 @@ namespace PublicTransport.Client.Views.Edit
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.RouteSuggestions, v => v.RouteComboBox.ItemsSource);
+            this.OneWayBind(ViewModel, vm => vm.Stops, v => v.StopsListView.ItemsSource);
             this.Bind(ViewModel, vm => vm.SelectedRoute, v => v.RouteComboBox.SelectedItem);
             this.Bind(ViewModel, vm => vm.RouteFilter.ShortNameFilter, v => v.RouteComboBox.Text);
             this.Bind(ViewModel, vm => vm.Trip.ShortName, v => v.ShortNameTextBox.Text);
             this.Bind(ViewModel, vm => vm.Trip.Headsign, v => v.HeadsignTextBox.Text);
+            this.Bind(ViewModel, vm => vm.SelectedStopTime, v => v.StopsListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.SaveTrip, v => v.SaveButton);
             this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
             this.BindCommand(ViewModel, vm => vm.NavigateToCalendar, v => v.EditScheduleButton);
+            this.BindCommand(ViewModel, vm => vm.AddStop, v => v.AddStopButton);
+            this.BindCommand(ViewModel, vm => vm.DeleteStop, v => v.DeleteStopButton);
 
             this.WhenAnyObservable(v => v.ViewModel.UpdateSuggestions)
                 .Subscribe(_ => RouteComboBox.IsDropDownOpen = true);

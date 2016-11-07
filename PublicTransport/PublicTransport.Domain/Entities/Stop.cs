@@ -53,7 +53,7 @@ namespace PublicTransport.Domain.Entities
         ///     The station that contains this stop.
         /// </summary>
         [ForeignKey("ParentStationId")]
-        public virtual Stop ParentStation { get; set; }
+        public Stop ParentStation { get; set; }
 
         /// <summary>
         ///     Identifies whether this stop object represents a stop or station.

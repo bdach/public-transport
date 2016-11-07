@@ -47,11 +47,13 @@ namespace PublicTransport.Client.Providers
 
             Locator.CurrentMutable.Register(() => new EditTripView(), typeof(IViewFor<EditTripViewModel>));
             Locator.CurrentMutable.Register(() => new EditCalendarView(), typeof(IViewFor<EditCalendarViewModel>));
+            Locator.CurrentMutable.Register(() => new EditStopTimeView(), typeof(IViewFor<EditStopTimeViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
             Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
+            Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
         }
 
         /// <summary>

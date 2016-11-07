@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PublicTransport.Client.Views.Edit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="300">
     <DockPanel>
         <StackPanel Style="{StaticResource Header}">
             <TextBlock>Editing Trip...</TextBlock>
@@ -18,14 +18,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
@@ -33,6 +34,7 @@
             <ComboBox x:Name="RouteComboBox" 
                       Grid.Row="0"
                       Grid.Column="1"
+                      Grid.ColumnSpan="2"
                       Height="Auto"
                       TextSearch.TextPath="ShortName" />
             <TextBlock Grid.Row="1"
@@ -40,20 +42,35 @@
                        Style="{StaticResource TextBoxLabel}">Headsign</TextBlock>
             <TextBox Grid.Row="1"
                      Grid.Column="1"
+                     Grid.ColumnSpan="2"
                      x:Name="HeadsignTextBox" />
             <TextBlock Grid.Row="2"
                        Grid.Column="0"
                        Style="{StaticResource TextBoxLabel}">Short name</TextBlock>
             <TextBox Grid.Row="2"
                      Grid.Column="1"
+                     Grid.ColumnSpan="2"
                      x:Name="ShortNameTextBox" />
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
                        Style="{StaticResource TextBoxLabel}">Schedule details</TextBlock>
             <Button Grid.Row="3"
-                    Grid.Column="1"
-                    HorizontalAlignment="Left"
+                    Grid.Column="2"
                     x:Name="EditScheduleButton">Edit...</Button>
+            <ListView Grid.Row="4"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      Margin="10"
+                      x:Name="StopsListView"
+                      VerticalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch" />
+            <StackPanel Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Orientation="Horizontal">
+                <Button x:Name="AddStopButton">Add stop...</Button>
+                <Button x:Name="DeleteStopButton">Remove stop...</Button>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </UserControl>

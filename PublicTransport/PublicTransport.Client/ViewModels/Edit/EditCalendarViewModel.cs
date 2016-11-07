@@ -2,7 +2,6 @@
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
 using ReactiveUI;
 using System;
 
@@ -18,6 +17,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             HostScreen = screen;
             _calendar = calendar;
+            calendar.StartDate = DateTime.Today;
+            calendar.EndDate = DateTime.Today;
 
             #endregion
             

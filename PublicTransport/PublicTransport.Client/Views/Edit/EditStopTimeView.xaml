@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.Edit.EditStopTimeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignWidth="500"
+             HorizontalAlignment="Stretch">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <ComboBox Grid.RowSpan="2"
+                  VerticalContentAlignment="Center"
+                  Name="StopComboBox" 
+                  TextSearch.TextPath="Name" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1">Arrival</TextBlock>
+        <TextBox Grid.Row="0"
+                 Grid.Column="2"
+                 Name="ArrivalTimeTextBox" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1">Departure</TextBlock>
+        <TextBox Grid.Row="1"
+                 Grid.Column="2"
+                 Name="DepartureTimeTextBox" />
+    </Grid>
+</UserControl>

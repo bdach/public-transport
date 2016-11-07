@@ -94,6 +94,7 @@
     <Compile Include="DataTransfer\AgencyFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
     <Compile Include="DataTransfer\RouteFilter.cs" />
+    <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="ViewModels\Edit\EditCalendarViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditRouteViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditStopTimeViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditTripViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
@@ -121,6 +123,9 @@
     <Compile Include="Views\Edit\EditRouteView.xaml.cs">
       <DependentUpon>EditRouteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Edit\EditStopTimeView.xaml.cs">
+      <DependentUpon>EditStopTimeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Edit\EditTripView.xaml.cs">
       <DependentUpon>EditTripView.xaml</DependentUpon>
     </Compile>
@@ -138,6 +143,9 @@
     </Compile>
     <Compile Include="Views\Entities\RouteView.xaml.cs">
       <DependentUpon>RouteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Entities\StopView.xaml.cs">
+      <DependentUpon>StopView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Filter\FilterAgencyView.xaml.cs">
       <DependentUpon>FilterAgencyView.xaml</DependentUpon>
@@ -181,6 +189,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Edit\EditStopTimeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Edit\EditTripView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -205,6 +217,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Entities\StopView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Filter\FilterAgencyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -226,8 +242,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NotificationView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PlaceholderView.xaml">
       <SubType>Designer</SubType>

@@ -10,8 +10,7 @@
             <TextBlock>Editing Trip Schedule...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="CloseButton"
-                    IsEnabled="False">Close</Button>
+            <Button x:Name="CloseButton">Close</Button>
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>

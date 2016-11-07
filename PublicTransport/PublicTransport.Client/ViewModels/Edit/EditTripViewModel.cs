@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -14,11 +15,14 @@ namespace PublicTransport.Client.ViewModels.Edit
 {
     public class EditTripViewModel : ReactiveObject, IDetailViewModel
     {
-        private readonly RouteService _routeService;
-        private Trip _trip;
-        private Route _selectedRoute;
-        private RouteFilter _routeFilter;
         private readonly EditCalendarViewModel _calendarViewModel;
+        private readonly RouteService _routeService;
+        private readonly StopService _stopService;
+        private readonly StopTimeService _stopTimeService;
+        private RouteFilter _routeFilter;
+        private Route _selectedRoute;
+        private EditStopTimeViewModel _selectedStopTime;
+        private Trip _trip;
 
         public EditTripViewModel(IScreen screen, Trip trip = null)
         {
@@ -26,7 +30,10 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             HostScreen = screen;
             RouteSuggestions = new ReactiveList<Route>();
+            Stops = new ReactiveList<EditStopTimeViewModel>();
             _routeService = new RouteService();
+            _stopService = new StopService();
+            _stopTimeService = new StopTimeService();
             _routeFilter = new RouteFilter();
             var tripService = new TripService();
             var tripServiceMethod = trip == null ? new Func<Trip, Trip>(tripService.Create) : tripService.Update;
@@ -43,7 +50,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #endregion
 
             var agencySelected = this.WhenAnyValue(vm => vm.SelectedRoute).Select(s => s != null);
-            
+
             #region SaveTrip command
 
             SaveTrip = ReactiveCommand.CreateAsyncTask(agencySelected, async _ =>
@@ -57,6 +64,13 @@ namespace PublicTransport.Client.ViewModels.Edit
                 var result = await Task.Run(() => tripServiceMethod(Trip));
                 Trip.Route = SelectedRoute;
                 Trip.Service = schedule;
+                await Task.Run(() => Stops.Select(s =>
+                    {
+                        s.StopTime.TripId = Trip.Id;
+                        return _stopTimeService.Create(s.StopTime);
+                    })
+                    .Select(s => new EditStopTimeViewModel(_stopService, s.StopSequence, s))
+                    .ToList());
                 return result;
             });
             // On exceptions: Display error.
@@ -103,6 +117,20 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
+            #region Adding a new stop
+
+            AddStop = ReactiveCommand.Create();
+            AddStop.Subscribe(_ => Stops.Add(new EditStopTimeViewModel(_stopService, Stops.Count)));
+
+            #endregion
+
+            #region Deleting a stop
+
+            DeleteStop = ReactiveCommand.Create();
+            DeleteStop.Subscribe(_ => Stops.Remove(SelectedStopTime));
+
+            #endregion
+
             #region Close command
 
             // On activation, go back one step in the navigation stack.
@@ -112,9 +140,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         public ReactiveList<Route> RouteSuggestions { get; protected set; }
+        public ReactiveList<EditStopTimeViewModel> Stops { get; protected set; }
         public ReactiveCommand<List<Route>> UpdateSuggestions { get; protected set; }
         public ReactiveCommand<Trip> SaveTrip { get; protected set; }
         public ReactiveCommand<Unit> Close { get; protected set; }
+        public ReactiveCommand<object> AddStop { get; protected set; }
+        public ReactiveCommand<object> DeleteStop { get; protected set; }
         public ReactiveCommand<object> NavigateToCalendar { get; protected set; }
 
         public Trip Trip
@@ -133,6 +164,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         {
             get { return _routeFilter; }
             set { this.RaiseAndSetIfChanged(ref _routeFilter, value); }
+        }
+
+        public EditStopTimeViewModel SelectedStopTime
+        {
+            get { return _selectedStopTime; }
+            set { this.RaiseAndSetIfChanged(ref _selectedStopTime, value); }
         }
 
         public string UrlPathSegment => AssociatedMenuOption.ToString();
