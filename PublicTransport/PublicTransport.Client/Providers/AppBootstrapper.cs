@@ -53,7 +53,6 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
             Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
-            Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
         }
 
         /// <summary>

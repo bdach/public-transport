@@ -94,7 +94,6 @@
     <Compile Include="DataTransfer\AgencyFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
     <Compile Include="DataTransfer\RouteFilter.cs" />
-    <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
