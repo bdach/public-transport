@@ -64,10 +64,7 @@ namespace PublicTransport.Client.Views.Edit
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set
-            {
-                ViewModel = (EditStopViewModel)value;
-            }
+            set { ViewModel = (EditStopViewModel)value; }
         }
     }
 }

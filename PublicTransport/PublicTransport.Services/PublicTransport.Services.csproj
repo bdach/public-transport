@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTransfer\IAgencyFilter.cs" />
+    <Compile Include="DataTransfer\IFareFilter.cs" />
     <Compile Include="DataTransfer\IStopFilter.cs" />
     <Compile Include="DataTransfer\IStreetFilter.cs" />
     <Compile Include="Exceptions\EntryNotFoundException.cs" />

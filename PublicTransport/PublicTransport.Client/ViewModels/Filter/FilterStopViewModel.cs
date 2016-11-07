@@ -69,7 +69,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #endregion
 
             #region Updating the list of filtered stops upon filter change
-
+            
             this.WhenAnyValue(
                     vm => vm.StopFilter.StopNameFilter,
                     vm => vm.StopFilter.CityNameFilter,
@@ -93,7 +93,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             DeleteStop.Subscribe(_ => SelectedStop = null);
             DeleteStop.InvokeCommand(FilterStops);
             DeleteStop.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected city. Please contact the system administrator.", e));
+                e => UserError.Throw("Cannot delete the selected stop. Please contact the system administrator.", e));
 
             #endregion
 
@@ -147,12 +147,12 @@ namespace PublicTransport.Client.ViewModels.Filter
         public ReactiveCommand<object> AddStop { get; protected set; }
 
         /// <summary>
-        ///     Opens a view responsible for editing an <see cref="Stop" />.
+        ///     Opens a view responsible for editing a <see cref="Stop" />.
         /// </summary>
         public ReactiveCommand<object> EditStop { get; protected set; }
 
         /// <summary>
-        ///     Deletes the currently selected <see cref="Stop" />
+        ///     Deletes the currently selected <see cref="Stop" />.
         /// </summary>
         public ReactiveCommand<Unit> DeleteStop { get; protected set; }
 

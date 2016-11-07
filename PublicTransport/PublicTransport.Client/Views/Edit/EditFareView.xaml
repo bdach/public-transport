@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.Edit.EditFareView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:enums="clr-namespace:PublicTransport.Domain.Enums;assembly=PublicTransport.Domain"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300">
+    <DockPanel>
+        <StackPanel Style="{StaticResource Header}">
+            <TextBlock>Editing Fare...</TextBlock>
+        </StackPanel>
+        <StackPanel Style="{StaticResource Footer}">
+            <Button x:Name="SaveButton">Save</Button>
+            <Button x:Name="CloseButton">Close</Button>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource TextBoxLabel}">Route name</TextBlock>
+            <ComboBox Grid.Row="0"
+                      Grid.Column="1"
+                      x:Name="RouteComboBox"
+                      TextSearch.TextPath="ShortName"/>
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Origin zone name</TextBlock>
+            <ComboBox x:Name="OriginZoneComboBox" 
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Height="Auto"
+                      TextSearch.TextPath="Name" />
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Destination zone name</TextBlock>
+            <ComboBox x:Name="DestinationZoneComboBox" 
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      Height="Auto"
+                      TextSearch.TextPath="Name" />
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Price</TextBlock>
+            <TextBox x:Name="PriceTextBox" 
+                     Grid.Row="3"
+                     Grid.Column="1"
+                     Height="Auto"
+                     TextSearch.TextPath="Name" />
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Allowed transfers</TextBlock>
+            <ComboBox Style="{StaticResource EnumComboBox}"
+                      Grid.Row="4"
+                      Grid.Column="1"
+                      x:Name="TransferCountComboBox">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="enums:TransferCount">
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Grid.Row="5"
+                       Grid.Column="0"
+                       Style="{StaticResource TextBoxLabel}">Transfer duration</TextBlock>
+            <TextBox x:Name="TransferDurationTextBox" 
+                      Grid.Row="5"
+                      Grid.Column="1"
+                      Height="Auto"
+                      TextSearch.TextPath="Name" />
+        </Grid>
+    </DockPanel>
+</UserControl>

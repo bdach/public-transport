@@ -190,7 +190,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 .InvokeCommand(this, vm => vm.UpdateStreetSuggestions);
 
             this.WhenAnyValue(vm => vm.ZoneFilter)
-                .Where(z => (z != SelectedZone?.Name) && !string.IsNullOrEmpty(ZoneFilter))
+                .Where(z => (z != SelectedZone?.Name) && !string.IsNullOrWhiteSpace(ZoneFilter))
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.UpdateZoneSuggestions);
 

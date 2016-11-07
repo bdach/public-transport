@@ -64,6 +64,11 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditStopViewModel" /> view model.
         /// </summary>
-        Stop
+        Stop,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditFareViewModel" /> view model.
+        /// </summary>
+        Fare
     }
 }

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.Entities.FareAttributeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Style="{StaticResource SuperText}"
+                   Text="{Binding FareRule.Route.ShortName}" />
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1">
+            <TextBlock Style="{StaticResource PrimaryText}"
+                       Text="{Binding FareRule.Route.LongName}" />
+            <TextBlock Style="{StaticResource DetailText}"
+                       Text="{Binding FareRule.Route.Agency.Name}" />
+        </StackPanel>
+        <StackPanel Margin="10 0 0 0"
+                    Grid.Row="0"
+                    Grid.Column="2">
+            <TextBlock Style="{StaticResource DetailText}"
+                       Text="{Binding FareRule.Origin.Name}" />
+            <TextBlock Style="{StaticResource DetailText}"
+                       Text="{Binding FareRule.Destination.Name}" />
+        </StackPanel>
+        <StackPanel Margin="10 0 0 0"
+                    Grid.Row="0"
+                    Grid.Column="3">
+            <TextBlock Style="{StaticResource PrimaryText}"
+                       Text="{Binding Price}" />
+            <TextBlock Style="{StaticResource PrimaryText}"
+                       Text="{Binding Transfers}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

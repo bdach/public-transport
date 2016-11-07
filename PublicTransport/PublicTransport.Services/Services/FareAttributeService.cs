@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -78,6 +80,23 @@ namespace PublicTransport.Services
 
             _db.Entry(old).State = EntityState.Deleted;
             _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Selects all the <see cref="FareAttribute" /> objects that match all the criteria specified by the
+        ///     <see cref="IFareFilter" /> object. The returned name strings all contain the
+        ///     parameters supplied in the <see cref="filter" /> parameter.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>List of items satisfying the supplied query.</returns>
+        public List<FareAttribute> FilterFares(IFareFilter filter)
+        {
+            return _db.FareAttributes.Include(fa => fa.FareRule.Route.Agency)
+                .Include(fa => fa.FareRule.Origin).Include(fa => fa.FareRule.Destination)
+                .Where(fa => fa.FareRule.Route.ShortName.Contains(filter.RouteNameFilter))
+                .Where(fa => fa.FareRule.Origin.Name.Contains(filter.OriginZoneNameFilter))
+                .Where(fa => fa.FareRule.Destination.Name.Contains(filter.DestinationZoneNameFilter))
+                .Take(10).ToList();
         }
 
         /// <summary>

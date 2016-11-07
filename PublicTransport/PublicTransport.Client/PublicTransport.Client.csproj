@@ -92,6 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataTransfer\AgencyFilter.cs" />
+    <Compile Include="DataTransfer\FareFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
     <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
@@ -101,10 +102,12 @@
     <Compile Include="Providers\DetailViewModelFactory.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditFareViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStopViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditZoneViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterFareViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterStopViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterStreetViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterZoneViewModel.cs" />
@@ -114,6 +117,9 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
+    <Compile Include="Views\Edit\EditFareView.xaml.cs">
+      <DependentUpon>EditFareView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Edit\EditStopView.xaml.cs">
       <DependentUpon>EditStopView.xaml</DependentUpon>
     </Compile>
@@ -132,6 +138,9 @@
     <Compile Include="Views\Edit\EditCityView.xaml.cs">
       <DependentUpon>EditCityView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Entities\FareAttributeView.xaml.cs">
+      <DependentUpon>FareAttributeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Entities\StopView.xaml.cs">
       <DependentUpon>StopView.xaml</DependentUpon>
     </Compile>
@@ -143,6 +152,9 @@
     </Compile>
     <Compile Include="Views\Filter\FilterCityView.xaml.cs">
       <DependentUpon>FilterCityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Filter\FilterFareView.xaml.cs">
+      <DependentUpon>FilterFareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Filter\FilterStopView.xaml.cs">
       <DependentUpon>FilterStopView.xaml</DependentUpon>
@@ -175,6 +187,10 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Edit\EditFareView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Edit\EditStopView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +215,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Entities\FareAttributeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Entities\StopView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -212,6 +232,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filter\FilterCityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filter\FilterFareView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

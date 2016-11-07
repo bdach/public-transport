@@ -30,7 +30,8 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Specifies the number of transfers permitted on this fare. If empty, unlimited transfers are permitted.
         /// </summary>
-        public TransferCount? Transfers { get; set; }
+        [Required]
+        public TransferCount Transfers { get; set; }
 
         /// <summary>
         ///     Specifies a length of time in seconds before a transfer expires.

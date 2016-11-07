@@ -12,6 +12,7 @@ namespace PublicTransport.Client.ViewModels
         /// Currently selected menu item, represented as a <see cref="MenuItemViewModel"/>.
         /// </summary>
         private MenuItemViewModel _selectedOption;
+
         /// <summary>
         /// List of all menu items.
         /// </summary>
@@ -42,7 +43,9 @@ namespace PublicTransport.Client.ViewModels
             var zone = new MenuItemViewModel(zoneItem);
             var stopItem = new MenuItem("Stops", MenuOption.Stop);
             var stop = new MenuItemViewModel(stopItem);
-            Menu = new ReactiveList<MenuItemViewModel> {city, street, agency, zone, stop};
+            var fareItem = new MenuItem("Fares", MenuOption.Fare);
+            var fare = new MenuItemViewModel(fareItem);
+            Menu = new ReactiveList<MenuItemViewModel> {city, street, agency, zone, stop, fare};
         }
     }
 }

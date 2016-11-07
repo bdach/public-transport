@@ -201,6 +201,6 @@ VALUES
 INSERT INTO [FareAttributes]
 	([FareRuleId], [Price], [Transfers], [TransferDuration])
 VALUES
-	(1, 2.20, NULL, 4500),	-- ZTM 75-minute ticket with unlimited transfers.
+	(1, 2.20, 0, 4500),	-- ZTM 75-minute ticket with unlimited transfers.
 	(1, 1.70, 0, 1200)		-- ZTM 20-minute no-transfer ticket.
 GO

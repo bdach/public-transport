@@ -50,12 +50,15 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new EditZoneView(), typeof(IViewFor<EditZoneViewModel>));
             Locator.CurrentMutable.Register(() => new FilterStopView(), typeof(IViewFor<FilterStopViewModel>));
             Locator.CurrentMutable.Register(() => new EditStopView(), typeof(IViewFor<EditStopViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterFareView(), typeof(IViewFor<FilterFareViewModel>));
+            Locator.CurrentMutable.Register(() => new EditFareView(), typeof(IViewFor<EditFareViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
             Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<Zone>));
             Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
+            Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
         }
 
         /// <summary>
