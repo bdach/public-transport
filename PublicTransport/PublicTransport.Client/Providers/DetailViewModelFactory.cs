@@ -37,6 +37,8 @@ namespace PublicTransport.Client.Providers
                     return new FilterFareViewModel(screen);
                 case MenuOption.Route:
                     return new FilterRouteViewModel(screen);
+                case MenuOption.User:
+                    return new EditUserViewModel(screen);
                 default:
                     throw new InvalidOperationException("Could not locate view model for this option");
             }

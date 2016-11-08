@@ -79,6 +79,11 @@
         /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditTripViewModel" /> view model.
         /// </summary>
-        Trip
+        Trip,
+
+        /// <summary>
+        ///     Represents the <see cref="ViewModels.Edit.EditUserViewModel" /> view model.
+        /// </summary>
+        User
     }
 }

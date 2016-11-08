@@ -119,7 +119,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             var allSelected = this.WhenAnyValue(vm => vm.SelectedRoute, vm => vm.SelectedOriginZone,
                 vm => vm.SelectedDestinationZone, (r, o, d) => r != null && o != null && d != null);
 
-            #region SaveStop command
+            #region SaveFare command
 
             SaveFare = ReactiveCommand.CreateAsyncTask(allSelected, async _ =>
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -80,6 +81,17 @@ namespace PublicTransport.Services
 
             _db.Entry(old).State = EntityState.Deleted;
             _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Returns a list of all <see cref="Role"/> objects from the database.
+        /// </summary>
+        /// <returns>
+        ///     Returns a list of all <see cref="Role"/> objects from the database.
+        /// </returns>
+        public List<Role> GetAllRoles()
+        {
+            return _db.Roles.ToList();
         }
 
         /// <summary>

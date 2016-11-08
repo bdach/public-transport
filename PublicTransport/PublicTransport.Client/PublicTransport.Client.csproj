@@ -108,10 +108,12 @@
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditFareViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStopViewModel.cs" />
+    <Compile Include="ViewModels\Edit\EditUserViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditZoneViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditRouteViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStopTimeViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditTripViewModel.cs" />
+    <Compile Include="ViewModels\Entities\RoleViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterAgencyViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterCityViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterFareViewModel.cs" />
@@ -134,6 +136,9 @@
     </Compile>
     <Compile Include="Views\Edit\EditStopView.xaml.cs">
       <DependentUpon>EditStopView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Edit\EditUserView.xaml.cs">
+      <DependentUpon>EditUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Edit\EditZoneView.xaml.cs">
       <DependentUpon>EditZoneView.xaml</DependentUpon>
@@ -164,6 +169,9 @@
     </Compile>
     <Compile Include="Views\Entities\FareAttributeView.xaml.cs">
       <DependentUpon>FareAttributeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Entities\RoleView.xaml.cs">
+      <DependentUpon>RoleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Entities\StopTimeView.xaml.cs">
       <DependentUpon>StopTimeView.xaml</DependentUpon>
@@ -232,6 +240,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Edit\EditUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Edit\EditZoneView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Entities\FareAttributeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Entities\RoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

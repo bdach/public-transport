@@ -15,6 +15,6 @@ namespace PublicTransport.Domain.Enums
         /// <summary>
         ///     Gives <see cref="User"/> access to parts of the system available only for the administator.
         /// </summary>
-        Administator
+        Administrator
     }
 }

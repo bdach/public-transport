@@ -1,6 +1,7 @@
 ﻿using PublicTransport.Client.ViewModels;
 using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
+using PublicTransport.Client.ViewModels.Entities;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Client.Views;
 using PublicTransport.Client.Views.Browse;
@@ -57,6 +58,8 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new EditCalendarView(), typeof(IViewFor<EditCalendarViewModel>));
             Locator.CurrentMutable.Register(() => new EditStopTimeView(), typeof(IViewFor<EditStopTimeViewModel>));
             Locator.CurrentMutable.Register(() => new TimetableView(), typeof(IViewFor<TimetableViewModel>));
+
+            Locator.CurrentMutable.Register(() => new EditUserView(), typeof(IViewFor<EditUserViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
@@ -66,6 +69,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
             Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTime>));
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
+            Locator.CurrentMutable.Register(() => new RoleView(), typeof(IViewFor<RoleViewModel>));
         }
 
         /// <summary>
