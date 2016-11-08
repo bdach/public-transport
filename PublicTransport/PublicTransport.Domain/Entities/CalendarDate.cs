@@ -8,6 +8,8 @@ namespace PublicTransport.Domain.Entities
     /// <summary>
     ///     Defines exceptional dates when a <code>Trip</code> is operated, as well as when it is not operated.
     /// </summary>
+    /// 
+    /// TODO: Maybe axe this?
     public class CalendarDate : Entity
     {
         /// <summary>

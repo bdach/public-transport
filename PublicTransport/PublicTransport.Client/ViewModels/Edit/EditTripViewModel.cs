@@ -13,16 +13,50 @@ using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
 {
+    /// <summary>
+    ///     View model responsible for editing trips.
+    /// </summary>
     public class EditTripViewModel : ReactiveObject, IDetailViewModel
     {
+        /// <summary>
+        ///     Service used for fetching <see cref="Route" /> data.
+        /// </summary>
         private readonly RouteService _routeService;
+
+        /// <summary>
+        ///     Service used for fetching <see cref="Stop" /> data.
+        /// </summary>
         private readonly StopService _stopService;
+
+        /// <summary>
+        ///     Service used for fetching and saving <see cref="Domain.Entities.Trip" /> data.
+        /// </summary>
         private readonly TripService _tripService;
+
+        /// <summary>
+        ///     Used for filtering <see cref="Route" /> objects.
+        /// </summary>
         private RouteFilter _routeFilter;
+
+        /// <summary>
+        ///     Route currently selected by the user.
+        /// </summary>
         private Route _selectedRoute;
+
+        /// <summary>
+        ///     <see cref="StopTime" /> currently selected by the user.
+        /// </summary>
         private EditStopTimeViewModel _selectedStopTime;
+
+        /// <summary>
+        ///     Currently edited <see cref="Domain.Entities.Trip" />.
+        /// </summary>
         private Trip _trip;
 
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="screen">Screen to display to.</param>
         public EditTripViewModel(IScreen screen)
         {
             HostScreen = screen;
@@ -34,6 +68,11 @@ namespace PublicTransport.Client.ViewModels.Edit
             StopTimes = new ReactiveList<EditStopTimeViewModel>();
         }
 
+        /// <summary>
+        ///     Constructor. Used when a trip is being edited.
+        /// </summary>
+        /// <param name="screen">Screen to display on.</param>
+        /// <param name="trip">Trip to edit.</param>
         public EditTripViewModel(IScreen screen, Trip trip) : this(screen)
         {
             Trip = trip;
@@ -42,6 +81,12 @@ namespace PublicTransport.Client.ViewModels.Edit
             SetUp(false);
         }
 
+        /// <summary>
+        ///     Constructor. Used for adding a trip of an existing route.
+        /// </summary>
+        /// <param name="screen">Screen to display on.</param>
+        /// <param name="route">Route to add to.</param>
+        /// <param name="stops">List of stops to initialize the stop list with.</param>
         public EditTripViewModel(IScreen screen, Route route, IEnumerable<Stop> stops) : this(screen)
         {
             Trip = new Trip
@@ -52,13 +97,113 @@ namespace PublicTransport.Client.ViewModels.Edit
             var toAdd = stops.Select(s => new StopTime
             {
                 TripId = Trip.Id,
-                Stop = s,
-                StopId = s.Id
+                StopId = s.Id,
+                Stop = s
             }).ToList();
             StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_stopService, s)));
             SetUp(true);
         }
 
+        /// <summary>
+        ///     List of <see cref="Route" /> suggestions.
+        /// </summary>
+        public ReactiveList<Route> RouteSuggestions { get; protected set; }
+
+        /// <summary>
+        ///     List of stop times.
+        /// </summary>
+        public ReactiveList<EditStopTimeViewModel> StopTimes { get; protected set; }
+
+        /// <summary>
+        ///     Command responsible for updating <see cref="Route" /> suggestions.
+        /// </summary>
+        public ReactiveCommand<List<Route>> UpdateSuggestions { get; protected set; }
+
+        /// <summary>
+        ///     Command responsible for saving the currently edited <see cref="Trip" />.
+        /// </summary>
+        public ReactiveCommand<Trip> SaveTrip { get; protected set; }
+
+        /// <summary>
+        ///     Closes the view.
+        /// </summary>
+        public ReactiveCommand<Unit> Close { get; protected set; }
+
+        /// <summary>
+        ///     Adds a stop to the list.
+        /// </summary>
+        public ReactiveCommand<object> AddStop { get; protected set; }
+
+        /// <summary>
+        ///     Removes a stop from the stop list.
+        /// </summary>
+        public ReactiveCommand<object> DeleteStop { get; protected set; }
+
+        /// <summary>
+        ///     Navigates to the view allowing the user to edit the trip schedule.
+        /// </summary>
+        public ReactiveCommand<object> NavigateToCalendar { get; protected set; }
+
+        /// <summary>
+        ///     Fetches the stops associated with the provided trip.
+        /// </summary>
+        public ReactiveCommand<List<StopTime>> FetchStops { get; protected set; }
+
+        /// <summary>
+        ///     Currently edited <see cref="Domain.Entities.Trip" />.
+        /// </summary>
+        public Trip Trip
+        {
+            get { return _trip; }
+            set { this.RaiseAndSetIfChanged(ref _trip, value); }
+        }
+
+        /// <summary>
+        ///     Currently selected <see cref="Domain.Entities.Route" />.
+        /// </summary>
+        public Route SelectedRoute
+        {
+            get { return _selectedRoute; }
+            set { this.RaiseAndSetIfChanged(ref _selectedRoute, value); }
+        }
+
+        /// <summary>
+        ///     Used for filtering routes.
+        /// </summary>
+        public RouteFilter RouteFilter
+        {
+            get { return _routeFilter; }
+            set { this.RaiseAndSetIfChanged(ref _routeFilter, value); }
+        }
+
+        /// <summary>
+        ///     Currently selected <see cref="StopTime" />.
+        /// </summary>
+        public EditStopTimeViewModel SelectedStopTime
+        {
+            get { return _selectedStopTime; }
+            set { this.RaiseAndSetIfChanged(ref _selectedStopTime, value); }
+        }
+
+        /// <summary>
+        ///     String uniquely identifying the current view model.
+        /// </summary>
+        public string UrlPathSegment => AssociatedMenuOption.ToString();
+
+        /// <summary>
+        ///     Host screen to display on.
+        /// </summary>
+        public IScreen HostScreen { get; }
+
+        /// <summary>
+        ///     Gets the <see cref="MenuOption" /> enum value that associates a menu item with the concrete view model.
+        /// </summary>
+        public MenuOption AssociatedMenuOption => MenuOption.Trip;
+
+        /// <summary>
+        ///     Sets up commands and observables necessary for the view model's functioning.
+        /// </summary>
+        /// <param name="isNew">Indicates whether the currently edited object is new or not.</param>
         private void SetUp(bool isNew)
         {
             #region Field/property initialization
@@ -88,7 +233,8 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Trip.RouteId = SelectedRoute.Id;
                 Trip.ServiceId = schedule.Id;
                 var result = await Task.Run(() => tripServiceMethod(Trip));
-                var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
+                var stopTimes = StopTimes.Select(vm => vm.StopTime)
+                    .ToList();
                 await Task.Run(() => _tripService.UpdateStops(Trip.Id, stopTimes));
                 Trip.Route = SelectedRoute;
                 Trip.Service = schedule;
@@ -162,43 +308,5 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
         }
-
-        public ReactiveList<Route> RouteSuggestions { get; protected set; }
-        public ReactiveList<EditStopTimeViewModel> StopTimes { get; protected set; }
-        public ReactiveCommand<List<Route>> UpdateSuggestions { get; protected set; }
-        public ReactiveCommand<Trip> SaveTrip { get; protected set; }
-        public ReactiveCommand<Unit> Close { get; protected set; }
-        public ReactiveCommand<object> AddStop { get; protected set; }
-        public ReactiveCommand<object> DeleteStop { get; protected set; }
-        public ReactiveCommand<object> NavigateToCalendar { get; protected set; }
-        public ReactiveCommand<List<StopTime>> FetchStops { get; protected set; }
-
-        public Trip Trip
-        {
-            get { return _trip; }
-            set { this.RaiseAndSetIfChanged(ref _trip, value); }
-        }
-
-        public Route SelectedRoute
-        {
-            get { return _selectedRoute; }
-            set { this.RaiseAndSetIfChanged(ref _selectedRoute, value); }
-        }
-
-        public RouteFilter RouteFilter
-        {
-            get { return _routeFilter; }
-            set { this.RaiseAndSetIfChanged(ref _routeFilter, value); }
-        }
-
-        public EditStopTimeViewModel SelectedStopTime
-        {
-            get { return _selectedStopTime; }
-            set { this.RaiseAndSetIfChanged(ref _selectedStopTime, value); }
-        }
-
-        public string UrlPathSegment => AssociatedMenuOption.ToString();
-        public IScreen HostScreen { get; }
-        public MenuOption AssociatedMenuOption => MenuOption.Trip;
     }
 }

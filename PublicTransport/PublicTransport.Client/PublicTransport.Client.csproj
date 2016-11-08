@@ -129,6 +129,9 @@
     <Compile Include="Views\Browse\TimetableView.xaml.cs">
       <DependentUpon>TimetableView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Edit\EditCalendarDateView.xaml.cs">
+      <DependentUpon>EditCalendarDateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Edit\EditFareView.xaml.cs">
       <DependentUpon>EditFareView.xaml</DependentUpon>
     </Compile>
@@ -221,6 +224,10 @@
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Browse\TimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Edit\EditCalendarDateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
