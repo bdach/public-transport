@@ -6,7 +6,7 @@
              mc:Ignorable="d" >
     <DockPanel>
         <StackPanel Style="{StaticResource Header}">
-            <TextBlock>Find Streets...</TextBlock>
+            <TextBlock>Find Stops...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
             <Button x:Name="AddStreetButton">Add New</Button>

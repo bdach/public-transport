@@ -32,6 +32,7 @@ namespace PublicTransport.Client.Views.Filter
             this.BindCommand(ViewModel, vm => vm.AddRoute, v => v.AddRouteButton);
             this.BindCommand(ViewModel, vm => vm.EditRoute, v => v.EditRouteButton);
             this.BindCommand(ViewModel, vm => vm.DeleteRoute, v => v.DeleteRouteButton);
+            this.BindCommand(ViewModel, vm => vm.ShowTimetable, v => v.ShowTimetableButton);
             this.BindCommand(ViewModel, vm => vm.ClearRouteTypeChoice, v => v.ClearRouteTypeButton);
         }
 

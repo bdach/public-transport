@@ -12,13 +12,13 @@
         </Grid.ColumnDefinitions>
         
         <TextBlock Style="{StaticResource SuperText}"
-                   Text="{Binding ShortName}" />
+                   x:Name="ShortNameTextBlock" />
         <StackPanel Grid.Row="0"
                     Grid.Column="1">
             <TextBlock Style="{StaticResource PrimaryText}"
-                       Text="{Binding LongName}" />
+                       x:Name="LongNameTextBlock"  />
             <TextBlock Style="{StaticResource DetailText}"
-                       Text="{Binding Agency.Name}" />
+                       x:Name="AgencyNameTextBlock"  />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,17 +1,15 @@
 ﻿using PublicTransport.Client.ViewModels;
+using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Client.Views;
+using PublicTransport.Client.Views.Browse;
 using PublicTransport.Client.Views.Edit;
 using PublicTransport.Client.Views.Entities;
 using PublicTransport.Client.Views.Filter;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 using Splat;
-using AgencyView = PublicTransport.Client.Views.Entities.AgencyView;
-using CityView = PublicTransport.Client.Views.Entities.CityView;
-using StreetView = PublicTransport.Client.Views.Entities.StreetView;
-using ZoneView = PublicTransport.Client.Views.Entities.ZoneView;
 
 namespace PublicTransport.Client.Providers
 {
@@ -58,6 +56,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new EditTripView(), typeof(IViewFor<EditTripViewModel>));
             Locator.CurrentMutable.Register(() => new EditCalendarView(), typeof(IViewFor<EditCalendarViewModel>));
             Locator.CurrentMutable.Register(() => new EditStopTimeView(), typeof(IViewFor<EditStopTimeViewModel>));
+            Locator.CurrentMutable.Register(() => new TimetableView(), typeof(IViewFor<TimetableViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
@@ -65,6 +64,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
             Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<Zone>));
             Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
+            Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTime>));
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
         }
 

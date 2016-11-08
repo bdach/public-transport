@@ -92,7 +92,12 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Stop> GetStopsByRouteId(int routeId)
         {
-            return _db.StopTimes.Where(x => x.Trip.RouteId == routeId).Select(x => x.Stop).Distinct().ToList();
+            return _db.StopTimes.Include(x => x.Trip)
+                .Where(x => x.Trip.RouteId == routeId)
+                .Select(x => x.Stop)
+                .Include(x => x.Street.City)
+                .Distinct()
+                .ToList();
         }
 
         /// <summary>

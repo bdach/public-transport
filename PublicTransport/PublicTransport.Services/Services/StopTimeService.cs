@@ -105,7 +105,9 @@ namespace PublicTransport.Services
         /// </returns>
         public List<StopTime> GetRouteTimetableByStopId(int stopId, int routeId)
         {
-            return _db.StopTimes.Where(x => x.StopId == stopId && x.Trip.RouteId == routeId).ToList();
+            return _db.StopTimes.Include(x => x.Trip)
+                .Where(x => x.StopId == stopId && x.Trip.RouteId == routeId)
+                .ToList();
         }
 
         /// <summary>

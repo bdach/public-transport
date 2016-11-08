@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -14,6 +15,19 @@ namespace PublicTransport.Services
     {
         private readonly PublicTransportContext _db = new PublicTransportContext();
         private bool _disposed;
+
+        /// <summary>
+        ///     Disposed database context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _db.Dispose();
+            _disposed = true;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="Trip" /> record into the database.
@@ -83,13 +97,30 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Updates the <see cref="StopTime" /> associated with this trip.
         /// </summary>
-        public void Dispose()
+        /// <param name="tripId">ID number of trip to update</param>
+        /// <param name="stops">The stops which should be saved.</param>
+        /// <returns>List of stops after saving.</returns>
+        public List<StopTime> UpdateStops(int tripId, List<StopTime> stops)
         {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
+            var currentStops = _db.StopTimes.Where(st => st.TripId == tripId).ToList();
+            var newStops =
+                stops.Where(st => _db.StopTimes.FirstOrDefault(existing => existing.Id == st.Id) == null)
+                    .ToList();
+            newStops.ForEach(st => st.TripId = tripId);
+            var updatedStops = stops.Except(newStops).ToList();
+            var deletedStops = currentStops.Except(updatedStops);
+
+            _db.StopTimes.AddRange(newStops);
+            _db.StopTimes.RemoveRange(deletedStops);
+            foreach (var updatedStop in updatedStops)
+            {
+                var toUpdate = _db.StopTimes.Find(updatedStop.Id);
+                _db.Entry(toUpdate).CurrentValues.SetValues(updatedStop);
+            }
+            _db.SaveChanges();
+            return stops;
         }
     }
 }

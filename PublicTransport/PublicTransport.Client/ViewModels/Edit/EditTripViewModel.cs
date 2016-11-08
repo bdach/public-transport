@@ -62,15 +62,10 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Trip.RouteId = SelectedRoute.Id;
                 Trip.ServiceId = schedule.Id;
                 var result = await Task.Run(() => tripServiceMethod(Trip));
+                var stops = Stops.Select(vm => vm.StopTime).ToList();
+                await Task.Run(() => tripService.UpdateStops(Trip.Id, stops));
                 Trip.Route = SelectedRoute;
                 Trip.Service = schedule;
-                await Task.Run(() => Stops.Select(s =>
-                    {
-                        s.StopTime.TripId = Trip.Id;
-                        return _stopTimeService.Create(s.StopTime);
-                    })
-                    .Select(s => new EditStopTimeViewModel(_stopService, s.StopSequence, s))
-                    .ToList());
                 return result;
             });
             // On exceptions: Display error.

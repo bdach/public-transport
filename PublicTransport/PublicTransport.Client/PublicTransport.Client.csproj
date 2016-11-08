@@ -101,6 +101,7 @@
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Providers\DetailViewModelFactory.cs" />
+    <Compile Include="ViewModels\Browse\TimetableViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCalendarViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
@@ -124,6 +125,9 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
+    <Compile Include="Views\Browse\TimetableView.xaml.cs">
+      <DependentUpon>TimetableView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Edit\EditFareView.xaml.cs">
       <DependentUpon>EditFareView.xaml</DependentUpon>
     </Compile>
@@ -159,6 +163,9 @@
     </Compile>
     <Compile Include="Views\Entities\FareAttributeView.xaml.cs">
       <DependentUpon>FareAttributeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Entities\StopTimeView.xaml.cs">
+      <DependentUpon>StopTimeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Entities\StopView.xaml.cs">
       <DependentUpon>StopView.xaml</DependentUpon>
@@ -212,6 +219,10 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Browse\TimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Edit\EditFareView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -257,6 +268,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Entities\FareAttributeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Entities\StopTimeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

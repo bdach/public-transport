@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels
             var menuItems = new List<Tuple<string, MenuOption>>
             {
                 new Tuple<string, MenuOption>("Cities", MenuOption.City),
-                new Tuple<string, MenuOption>("Streets", MenuOption.Street),
+                new Tuple<string, MenuOption>("Stops", MenuOption.Street),
                 new Tuple<string, MenuOption>("Agencies", MenuOption.Agency),
                 new Tuple<string, MenuOption>("Routes", MenuOption.Route),
                 new Tuple<string, MenuOption>("Trips", MenuOption.Trip),

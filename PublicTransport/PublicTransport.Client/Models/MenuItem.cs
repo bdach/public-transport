@@ -71,12 +71,10 @@
         /// </summary>
         Fare,
 
-
         /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditRouteViewModel" /> view model.
         /// </summary>
         Route,
-
 
         /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditTripViewModel" /> view model.

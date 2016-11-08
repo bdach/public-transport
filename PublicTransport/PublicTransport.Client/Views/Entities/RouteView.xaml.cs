@@ -22,6 +22,9 @@ namespace PublicTransport.Client.Views.Entities
         public RouteView()
         {
             InitializeComponent();
+            this.Bind(ViewModel, vm => vm.ShortName, v => v.ShortNameTextBlock.Text);
+            this.Bind(ViewModel, vm => vm.LongName, v => v.LongNameTextBlock.Text);
+            this.Bind(ViewModel, vm => vm.Agency.Name, v => v.AgencyNameTextBlock.Text);
         }
 
         object IViewFor.ViewModel

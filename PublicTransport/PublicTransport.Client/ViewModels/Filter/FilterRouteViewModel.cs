@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
@@ -94,7 +95,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
-            #region Adding/editing routes
+            #region Button commands
 
             AddRoute =
                 ReactiveCommand.CreateAsyncObservable(
@@ -102,6 +103,8 @@ namespace PublicTransport.Client.ViewModels.Filter
             EditRoute =
                 ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
                     _ => HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, SelectedRoute)));
+            ShowTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
+                _ => HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, SelectedRoute)));
 
             #endregion
 
@@ -174,6 +177,11 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Clears the route type filter.
         /// </summary>
         public ReactiveCommand<object> ClearRouteTypeChoice { get; protected set; }
+
+        /// <summary>
+        ///     Shows the timetable for the selected route.
+        /// </summary>
+        public ReactiveCommand<object> ShowTimetable { get; protected set; }
 
         /// <summary>
         ///     String uniquely identifying the current view model.
