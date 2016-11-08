@@ -104,6 +104,9 @@ namespace PublicTransport.Services
         /// <returns>List of stops after saving.</returns>
         public List<StopTime> UpdateStops(int tripId, List<StopTime> stops)
         {
+            var sequence = 0;
+            stops.ForEach(stopTime => stopTime.StopSequence = sequence++);
+
             var currentStops = _db.StopTimes.Where(st => st.TripId == tripId).ToList();
             var newStops =
                 stops.Where(st => _db.StopTimes.FirstOrDefault(existing => existing.Id == st.Id) == null)
@@ -121,6 +124,15 @@ namespace PublicTransport.Services
             }
             _db.SaveChanges();
             return stops;
+        }
+
+        public List<StopTime> GetTripStops(Trip trip)
+        {
+            return _db.StopTimes
+                .Include(st => st.Stop)
+                .Where(t => t.TripId == trip.Id)
+                .OrderBy(t => t.StopSequence)
+                .ToList();
         }
     }
 }

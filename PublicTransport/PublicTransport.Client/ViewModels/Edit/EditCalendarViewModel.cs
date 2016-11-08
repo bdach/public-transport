@@ -17,17 +17,12 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             HostScreen = screen;
             _calendar = calendar;
-            calendar.StartDate = DateTime.Today;
-            calendar.EndDate = DateTime.Today;
 
             #endregion
             
             #region Close command
 
-            Close = ReactiveCommand.CreateAsyncObservable(_ =>
-            {
-                return HostScreen.Router.NavigateBack.ExecuteAsync();
-            });
+            Close = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.NavigateBack.ExecuteAsync());
 
             #endregion
         }

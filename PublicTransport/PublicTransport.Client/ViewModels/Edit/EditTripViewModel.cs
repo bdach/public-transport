@@ -15,41 +15,67 @@ namespace PublicTransport.Client.ViewModels.Edit
 {
     public class EditTripViewModel : ReactiveObject, IDetailViewModel
     {
-        private readonly EditCalendarViewModel _calendarViewModel;
         private readonly RouteService _routeService;
         private readonly StopService _stopService;
-        private readonly StopTimeService _stopTimeService;
+        private readonly TripService _tripService;
         private RouteFilter _routeFilter;
         private Route _selectedRoute;
         private EditStopTimeViewModel _selectedStopTime;
         private Trip _trip;
 
-        public EditTripViewModel(IScreen screen, Trip trip = null)
+        public EditTripViewModel(IScreen screen)
+        {
+            HostScreen = screen;
+            RouteSuggestions = new ReactiveList<Route>();
+            _tripService = new TripService();
+            _routeService = new RouteService();
+            _routeFilter = new RouteFilter();
+            _stopService = new StopService();
+            StopTimes = new ReactiveList<EditStopTimeViewModel>();
+        }
+
+        public EditTripViewModel(IScreen screen, Trip trip) : this(screen)
+        {
+            Trip = trip;
+            var toAdd = _tripService.GetTripStops(trip);
+            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_stopService, s)));
+            SetUp(false);
+        }
+
+        public EditTripViewModel(IScreen screen, Route route, IEnumerable<Stop> stops) : this(screen)
+        {
+            Trip = new Trip
+            {
+                Route = route,
+                RouteId = route.Id
+            };
+            var toAdd = stops.Select(s => new StopTime
+            {
+                TripId = Trip.Id,
+                Stop = s,
+                StopId = s.Id
+            }).ToList();
+            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_stopService, s)));
+            SetUp(true);
+        }
+
+        private void SetUp(bool isNew)
         {
             #region Field/property initialization
 
-            HostScreen = screen;
-            RouteSuggestions = new ReactiveList<Route>();
-            Stops = new ReactiveList<EditStopTimeViewModel>();
-            _routeService = new RouteService();
-            _stopService = new StopService();
-            _stopTimeService = new StopTimeService();
-            _routeFilter = new RouteFilter();
-            var tripService = new TripService();
-            var tripServiceMethod = trip == null ? new Func<Trip, Trip>(tripService.Create) : tripService.Update;
+            var tripServiceMethod = isNew ? new Func<Trip, Trip>(_tripService.Create) : _tripService.Update;
             var calendarService = new CalendarService();
-            var calendarServiceMethod = trip == null
+            var calendarServiceMethod = isNew
                 ? new Func<Calendar, Calendar>(calendarService.Create)
                 : calendarService.Update;
-            _trip = trip ?? new Trip();
-            _trip.Service = _trip.Service ?? new Calendar();
-            _calendarViewModel = new EditCalendarViewModel(screen, _trip.Service);
-            _selectedRoute = _trip?.Route;
+            SelectedRoute = _trip.Route;
+            RouteSuggestions.Add(SelectedRoute);
             _routeFilter.ShortNameFilter = _trip?.ShortName ?? "";
 
             #endregion
 
-            var agencySelected = this.WhenAnyValue(vm => vm.SelectedRoute).Select(s => s != null);
+            var agencySelected = this.WhenAnyValue(vm => vm.SelectedRoute)
+                .Select(r => r != null);
 
             #region SaveTrip command
 
@@ -62,8 +88,8 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Trip.RouteId = SelectedRoute.Id;
                 Trip.ServiceId = schedule.Id;
                 var result = await Task.Run(() => tripServiceMethod(Trip));
-                var stops = Stops.Select(vm => vm.StopTime).ToList();
-                await Task.Run(() => tripService.UpdateStops(Trip.Id, stops));
+                var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
+                await Task.Run(() => _tripService.UpdateStops(Trip.Id, stopTimes));
                 Trip.Route = SelectedRoute;
                 Trip.Service = schedule;
                 return result;
@@ -106,23 +132,26 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region Navigating to calendar view
 
-            NavigateToCalendar =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(_calendarViewModel));
+            NavigateToCalendar = ReactiveCommand.Create();
+            NavigateToCalendar.Subscribe(_ =>
+            {
+                Trip.Service = Trip.Service ?? new Calendar();
+                HostScreen.Router.Navigate.Execute(new EditCalendarViewModel(HostScreen, Trip.Service));
+            });
 
             #endregion
 
             #region Adding a new stop
 
             AddStop = ReactiveCommand.Create();
-            AddStop.Subscribe(_ => Stops.Add(new EditStopTimeViewModel(_stopService, Stops.Count)));
+            AddStop.Subscribe(_ => StopTimes.Add(new EditStopTimeViewModel(_stopService)));
 
             #endregion
 
             #region Deleting a stop
 
             DeleteStop = ReactiveCommand.Create();
-            DeleteStop.Subscribe(_ => Stops.Remove(SelectedStopTime));
+            DeleteStop.Subscribe(_ => StopTimes.Remove(SelectedStopTime));
 
             #endregion
 
@@ -135,13 +164,14 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         public ReactiveList<Route> RouteSuggestions { get; protected set; }
-        public ReactiveList<EditStopTimeViewModel> Stops { get; protected set; }
+        public ReactiveList<EditStopTimeViewModel> StopTimes { get; protected set; }
         public ReactiveCommand<List<Route>> UpdateSuggestions { get; protected set; }
         public ReactiveCommand<Trip> SaveTrip { get; protected set; }
         public ReactiveCommand<Unit> Close { get; protected set; }
         public ReactiveCommand<object> AddStop { get; protected set; }
         public ReactiveCommand<object> DeleteStop { get; protected set; }
         public ReactiveCommand<object> NavigateToCalendar { get; protected set; }
+        public ReactiveCommand<List<StopTime>> FetchStops { get; protected set; }
 
         public Trip Trip
         {

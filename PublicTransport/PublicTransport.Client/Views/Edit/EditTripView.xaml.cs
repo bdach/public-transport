@@ -24,7 +24,7 @@ namespace PublicTransport.Client.Views.Edit
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.RouteSuggestions, v => v.RouteComboBox.ItemsSource);
-            this.OneWayBind(ViewModel, vm => vm.Stops, v => v.StopsListView.ItemsSource);
+            this.OneWayBind(ViewModel, vm => vm.StopTimes, v => v.StopsListView.ItemsSource);
             this.Bind(ViewModel, vm => vm.SelectedRoute, v => v.RouteComboBox.SelectedItem);
             this.Bind(ViewModel, vm => vm.RouteFilter.ShortNameFilter, v => v.RouteComboBox.Text);
             this.Bind(ViewModel, vm => vm.Trip.ShortName, v => v.ShortNameTextBox.Text);

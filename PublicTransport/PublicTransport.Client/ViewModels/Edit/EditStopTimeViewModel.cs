@@ -12,17 +12,16 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStopTimeViewModel : ReactiveObject
     {
         private StopTime _stopTime;
-        private StopService _stopService;
+        private readonly StopService _stopService;
 
-        public EditStopTimeViewModel(StopService stopService, int sequenceNo, StopTime stopTime = null)
+        public EditStopTimeViewModel(StopService stopService, StopTime stopTime = null)
         {
             _stopService = stopService;
             _stopTime = stopTime ?? new StopTime();
-            _stopTime.StopSequence = sequenceNo;
             _stopFilter = new StopFilter();
             StopSuggestions = new ReactiveList<Stop>();
-            IsNew = stopTime == null;
             _stopFilter.StopNameFilter = stopTime?.Stop?.Name ?? "";
+            SelectedStop = stopTime?.Stop;
 
             UpdateSuggestions =
                 ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
@@ -44,10 +43,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             this.WhenAnyValue(vm => vm.SelectedStop)
                 .Where(s => s != null)
-                .Subscribe(_ =>
-                {
-                    StopTime.StopId = SelectedStop.Id;
-                });
+                .Subscribe(_ => StopTime.StopId = SelectedStop.Id);
         }
 
         public ReactiveList<Stop> StopSuggestions { get; protected set; }
@@ -70,7 +66,6 @@ namespace PublicTransport.Client.ViewModels.Edit
             get { return _stopTime; }
             set { this.RaiseAndSetIfChanged(ref _stopTime, value); }
         }
-        public bool IsNew;
         private StopFilter _stopFilter;
         private Stop _selectedStop;
     }

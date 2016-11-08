@@ -94,6 +94,7 @@ namespace PublicTransport.Services
         {
             return _db.StopTimes.Include(x => x.Trip)
                 .Where(x => x.Trip.RouteId == routeId)
+                .OrderBy(x => x.StopSequence)
                 .Select(x => x.Stop)
                 .Include(x => x.Street.City)
                 .Distinct()

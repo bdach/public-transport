@@ -96,6 +96,11 @@ namespace PublicTransport.Services
                 return _db.Routes.Where(x => x.AgencyId == agencyId).ToList();
         }
 
+        /// <summary>
+        /// Filters routes using the supplied <see cref="IRouteFilter"/>.
+        /// </summary>
+        /// <param name="filter">Filter to use while searching.</param>
+        /// <returns>List of routes satisfying the search criteria.</returns>
         public List<Route> FilterRoutes(IRouteFilter filter)
         {
             return _db.Routes.Include(r => r.Agency)

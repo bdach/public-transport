@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -98,15 +99,51 @@ namespace PublicTransport.Services
         /// <summary>
         ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
         /// </summary>
-        /// <param name="stopId">Id of the <see cref="Stop" />.</param>
-        /// <param name="routeId">Id of the <see cref="Route" />.</param>
         /// <returns>
         ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
         /// </returns>
-        public List<StopTime> GetRouteTimetableByStopId(int stopId, int routeId)
+        public List<StopTime> GetRouteTimetableByStopId(IStopTimeFilter filter)
         {
-            return _db.StopTimes.Include(x => x.Trip)
-                .Where(x => x.StopId == stopId && x.Trip.RouteId == routeId)
+            var day = filter.Date?.DayOfWeek;
+            Func<StopTime, bool> isActive;
+            switch (day)
+            {
+                case DayOfWeek.Monday:
+                    isActive = stopTime => stopTime.Trip.Service.Monday;
+                    break;
+                case DayOfWeek.Tuesday:
+                    isActive = stopTime => stopTime.Trip.Service.Tuesday;
+                    break;
+                case DayOfWeek.Wednesday:
+                    isActive = stopTime => stopTime.Trip.Service.Wednesday;
+                    break;
+                case DayOfWeek.Thursday:
+                    isActive = stopTime => stopTime.Trip.Service.Thursday;
+                    break;
+                case DayOfWeek.Friday:
+                    isActive = stopTime => stopTime.Trip.Service.Friday;
+                    break;
+                case DayOfWeek.Saturday:
+                    isActive = stopTime => stopTime.Trip.Service.Saturday;
+                    break;
+                case DayOfWeek.Sunday:
+                    isActive = stopTime => stopTime.Trip.Service.Sunday;
+                    break;
+                case null:
+                    isActive = stopTime => true;
+                    break;
+                default:
+                    isActive = stopTime => true;
+                    break;
+            }
+            return _db.StopTimes.Include(x => x.Trip.Service)
+                .Include(x => x.Stop.Street.City)
+                .Include(x => x.Trip.Route.Agency)
+                .Where(x => x.StopId == filter.StopId)
+                .Where(x => x.Trip.RouteId == filter.RouteId)
+                .Where(x => !filter.Date.HasValue || (x.Trip.Service.StartDate <= filter.Date.Value && x.Trip.Service.EndDate >= filter.Date.Value))
+                .Where(x => !filter.Time.HasValue || x.ArrivalTime >= filter.Time.Value)
+                .Where(isActive)
                 .ToList();
         }
 

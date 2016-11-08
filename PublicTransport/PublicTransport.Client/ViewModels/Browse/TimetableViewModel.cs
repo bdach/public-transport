@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
@@ -45,6 +46,8 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// </summary>
         private StopTime _selectedStopTime;
 
+        private StopTimeFilter _stopTimeFilter;
+
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -61,6 +64,7 @@ namespace PublicTransport.Client.ViewModels.Browse
             Route = route;
             Stops = new ReactiveList<Stop>();
             StopTimes = new ReactiveList<StopTime>();
+            StopTimeFilter = new StopTimeFilter {RouteId = route.Id};
 
             #endregion
 
@@ -76,6 +80,12 @@ namespace PublicTransport.Client.ViewModels.Browse
                 Stops.Clear();
                 Stops.AddRange(results);
             });
+            GetStops.ThrownExceptions.Subscribe(
+                e =>
+                {
+                    HostScreen.Router.NavigateBack.ExecuteAsync();
+                    UserError.Throw("Cannot fetch stops. Please contact the system administrator.", e);
+                });
 
             #endregion
 
@@ -84,12 +94,14 @@ namespace PublicTransport.Client.ViewModels.Browse
             UpdateStopTimes =
                 ReactiveCommand.CreateAsyncTask(
                     async _ =>
-                            await Task.Run(() => _stopTimeService.GetRouteTimetableByStopId(SelectedStop.Id, Route.Id)));
+                            await Task.Run(() => _stopTimeService.GetRouteTimetableByStopId(StopTimeFilter)));
             UpdateStopTimes.Subscribe(results =>
             {
                 StopTimes.Clear();
                 StopTimes.AddRange(results);
             });
+            UpdateStopTimes.ThrownExceptions.Subscribe(
+                e => UserError.Throw("Cannot fetch timetable. Please contact the system administrator.", e));
 
             #endregion
 
@@ -113,7 +125,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             AddTrip =
                 ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen)));
+                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, Route, Stops)));
             EditTrip = ReactiveCommand.CreateAsyncObservable(stopTimeSelected,
                 _ => HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, SelectedStopTime.Trip)));
 
@@ -127,8 +139,11 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #endregion
 
-            this.WhenAnyValue(vm => vm.SelectedStop)
-                .Where(c => c != null)
+            this.WhenAnyValue(vm => vm.SelectedStop, vm => vm.StopTimeFilter.Date, vm => vm.StopTimeFilter.Time)
+                .Select(s => s.Item1?.Id)
+                .Where(id => id.HasValue)
+                .Select(s => StopTimeFilter.StopId = s.Value)
+                .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(UpdateStopTimes);
         }
 
@@ -189,6 +204,12 @@ namespace PublicTransport.Client.ViewModels.Browse
         {
             get { return _selectedStopTime; }
             set { this.RaiseAndSetIfChanged(ref _selectedStopTime, value); }
+        }
+
+        public StopTimeFilter StopTimeFilter
+        {
+            get { return _stopTimeFilter; }
+            set { this.RaiseAndSetIfChanged(ref _stopTimeFilter, value); }
         }
 
         /// <summary>

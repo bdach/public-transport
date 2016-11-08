@@ -53,6 +53,7 @@
     <Compile Include="DataTransfer\IFareFilter.cs" />
     <Compile Include="DataTransfer\IStopFilter.cs" />
     <Compile Include="DataTransfer\IRouteFilter.cs" />
+    <Compile Include="DataTransfer\IStopTimeFilter.cs" />
     <Compile Include="DataTransfer\IStreetFilter.cs" />
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
