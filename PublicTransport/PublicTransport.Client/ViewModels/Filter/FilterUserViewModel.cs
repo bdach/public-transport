@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterUserViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="UserService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="User" /> data from the database.
         /// </summary>
         private readonly UserService _userService;
 
@@ -55,18 +55,14 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region User filtering command
 
-            FilterUsers =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _userService.FilterUsers(UserFilter)));
+            FilterUsers = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _userService.FilterUsers(UserFilter)));
             FilterUsers.Subscribe(result =>
             {
                 Users.Clear();
                 Users.AddRange(result);
             });
-            FilterUsers.ThrownExceptions.Subscribe(
-                e =>
-                    UserError.Throw(
-                        "Cannot fetch user data from the database. Please contact the system administrator.", e));
+            FilterUsers.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch user data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -83,24 +79,26 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete user command
 
-            DeleteUser= ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem,
-                async _ =>
-                {
-                    await Task.Run(() => _userService.Delete(SelectedUser));
-                    return Unit.Default;
-                });
+            DeleteUser = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
+            {
+                await Task.Run(() => _userService.Delete(SelectedUser));
+                return Unit.Default;
+            });
             DeleteUser.Subscribe(_ => SelectedUser = null);
             DeleteUser.InvokeCommand(FilterUsers);
-            DeleteUser.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected user. Please contact the system administrator.", e));
+            DeleteUser.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected user. Please contact the system administrator.", e));
 
             #endregion
 
-            AddUser =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen)));
-            EditUser = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen, SelectedUser)));
+            #region Add/edit user commands
+
+            AddUser = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen)));
+            EditUser = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen, SelectedUser)));
+
+            #endregion
 
             #region Clearing enum choice
 

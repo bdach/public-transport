@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="AgencyService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="Agency" /> data from the database.
         /// </summary>
         private readonly AgencyService _agencyService;
 
@@ -53,18 +53,14 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Agency filtering command
 
-            FilterAgencies =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
+            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
             FilterAgencies.Subscribe(result =>
             {
                 Agencies.Clear();
                 Agencies.AddRange(result);
             });
-            FilterAgencies.ThrownExceptions.Subscribe(
-                e =>
-                    UserError.Throw(
-                        "Cannot fetch agency data from the database. Please contact the system administrator.", e));
+            FilterAgencies.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch agency data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -80,24 +76,26 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete agency command
 
-            DeleteAgency = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem,
-                async _ =>
-                {
-                    await Task.Run(() => _agencyService.Delete(SelectedAgency));
-                    return Unit.Default;
-                });
+            DeleteAgency = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
+            {
+                await Task.Run(() => _agencyService.Delete(SelectedAgency));
+                return Unit.Default;
+            });
             DeleteAgency.Subscribe(_ => SelectedAgency = null);
             DeleteAgency.InvokeCommand(FilterAgencies);
-            DeleteAgency.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected agency. Please contact the system administrator.", e));
+            DeleteAgency.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected agency. Please contact the system administrator.", e));
 
             #endregion
 
-            AddAgency =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen)));
-            EditAgency = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, SelectedAgency)));
+            #region Add/edit agency commands
+
+            AddAgency = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen)));
+            EditAgency = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, SelectedAgency)));
+
+            #endregion
 
             #region Updating the list of agencies upon navigating back
 

@@ -20,12 +20,12 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="FareAttributeService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="FareAttribute" /> data from the database.
         /// </summary>
         private readonly FareAttributeService _fareAttributeService;
 
         /// <summary>
-        ///     <see cref="FareRuleService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="FareRule" /> data from the database.
         /// </summary>
         private readonly FareRuleService _fareRuleService;
 
@@ -59,18 +59,14 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Stop filtering command
 
-            FilterFares =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _fareAttributeService.FilterFares(FareFilter)));
+            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareAttributeService.FilterFares(FareFilter)));
             FilterFares.Subscribe(result =>
             {
                 FareAttributes.Clear();
                 FareAttributes.AddRange(result);
             });
-            FilterFares.ThrownExceptions.Subscribe(
-                e =>
-                    UserError.Throw(
-                        "Cannot fetch fare data from the database. Please contact the system administrator.", e));
+            FilterFares.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch fare data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -88,25 +84,27 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete stop command
 
-            DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem,
-                async _ =>
-                {
-                    await Task.Run(() => _fareRuleService.Delete(SelectedFare.FareRule));
-                  //await Task.Run(() => _fareAttributeService.Delete(SelectedFare)); // commented because of cascade delete
-                    return Unit.Default;
-                });
+            DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
+            {
+                await Task.Run(() => _fareRuleService.Delete(SelectedFare.FareRule));
+                //await Task.Run(() => _fareAttributeService.Delete(SelectedFare)); // commented because of cascade delete
+                return Unit.Default;
+            });
             DeleteFare.Subscribe(_ => SelectedFare = null);
             DeleteFare.InvokeCommand(FilterFares);
-            DeleteFare.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected fare. Please contact the system administrator.", e));
+            DeleteFare.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected fare. Please contact the system administrator.", e));
 
             #endregion
 
-            AddFare =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen)));
-            EditFare = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, SelectedFare)));
+            #region Add/edit fare commands
+
+            AddFare = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen)));
+            EditFare = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, SelectedFare)));
+
+            #endregion
 
             #region Updating the list of stops upon navigating back
 

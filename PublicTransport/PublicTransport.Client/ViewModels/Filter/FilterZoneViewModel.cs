@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="ZoneService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="Zone" /> data from the database.
         /// </summary>
         private readonly ZoneService _zoneService;
 
@@ -51,18 +51,14 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Zone filtering command
 
-            FilterZones =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => { return await Task.Run(() => _zoneService.GetZonesContainingString(NameFilter)); });
+            FilterZones = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _zoneService.GetZonesContainingString(NameFilter)); });
             FilterZones.Subscribe(result =>
             {
                 Zones.Clear();
                 Zones.AddRange(result);
             });
-            FilterZones.ThrownExceptions.Subscribe(
-                e =>
-                    UserError.Throw(
-                        "Cannot fetch zone data from the database. Please contact the system administrator.", e));
+            FilterZones.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch zone data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -85,18 +81,17 @@ namespace PublicTransport.Client.ViewModels.Filter
             });
             DeleteZone.Subscribe(_ => SelectedZone = null);
             DeleteZone.InvokeCommand(FilterZones);
-            DeleteZone.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected zone. Please contact the system administrator.", e));
+            DeleteZone.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected zone. Please contact the system administrator.", e));
 
             #endregion
 
-            #region Add/edit commands
+            #region Add/edit zone commands
 
-            AddZone =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen)));
-            EditZone = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, SelectedZone)));
+            AddZone = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen)));
+            EditZone = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, SelectedZone)));
 
             #endregion
 

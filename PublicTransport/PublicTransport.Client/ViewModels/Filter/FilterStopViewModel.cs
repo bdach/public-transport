@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterStopViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="StopService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
         /// </summary>
         private readonly StopService _stopService;
 
@@ -37,7 +37,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="screen"></param>
+        /// <param name="screen">Screen to display the view model on.</param>
         public FilterStopViewModel(IScreen screen)
         {
             #region Field/property initialization
@@ -53,23 +53,19 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Stop filtering command
 
-            FilterStops =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
+            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
             FilterStops.Subscribe(result =>
             {
                 Stops.Clear();
                 Stops.AddRange(result);
             });
-            FilterStops.ThrownExceptions.Subscribe(
-                e =>
-                    UserError.Throw(
-                        "Cannot fetch stop data from the database. Please contact the system administrator.", e));
+            FilterStops.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch stop data from the database. Please contact the system administrator.", e));
 
             #endregion
 
             #region Updating the list of filtered stops upon filter change
-            
+
             this.WhenAnyValue(
                     vm => vm.StopFilter.StopNameFilter,
                     vm => vm.StopFilter.CityNameFilter,
@@ -84,24 +80,26 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete stop command
 
-            DeleteStop = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem,
-                async _ =>
-                {
-                    await Task.Run(() => _stopService.Delete(SelectedStop));
-                    return Unit.Default;
-                });
+            DeleteStop = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
+            {
+                await Task.Run(() => _stopService.Delete(SelectedStop));
+                return Unit.Default;
+            });
             DeleteStop.Subscribe(_ => SelectedStop = null);
             DeleteStop.InvokeCommand(FilterStops);
-            DeleteStop.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected stop. Please contact the system administrator.", e));
+            DeleteStop.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected stop. Please contact the system administrator.", e));
 
             #endregion
 
-            AddStop =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen)));
-            EditStop = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, SelectedStop)));
+            #region Add/edit stop command
+
+            AddStop = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen)));
+            EditStop = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, SelectedStop)));
+
+            #endregion
 
             #region Updating the list of stops upon navigating back
 

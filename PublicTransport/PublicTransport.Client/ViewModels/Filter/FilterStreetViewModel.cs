@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="StreetService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="Street" /> data from the database.
         /// </summary>
         private readonly StreetService _streetService;
 
@@ -49,19 +49,18 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
-            var canExecuteOnSelectedItem = this.WhenAnyValue(vm => vm.SelectedStreet).Select(c => c != null);
+            var canExecuteOnSelectedItem = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
 
             #region Street filtering command
 
-            FilterStreets = ReactiveCommand.CreateAsyncTask(
-                async _ => { return await Task.Run(() => _streetService.FilterStreets(StreetFilter)); });
+            FilterStreets = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _streetService.FilterStreets(StreetFilter)); });
             FilterStreets.Subscribe(result =>
             {
                 Streets.Clear();
                 Streets.AddRange(result);
             });
-            FilterStreets.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot fetch street data from the database. Please contact the system administrator.", e));
+            FilterStreets.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch street data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -84,17 +83,17 @@ namespace PublicTransport.Client.ViewModels.Filter
             });
             DeleteStreet.Subscribe(_ => SelectedStreet = null);
             DeleteStreet.InvokeCommand(FilterStreets);
-            DeleteStreet.ThrownExceptions.Subscribe(e => UserError.Throw("Cannot delete the selected city. Please contact the system administrator.", e));
+            DeleteStreet.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected city. Please contact the system administrator.", e));
 
             #endregion
 
-            #region Add/edit commands
+            #region Add/edit street commands
 
-            AddStreet =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen)));
-            EditStreet = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
+            AddStreet = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen)));
+            EditStreet = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
 
             #endregion
 

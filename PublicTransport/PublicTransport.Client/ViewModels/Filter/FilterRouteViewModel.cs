@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterRouteViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="RouteService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="Route" /> data from the database.
         /// </summary>
         private readonly RouteService _routeService;
 
@@ -56,17 +56,14 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Route filtering command
 
-            FilterRoutes =
-                ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
             FilterRoutes.Subscribe(result =>
             {
                 Routes.Clear();
                 Routes.AddRange(result);
             });
-            FilterRoutes.ThrownExceptions.Subscribe(
-                e =>
-                    UserError.Throw(
-                        "Cannot fetch route data from the database. Please contact the system administrator.", e));
+            FilterRoutes.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot fetch route data from the database. Please contact the system administrator.", e));
 
             #endregion
 
@@ -82,29 +79,26 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete agency command
 
-            DeleteRoute = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem,
-                async _ =>
-                {
-                    await Task.Run(() => _routeService.Delete(SelectedRoute));
-                    return Unit.Default;
-                });
+            DeleteRoute = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
+            {
+                await Task.Run(() => _routeService.Delete(SelectedRoute));
+                return Unit.Default;
+            });
             DeleteRoute.Subscribe(_ => SelectedRoute = null);
             DeleteRoute.InvokeCommand(FilterRoutes);
-            DeleteRoute.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected route. Please contact the system administrator.", e));
+            DeleteRoute.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected route. Please contact the system administrator.", e));
 
             #endregion
 
             #region Button commands
 
-            AddRoute =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen)));
-            EditRoute =
-                ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, SelectedRoute)));
-            ShowTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, SelectedRoute)));
+            AddRoute = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen)));
+            EditRoute = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, SelectedRoute)));
+            ShowTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, SelectedRoute)));
 
             #endregion
 
