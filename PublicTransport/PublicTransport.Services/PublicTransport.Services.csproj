@@ -55,6 +55,7 @@
     <Compile Include="DataTransfer\IRouteFilter.cs" />
     <Compile Include="DataTransfer\IStopTimeFilter.cs" />
     <Compile Include="DataTransfer\IStreetFilter.cs" />
+    <Compile Include="DataTransfer\IUserFilter.cs" />
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AgencyService.cs" />

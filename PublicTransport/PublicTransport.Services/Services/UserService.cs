@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
@@ -22,6 +24,18 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
         public User Create(User user)
         {
+            var roles = new List<Role>();
+            foreach (var role in user.Roles)
+            {
+                var currentRole = _db.Roles.FirstOrDefault(r => r.Id == role.Id && r.Name == role.Name);
+                if (currentRole == null)
+                {
+                    return null;
+                }
+                roles.Add(currentRole);
+            }
+            user.Roles = roles;
+
             _db.Users.Add(user);
             _db.SaveChanges();
             return user;
@@ -37,7 +51,7 @@ namespace PublicTransport.Services
         /// </returns>
         public User Read(int id)
         {
-            return _db.Users.FirstOrDefault(u => u.Id == id);
+            return _db.Users.Include(x => x.Roles).FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -55,6 +69,32 @@ namespace PublicTransport.Services
             if (old == null)
             {
                 throw new EntryNotFoundException();
+            }
+
+            var roles = new List<Role>();
+            foreach (var role in user.Roles)
+            {
+                var currentRole = _db.Roles.FirstOrDefault(r => r.Id == role.Id && r.Name == role.Name);
+                if (currentRole == null)
+                {
+                    return null;
+                }
+                roles.Add(currentRole);
+            }
+            user.Roles = roles;
+
+            var deletedRoles = old.Roles.Except(user.Roles).ToList();
+            var addedRoles = user.Roles.Except(old.Roles).ToList();
+            deletedRoles.ForEach(x => old.Roles.Remove(x));
+            _db.Entry(old).CurrentValues.SetValues(user);
+
+            foreach (var role in addedRoles)
+            {
+                if (_db.Entry(role).State == EntityState.Detached)
+                {
+                    _db.Roles.Attach(role);
+                }
+                old.Roles.Add(role);
             }
 
             _db.Entry(old).CurrentValues.SetValues(user);
@@ -80,6 +120,21 @@ namespace PublicTransport.Services
 
             _db.Entry(old).State = EntityState.Deleted;
             _db.SaveChanges();
+        }
+
+        /// <summary>
+        ///     Selects all the <see cref="User" /> objects that match all the criteria specified by the
+        ///     <see cref="IUserFilter" /> object. The returned name strings all contain the
+        ///     parameters supplied in the <see cref="filter" /> parameter.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>List of items satisfying the supplied query.</returns>
+        public List<User> FilterUsers(IUserFilter filter)
+        {
+            return _db.Users.Include(u => u.Roles)
+                .Where(u => u.UserName.Contains(filter.UserNameFilter))
+                .Where(u => !filter.RoleNameFilter.HasValue || u.Roles.Any(r => r.Name == filter.RoleNameFilter.Value))
+                .Take(20).ToList();
         }
 
         /// <summary>

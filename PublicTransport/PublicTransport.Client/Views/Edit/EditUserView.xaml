@@ -41,7 +41,6 @@
                      Grid.Column="0"
                      Grid.ColumnSpan="2"
                      x:Name="RolesListBox"
-                     SelectionMode="Multiple"
                      FontSize="16">
             </ListBox>
         </Grid>

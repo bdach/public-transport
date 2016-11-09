@@ -21,6 +21,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     <see cref="UserService" /> used for persisting the street.
         /// </summary>
         private readonly UserService _userService;
+
         /// <summary>
         ///     <see cref="RoleService" /> used for persisting the street.
         /// </summary>
@@ -51,7 +52,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #endregion
 
             GetRoles = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _roleService.GetAllRoles()));
-            GetRoles.Subscribe(result => RoleViewModels.AddRange(result.Select(r => new RoleViewModel(r, User.Roles.Contains(r))).ToList()));
+            GetRoles.Subscribe(result => RoleViewModels.AddRange(result.Select(r => new RoleViewModel(r, User.Roles.Any(ur => ur.Name == r.Name))).ToList()));
 
             #region SaveUser command
 

@@ -58,7 +58,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new EditCalendarView(), typeof(IViewFor<EditCalendarViewModel>));
             Locator.CurrentMutable.Register(() => new EditStopTimeView(), typeof(IViewFor<EditStopTimeViewModel>));
             Locator.CurrentMutable.Register(() => new TimetableView(), typeof(IViewFor<TimetableViewModel>));
-
+            Locator.CurrentMutable.Register(() => new FilterUserView(), typeof(IViewFor<FilterUserViewModel>));
             Locator.CurrentMutable.Register(() => new EditUserView(), typeof(IViewFor<EditUserViewModel>));
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
@@ -70,6 +70,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTime>));
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
             Locator.CurrentMutable.Register(() => new RoleView(), typeof(IViewFor<RoleViewModel>));
+            Locator.CurrentMutable.Register(() => new UserView(), typeof(IViewFor<User>));
         }
 
         /// <summary>

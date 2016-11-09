@@ -98,6 +98,7 @@
     <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StopTimeFilter.cs" />
     <Compile Include="DataTransfer\StreetFilter.cs" />
+    <Compile Include="DataTransfer\UserFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="ViewModels\Filter\FilterStopViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterRouteViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterStreetViewModel.cs" />
+    <Compile Include="ViewModels\Filter\FilterUserViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterZoneViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterTripViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
@@ -179,6 +181,9 @@
     <Compile Include="Views\Entities\StopView.xaml.cs">
       <DependentUpon>StopView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Entities\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Entities\ZoneView.xaml.cs">
       <DependentUpon>ZoneView.xaml</DependentUpon>
     </Compile>
@@ -202,6 +207,9 @@
     </Compile>
     <Compile Include="Views\Filter\FilterStreetView.xaml.cs">
       <DependentUpon>FilterStreetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Filter\FilterUserView.xaml.cs">
+      <DependentUpon>FilterUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Filter\FilterZoneView.xaml.cs">
       <DependentUpon>FilterZoneView.xaml</DependentUpon>
@@ -296,6 +304,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Entities\UserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Entities\ZoneView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -325,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filter\FilterStreetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filter\FilterUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
