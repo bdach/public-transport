@@ -12,7 +12,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class CalendarService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -83,7 +90,7 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Disposes database context if not disposed already.
         /// </summary>
         public void Dispose()
         {

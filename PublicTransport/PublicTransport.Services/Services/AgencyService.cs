@@ -14,21 +14,15 @@ namespace PublicTransport.Services
     /// </summary>
     public class AgencyService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
-        private bool _disposed;
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Determines whether the database context has already been disposed.
         /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _db.Dispose();
-            _disposed = true;
-        }
+        private bool _disposed;
 
         /// <summary>
         ///     Inserts an <see cref="Agency" /> record into the database.
@@ -111,6 +105,19 @@ namespace PublicTransport.Services
                 .Where(a => a.Street.Name.Contains(filter.StreetNameFilter))
                 .Where(a => a.Street.City.Name.Contains(filter.CityNameFilter))
                 .Take(20).ToList();
+        }
+
+        /// <summary>
+        ///     Disposes database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

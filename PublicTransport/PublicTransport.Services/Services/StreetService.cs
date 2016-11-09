@@ -14,7 +14,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class StreetService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -90,15 +97,14 @@ namespace PublicTransport.Services
         /// <returns>List of items satisfying the supplied query.</returns>
         public List<Street> FilterStreets(IStreetFilter streetFilter)
         {
-            return _db.Streets.Include(x => x.City)
-                .Where(x => x.Name.Contains(streetFilter.StreetNameFilter))
-                .Where(x => x.City.Name.Contains(streetFilter.CityNameFilter))
-                .Take(20)
-                .ToList();
+            return _db.Streets.Include(s => s.City)
+                .Where(s => s.Name.Contains(streetFilter.StreetNameFilter))
+                .Where(s => s.City.Name.Contains(streetFilter.CityNameFilter))
+                .Take(20).ToList();
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Disposes database context if not disposed already.
         /// </summary>
         public void Dispose()
         {

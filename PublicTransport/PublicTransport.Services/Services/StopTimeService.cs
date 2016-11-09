@@ -14,7 +14,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class StopTimeService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -93,7 +100,7 @@ namespace PublicTransport.Services
         /// </returns>
         public List<StopTime> GetFullTimetableByStopId(int stopId)
         {
-            return _db.StopTimes.Where(x => x.StopId == stopId).ToList();
+            return _db.StopTimes.Where(st => st.StopId == stopId).ToList();
         }
 
         /// <summary>
@@ -136,20 +143,19 @@ namespace PublicTransport.Services
                     isActive = stopTime => true;
                     break;
             }
-            return _db.StopTimes.Include(x => x.Trip.Service)
-                .Include(x => x.Stop.Street.City)
-                .Include(x => x.Trip.Route.Agency)
-                .Where(x => x.StopId == filter.StopId)
-                .Where(x => x.Trip.RouteId == filter.RouteId)
-                .Where(x => !filter.Date.HasValue || (x.Trip.Service.StartDate <= filter.Date.Value 
-                    && x.Trip.Service.EndDate >= filter.Date.Value))
-                .Where(x => !filter.Time.HasValue || x.ArrivalTime >= filter.Time.Value)
-                .Where(isActive)
-                .ToList();
+            return _db.StopTimes.Include(st => st.Trip.Service)
+                .Include(st => st.Stop.Street.City)
+                .Include(st => st.Trip.Route.Agency)
+                .Where(st => st.StopId == filter.StopId)
+                .Where(st => st.Trip.RouteId == filter.RouteId)
+                .Where(st => !filter.Date.HasValue || (st.Trip.Service.StartDate <= filter.Date.Value 
+                    && st.Trip.Service.EndDate >= filter.Date.Value))
+                .Where(st => !filter.Time.HasValue || st.ArrivalTime >= filter.Time.Value)
+                .Where(isActive).ToList();
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Disposes database context if not disposed already.
         /// </summary>
         public void Dispose()
         {

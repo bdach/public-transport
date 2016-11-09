@@ -13,7 +13,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class ZoneService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -92,11 +99,11 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Zone> GetZonesContainingString(string str)
         {
-            return _db.Zones.Where(x => x.Name.Contains(str)).Take(10).ToList();
+            return _db.Zones.Where(z => z.Name.Contains(str)).Take(10).ToList();
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Disposes database context if not disposed already.
         /// </summary>
         public void Dispose()
         {

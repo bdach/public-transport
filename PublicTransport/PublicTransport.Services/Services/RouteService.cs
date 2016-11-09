@@ -14,7 +14,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class RouteService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -93,7 +100,7 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Route> GetRoutesByAgencyId(int agencyId)
         {
-                return _db.Routes.Where(x => x.AgencyId == agencyId).ToList();
+                return _db.Routes.Where(a => a.AgencyId == agencyId).ToList();
         }
 
         /// <summary>
@@ -108,12 +115,11 @@ namespace PublicTransport.Services
                 .Where(r => r.LongName.Contains(filter.LongNameFilter))
                 .Where(r => r.Agency.Name.Contains(filter.AgencyNameFilter))
                 .Where(r => !filter.RouteTypeFilter.HasValue || r.RouteType == filter.RouteTypeFilter.Value)
-                .Take(20)
-                .ToList();
+                .Take(20).ToList();
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Disposes database context if not disposed already.
         /// </summary>
         public void Dispose()
         {

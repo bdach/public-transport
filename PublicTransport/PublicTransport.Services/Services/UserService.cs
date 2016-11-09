@@ -14,7 +14,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class UserService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -51,7 +58,7 @@ namespace PublicTransport.Services
         /// </returns>
         public User Read(int id)
         {
-            return _db.Users.Include(x => x.Roles).FirstOrDefault(u => u.Id == id);
+            return _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -85,7 +92,7 @@ namespace PublicTransport.Services
 
             var deletedRoles = old.Roles.Except(user.Roles).ToList();
             var addedRoles = user.Roles.Except(old.Roles).ToList();
-            deletedRoles.ForEach(x => old.Roles.Remove(x));
+            deletedRoles.ForEach(r => old.Roles.Remove(r));
             _db.Entry(old).CurrentValues.SetValues(user);
 
             foreach (var role in addedRoles)
@@ -138,7 +145,7 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Disposes database context if not disposed already.
         /// </summary>
         public void Dispose()
         {

@@ -13,7 +13,14 @@ namespace PublicTransport.Services
     /// </summary>
     public class StopService
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
+
+        /// <summary>
+        ///     Determines whether the database context has already been disposed.
+        /// </summary>
         private bool _disposed;
 
         /// <summary>
@@ -92,23 +99,12 @@ namespace PublicTransport.Services
         /// </returns>
         public List<Stop> GetStopsByRouteId(int routeId)
         {
-            return _db.StopTimes.Include(x => x.Trip)
-                .Where(x => x.Trip.RouteId == routeId)
-                .OrderBy(x => x.StopSequence)
-                .Select(x => x.Stop)
-                .Include(x => x.Street.City)
-                .Distinct()
-                .ToList();
-        }
-
-        /// <summary>
-        ///     Disposed database context.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
+            return _db.StopTimes.Include(st => st.Trip)
+                .Where(st => st.Trip.RouteId == routeId)
+                .OrderBy(st => st.StopSequence)
+                .Select(st => st.Stop)
+                .Include(s => s.Street.City)
+                .Distinct().ToList();
         }
 
         /// <summary>
@@ -128,6 +124,16 @@ namespace PublicTransport.Services
                 .Where(s => s.ParentStation == null || s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
                 .Where(s => !filter.OnlyStations || s.IsStation)
                 .Take(20).ToList();
+        }
+
+        /// <summary>
+        ///     Disposes database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

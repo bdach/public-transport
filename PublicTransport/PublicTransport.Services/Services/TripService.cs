@@ -13,21 +13,15 @@ namespace PublicTransport.Services
     /// </summary>
     public class TripService : IDisposable
     {
+        /// <summary>
+        ///     An instance of database context.
+        /// </summary>
         private readonly PublicTransportContext _db = new PublicTransportContext();
-        private bool _disposed;
 
         /// <summary>
-        ///     Disposed database context.
+        ///     Determines whether the database context has already been disposed.
         /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _db.Dispose();
-            _disposed = true;
-        }
+        private bool _disposed;
 
         /// <summary>
         ///     Inserts a <see cref="Trip" /> record into the database.
@@ -126,6 +120,13 @@ namespace PublicTransport.Services
             return stops;
         }
 
+        /// <summary>
+        ///     Return a list of <see cref="Stop"/>s that are assinged to the provided <see cref="Trip"/>.
+        /// </summary>
+        /// <param name="trip"><see cref="Trip"/> to filter stops by.</param>
+        /// <returns>
+        ///     Return a list of <see cref="Stop"/>s that are assinged to the provided <see cref="Trip"/>.
+        /// </returns>
         public List<StopTime> GetTripStops(Trip trip)
         {
             return _db.StopTimes
@@ -133,6 +134,19 @@ namespace PublicTransport.Services
                 .Where(t => t.TripId == trip.Id)
                 .OrderBy(t => t.StopSequence)
                 .ToList();
+        }
+
+        /// <summary>
+        ///     Disposes database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }
