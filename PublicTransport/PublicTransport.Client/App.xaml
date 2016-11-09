@@ -175,5 +175,25 @@
                 </Style>
             </Style.Resources>
         </Style>
+
+        <Style TargetType="{x:Type Button}"
+               x:Key="LogoutButton"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background"
+                    Value="Firebrick" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="BorderBrush" 
+                    Value="DarkRed" />
+            <Setter Property="FontWeight" 
+                    Value="Bold" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                                 Value="True">
+                    <Setter Property="Background"
+                            Value="Brown" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

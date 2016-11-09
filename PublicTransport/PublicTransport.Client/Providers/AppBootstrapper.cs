@@ -28,6 +28,7 @@ namespace PublicTransport.Client.Providers
 
             // Startup objects.
             Locator.CurrentMutable.RegisterLazySingleton(() => this, typeof(IScreen));
+            Locator.CurrentMutable.Register(() => new LoginView(), typeof(IViewFor<LoginViewModel>));
             Locator.CurrentMutable.Register(() => new DetailViewModelFactory(), typeof(DetailViewModelFactory));
             Locator.CurrentMutable.RegisterLazySingleton(() =>
                 new ShellViewModel(Locator.Current.GetService<IScreen>(), Locator.Current.GetService<DetailViewModelFactory>()), typeof(ShellViewModel));
