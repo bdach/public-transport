@@ -53,8 +53,9 @@ namespace PublicTransport.Client.DataTransfer
         /// <summary>
         ///     Determines whether the query is valid.
         /// </summary>
-        public bool IsValid
-            => !string.IsNullOrWhiteSpace(AgencyNameFilter) || !string.IsNullOrWhiteSpace(CityNameFilter) ||
-               !string.IsNullOrWhiteSpace(StreetNameFilter);
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(AgencyNameFilter) ||
+            !string.IsNullOrWhiteSpace(CityNameFilter) ||
+            !string.IsNullOrWhiteSpace(StreetNameFilter);
     }
 }

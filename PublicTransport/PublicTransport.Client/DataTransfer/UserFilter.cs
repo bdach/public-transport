@@ -1,13 +1,11 @@
 ﻿using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.DataTransfer
 {
     /// <summary>
-    ///     Data transfer object interface.
-    ///     Used by the <see cref="UserService" /> to perform filtering.
+    ///     Filtering object used in searching for <see cref="Domain.Entities.User" /> objects.
     /// </summary>
     public class UserFilter : ReactiveObject, IUserFilter, IReactiveFilter
     {
@@ -42,6 +40,8 @@ namespace PublicTransport.Client.DataTransfer
         /// <summary>
         ///     Determines whether the query is valid.
         /// </summary>
-        public bool IsValid => !string.IsNullOrWhiteSpace(_userNameFilter) || RoleNameFilter.HasValue;
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(_userNameFilter) ||
+            RoleNameFilter.HasValue;
     }
 }

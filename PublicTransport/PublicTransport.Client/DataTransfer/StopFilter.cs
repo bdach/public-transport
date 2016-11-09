@@ -33,6 +33,9 @@ namespace PublicTransport.Client.DataTransfer
         /// </summary>
         private string _parentStationNameFilter = "";
 
+        /// <summary>
+        ///     Limits the search query only to stops which are stations.
+        /// </summary>
         private bool _onlyStations;
 
         /// <summary>
@@ -94,8 +97,11 @@ namespace PublicTransport.Client.DataTransfer
         /// <summary>
         ///     Determines whether the query is valid.
         /// </summary>
-        public bool IsValid
-            => !string.IsNullOrWhiteSpace(StopNameFilter) || !string.IsNullOrWhiteSpace(StreetNameFilter) || !string.IsNullOrWhiteSpace(CityNameFilter) ||
-               !string.IsNullOrWhiteSpace(ZoneNameFilter) || !string.IsNullOrWhiteSpace(ParentStationNameFilter);
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(StopNameFilter) ||
+            !string.IsNullOrWhiteSpace(StreetNameFilter) ||
+            !string.IsNullOrWhiteSpace(CityNameFilter) ||
+            !string.IsNullOrWhiteSpace(ZoneNameFilter) ||
+            !string.IsNullOrWhiteSpace(ParentStationNameFilter);
     }
 }

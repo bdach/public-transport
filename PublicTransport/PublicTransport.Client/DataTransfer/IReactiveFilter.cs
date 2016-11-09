@@ -6,7 +6,7 @@
     public interface IReactiveFilter
     {
         /// <summary>
-        ///     Determines whether a query is valid.
+        ///     Determines whether the query is valid.
         /// </summary>
         bool IsValid { get; }
     }

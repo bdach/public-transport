@@ -20,22 +20,14 @@ namespace PublicTransport.Client.DataTransfer
         private string _longNameFilter = "";
 
         /// <summary>
-        ///     Route type filter.
-        /// </summary>
-        private RouteType? _routeTypeFilter;
-
-        /// <summary>
         ///     Route short name filter.
         /// </summary>
         private string _shortNameFilter = "";
 
         /// <summary>
-        ///     Determines whether the query is valid.
+        ///     Route type filter.
         /// </summary>
-        public bool IsValid => !string.IsNullOrWhiteSpace(AgencyNameFilter) ||
-                               !string.IsNullOrWhiteSpace(ShortNameFilter) ||
-                               !string.IsNullOrWhiteSpace(LongNameFilter) ||
-                               RouteTypeFilter.HasValue;
+        private RouteType? _routeTypeFilter;
 
         /// <summary>
         ///     Agency name filter.
@@ -47,6 +39,15 @@ namespace PublicTransport.Client.DataTransfer
         }
 
         /// <summary>
+        ///     Route long name filter.
+        /// </summary>
+        public string LongNameFilter
+        {
+            get { return _longNameFilter; }
+            set { this.RaiseAndSetIfChanged(ref _longNameFilter, value); }
+        }
+
+        /// <summary>
         ///     Route short name filter.
         /// </summary>
         public string ShortNameFilter
@@ -55,19 +56,22 @@ namespace PublicTransport.Client.DataTransfer
             set { this.RaiseAndSetIfChanged(ref _shortNameFilter, value); }
         }
 
-        public string LongNameFilter
-        {
-            get { return _longNameFilter; }
-            set { this.RaiseAndSetIfChanged(ref _longNameFilter, value); }
-        }
-
         /// <summary>
-        ///     Route long name filter.
+        ///     Route type filter.
         /// </summary>
         public RouteType? RouteTypeFilter
         {
             get { return _routeTypeFilter; }
             set { this.RaiseAndSetIfChanged(ref _routeTypeFilter, value); }
         }
+
+        /// <summary>
+        ///     Determines whether the query is valid.
+        /// </summary>
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(AgencyNameFilter) ||
+            !string.IsNullOrWhiteSpace(LongNameFilter) ||
+            !string.IsNullOrWhiteSpace(ShortNameFilter) ||
+            RouteTypeFilter.HasValue;
     }
 }

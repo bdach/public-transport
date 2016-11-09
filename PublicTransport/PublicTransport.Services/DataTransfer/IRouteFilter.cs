@@ -14,14 +14,14 @@ namespace PublicTransport.Services.DataTransfer
         string AgencyNameFilter { get; }
 
         /// <summary>
-        ///     Route short name filter.
-        /// </summary>
-        string ShortNameFilter { get; }
-
-        /// <summary>
         ///     Route long name filter.
         /// </summary>
         string LongNameFilter { get; }
+
+        /// <summary>
+        ///     Route short name filter.
+        /// </summary>
+        string ShortNameFilter { get; }
 
         /// <summary>
         ///     Route type filter.

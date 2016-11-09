@@ -19,12 +19,6 @@ namespace PublicTransport.Client.DataTransfer
         private string _streetNameFilter = "";
 
         /// <summary>
-        ///     Determines whether the query is valid.
-        /// </summary>
-        public bool IsValid
-            => !string.IsNullOrWhiteSpace(CityNameFilter) || !string.IsNullOrWhiteSpace(StreetNameFilter);
-
-        /// <summary>
         ///     Street name filter.
         /// </summary>
         public string StreetNameFilter
@@ -41,5 +35,12 @@ namespace PublicTransport.Client.DataTransfer
             get { return _cityNameFilter; }
             set { this.RaiseAndSetIfChanged(ref _cityNameFilter, value); }
         }
+
+        /// <summary>
+        ///     Determines whether the query is valid.
+        /// </summary>
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(CityNameFilter) ||
+            !string.IsNullOrWhiteSpace(StreetNameFilter);
     }
 }
