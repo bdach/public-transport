@@ -141,7 +141,8 @@ namespace PublicTransport.Services
                 .Include(x => x.Trip.Route.Agency)
                 .Where(x => x.StopId == filter.StopId)
                 .Where(x => x.Trip.RouteId == filter.RouteId)
-                .Where(x => !filter.Date.HasValue || (x.Trip.Service.StartDate <= filter.Date.Value && x.Trip.Service.EndDate >= filter.Date.Value))
+                .Where(x => !filter.Date.HasValue || (x.Trip.Service.StartDate <= filter.Date.Value 
+                    && x.Trip.Service.EndDate >= filter.Date.Value))
                 .Where(x => !filter.Time.HasValue || x.ArrivalTime >= filter.Time.Value)
                 .Where(isActive)
                 .ToList();

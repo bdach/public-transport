@@ -46,6 +46,9 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// </summary>
         private StopTime _selectedStopTime;
 
+        /// <summary>
+        ///     Object used for querying the database for stop times.
+        /// </summary>
         private StopTimeFilter _stopTimeFilter;
 
         /// <summary>
@@ -116,6 +119,7 @@ namespace PublicTransport.Client.ViewModels.Browse
             });
             DeleteTrip.Subscribe(_ => SelectedStopTime = null);
             DeleteTrip.InvokeCommand(UpdateStopTimes);
+            DeleteTrip.InvokeCommand(GetStops);
             DeleteTrip.ThrownExceptions.Subscribe(
                 e => UserError.Throw("Cannot delete the selected trip. Please contact the system administrator.", e));
 
