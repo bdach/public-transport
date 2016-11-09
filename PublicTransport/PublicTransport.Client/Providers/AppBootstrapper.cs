@@ -33,6 +33,9 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.RegisterLazySingleton(() =>
                 new ShellViewModel(Locator.Current.GetService<IScreen>(), Locator.Current.GetService<DetailViewModelFactory>()), typeof(ShellViewModel));
             Locator.CurrentMutable.RegisterLazySingleton(() => new ShellView(Locator.Current.GetService<ShellViewModel>()), typeof(IViewFor<ShellViewModel>));
+            Locator.CurrentMutable.Register(() => new MenuView(), typeof(IViewFor<MenuViewModel>));
+            Locator.CurrentMutable.Register(() => new NotificationView(), typeof(IViewFor<NotificationViewModel>));
+            Locator.CurrentMutable.Register(() => new PlaceholderView(), typeof(IViewFor<PlaceholderViewModel>));
 
             // View model views.
             Locator.CurrentMutable.Register(() => new EditAgencyView(), typeof(IViewFor<EditAgencyViewModel>));

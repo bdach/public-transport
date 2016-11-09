@@ -31,6 +31,7 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
         public User Create(User user)
         {
+            user.Password = PasswordService.GenerateHash(user.Password);
             var roles = new List<Role>();
             foreach (var role in user.Roles)
             {
@@ -58,7 +59,12 @@ namespace PublicTransport.Services
         /// </returns>
         public User Read(int id)
         {
-            return _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.Id == id);
+            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.Id == id);
+            if (user != null)
+            {
+                user.Password = null;
+            }
+            return user;
         }
 
         /// <summary>
@@ -72,6 +78,7 @@ namespace PublicTransport.Services
         /// </exception>
         public User Update(User user)
         {
+            user.Password = PasswordService.GenerateHash(user.Password);
             var old = Read(user.Id);
             if (old == null)
             {
@@ -138,10 +145,13 @@ namespace PublicTransport.Services
         /// <returns>List of items satisfying the supplied query.</returns>
         public List<User> FilterUsers(IUserFilter filter)
         {
-            return _db.Users.Include(u => u.Roles)
+            var users = _db.Users.Include(u => u.Roles)
                 .Where(u => u.UserName.Contains(filter.UserNameFilter))
                 .Where(u => !filter.RoleNameFilter.HasValue || u.Roles.Any(r => r.Name == filter.RoleNameFilter.Value))
-                .Take(20).ToList();
+                .Take(20)
+                .ToList();
+            users.ForEach(u => u.Password = null);
+            return users;
         }
 
         /// <summary>

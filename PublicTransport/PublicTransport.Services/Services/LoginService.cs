@@ -53,9 +53,8 @@ namespace PublicTransport.Services
         {
             var user = _db.Users
                 .Include(u => u.Roles)
-                .Where(u => u.UserName == loginData.UserName)
-                .FirstOrDefault(u => u.Password == loginData.PasswordHash);
-            if (user == null)
+                .FirstOrDefault(u => u.UserName == loginData.UserName);
+            if (user == null || !PasswordService.CompareWithHash(loginData.Password, user.Password))
             {
                 throw new InvalidCredentialsException();
             }

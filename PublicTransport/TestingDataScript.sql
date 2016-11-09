@@ -58,9 +58,9 @@ VALUES
 INSERT INTO [Users]
 	([UserName], [Password])
 VALUES
-	('root', 'root'),	 -- Passwords will be likely subject to changes here
-	('employee', 'password'),
-	('guest', 'guest')
+	('root', 'kI3j8BafuXUKh4nF1zKTGEMl4u4Awe2dBW8cuvGpv2/yqLB+'),
+	('employee', 'Ll5T7DfZd6ksmO6qjbsx4KOfBZtfGYj3nRn06VWrjF2cc/mW'),
+	('guest', 'gaavVO5tLzjDmFQSzaIufOSWJhzkiqblLYNZkN+BS56LEAI5')
 
 INSERT INTO [UserRoles]
 	([User_Id], [Role_Id])

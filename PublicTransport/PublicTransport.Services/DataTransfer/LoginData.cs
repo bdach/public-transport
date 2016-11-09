@@ -9,11 +9,11 @@
         ///     Constructor.
         /// </summary>
         /// <param name="userName">Username of the user logging in.</param>
-        /// <param name="passwordHash">Hash of the user's password.</param>
-        public LoginData(string userName, string passwordHash)
+        /// <param name="password">Password supplied by the user.</param>
+        public LoginData(string userName, string password)
         {
             UserName = userName;
-            PasswordHash = passwordHash;
+            Password = password;
         }
 
         /// <summary>
@@ -22,8 +22,8 @@
         public string UserName { get; }
 
         /// <summary>
-        ///     Hash of the user's password.
+        ///     Password supplied by the user.
         /// </summary>
-        public string PasswordHash { get; }
+        public string Password { get; }
     }
 }
