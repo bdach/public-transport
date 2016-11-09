@@ -19,17 +19,17 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditTripViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used for fetching <see cref="Route" /> data.
+        ///     Service used to fetch <see cref="Route" /> data from the database.
         /// </summary>
         private readonly RouteService _routeService;
 
         /// <summary>
-        ///     Service used for fetching <see cref="Stop" /> data.
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
         /// </summary>
         private readonly StopService _stopService;
 
         /// <summary>
-        ///     Service used for fetching and saving <see cref="Domain.Entities.Trip" /> data.
+        ///     Service used to fetch and saving <see cref="Domain.Entities.Trip" /> data from the database.
         /// </summary>
         private readonly TripService _tripService;
 
@@ -210,17 +210,14 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             var tripServiceMethod = isNew ? new Func<Trip, Trip>(_tripService.Create) : _tripService.Update;
             var calendarService = new CalendarService();
-            var calendarServiceMethod = isNew
-                ? new Func<Calendar, Calendar>(calendarService.Create)
-                : calendarService.Update;
+            var calendarServiceMethod = isNew ? new Func<Calendar, Calendar>(calendarService.Create) : calendarService.Update;
             SelectedRoute = _trip.Route;
             RouteSuggestions.Add(SelectedRoute);
-            _routeFilter.ShortNameFilter = _trip?.ShortName ?? "";
+            _routeFilter.ShortNameFilter = _trip.ShortName ?? "";
 
             #endregion
 
-            var agencySelected = this.WhenAnyValue(vm => vm.SelectedRoute)
-                .Select(r => r != null);
+            var agencySelected = this.WhenAnyValue(vm => vm.SelectedRoute).Select(r => r != null);
 
             #region SaveTrip command
 
@@ -233,37 +230,28 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Trip.RouteId = SelectedRoute.Id;
                 Trip.ServiceId = schedule.Id;
                 var result = await Task.Run(() => tripServiceMethod(Trip));
-                var stopTimes = StopTimes.Select(vm => vm.StopTime)
-                    .ToList();
+                var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
                 await Task.Run(() => _tripService.UpdateStops(Trip.Id, stopTimes));
                 Trip.Route = SelectedRoute;
                 Trip.Service = schedule;
                 return result;
             });
             // On exceptions: Display error.
-            SaveTrip.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited trip cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveTrip.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited trip cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
                 RouteSuggestions.AddRange(results);
             });
-            UpdateSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 

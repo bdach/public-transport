@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditUserViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="RoleService" /> used for persisting the street.
+        ///     Service used to fetch <see cref="Role" /> data from the database.
         /// </summary>
         private readonly RoleService _roleService;
 
@@ -56,12 +56,8 @@ namespace PublicTransport.Client.ViewModels.Edit
                 User.Roles = RoleViewModels.Where(vm => vm.Selected).Select(vm => vm.Role).ToList();
                 return await Task.Run(() => serviceMethod(User));
             });
-            // On exceptions: Display error.
-            SaveUser.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited user cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveUser.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited user cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 

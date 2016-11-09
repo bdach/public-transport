@@ -1,7 +1,6 @@
 ﻿using System;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Client.ViewModels;
 using PublicTransport.Client.ViewModels.Filter;
 using ReactiveUI;
 
@@ -16,7 +15,7 @@ namespace PublicTransport.Client.Providers
         ///     Returns an <see cref="IDetailViewModel" /> corresponding to the supplied <see cref="MenuOption" />.
         /// </summary>
         /// <param name="screen">The screen the view model is to be shown on.</param>
-        /// <param name="option">The <see cref="MenuOption" /> that was clicked in the <see cref="ShellViewModel" />.</param>
+        /// <param name="option">The <see cref="MenuOption" /> that was clicked in the <see cref="ViewModels.ShellViewModel" />.</param>
         /// <returns>An instance of <see cref="IDetailViewModel" /> corresponding to the supplied <see cref="MenuOption" />.</returns>
         public IDetailViewModel GetViewModel(IScreen screen, MenuOption option)
         {

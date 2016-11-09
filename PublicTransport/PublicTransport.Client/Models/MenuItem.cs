@@ -1,7 +1,7 @@
 ﻿namespace PublicTransport.Client.Models
 {
     /// <summary>
-    ///     Class representing a single menu item in the master view (on the left side of the window)
+    ///     Class representing a single menu item in the master view (on the left side of the window).
     /// </summary>
     public class MenuItem
     {

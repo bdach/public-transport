@@ -17,7 +17,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="CityService" /> used to fetch suggestions.
+        ///     Service used to fetch <see cref="City" /> data from the database.
         /// </summary>
         private readonly CityService _cityService;
 
@@ -27,7 +27,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private string _cityName;
 
         /// <summary>
-        ///     <see cref="City" /> selected by the user in the drop-down menu.
+        ///     <see cref="City" /> object currently selected by the user.
         /// </summary>
         private City _selectedCity;
 
@@ -51,8 +51,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             var streetService = new StreetService();
             var serviceMethod = street == null ? new Func<Street, Street>(streetService.Create) : streetService.Update;
             _street = street ?? new Street();
-            _selectedCity = street?.City;
-            _cityName = _street?.City?.Name;
+            _selectedCity = _street.City;
+            _cityName = _street.City?.Name;
 
             #endregion
 
@@ -60,8 +60,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region DisplayCityView command
 
-            DisplayCityView = ReactiveCommand.CreateAsyncObservable(citySelected,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
+            DisplayCityView = ReactiveCommand.CreateAsyncObservable(citySelected, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
 
             #endregion
 
@@ -76,31 +76,24 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Street.City = SelectedCity;
                 return result;
             });
-            // On exceptions: Display error.
-            SaveStreet.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited street cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveStreet.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited street cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 
+            var canUpdateSuggestions = this.WhenAnyValue(vm => vm.CityName, s => !string.IsNullOrWhiteSpace(s));
+
             #region UpdateSuggestions command
 
-            var canUpdateSuggestions = this.WhenAnyValue(vm => vm.CityName,
-                s => !string.IsNullOrWhiteSpace(s));
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ =>
-            {
-                var suggestions = await Task.Run(() => _cityService.GetCitiesContainingString(CityName));
-                return suggestions;
-            });
+                await Task.Run(() => _cityService.GetCitiesContainingString(CityName)));
             UpdateSuggestions.Subscribe(results =>
             {
                 Suggestions.Clear();
                 Suggestions.AddRange(results);
             });
-            UpdateSuggestions.ThrownExceptions
-                .Subscribe(ex => UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 
@@ -122,7 +115,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List of suggested cities.
+        ///     List of suggested <see cref="City"/> objects.
         /// </summary>
         public ReactiveList<City> Suggestions { get; set; }
 

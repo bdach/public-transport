@@ -18,22 +18,22 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStopViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="StreetService" /> used for persisting the street.
+        ///     Service used to fetch <see cref="Street" /> data from the database.
         /// </summary>
         private readonly StreetService _streetService;
 
         /// <summary>
-        ///     <see cref="ZoneService" /> used for persisting the zone.
+        ///     Service used to fetch <see cref="Zone" /> data from the database.
         /// </summary>
         private readonly ZoneService _zoneService;
 
         /// <summary>
-        ///     <see cref="StopService" /> used for persisting the stop.
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
         /// </summary>
         private readonly StopService _stopService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
+        ///     The <see cref="Agency" /> object being edited in the window.
         /// </summary>
         private Stop _stop;
 
@@ -63,7 +63,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private string _zoneFilter;
 
         /// <summary>
-        ///     Filter used to make queries about <see cref="Stop" /> objects.
+        ///     Filter used to make queries about <see cref="Domain.Entities.Stop" /> objects.
         /// </summary>
         private StopFilter _parentStationFilter;
 
@@ -86,17 +86,17 @@ namespace PublicTransport.Client.ViewModels.Edit
             _stopService = new StopService();
 
             _streetFilter = new StreetFilter();
-            _parentStationFilter = new StopFilter {OnlyStations = true};
+            _parentStationFilter = new StopFilter { OnlyStations = true };
 
             var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopService.Create) : _stopService.Update;
             _stop = stop ?? new Stop();
-            _selectedStreet = _stop?.Street;
-            _selectedZone = _stop?.Zone;
-            _selectedParentStation = _stop?.ParentStation;
+            _selectedStreet = _stop.Street;
+            _selectedZone = _stop.Zone;
+            _selectedParentStation = _stop.ParentStation;
 
-            _streetFilter.StreetNameFilter = _stop?.Street?.Name ?? "";
-            _zoneFilter = _stop?.Zone?.Name ?? "";
-            _parentStationFilter.StopNameFilter = _stop?.ParentStation?.Name ?? "";
+            _streetFilter.StreetNameFilter = _stop.Street?.Name ?? "";
+            _zoneFilter = _stop.Zone?.Name ?? "";
+            _parentStationFilter.StopNameFilter = _stop.ParentStation?.Name ?? "";
 
             #endregion
 
@@ -104,8 +104,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region DisplayStreetView command
 
-            DisplayStreetView = ReactiveCommand.CreateAsyncObservable(streetSelected,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
+            DisplayStreetView = ReactiveCommand.CreateAsyncObservable(streetSelected, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
 
             #endregion
 
@@ -127,58 +127,39 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Stop.ParentStation = SelectedParentStation;
                 return result;
             });
-            // On exceptions: Display error.
-            SaveStop.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited stop cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveStop.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited stop cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 
             #region UpdateSuggestions commands
 
-            UpdateStreetSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _streetService.FilterStreets(StreetFilter)));
+            UpdateStreetSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _streetService.FilterStreets(StreetFilter)));
             UpdateStreetSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();
                 StreetSuggestions.AddRange(results);
             });
-            UpdateStreetSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateStreetSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateZoneSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _zoneService.GetZonesContainingString(ZoneFilter)));
+            UpdateZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _zoneService.GetZonesContainingString(ZoneFilter)));
             UpdateZoneSuggestions.Subscribe(results =>
             {
                 ZoneSuggestions.Clear();
                 ZoneSuggestions.AddRange(results);
             });
-            UpdateZoneSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateZoneSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateParentStationSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _stopService.FilterStops(ParentStationFilter)));
+            UpdateParentStationSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(ParentStationFilter)));
             UpdateParentStationSuggestions.Subscribe(results =>
             {
                 ParentStationSuggestions.Clear();
                 ParentStationSuggestions.AddRange(results);
             });
-            UpdateParentStationSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateParentStationSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 
@@ -225,7 +206,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveList<Stop> ParentStationSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command allowing to edit the <see cref="SelectedStreet" /> object.
+        ///     Command allowing to edit the selected <see cref="Street" /> object.
         /// </summary>
         public ReactiveCommand<object> DisplayStreetView { get; protected set; }
 
@@ -245,7 +226,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<List<Stop>> UpdateParentStationSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for saving the currently edited <see cref="Agency" /> object.
+        ///     Command responsible for saving the currently edited <see cref="Domain.Entities.Stop" /> object.
         /// </summary>
         public ReactiveCommand<Stop> SaveStop { get; protected set; }
 
@@ -282,7 +263,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     The <see cref="Stop" /> parent station currently selected by the user.
+        ///     The <see cref="Domain.Entities.Stop" /> parent station currently selected by the user.
         /// </summary>
         public Stop SelectedParentStation
         {
@@ -309,7 +290,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Filter used to make queries about <see cref="Stop" /> parent station objects.
+        ///     Filter used to make queries about <see cref="Domain.Entities.Stop" /> parent station objects.
         /// </summary>
         public StopFilter ParentStationFilter
         {

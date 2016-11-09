@@ -15,7 +15,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditCityViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     The <see cref="City" /> object being edited in the window.
+        ///     The <see cref="Domain.Entities.City" /> object being edited in the window.
         /// </summary>
         private City _city;
 
@@ -37,14 +37,9 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region SaveCity command
 
-            // Action: Use the service to save to the database.
             SaveCity = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(City)); });
-            // On exceptions: Display error.
-            SaveCity.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited city cannot be saved to the database. Please contact the administrator.",
-                        ex));
+            SaveCity.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited city cannot be saved to the database. Please contact the administrator.", ex));
 
             #endregion
 
@@ -66,7 +61,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Command adding the <see cref="City" /> to the database.
+        ///     Command adding the <see cref="Domain.Entities.City" /> to the database.
         /// </summary>
         public ReactiveCommand<City> SaveCity { get; }
 

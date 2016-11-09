@@ -15,12 +15,12 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStopTimeViewModel : ReactiveObject
     {
         /// <summary>
-        ///     <see cref="StopService" /> responsible for saving the entity to the database.
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
         /// </summary>
         private readonly StopService _stopService;
 
         /// <summary>
-        ///     Currently edited stop time.
+        ///     Currently selected <see cref="Stop"/> object.
         /// </summary>
         private Stop _selectedStop;
 
@@ -54,18 +54,14 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions =
-                ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 StopSuggestions.Clear();
                 StopSuggestions.AddRange(results);
             });
-            UpdateSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 

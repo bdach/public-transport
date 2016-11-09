@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="StreetService" /> used for searching for streets.
+        ///     Service used to fetch <see cref="Street" /> data from the database.
         /// </summary>
         private readonly StreetService _streetService;
 
@@ -53,8 +53,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             var agencyService = new AgencyService();
             var serviceMethod = agency == null ? new Func<Agency, Agency>(agencyService.Create) : agencyService.Update;
             _agency = agency ?? new Agency();
-            _selectedStreet = _agency?.Street;
-            _streetFilter.StreetNameFilter = _agency?.Street?.Name ?? "";
+            _selectedStreet = _agency.Street;
+            _streetFilter.StreetNameFilter = _agency.Street?.Name ?? "";
 
             #endregion
 
@@ -62,12 +62,12 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region DisplayStreetView command
 
-            DisplayStreetView = ReactiveCommand.CreateAsyncObservable(streetSelected,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
+            DisplayStreetView = ReactiveCommand.CreateAsyncObservable(streetSelected, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
 
             #endregion
 
-            #region SaveRoute command
+            #region SaveAgency command
 
             SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ =>
             {
@@ -78,30 +78,21 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Agency.Street = SelectedStreet;
                 return result;
             });
-            // On exceptions: Display error.
-            SaveAgency.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited agency cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveAgency.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited agency cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _streetService.FilterStreets(StreetFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _streetService.FilterStreets(StreetFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();
                 StreetSuggestions.AddRange(results);
             });
-            UpdateSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 
@@ -138,7 +129,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<List<Street>> UpdateSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for saving the currently edited <see cref="Agency" /> object.
+        ///     Command responsible for saving the currently edited <see cref="PublicTransport.Domain.Entities.Agency" /> object.
         /// </summary>
         public ReactiveCommand<Agency> SaveAgency { get; protected set; }
 

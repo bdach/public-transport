@@ -17,22 +17,22 @@ namespace PublicTransport.Client.ViewModels.Browse
     public class TimetableViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="StopService" /> used to fetch data from database.
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
         /// </summary>
         private readonly StopService _stopService;
 
         /// <summary>
-        ///     Service used to fetch <see cref="StopTime" /> data.
+        ///     Service used to fetch <see cref="StopTime" /> data from the database.
         /// </summary>
         private readonly StopTimeService _stopTimeService;
 
         /// <summary>
-        ///     Service used to fetch <see cref="Trip" /> data.
+        ///     Service used to fetch <see cref="Trip" /> data from the database.
         /// </summary>
         private readonly TripService _tripService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.
+        ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed in the view.
         /// </summary>
         private Route _route;
 
@@ -42,7 +42,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         private Stop _selectedStop;
 
         /// <summary>
-        ///     <see cref="StopTime" /> currently selected by the user.
+        ///     <see cref="StopTime" /> object currently selected by the user.
         /// </summary>
         private StopTime _selectedStopTime;
 
@@ -67,44 +67,37 @@ namespace PublicTransport.Client.ViewModels.Browse
             Route = route;
             Stops = new ReactiveList<Stop>();
             StopTimes = new ReactiveList<StopTime>();
-            StopTimeFilter = new StopTimeFilter {RouteId = route.Id};
+            StopTimeFilter = new StopTimeFilter { RouteId = route.Id };
 
             #endregion
 
-            var stopTimeSelected = this.WhenAnyValue(vm => vm.SelectedStopTime).Select(c => c != null);
+            var stopTimeSelected = this.WhenAnyValue(vm => vm.SelectedStopTime).Select(st => st != null);
 
             #region Getting stops
 
-            GetStops =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _stopService.GetStopsByRouteId(Route.Id)));
+            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.GetStopsByRouteId(Route.Id)));
             GetStops.Subscribe(results =>
             {
                 Stops.Clear();
                 Stops.AddRange(results);
             });
-            GetStops.ThrownExceptions.Subscribe(
-                e =>
-                {
-                    HostScreen.Router.NavigateBack.ExecuteAsync();
-                    UserError.Throw("Cannot fetch stops. Please contact the system administrator.", e);
-                });
+            GetStops.ThrownExceptions.Subscribe(e =>
+            {
+                HostScreen.Router.NavigateBack.ExecuteAsync();
+                UserError.Throw("Cannot fetch stops. Please contact the system administrator.", e);
+            });
 
             #endregion
 
             #region Updating stop times
 
-            UpdateStopTimes =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ =>
-                            await Task.Run(() => _stopTimeService.GetRouteTimetableByStopId(StopTimeFilter)));
+            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopTimeService.GetRouteTimetableByStopId(StopTimeFilter)));
             UpdateStopTimes.Subscribe(results =>
             {
                 StopTimes.Clear();
                 StopTimes.AddRange(results);
             });
-            UpdateStopTimes.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot fetch timetable. Please contact the system administrator.", e));
+            UpdateStopTimes.ThrownExceptions.Subscribe(e => UserError.Throw("Cannot fetch timetable. Please contact the system administrator.", e));
 
             #endregion
 
@@ -120,18 +113,16 @@ namespace PublicTransport.Client.ViewModels.Browse
             DeleteTrip.Subscribe(_ => SelectedStopTime = null);
             DeleteTrip.InvokeCommand(UpdateStopTimes);
             DeleteTrip.InvokeCommand(GetStops);
-            DeleteTrip.ThrownExceptions.Subscribe(
-                e => UserError.Throw("Cannot delete the selected trip. Please contact the system administrator.", e));
+            DeleteTrip.ThrownExceptions.Subscribe(e => UserError.Throw("Cannot delete the selected trip. Please contact the system administrator.", e));
 
             #endregion
 
-            #region Add/edit commands
+            #region Add/edit trip commands
 
-            AddTrip =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, Route, Stops)));
-            EditTrip = ReactiveCommand.CreateAsyncObservable(stopTimeSelected,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, SelectedStopTime.Trip)));
+            AddTrip = ReactiveCommand.CreateAsyncObservable(_ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, Route, Stops)));
+            EditTrip = ReactiveCommand.CreateAsyncObservable(stopTimeSelected, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, SelectedStopTime.Trip)));
 
             #endregion
 
@@ -186,6 +177,9 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// </summary>
         public ReactiveCommand<Unit> DeleteTrip { get; protected set; }
 
+        /// <summary>
+        ///     The <see cref="Domain.Entities.Route"/> whose timetable is displayed in the view.
+        /// </summary>
         public Route Route
         {
             get { return _route; }
@@ -210,6 +204,9 @@ namespace PublicTransport.Client.ViewModels.Browse
             set { this.RaiseAndSetIfChanged(ref _selectedStopTime, value); }
         }
 
+        /// <summary>
+        ///     Object user for querying database for stop times.
+        /// </summary>
         public StopTimeFilter StopTimeFilter
         {
             get { return _stopTimeFilter; }

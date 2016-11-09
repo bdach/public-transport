@@ -15,17 +15,17 @@ using ReactiveUI;
 namespace PublicTransport.Client.ViewModels.Edit
 {
     /// <summary>
-    ///     View model for editing <see cref="Domain.Entities.FareRule" /> and <see cref="FareAttribute"/> objects.
+    ///     View model for editing <see cref="Domain.Entities.FareRule" /> and <see cref="Domain.Entities.FareAttribute"/> objects.
     /// </summary>
     public class EditFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="RouteService" /> used for persisting the street.
+        ///     Service used to fetch <see cref="Route" /> data from the database.
         /// </summary>
         private readonly RouteService _routeService;
 
         /// <summary>
-        ///     <see cref="ZoneService" /> used for persisting the zone.
+        ///     Service used to fetch <see cref="Zone" /> data from the database.
         /// </summary>
         private readonly ZoneService _zoneService;
 
@@ -40,7 +40,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private FareRule _fareRule;
 
         /// <summary>
-        ///     The <see cref="Street" /> currently selected by the user.
+        ///     The <see cref="Route" /> currently selected by the user.
         /// </summary>
         private Route _selectedRoute;
 
@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private Zone _selectedDestinationZone;
 
         /// <summary>
-        ///     Filter used to make queries about <see cref="Street" /> objects.
+        ///     Filter used to make queries about <see cref="Route" /> objects.
         /// </summary>
         private RouteFilter _routeFilter;
 
@@ -105,7 +105,6 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
-            //var streetSelected = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
             var allSelected = this.WhenAnyValue(vm => vm.SelectedRoute, vm => vm.SelectedOriginZone,
                 vm => vm.SelectedDestinationZone, (r, o, d) => r != null && o != null && d != null);
 
@@ -132,58 +131,42 @@ namespace PublicTransport.Client.ViewModels.Edit
                 FareAttribute.FareRule = ruleResult;
                 return result;
             });
-            // On exceptions: Display error.
-            SaveFare.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited stop cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveFare.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited fare cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 
             #region UpdateSuggestions commands
 
-            UpdateRouteSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+            UpdateRouteSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
+                await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
             UpdateRouteSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
                 RouteSuggestions.AddRange(results);
             });
-            UpdateRouteSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateRouteSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateOriginZoneSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _zoneService.GetZonesContainingString(OriginZoneFilter)));
+            UpdateOriginZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
+                await Task.Run(() => _zoneService.GetZonesContainingString(OriginZoneFilter)));
             UpdateOriginZoneSuggestions.Subscribe(results =>
             {
                 OriginZoneSuggestions.Clear();
                 OriginZoneSuggestions.AddRange(results);
             });
-            UpdateOriginZoneSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateOriginZoneSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateDestinationZoneSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _zoneService.GetZonesContainingString(DestinationZoneFilter)));
+            UpdateDestinationZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
+                await Task.Run(() => _zoneService.GetZonesContainingString(DestinationZoneFilter)));
             UpdateDestinationZoneSuggestions.Subscribe(results =>
             {
                 DestinationZoneSuggestions.Clear();
                 DestinationZoneSuggestions.AddRange(results);
             });
-            UpdateDestinationZoneSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateDestinationZoneSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 
@@ -220,7 +203,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveList<TransferCount> TransferCounts { get; protected set; }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Street" />s based on user input.
+        ///     List containing the suggested <see cref="Route" />s based on user input.
         /// </summary>
         public ReactiveList<Route> RouteSuggestions { get; protected set; }
 

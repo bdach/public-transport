@@ -25,41 +25,36 @@ namespace PublicTransport.Client.Providers
         public AppBootstrapper()
         {
             Router = new RoutingState();
-            // Start-up objects.
+
+            // Startup objects.
             Locator.CurrentMutable.RegisterLazySingleton(() => this, typeof(IScreen));
             Locator.CurrentMutable.Register(() => new DetailViewModelFactory(), typeof(DetailViewModelFactory));
-            Locator.CurrentMutable.RegisterLazySingleton(() => new ShellViewModel(
-                Locator.Current.GetService<IScreen>(),
-                Locator.Current.GetService<DetailViewModelFactory>()
-            ), typeof(ShellViewModel));
-            Locator.CurrentMutable.RegisterLazySingleton(
-                () => new ShellView(Locator.Current.GetService<ShellViewModel>()), typeof(IViewFor<ShellViewModel>));
+            Locator.CurrentMutable.RegisterLazySingleton(() =>
+                new ShellViewModel(Locator.Current.GetService<IScreen>(), Locator.Current.GetService<DetailViewModelFactory>()), typeof(ShellViewModel));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new ShellView(Locator.Current.GetService<ShellViewModel>()), typeof(IViewFor<ShellViewModel>));
+
             // View model views.
-            Locator.CurrentMutable.Register(() => new MenuView(), typeof(IViewFor<MenuViewModel>));
-            Locator.CurrentMutable.Register(() => new NotificationView(), typeof(IViewFor<NotificationViewModel>));
-            Locator.CurrentMutable.Register(() => new PlaceholderView(), typeof(IViewFor<PlaceholderViewModel>));
-
-            Locator.CurrentMutable.Register(() => new FilterCityView(), typeof(IViewFor<FilterCityViewModel>));
-            Locator.CurrentMutable.Register(() => new EditCityView(), typeof(IViewFor<EditCityViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterStreetView(), typeof(IViewFor<FilterStreetViewModel>));
-            Locator.CurrentMutable.Register(() => new EditStreetView(), typeof(IViewFor<EditStreetViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterAgencyView(), typeof(IViewFor<FilterAgencyViewModel>));
             Locator.CurrentMutable.Register(() => new EditAgencyView(), typeof(IViewFor<EditAgencyViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterZoneView(), typeof(IViewFor<FilterZoneViewModel>));
-            Locator.CurrentMutable.Register(() => new EditZoneView(), typeof(IViewFor<EditZoneViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterStopView(), typeof(IViewFor<FilterStopViewModel>));
-            Locator.CurrentMutable.Register(() => new EditStopView(), typeof(IViewFor<EditStopViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterFareView(), typeof(IViewFor<FilterFareViewModel>));
-            Locator.CurrentMutable.Register(() => new EditFareView(), typeof(IViewFor<EditFareViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterRouteView(), typeof(IViewFor<FilterRouteViewModel>));
-            Locator.CurrentMutable.Register(() => new EditRouteView(), typeof(IViewFor<EditRouteViewModel>));
-
-            Locator.CurrentMutable.Register(() => new EditTripView(), typeof(IViewFor<EditTripViewModel>));
             Locator.CurrentMutable.Register(() => new EditCalendarView(), typeof(IViewFor<EditCalendarViewModel>));
+            Locator.CurrentMutable.Register(() => new EditCityView(), typeof(IViewFor<EditCityViewModel>));
+            Locator.CurrentMutable.Register(() => new EditFareView(), typeof(IViewFor<EditFareViewModel>));
+            Locator.CurrentMutable.Register(() => new EditRouteView(), typeof(IViewFor<EditRouteViewModel>));
             Locator.CurrentMutable.Register(() => new EditStopTimeView(), typeof(IViewFor<EditStopTimeViewModel>));
-            Locator.CurrentMutable.Register(() => new TimetableView(), typeof(IViewFor<TimetableViewModel>));
-            Locator.CurrentMutable.Register(() => new FilterUserView(), typeof(IViewFor<FilterUserViewModel>));
+            Locator.CurrentMutable.Register(() => new EditStopView(), typeof(IViewFor<EditStopViewModel>));
+            Locator.CurrentMutable.Register(() => new EditStreetView(), typeof(IViewFor<EditStreetViewModel>));
+            Locator.CurrentMutable.Register(() => new EditTripView(), typeof(IViewFor<EditTripViewModel>));
             Locator.CurrentMutable.Register(() => new EditUserView(), typeof(IViewFor<EditUserViewModel>));
+            Locator.CurrentMutable.Register(() => new EditZoneView(), typeof(IViewFor<EditZoneViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterAgencyView(), typeof(IViewFor<FilterAgencyViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterCityView(), typeof(IViewFor<FilterCityViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterFareView(), typeof(IViewFor<FilterFareViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterRouteView(), typeof(IViewFor<FilterRouteViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterStopView(), typeof(IViewFor<FilterStopViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterStreetView(), typeof(IViewFor<FilterStreetViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterUserView(), typeof(IViewFor<FilterUserViewModel>));
+            Locator.CurrentMutable.Register(() => new FilterZoneView(), typeof(IViewFor<FilterZoneViewModel>));
+            Locator.CurrentMutable.Register(() => new TimetableView(), typeof(IViewFor<TimetableViewModel>));
+
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));

@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditRouteViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="AgencyService" /> used for filtering agencies.
+        ///     Service used to fetch <see cref="Agency" /> data from the database.
         /// </summary>
         private readonly AgencyService _agencyService;
 
@@ -56,8 +56,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             var routeService = new RouteService();
             var serviceMethod = route == null ? new Func<Route, Route>(routeService.Create) : routeService.Update;
             _route = route ?? new Route();
-            _selectedAgency = _route?.Agency;
-            _agencyFilter.AgencyNameFilter = _route?.Agency?.Name ?? "";
+            _selectedAgency = _route.Agency;
+            _agencyFilter.AgencyNameFilter = _route.Agency?.Name ?? "";
 
             #endregion
 
@@ -65,8 +65,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region DisplayAgencyView command
 
-            DisplayAgencyView = ReactiveCommand.CreateAsyncObservable(agencySelected,
-                _ => HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(screen, SelectedAgency)));
+            DisplayAgencyView = ReactiveCommand.CreateAsyncObservable(agencySelected, _ =>
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(screen, SelectedAgency)));
 
             #endregion
 
@@ -81,30 +81,22 @@ namespace PublicTransport.Client.ViewModels.Edit
                 Route.Agency = SelectedAgency;
                 return result;
             });
-            // On exceptions: Display error.
-            SaveRoute.ThrownExceptions.Subscribe(
-                ex =>
-                    UserError.Throw(
-                        "The currently edited route cannot be saved to the database. Please contact the system administrator.",
-                        ex));
+            SaveRoute.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("The currently edited route cannot be saved to the database. Please contact the system administrator.", ex));
 
             #endregion
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions =
-                ReactiveCommand.CreateAsyncTask(
-                    async _ => await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
+                await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 AgencySuggestions.Clear();
                 AgencySuggestions.AddRange(results);
             });
-            UpdateSuggestions.ThrownExceptions
-                .Subscribe(
-                    ex =>
-                        UserError.Throw(
-                            "Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
+            UpdateSuggestions.ThrownExceptions.Subscribe(ex =>
+                UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             #endregion
 
@@ -136,7 +128,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveList<RouteType> RouteTypes { get; protected set; }
 
         /// <summary>
-        ///     Command allowing to edit the <see cref="SelectedAgency" /> object.
+        ///     Command allowing to edit the selected <see cref="Agency" /> object.
         /// </summary>
         public ReactiveCommand<object> DisplayAgencyView { get; protected set; }
 
@@ -146,7 +138,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<List<Agency>> UpdateSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for saving the currently edited <see cref="Route" /> object.
+        ///     Command responsible for saving the currently edited <see cref="Domain.Entities.Route" /> object.
         /// </summary>
         public ReactiveCommand<Route> SaveRoute { get; protected set; }
 
