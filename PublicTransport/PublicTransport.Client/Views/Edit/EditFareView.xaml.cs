@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 
@@ -9,7 +8,7 @@ namespace PublicTransport.Client.Views.Edit
     /// <summary>
     /// Interaction logic for EditFareView.xaml
     /// </summary>
-    public partial class EditFareView : UserControl, IViewFor<EditFareViewModel>
+    public partial class EditFareView : IViewFor<EditFareViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(EditFareViewModel), typeof(EditFareView), new PropertyMetadata(default(EditFareViewModel)));

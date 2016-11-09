@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 
@@ -10,7 +8,7 @@ namespace PublicTransport.Client.Views.Edit
     /// <summary>
     /// Interaction logic for EditStopTimeView.xaml
     /// </summary>
-    public partial class EditStopTimeView : UserControl, IViewFor<EditStopTimeViewModel>
+    public partial class EditStopTimeView : IViewFor<EditStopTimeViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(EditStopTimeViewModel), typeof(EditStopTimeView), new PropertyMetadata(default(EditStopTimeViewModel)));

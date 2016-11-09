@@ -15,11 +15,6 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditCityViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="CityService" /> used for persisting the object.
-        /// </summary>
-        private readonly CityService _cityService;
-
-        /// <summary>
         ///     The <see cref="City" /> object being edited in the window.
         /// </summary>
         private City _city;
@@ -34,8 +29,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region Field/property initialization
 
             HostScreen = screen;
-            _cityService = new CityService();
-            var serviceMethod = city == null ? new Func<City, City>(_cityService.Create) : _cityService.Update;
+            var cityService = new CityService();
+            var serviceMethod = city == null ? new Func<City, City>(cityService.Create) : cityService.Update;
             _city = city ?? new City();
 
             #endregion

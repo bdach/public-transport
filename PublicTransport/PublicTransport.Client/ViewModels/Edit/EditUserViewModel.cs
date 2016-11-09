@@ -18,11 +18,6 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditUserViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="UserService" /> used for persisting the street.
-        /// </summary>
-        private readonly UserService _userService;
-
-        /// <summary>
         ///     <see cref="RoleService" /> used for persisting the street.
         /// </summary>
         private readonly RoleService _roleService;
@@ -42,10 +37,10 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region Field/property initialization
 
             HostScreen = screen;
-            _userService = new UserService();
+            var userService = new UserService();
             _roleService = new RoleService();
 
-            var serviceMethod = user == null ? new Func<User, User>(_userService.Create) : _userService.Update;
+            var serviceMethod = user == null ? new Func<User, User>(userService.Create) : userService.Update;
             _user = user ?? new User();
             RoleViewModels = new ReactiveList<RoleViewModel>();
 

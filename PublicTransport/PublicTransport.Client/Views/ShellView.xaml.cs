@@ -7,7 +7,7 @@ namespace PublicTransport.Client.Views
     /// <summary>
     ///     Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView : Window, IViewFor<ShellViewModel>
+    public partial class ShellView : IViewFor<ShellViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(ShellViewModel), typeof(ShellView), new PropertyMetadata(default(ShellViewModel)));

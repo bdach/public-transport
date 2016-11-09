@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:rui="clr-namespace:ReactiveUI;assembly=ReactiveUI"
-        xmlns:local="clr-namespace:PublicTransport.Client.Views"
         mc:Ignorable="d"
         Title="Public Transport" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen">

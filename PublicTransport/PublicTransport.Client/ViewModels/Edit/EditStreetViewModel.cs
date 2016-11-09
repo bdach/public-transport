@@ -22,11 +22,6 @@ namespace PublicTransport.Client.ViewModels.Edit
         private readonly CityService _cityService;
 
         /// <summary>
-        ///     <see cref="StreetService" /> used for saving the <see cref="Street" /> object.
-        /// </summary>
-        private readonly StreetService _streetService;
-
-        /// <summary>
         ///     City name supplied by the user. This field is used to supply suggestions.
         /// </summary>
         private string _cityName;
@@ -53,8 +48,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             HostScreen = screen;
             Suggestions = new ReactiveList<City>();
             _cityService = new CityService();
-            _streetService = new StreetService();
-            var serviceMethod = street == null ? new Func<Street, Street>(_streetService.Create) : _streetService.Update;
+            var streetService = new StreetService();
+            var serviceMethod = street == null ? new Func<Street, Street>(streetService.Create) : streetService.Update;
             _street = street ?? new Street();
             _selectedCity = street?.City;
             _cityName = _street?.City?.Name;

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Entities;
 using ReactiveUI;
 
@@ -8,7 +7,7 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for RoleView.xaml
     /// </summary>
-    public partial class RoleView : UserControl, IViewFor<RoleViewModel>
+    public partial class RoleView : IViewFor<RoleViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(RoleViewModel), typeof(RoleView), new PropertyMetadata(default(RoleViewModel)));

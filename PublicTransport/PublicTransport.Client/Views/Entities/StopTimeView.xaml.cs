@@ -1,6 +1,4 @@
-﻿using System.Reactive.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 
@@ -9,7 +7,7 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for StopTimeView.xaml
     /// </summary>
-    public partial class StopTimeView : UserControl, IViewFor<StopTime>
+    public partial class StopTimeView : IViewFor<StopTime>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(StopTime), typeof(StopTimeView), new PropertyMetadata(default(StopTime)));

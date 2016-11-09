@@ -15,11 +15,6 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     <see cref="ZoneService" /> used for persisting the object.
-        /// </summary>
-        private readonly ZoneService _zoneService;
-
-        /// <summary>
         ///     The <see cref="Zone" /> object being edited in the window.
         /// </summary>
         private Zone _zone;
@@ -34,8 +29,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region Field/property initialization
 
             HostScreen = screen;
-            _zoneService = new ZoneService();
-            var serviceMethod = zone == null ? new Func<Zone, Zone>(_zoneService.Create) : _zoneService.Update;
+            var zoneService = new ZoneService();
+            var serviceMethod = zone == null ? new Func<Zone, Zone>(zoneService.Create) : zoneService.Update;
             _zone = zone ?? new Zone();
 
             #endregion

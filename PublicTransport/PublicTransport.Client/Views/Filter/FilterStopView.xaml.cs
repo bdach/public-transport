@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Filter;
 using ReactiveUI;
 
@@ -8,7 +7,7 @@ namespace PublicTransport.Client.Views.Filter
     /// <summary>
     /// Interaction logic for FilterStopView.xaml
     /// </summary>
-    public partial class FilterStopView : UserControl, IViewFor<FilterStopViewModel>
+    public partial class FilterStopView : IViewFor<FilterStopViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(FilterStopViewModel), typeof(FilterStopView), new PropertyMetadata(default(FilterStopViewModel)));

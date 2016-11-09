@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Domain.Entities;
 using ReactiveUI;
 
@@ -8,7 +7,7 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for RouteView.xaml
     /// </summary>
-    public partial class RouteView : UserControl, IViewFor<Route>
+    public partial class RouteView : IViewFor<Route>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(Route), typeof(RouteView), new PropertyMetadata(default(Route)));

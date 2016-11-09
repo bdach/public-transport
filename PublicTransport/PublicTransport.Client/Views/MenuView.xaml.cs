@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels;
 using ReactiveUI;
 
@@ -8,7 +7,7 @@ namespace PublicTransport.Client.Views
     /// <summary>
     ///     Interaction logic for MenuView.xaml
     /// </summary>
-    public partial class MenuView : UserControl, IViewFor<MenuViewModel>
+    public partial class MenuView : IViewFor<MenuViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(MenuViewModel), typeof(MenuView), new PropertyMetadata(default(MenuViewModel)));

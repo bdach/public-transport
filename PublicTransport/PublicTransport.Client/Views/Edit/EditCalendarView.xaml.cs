@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reactive.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 
@@ -10,7 +7,7 @@ namespace PublicTransport.Client.Views.Edit
     /// <summary>
     /// Interaction logic for EditCalendarView.xaml
     /// </summary>
-    public partial class EditCalendarView : UserControl, IViewFor<EditCalendarViewModel>
+    public partial class EditCalendarView : IViewFor<EditCalendarViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(EditCalendarViewModel), typeof(EditCalendarView), new PropertyMetadata(default(EditCalendarViewModel)));

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels;
 using ReactiveUI;
 
@@ -10,7 +8,7 @@ namespace PublicTransport.Client.Views
     /// <summary>
     /// Interaction logic for NotificationView.xaml
     /// </summary>
-    public partial class NotificationView : UserControl, IViewFor<NotificationViewModel>
+    public partial class NotificationView : IViewFor<NotificationViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(NotificationViewModel), typeof(NotificationView), new PropertyMetadata(default(NotificationViewModel)));

@@ -113,7 +113,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         public ReactiveList<Street> Streets { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for filtering out streets in accordance with the <see cref="StreetNameFilter" />.
+        ///     Command responsible for filtering out streets in accordance with the <see cref="DataTransfer.StreetFilter" />.
         /// </summary>
         public ReactiveCommand<List<Street>> FilterStreets { get; protected set; }
 

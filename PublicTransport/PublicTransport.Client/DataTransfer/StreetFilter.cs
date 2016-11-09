@@ -1,5 +1,4 @@
-﻿using System.Reactive.Linq;
-using PublicTransport.Services.DataTransfer;
+﻿using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.DataTransfer

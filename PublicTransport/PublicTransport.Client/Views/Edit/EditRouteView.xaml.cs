@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 
@@ -9,7 +8,7 @@ namespace PublicTransport.Client.Views.Edit
     /// <summary>
     /// Interaction logic for EditRouteView.xaml
     /// </summary>
-    public partial class EditRouteView : UserControl, IViewFor<EditRouteViewModel>
+    public partial class EditRouteView : IViewFor<EditRouteViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(EditRouteViewModel), typeof(EditRouteView), new PropertyMetadata(default(EditRouteViewModel)));

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Edit;
 using ReactiveUI;
 
@@ -8,7 +7,7 @@ namespace PublicTransport.Client.Views.Edit
     /// <summary>
     /// Interaction logic for EditZoneView.xaml
     /// </summary>
-    public partial class EditZoneView : UserControl, IViewFor<EditZoneViewModel>
+    public partial class EditZoneView : IViewFor<EditZoneViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(EditZoneViewModel), typeof(EditZoneView), new PropertyMetadata(default(EditZoneViewModel)));

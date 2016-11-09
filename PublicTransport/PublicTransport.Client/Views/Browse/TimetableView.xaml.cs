@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using PublicTransport.Client.ViewModels.Browse;
 using ReactiveUI;
 
@@ -10,7 +9,7 @@ namespace PublicTransport.Client.Views.Browse
     /// <summary>
     /// Interaction logic for TimetableView.xaml
     /// </summary>
-    public partial class TimetableView : UserControl, IViewFor<TimetableViewModel>
+    public partial class TimetableView : IViewFor<TimetableViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(TimetableViewModel), typeof(TimetableView), new PropertyMetadata(default(TimetableViewModel)));

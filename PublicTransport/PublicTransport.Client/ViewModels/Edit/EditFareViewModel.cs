@@ -30,16 +30,6 @@ namespace PublicTransport.Client.ViewModels.Edit
         private readonly ZoneService _zoneService;
 
         /// <summary>
-        ///     <see cref="FareAttributeService" /> used for persisting the street.
-        /// </summary>
-        private readonly FareAttributeService _fareAttributeService;
-
-        /// <summary>
-        ///     <see cref="FareRuleService" /> used for persisting the zone.
-        /// </summary>
-        private readonly FareRuleService _fareRuleService;
-
-        /// <summary>
         ///     The <see cref="Domain.Entities.FareAttribute" /> object being edited in the window.
         /// </summary>
         private FareAttribute _fareAttribute;
@@ -96,13 +86,13 @@ namespace PublicTransport.Client.ViewModels.Edit
             _routeService = new RouteService();
             _zoneService = new ZoneService();
             _routeFilter = new RouteFilter();
-            _fareAttributeService = new FareAttributeService();
-            _fareRuleService = new FareRuleService();
+            var fareAttributeService = new FareAttributeService();
+            var fareRuleService = new FareRuleService();
 
             TransferCounts = new ReactiveList<TransferCount>(Enum.GetValues(typeof(TransferCount)).Cast<TransferCount>());
 
-            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(_fareAttributeService.Create) : _fareAttributeService.Update;
-            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(_fareRuleService.Create) : _fareRuleService.Update;
+            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(fareAttributeService.Create) : fareAttributeService.Update;
+            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(fareRuleService.Create) : fareRuleService.Update;
             _fareAttribute = fareAttribute ?? new FareAttribute();
             _fareRule = _fareAttribute.FareRule ?? new FareRule();
             _selectedRoute = _fareRule.Route;

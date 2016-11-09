@@ -2,7 +2,6 @@
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels;
-using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using ReactiveUI;
 
