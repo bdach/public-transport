@@ -124,6 +124,7 @@
     <Compile Include="ViewModels\Filter\FilterUserViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterZoneViewModel.cs" />
     <Compile Include="ViewModels\Filter\FilterTripViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\NotificationViewModel.cs" />
@@ -213,6 +214,9 @@
     </Compile>
     <Compile Include="Views\Filter\FilterZoneView.xaml.cs">
       <DependentUpon>FilterZoneView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
@@ -345,6 +349,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filter\FilterZoneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

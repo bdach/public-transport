@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Reactive.Linq;
+using System.Windows;
 using PublicTransport.Client.ViewModels;
 using ReactiveUI;
 
@@ -17,6 +19,10 @@ namespace PublicTransport.Client.Views
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Menu, v => v.SidebarMenu.ItemsSource);
             this.Bind(ViewModel, vm => vm.SelectedOption, v => v.SidebarMenu.SelectedItem);
+            this.BindCommand(ViewModel, vm => vm.LogOut, v => v.LogOutButton);
+            this.WhenAnyValue(v => v.ViewModel.UserInfo)
+                .Select(ui => ui == null)
+                .Subscribe(b => Visibility = b ? Visibility.Collapsed : Visibility.Visible);
         }
 
         public MenuViewModel ViewModel

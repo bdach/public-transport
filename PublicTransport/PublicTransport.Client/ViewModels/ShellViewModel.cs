@@ -31,11 +31,30 @@ namespace PublicTransport.Client.ViewModels
             _placeholder = new PlaceholderViewModel(screen);
             NotificationViewModel = new NotificationViewModel();
             MenuViewModel = new MenuViewModel();
+            LoginViewModel = new LoginViewModel(screen);
 
             #endregion
 
             // Set detail area startup view model
-            HostScreen.Router.Navigate.Execute(_placeholder);
+            HostScreen.Router.Navigate.Execute(LoginViewModel);
+
+            #region Login support
+
+            this.WhenAnyValue(vm => vm.LoginViewModel.UserInfo)
+                .Where(ui => ui != null)
+                .Subscribe(ui =>
+                {
+                    MenuViewModel.UserInfo = ui;
+                    HostScreen.Router.NavigateAndReset.Execute(_placeholder);
+                });
+
+            #endregion
+
+            #region Logging out
+
+            MenuViewModel.LogOut.Subscribe(_ => HostScreen.Router.Navigate.Execute(LoginViewModel));
+
+            #endregion
 
             #region Detail view switching
 
@@ -71,6 +90,11 @@ namespace PublicTransport.Client.ViewModels
         ///     Menu view model.
         /// </summary>
         public MenuViewModel MenuViewModel { get; set; }
+
+        /// <summary>
+        ///     Login view model.
+        /// </summary>
+        public LoginViewModel LoginViewModel { get; set; }
 
         /// <summary>
         ///     View model responsible for displaying notifications.

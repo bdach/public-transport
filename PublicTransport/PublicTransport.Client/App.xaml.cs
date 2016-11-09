@@ -25,7 +25,7 @@ namespace PublicTransport.Client
             base.OnStartup(e);
             // This is added to fix problems with ReactiveList.AddRange (multiple notifications firing)
             RxApp.SupportsRangeNotifications = false;
-            ShellView = (ShellView) Locator.Current.GetService<IViewFor<ShellViewModel>>();
+            ShellView = (ShellView)Locator.Current.GetService<IViewFor<ShellViewModel>>();
             ShellView.Show();
         }
     }
