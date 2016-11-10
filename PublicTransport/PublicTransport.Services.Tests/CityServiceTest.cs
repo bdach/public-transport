@@ -67,8 +67,9 @@ namespace PublicTransport.Services.Tests
         {
             // given
             var city = new City {Id = 1000};
-            // expect exception when
-            Assert.Throws<EntryNotFoundException>(() => _cityService.Delete(city));
+            // then expect
+            _cityService.Invoking(cs => cs.Delete(city))
+                .ShouldThrow<EntryNotFoundException>();
         }
 
         [Test]
