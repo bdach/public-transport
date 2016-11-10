@@ -31,7 +31,6 @@ namespace PublicTransport.Client.Views.Edit
             this.Bind(ViewModel, vm => vm.Agency.Url, v => v.UrlTextBox.Text);
             this.Bind(ViewModel, vm => vm.SelectedStreet, v => v.StreetComboBox.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
-            this.BindCommand(ViewModel, vm => vm.DisplayStreetView, v => v.ToStreetButton);
             this.BindCommand(ViewModel, vm => vm.SaveAgency, v => v.SaveButton);
         }
 

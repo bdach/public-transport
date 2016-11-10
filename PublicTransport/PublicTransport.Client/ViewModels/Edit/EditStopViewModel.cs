@@ -102,13 +102,6 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             var streetSelected = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
 
-            #region DisplayStreetView command
-
-            DisplayStreetView = ReactiveCommand.CreateAsyncObservable(streetSelected, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, SelectedStreet)));
-
-            #endregion
-
             #region SaveStop command
 
             SaveStop = ReactiveCommand.CreateAsyncTask(streetSelected, async _ =>
@@ -204,11 +197,6 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     List containing the suggested <see cref="Zone" />s based on user input.
         /// </summary>
         public ReactiveList<Stop> ParentStationSuggestions { get; protected set; }
-
-        /// <summary>
-        ///     Command allowing to edit the selected <see cref="Street" /> object.
-        /// </summary>
-        public ReactiveCommand<object> DisplayStreetView { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the street suggestions.
