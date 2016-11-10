@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services

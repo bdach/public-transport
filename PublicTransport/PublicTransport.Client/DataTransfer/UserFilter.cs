@@ -1,5 +1,5 @@
 ﻿using PublicTransport.Domain.Enums;
-using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI;
 
 namespace PublicTransport.Client.DataTransfer

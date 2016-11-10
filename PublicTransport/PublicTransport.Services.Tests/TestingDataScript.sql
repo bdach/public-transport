@@ -30,6 +30,20 @@ GO
 -- Resets identity column values.
 
 -- User data.
+
+-- This is a workaround for MS SQL behaviour: when reseeding a
+-- newly created table, it starts from (VALUE) instead of (VALUE + 1).
+-- This checks only the first table for brevity's sake, so if you
+-- drop one table and not all of them at once, this _will_ break.
+IF EXISTS 
+(
+    SELECT 1 
+    FROM sys.identity_columns 
+    WHERE 
+        [object_id] = OBJECT_ID(N'dbo.Roles', N'U')
+        AND last_value IS NOT NULL
+)
+BEGIN
 DBCC CHECKIDENT ('[Roles]', RESEED, 0)
 DBCC CHECKIDENT ('[Users]', RESEED, 0)
 
@@ -46,6 +60,7 @@ DBCC CHECKIDENT ('[Stops]', RESEED, 0)
 DBCC CHECKIDENT ('[Zones]', RESEED, 0)
 DBCC CHECKIDENT ('[Streets]', RESEED, 0)
 DBCC CHECKIDENT ('[Cities]', RESEED, 0)
+END;
 GO
 
 -- Users and roles.
@@ -54,6 +69,7 @@ INSERT INTO [Roles]
 VALUES 
 	(0), -- Employee
 	(1)  -- Administrator
+GO
 
 INSERT INTO [Users]
 	([UserName], [Password])
@@ -61,6 +77,7 @@ VALUES
 	('root', 'kI3j8BafuXUKh4nF1zKTGEMl4u4Awe2dBW8cuvGpv2/yqLB+'),
 	('employee', 'Ll5T7DfZd6ksmO6qjbsx4KOfBZtfGYj3nRn06VWrjF2cc/mW'),
 	('guest', 'gaavVO5tLzjDmFQSzaIufOSWJhzkiqblLYNZkN+BS56LEAI5')
+GO
 
 INSERT INTO [UserRoles]
 	([User_Id], [Role_Id])
@@ -68,9 +85,10 @@ VALUES
 	(1, 1), (1, 2),		-- User root is an administrator.
 	(2, 1)				-- User employee is an employee.
 						-- User guest has no roles assigned.
+GO
 
-	-- Connection data.
-	INSERT INTO [Cities]
+-- Connection data.
+INSERT INTO [Cities]
 	([Name])
 VALUES
 	-- Intra-city example.
@@ -82,6 +100,7 @@ VALUES
 	('Sosnowiec'),				-- 5
 	('Katowice'),				-- 6
 	('Gliwice')					-- 7
+GO
 
 INSERT INTO [Streets]
 	([CityId], [Name])
@@ -100,11 +119,13 @@ VALUES
 	(7, 'Bohaterów Getta Warszawskiego'),			-- 10
 	-- Agency locations.
 	(1, '¯elazna')									-- 11
+GO
 
 INSERT INTO [Zones]
 	([Name])
 VALUES
 	('Warszawa - ZTM - Strefa 1')
+GO
 
 INSERT INTO [Stops]
 	([Name], [StreetId], [ZoneId], [ParentStationId], [IsStation])
@@ -126,34 +147,40 @@ VALUES
 	('Sosnowiec G³ówny', 8, NULL, NULL, 0),				-- 13
 	('Katowice', 9, NULL, NULL, 0),						-- 14
 	('Gliwice', 10, NULL, NULL, 0)						-- 15
+GO
 
 INSERT INTO [Agencies]
 	([Name], [Phone], [Url], [Regon], [StreetId], [StreetNumber])
 VALUES
 	('Zarz¹d Transportu Miejskiego', '19 115', 'http://www.ztm.waw.pl', '012605780', 11, '61'),	-- 1
 	('PKP Intercity', '19 757', 'http://www.intercity.pl', '017258024', 11, '59a')				-- 2
+GO
 
 INSERT INTO [Routes]
 	([AgencyId], [ShortName], [LongName], [RouteType])
 VALUES
 	(1, 'E-1', 'Goc³aw-Metro Stadion Narodowy', 3),		-- 1; route type 3 is a Bus
 	(2, '101', 'Zawiercie-Gliwice', 2)					-- 2; route type 2 is Rail
+GO
 
 INSERT INTO [Calendars]
 	([StartDate], [EndDate], [Monday], [Tuesday], [Wednesday], [Thursday], [Friday], [Saturday], [Sunday])
 VALUES
 	('2016-01-01', '2017-12-31', 1, 1, 1, 1, 1, 0, 0),	-- Line does not run on weekends.
 	('2016-10-29', '2017-10-29', 1, 1, 1, 1, 1, 1, 1)	-- Line runs every day.
+GO
 
 INSERT INTO [CalendarDates]
 	([Date], [ExceptionType])
 VALUES
 	('2016-01-01', 1)	-- Service does not run on November 1.
+GO
 
 INSERT INTO [CalendarCalendarDates]
 	([Calendar_Id], [CalendarDate_Id])
 VALUES
 	(1, 1)				-- Remove Nov 1 from the ZTM line.
+GO
 
 INSERT INTO [Trips]
 	([RouteId], [ServiceId], [Headsign], [ShortName], [Direction])
@@ -161,6 +188,7 @@ VALUES
 	(1, 1, 'Goc³aw', NULL, 0),							-- 1
 	(1, 1, 'Metro Stadion Narodowy', NULL, 1),			-- 2
 	(2, 2, 'Gliwice', NULL, 0)							-- 3
+GO
 
 INSERT INTO [StopTimes]
 	([StopId], [TripId], [ArrivalTime], [DepartureTime], [StopSequence])
@@ -192,11 +220,13 @@ VALUES
 	(13, 3, '13:58:00', '13:59:00', 4),
 	(14, 3, '14:10:00', '14:21:00', 5),
 	(15, 3, '14:29:00', '14:29:00', 6)
+GO
 
 INSERT INTO [FareRules]
 	([RouteId], [OriginId], [DestinationId])
 VALUES
 	(1, 1, 1)	-- 1; Rule for the ZTM route. Not modeling the rail route due to complexity.
+GO
 
 INSERT INTO [FareAttributes]
 	([FareRuleId], [Price], [Transfers], [TransferDuration])

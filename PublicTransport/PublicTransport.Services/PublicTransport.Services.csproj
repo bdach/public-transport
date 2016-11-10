@@ -49,13 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTransfer\IAgencyFilter.cs" />
-    <Compile Include="DataTransfer\IFareFilter.cs" />
-    <Compile Include="DataTransfer\IStopFilter.cs" />
-    <Compile Include="DataTransfer\IRouteFilter.cs" />
-    <Compile Include="DataTransfer\IStopTimeFilter.cs" />
-    <Compile Include="DataTransfer\IStreetFilter.cs" />
-    <Compile Include="DataTransfer\IUserFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IAgencyFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IFareFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IStopFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IRouteFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IStopTimeFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IStreetFilter.cs" />
+    <Compile Include="DataTransfer\Filters\IUserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
     <Compile Include="DataTransfer\UserInfo.cs" />
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\FareAttributeService.cs" />
     <Compile Include="Services\FareRuleService.cs" />
+    <Compile Include="Services\ICrudService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\PasswordService.cs" />
     <Compile Include="Services\RoleService.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PublicTransport.Services.DataTransfer
+namespace PublicTransport.Services.DataTransfer.Filters
 {
     /// <summary>
     ///     Data transfer object interface.
