@@ -34,7 +34,6 @@ namespace PublicTransport.Client.Views.Edit
             this.Bind(ViewModel, vm => vm.SelectedZone, v => v.ZoneComboBox.SelectedItem);
             this.Bind(ViewModel, vm => vm.SelectedParentStation, v => v.ParentStationComboBox.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
-            this.BindCommand(ViewModel, vm => vm.DisplayStreetView, v => v.ToStreetButton);
             this.BindCommand(ViewModel, vm => vm.SaveStop, v => v.SaveButton);
 
             this.WhenAnyValue(v => v.IsStationCheckBox.IsChecked)

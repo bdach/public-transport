@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -12,26 +11,25 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing streets.
     /// </summary>
-    public class StreetService : IDisposable
+    public class StreetService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        /// <summary>
-        ///     Determines whether the database context has already been disposed.
-        /// </summary>
-        private bool _disposed;
-
         public StreetService()
         {
-            _db = new PublicTransportContext();
+                
         }
 
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
         public StreetService(PublicTransportContext db)
         {
-            _db = db;
+            _db = db;   
         }
 
         /// <summary>
@@ -75,6 +73,7 @@ namespace PublicTransport.Services
             {
                 throw new EntryNotFoundException();
             }
+
             _db.Entry(old).CurrentValues.SetValues(street);
             _db.SaveChanges();
             return street;
@@ -111,16 +110,6 @@ namespace PublicTransport.Services
                 .Where(s => s.Name.Contains(streetFilter.StreetNameFilter))
                 .Where(s => s.City.Name.Contains(streetFilter.CityNameFilter))
                 .Take(20).ToList();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }

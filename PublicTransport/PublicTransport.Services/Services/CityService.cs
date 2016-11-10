@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -11,24 +10,16 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing cities.
     /// </summary>
-    public class CityService : IDisposable
+    public class CityService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        /// <summary>
-        ///     Determines whether the database context has already been disposed.
-        /// </summary>
-        private bool _disposed;
-
-        /// <summary>
-        ///     Default constructor.
-        /// </summary>
         public CityService()
         {
-            _db = new PublicTransportContext();
+                
         }
 
         /// <summary>
@@ -38,19 +29,6 @@ namespace PublicTransport.Services
         public CityService(PublicTransportContext db)
         {
             _db = db;
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _db.Dispose();
-            _disposed = true;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -17,9 +17,9 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="City" /> data from the database.
+        ///     Unit of work used in the view model to access database.
         /// </summary>
-        private readonly CityService _cityService;
+        private readonly StreetUnitOfWork _streetUnitOfWork;
 
         /// <summary>
         ///     City name supplied by the user. This field is used to supply suggestions.
@@ -40,16 +40,16 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
+        /// <param name="streetUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="street">Street to be edited. If a steet is to be added, this parameter is null (can be left out).</param>
-        public EditStreetViewModel(IScreen screen, Street street = null)
+        public EditStreetViewModel(IScreen screen, StreetUnitOfWork streetUnitOfWork, Street street = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             Suggestions = new ReactiveList<City>();
-            _cityService = new CityService();
-            var streetService = new StreetService();
-            var serviceMethod = street == null ? new Func<Street, Street>(streetService.Create) : streetService.Update;
+            _streetUnitOfWork = streetUnitOfWork ?? new StreetUnitOfWork();
+            var serviceMethod = street == null ? new Func<Street, Street>(_streetUnitOfWork.CreateStreet) : _streetUnitOfWork.UpdateStreet;
             _street = street ?? new Street();
             _selectedCity = _street.City;
             _cityName = _street.City?.Name;
@@ -67,15 +67,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region SaveStreet command
 
-            SaveStreet = ReactiveCommand.CreateAsyncTask(citySelected, async _ =>
-            {
-                // TODO: This is needed because of different contexts in this and CityService. Maybe consider grouping services into super-services and injecting context by ctor?
-                Street.City = null;
-                Street.CityId = SelectedCity.Id;
-                var result = await Task.Run(() => serviceMethod(Street));
-                Street.City = SelectedCity;
-                return result;
-            });
+            SaveStreet = ReactiveCommand.CreateAsyncTask(citySelected, async _ => await Task.Run(() => serviceMethod(Street)));
             SaveStreet.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("The currently edited street cannot be saved to the database. Please contact the system administrator.", ex));
 
@@ -86,7 +78,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions command
 
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ =>
-                await Task.Run(() => _cityService.GetCitiesContainingString(CityName)));
+                await Task.Run(() => _streetUnitOfWork.FilterCities(CityName)));
             UpdateSuggestions.Subscribe(results =>
             {
                 Suggestions.Clear();
