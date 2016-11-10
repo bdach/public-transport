@@ -38,5 +38,14 @@ namespace PublicTransport.Services.Tests
                 connection.Close();
             }
         }
+
+        [OneTimeTearDown]
+        public void AfterTests()
+        {
+            using (var db = new PublicTransportContext())
+            {
+                db.Database.Delete();
+            }
+        }
     }
 }

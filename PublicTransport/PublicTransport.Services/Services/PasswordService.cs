@@ -3,10 +3,28 @@ using System.Security.Cryptography;
 
 namespace PublicTransport.Services
 {
+    public interface IPasswordService
+    {
+        /// <summary>
+        ///     Generates a hash for the supplied plaintext passphrase.
+        /// </summary>
+        /// <param name="plaintext">Plaintext password to generate hash for.</param>
+        /// <returns>Hashed and salted password, returned as a base64 string.</returns>
+        string GenerateHash(string plaintext);
+
+        /// <summary>
+        ///     Compares the supplied plaintext passphrase with the supplied hash.
+        /// </summary>
+        /// <param name="plaintext">Plaintext password to compare.</param>
+        /// <param name="hash">Password hash with salt, encoded as a base64 string.</param>
+        /// <returns>True, if password hashes match; false otherwise.</returns>
+        bool CompareWithHash(string plaintext, string hash);
+    }
+
     /// <summary>
     ///     Service used for handling passwords and password hashes.
     /// </summary>
-    public class PasswordService
+    public class PasswordService : IPasswordService
     {
         /// <summary>
         ///     Number of iterations in the PBKDF2 algorithm.
@@ -29,7 +47,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="plaintext">Plaintext password to generate hash for.</param>
         /// <returns>Hashed and salted password, returned as a base64 string.</returns>
-        public static string GenerateHash(string plaintext)
+        public string GenerateHash(string plaintext)
         {
             var salt = new byte[SaltLength];
             new RNGCryptoServiceProvider().GetBytes(salt);
@@ -48,7 +66,7 @@ namespace PublicTransport.Services
         /// <param name="plaintext">Plaintext password to compare.</param>
         /// <param name="hash">Password hash with salt, encoded as a base64 string.</param>
         /// <returns>True, if password hashes match; false otherwise.</returns>
-        public static bool CompareWithHash(string plaintext, string hash)
+        public bool CompareWithHash(string plaintext, string hash)
         {
             var hashBytes = Convert.FromBase64String(hash);
             var salt = new byte[SaltLength];

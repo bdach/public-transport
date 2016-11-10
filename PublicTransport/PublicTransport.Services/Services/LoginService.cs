@@ -18,16 +18,33 @@ namespace PublicTransport.Services
         private readonly PublicTransportContext _db;
 
         /// <summary>
+        ///     Service providing password hashing capabilities.
+        /// </summary>
+        private readonly IPasswordService _passwordService;
+
+        /// <summary>
         ///     Indicates whether the <see cref="Dispose" /> method has been called.
         /// </summary>
         private bool _disposed;
 
         /// <summary>
-        ///     Constructor.
+        ///     Default constructor.
         /// </summary>
         public LoginService()
         {
             _db = new PublicTransportContext();
+            _passwordService = new PasswordService();
+        }
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db">Database context to be injected to the service.</param>
+        /// <param name="passwordService">Password service to use for hashing.</param>
+        public LoginService(PublicTransportContext db, IPasswordService passwordService)
+        {
+            _db = db;
+            _passwordService = passwordService;
         }
 
         /// <summary>
@@ -54,7 +71,7 @@ namespace PublicTransport.Services
             var user = _db.Users
                 .Include(u => u.Roles)
                 .FirstOrDefault(u => u.UserName == loginData.UserName);
-            if (user == null || !PasswordService.CompareWithHash(loginData.Password, user.Password))
+            if ((user == null) || !_passwordService.CompareWithHash(loginData.Password, user.Password))
             {
                 throw new InvalidCredentialsException();
             }

@@ -17,12 +17,50 @@ namespace PublicTransport.Services
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
+
+        /// <summary>
+        ///     Service providing password hashing capabilities.
+        /// </summary>
+        private readonly IPasswordService _passwordService;
 
         /// <summary>
         ///     Determines whether the database context has already been disposed.
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        ///     Default constructor.
+        /// </summary>
+        public UserService()
+        {
+            _db = new PublicTransportContext();
+            _passwordService = new PasswordService();
+        }
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db">Database context to inject.</param>
+        /// <param name="passwordService">Password service to use for generating and comparing hashes.</param>
+        public UserService(PublicTransportContext db, IPasswordService passwordService)
+        {
+            _db = db;
+            _passwordService = passwordService;
+        }
+
+        /// <summary>
+        ///     Disposes database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _db.Dispose();
+            _disposed = true;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="User" /> record into the database.
@@ -31,11 +69,11 @@ namespace PublicTransport.Services
         /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
         public User Create(User user)
         {
-            user.Password = PasswordService.GenerateHash(user.Password);
+            user.Password = _passwordService.GenerateHash(user.Password);
             var roles = new List<Role>();
             foreach (var role in user.Roles)
             {
-                var currentRole = _db.Roles.FirstOrDefault(r => r.Id == role.Id && r.Name == role.Name);
+                var currentRole = _db.Roles.FirstOrDefault(r => (r.Id == role.Id) && (r.Name == role.Name));
                 if (currentRole == null)
                 {
                     return null;
@@ -78,7 +116,7 @@ namespace PublicTransport.Services
         /// </exception>
         public User Update(User user)
         {
-            user.Password = PasswordService.GenerateHash(user.Password);
+            user.Password = _passwordService.GenerateHash(user.Password);
             var old = Read(user.Id);
             if (old == null)
             {
@@ -88,7 +126,7 @@ namespace PublicTransport.Services
             var roles = new List<Role>();
             foreach (var role in user.Roles)
             {
-                var currentRole = _db.Roles.FirstOrDefault(r => r.Id == role.Id && r.Name == role.Name);
+                var currentRole = _db.Roles.FirstOrDefault(r => (r.Id == role.Id) && (r.Name == role.Name));
                 if (currentRole == null)
                 {
                     return null;
@@ -152,16 +190,6 @@ namespace PublicTransport.Services
                 .ToList();
             users.ForEach(u => u.Password = null);
             return users;
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }
