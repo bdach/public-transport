@@ -18,6 +18,11 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
+        /// <summary>
+        ///     Service providing password hashing capabilities.
+        /// </summary>
+        private readonly IPasswordService _passwordService;
+
         public UserService()
         {
 
@@ -33,13 +38,24 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
+        /// <param name="passwordService">Password service to use for generating and comparing hashes.</param>
+        public UserService(PublicTransportContext db, IPasswordService passwordService)
+        {
+            _db = db;
+            _passwordService = passwordService;
+        }
+
+        /// <summary>
         ///     Inserts a <see cref="User" /> record into the database.
         /// </summary>
         /// <param name="user"><see cref="User" /> object to insert into the database.</param>
         /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
         public User Create(User user)
         {
-            user.Password = PasswordService.GenerateHash(user.Password);
+            user.Password = _passwordService.GenerateHash(user.Password);
             var roles = new List<Role>();
             foreach (var role in user.Roles)
             {
@@ -86,7 +102,7 @@ namespace PublicTransport.Services
         /// </exception>
         public User Update(User user)
         {
-            user.Password = PasswordService.GenerateHash(user.Password);
+            user.Password = _passwordService.GenerateHash(user.Password);
             var old = Read(user.Id);
             if (old == null)
             {

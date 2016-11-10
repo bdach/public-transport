@@ -90,23 +90,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgencyServiceTest.cs" />
-    <Compile Include="CityServiceTest.cs" />
-    <Compile Include="LoginServiceTest.cs" />
-    <Compile Include="PasswordServiceTest.cs" />
-    <Compile Include="PersistenceTests.cs" />
+    <Compile Include="ServiceTests\AgencyServiceTest.cs" />
+    <Compile Include="ServiceTests\CityServiceTest.cs" />
+    <Compile Include="ServiceTests\LoginServiceTest.cs" />
+    <Compile Include="ServiceTests\PasswordServiceTest.cs" />
+    <Compile Include="ServiceTests\PersistenceTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceTest.cs" />
-    <Compile Include="FareAttributeServiceTest.cs" />
-    <Compile Include="StopServiceTest.cs" />
-    <Compile Include="StopTimeServiceTest.cs" />
-    <Compile Include="StreetServiceTest.cs" />
-    <Compile Include="TripServiceTest.cs" />
-    <Compile Include="UserServiceTest.cs" />
+    <Compile Include="ServiceTests\ServiceTest.cs" />
+    <Compile Include="ServiceTests\FareAttributeServiceTest.cs" />
+    <Compile Include="ServiceTests\StopServiceTest.cs" />
+    <Compile Include="ServiceTests\StopTimeServiceTest.cs" />
+    <Compile Include="ServiceTests\StreetServiceTest.cs" />
+    <Compile Include="ServiceTests\TripServiceTest.cs" />
+    <Compile Include="ServiceTests\UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
