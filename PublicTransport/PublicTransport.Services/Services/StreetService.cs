@@ -17,12 +17,22 @@ namespace PublicTransport.Services
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
 
         /// <summary>
         ///     Determines whether the database context has already been disposed.
         /// </summary>
         private bool _disposed;
+
+        public StreetService()
+        {
+            _db = new PublicTransportContext();
+        }
+
+        public StreetService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="Street" /> record into the database.

@@ -90,6 +90,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgencyServiceTest.cs" />
     <Compile Include="CityServiceTest.cs" />
     <Compile Include="LoginServiceTest.cs" />
     <Compile Include="PasswordServiceTest.cs" />
@@ -100,6 +101,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ServiceTest.cs" />
+    <Compile Include="FareAttributeServiceTest.cs" />
+    <Compile Include="StopServiceTest.cs" />
+    <Compile Include="StopTimeServiceTest.cs" />
+    <Compile Include="StreetServiceTest.cs" />
+    <Compile Include="TripServiceTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

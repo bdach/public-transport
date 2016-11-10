@@ -17,12 +17,22 @@ namespace PublicTransport.Services
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
 
         /// <summary>
         ///     Determines whether the database context has already been disposed.
         /// </summary>
         private bool _disposed;
+
+        public FareAttributeService()
+        {
+            _db = new PublicTransportContext();
+        }
+        
+        public FareAttributeService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts an <see cref="FareAttribute" /> record into the database.

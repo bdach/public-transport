@@ -92,75 +92,75 @@ INSERT INTO [Cities]
 	([Name])
 VALUES
 	-- Intra-city example.
-	('Warszawa'),				-- 1
+	(N'Warszawa'),				-- 1
 	-- Inter-city example.
-	('Zawiercie'),				-- 2
-	('£azy'),					-- 3
-	('Z¹bkowice Œl¹skie'),		-- 4
-	('Sosnowiec'),				-- 5
-	('Katowice'),				-- 6
-	('Gliwice')					-- 7
+	(N'Zawiercie'),				-- 2
+	(N'£azy'),					-- 3
+	(N'Z¹bkowice Œl¹skie'),		-- 4
+	(N'Sosnowiec'),				-- 5
+	(N'Katowice'),				-- 6
+	(N'Gliwice')				-- 7
 GO
 
 INSERT INTO [Streets]
 	([CityId], [Name])
 VALUES
 	-- Streets on the path of the E-1 ZTM line.
-	(1, 'Sokola'),									-- 1
-	(1, 'Wa³ Miedzeszyñski'),						-- 2
-	(1, 'Saska'),									-- 3
-	(1, 'Bora-Komorowskiego'),						-- 4
+	(1, N'Sokola'),									-- 1
+	(1, N'Wa³ Miedzeszyñski'),						-- 2
+	(1, N'Saska'),									-- 3
+	(1, N'Bora-Komorowskiego'),						-- 4
 	-- Addresses of rail stations of the 101 PKP Intercity line.
-	(2, '3 Maja'),									-- 5
-	(3, 'Dworcowa'),								-- 6
-	(4, 'Niepodleg³oœci'),							-- 7
-	(5, '3 Maja'),									-- 8
-	(6, 'Plac Oddzia³ów M³odzie¿y Powstañczej'),	-- 9
-	(7, 'Bohaterów Getta Warszawskiego'),			-- 10
+	(2, N'3 Maja'),									-- 5
+	(3, N'Dworcowa'),								-- 6
+	(4, N'Niepodleg³oœci'),							-- 7
+	(5, N'3 Maja'),									-- 8
+	(6, N'Plac Oddzia³ów M³odzie¿y Powstañczej'),	-- 9
+	(7, N'Bohaterów Getta Warszawskiego'),			-- 10
 	-- Agency locations.
-	(1, '¯elazna')									-- 11
+	(1, N'¯elazna')									-- 11
 GO
 
 INSERT INTO [Zones]
 	([Name])
 VALUES
-	('Warszawa - ZTM - Strefa 1')
+	(N'Warszawa - ZTM - Strefa 1')
 GO
 
 INSERT INTO [Stops]
 	([Name], [StreetId], [ZoneId], [ParentStationId], [IsStation])
 VALUES
 	-- Warsaw bus stops.
-	('Metro Stadion Narodowy', 1, 1, NULL, 0),			-- 1
-	('Kryniczna', 2, 1, NULL, 0),						-- 2
-	('Saska', 3, 1, NULL, 0),							-- 3
-	('Afrykañska', 4, 1, NULL, 0),						-- 4
-	('Wa³ Goc³awski', 4, 1, NULL, 0),					-- 5
-	('Abrahama', 4, 1, NULL, 0),						-- 6
-	('Bora-Komorowskiego', 4, 1, NULL, 0),				-- 7
-	('Horbaczewskiego', 4, 1, NULL, 0),					-- 8
-	('Goc³aw', 4, 1, NULL, 0),							-- 9
+	(N'Metro Stadion Narodowy', 1, 1, NULL, 0),			-- 1
+	(N'Kryniczna', 2, 1, NULL, 0),						-- 2
+	(N'Saska', 3, 1, NULL, 0),							-- 3
+	(N'Afrykañska', 4, 1, NULL, 0),						-- 4
+	(N'Wa³ Goc³awski', 4, 1, NULL, 0),					-- 5
+	(N'Abrahama', 4, 1, NULL, 0),						-- 6
+	(N'Bora-Komorowskiego', 4, 1, NULL, 0),				-- 7
+	(N'Horbaczewskiego', 4, 1, NULL, 0),				-- 8
+	(N'Goc³aw', 4, 1, NULL, 0),							-- 9
 	-- Rail stops.
-	('Zawiercie D.K.', 5, NULL, NULL, 0),				-- 10
-	('£azy D.K.', 6, NULL, NULL, 0),					-- 11
-	('D¹browa Górnicza Z¹bkowice', 7, NULL, NULL, 0),	-- 12
-	('Sosnowiec G³ówny', 8, NULL, NULL, 0),				-- 13
-	('Katowice', 9, NULL, NULL, 0),						-- 14
-	('Gliwice', 10, NULL, NULL, 0)						-- 15
+	(N'Zawiercie D.K.', 5, NULL, NULL, 0),				-- 10
+	(N'£azy D.K.', 6, NULL, NULL, 0),					-- 11
+	(N'D¹browa Górnicza Z¹bkowice', 7, NULL, NULL, 0),	-- 12
+	(N'Sosnowiec G³ówny', 8, NULL, NULL, 0),			-- 13
+	(N'Katowice', 9, NULL, NULL, 0),					-- 14
+	(N'Gliwice', 10, NULL, NULL, 0)						-- 15
 GO
 
 INSERT INTO [Agencies]
 	([Name], [Phone], [Url], [Regon], [StreetId], [StreetNumber])
 VALUES
-	('Zarz¹d Transportu Miejskiego', '19 115', 'http://www.ztm.waw.pl', '012605780', 11, '61'),	-- 1
-	('PKP Intercity', '19 757', 'http://www.intercity.pl', '017258024', 11, '59a')				-- 2
+	(N'Zarz¹d Transportu Miejskiego', '19 115', 'http://www.ztm.waw.pl', '012605780', 11, '61'),	-- 1
+	(N'PKP Intercity', '19 757', 'http://www.intercity.pl', '017258024', 11, '59a')				-- 2
 GO
 
 INSERT INTO [Routes]
 	([AgencyId], [ShortName], [LongName], [RouteType])
 VALUES
-	(1, 'E-1', 'Goc³aw-Metro Stadion Narodowy', 3),		-- 1; route type 3 is a Bus
-	(2, '101', 'Zawiercie-Gliwice', 2)					-- 2; route type 2 is Rail
+	(1, N'E-1', N'Goc³aw-Metro Stadion Narodowy', 3),		-- 1; route type 3 is a Bus
+	(2, N'101', N'Zawiercie-Gliwice', 2)					-- 2; route type 2 is Rail
 GO
 
 INSERT INTO [Calendars]
@@ -185,9 +185,9 @@ GO
 INSERT INTO [Trips]
 	([RouteId], [ServiceId], [Headsign], [ShortName], [Direction])
 VALUES
-	(1, 1, 'Goc³aw', NULL, 0),							-- 1
-	(1, 1, 'Metro Stadion Narodowy', NULL, 1),			-- 2
-	(2, 2, 'Gliwice', NULL, 0)							-- 3
+	(1, 1, N'Goc³aw', NULL, 0),							-- 1
+	(1, 1, N'Metro Stadion Narodowy', NULL, 1),			-- 2
+	(2, 2, N'Gliwice', NULL, 0)							-- 3
 GO
 
 INSERT INTO [StopTimes]

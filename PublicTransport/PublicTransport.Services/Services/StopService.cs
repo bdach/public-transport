@@ -16,12 +16,22 @@ namespace PublicTransport.Services
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
 
         /// <summary>
         ///     Determines whether the database context has already been disposed.
         /// </summary>
         private bool _disposed;
+
+        public StopService()
+        {
+            _db = new PublicTransportContext();
+        }
+
+        public StopService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="Stop" /> record into the database.
