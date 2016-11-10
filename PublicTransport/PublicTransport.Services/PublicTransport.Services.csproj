@@ -77,7 +77,12 @@
     <Compile Include="Services\TripService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\ZoneService.cs" />
+    <Compile Include="UnitsOfWork\CityUnitOfWork.cs" />
+    <Compile Include="UnitsOfWork\FareUnitOfWork.cs" />
+    <Compile Include="UnitsOfWork\StopUnitOfWork.cs" />
     <Compile Include="UnitsOfWork\StreetUnitOfWork.cs" />
+    <Compile Include="UnitsOfWork\UserUnitOfWork.cs" />
+    <Compile Include="UnitsOfWork\ZoneUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PublicTransport.Domain\PublicTransport.Domain.csproj">

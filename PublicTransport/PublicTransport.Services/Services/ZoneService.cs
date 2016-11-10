@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -11,17 +10,26 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing zones.
     /// </summary>
-    public class ZoneService : IDisposable
+    public class ZoneService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
+
+        public ZoneService()
+        {
+
+        }
 
         /// <summary>
-        ///     Determines whether the database context has already been disposed.
+        ///     Constructor.
         /// </summary>
-        private bool _disposed;
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
+        public ZoneService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="Zone" /> record into the database.
@@ -100,16 +108,6 @@ namespace PublicTransport.Services
         public List<Zone> GetZonesContainingString(string str)
         {
             return _db.Zones.Where(z => z.Name.Contains(str)).Take(10).ToList();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }

@@ -7,7 +7,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Entities;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -18,9 +18,9 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditUserViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Role" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RoleService _roleService;
+        private readonly UserUnitOfWork _userUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.User" /> object being edited in the window.
@@ -31,24 +31,28 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
+        /// <param name="userUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="user">User to be edited. If a user is to be added, this parameter should be left null.</param>
-        public EditUserViewModel(IScreen screen, User user = null)
+        public EditUserViewModel(IScreen screen, UserUnitOfWork userUnitOfWork, User user = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            var userService = new UserService();
-            _roleService = new RoleService();
+            _userUnitOfWork = userUnitOfWork;
 
-            var serviceMethod = user == null ? new Func<User, User>(userService.Create) : userService.Update;
+            var serviceMethod = user == null ? new Func<User, User>(_userUnitOfWork.CreateUser) : _userUnitOfWork.UpdateUser;
             _user = user ?? new User();
             RoleViewModels = new ReactiveList<RoleViewModel>();
 
             #endregion
 
-            GetRoles = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _roleService.GetAllRoles()));
+            #region GetRoles command
+
+            GetRoles = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _userUnitOfWork.GetAllRoles()));
             GetRoles.Subscribe(result => RoleViewModels.AddRange(result.Select(r => new RoleViewModel(r, User.Roles.Any(ur => ur.Name == r.Name))).ToList()));
 
+            #endregion
+            
             #region SaveUser command
 
             SaveUser = ReactiveCommand.CreateAsyncTask(async _ =>

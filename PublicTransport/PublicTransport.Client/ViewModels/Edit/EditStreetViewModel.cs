@@ -17,7 +17,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
         private readonly StreetUnitOfWork _streetUnitOfWork;
 
@@ -48,7 +48,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             HostScreen = screen;
             Suggestions = new ReactiveList<City>();
-            _streetUnitOfWork = streetUnitOfWork ?? new StreetUnitOfWork();
+            _streetUnitOfWork = streetUnitOfWork;
             var serviceMethod = street == null ? new Func<Street, Street>(_streetUnitOfWork.CreateStreet) : _streetUnitOfWork.UpdateStreet;
             _street = street ?? new Street();
             _selectedCity = _street.City;
@@ -57,13 +57,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #endregion
 
             var citySelected = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
-
-            #region DisplayCityView command
-
-            DisplayCityView = ReactiveCommand.CreateAsyncObservable(citySelected, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
-
-            #endregion
+            citySelected.Where(b => b).Subscribe(_ => Street.CityId = SelectedCity.Id);
 
             #region SaveStreet command
 
@@ -110,11 +104,6 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     List of suggested <see cref="City"/> objects.
         /// </summary>
         public ReactiveList<City> Suggestions { get; set; }
-
-        /// <summary>
-        ///     Command responsible for displaying the <see cref="EditCityViewModel" /> view model.
-        /// </summary>
-        public ReactiveCommand<object> DisplayCityView { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the <see cref="Suggestions" /> collection.

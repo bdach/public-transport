@@ -54,6 +54,7 @@
                 Width="100"
                 Grid.ColumnSpan="2"
                 Content="Log in"
+                IsDefault="True"
                 x:Name="LoginButton" />
     </Grid>
 </UserControl>

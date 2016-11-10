@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
         private readonly StreetUnitOfWork _streetUnitOfWork;
 

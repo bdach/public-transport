@@ -2,24 +2,18 @@
 using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
     /// <summary>
-    ///     Unit of work used to manage street data.
+    ///     Unit of work used to manage city data.
     /// </summary>
-    public class StreetUnitOfWork : IDisposable
+    public class CityUnitOfWork : IDisposable
     {
         /// <summary>
         ///     Service used to fetch <see cref="City"/> data from the database.
         /// </summary>
         private readonly CityService _cityService;
-
-        /// <summary>
-        ///     Service used to fetch <see cref="Street"/> data from the database.
-        /// </summary>
-        private readonly StreetService _streetService;
 
         /// <summary>
         ///     Database context common for services in this unit of work used to access data.
@@ -34,44 +28,43 @@ namespace PublicTransport.Services.UnitsOfWork
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public StreetUnitOfWork()
+        public CityUnitOfWork()
         {
             _db = new PublicTransportContext();
             _cityService = new CityService(_db);
-            _streetService = new StreetService(_db);
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetService"/> create method.
+        ///     Calls <see cref="CityService"/> create method.
         /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be inserted into the database.</param>
+        /// <param name="city"><see cref="City"/> object to be inserted into the database.</param>
         /// <returns>
-        ///     <see cref="Street"/> object successfully inserted into the database.
+        ///     <see cref="City"/> object successfully inserted into the database.
         /// </returns>
-        public Street CreateStreet(Street street)
+        public City CreateCity(City city)
         {
-            return _streetService.Create(street);
+            return _cityService.Create(city);
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetService"/> delete method.
+        ///     Calls <see cref="CityService"/> delete method.
         /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
-        public void DeleteStreet(Street street)
+        /// <param name="city"><see cref="City"/> object to be deleted from the database.</param>
+        public void DeleteCity(City city)
         {
-            _streetService.Delete(street);
+            _cityService.Delete(city);
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetService"/> update method.
+        ///     Calls <see cref="CityService"/> update method.
         /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be updated in the database.</param>
+        /// <param name="city"><see cref="City"/> object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Street"/> object successfully updated in the database.
+        ///     <see cref="City"/> object successfully updated in the database.
         /// </returns>
-        public Street UpdateStreet(Street street)
+        public City UpdateCity(City city)
         {
-            return _streetService.Update(street);
+            return _cityService.Update(city);
         }
 
         /// <summary>
@@ -84,18 +77,6 @@ namespace PublicTransport.Services.UnitsOfWork
         public List<City> FilterCities(string name)
         {
             return _cityService.GetCitiesContainingString(name);
-        }
-
-        /// <summary>
-        ///     Calls <see cref="StreetService"/> filtering method.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>
-        ///     List of <see cref="Street"/> objects matching the filtering query.
-        /// </returns>
-        public List<Street> FilterStreets(IStreetFilter filter)
-        {
-            return _streetService.FilterStreets(filter);
         }
 
         /// <summary>

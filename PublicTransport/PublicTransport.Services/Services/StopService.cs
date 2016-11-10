@@ -16,12 +16,21 @@ namespace PublicTransport.Services
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
+
+        public StopService()
+        {
+            
+        }
 
         /// <summary>
-        ///     Determines whether the database context has already been disposed.
+        ///     Constructor.
         /// </summary>
-        private bool _disposed;
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
+        public StopService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="Stop" /> record into the database.
@@ -124,16 +133,6 @@ namespace PublicTransport.Services
                 .Where(s => s.ParentStation == null || s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
                 .Where(s => !filter.OnlyStations || s.IsStation)
                 .Take(20).ToList();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }

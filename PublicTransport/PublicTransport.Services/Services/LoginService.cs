@@ -31,6 +31,23 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
+        ///     Handles a user login request.
+        /// </summary>
+        /// <param name="loginData">Object containing the credentials: username and hashed password.</param>
+        /// <returns>A <see cref="LoginData" /> object containing minimum required information about the user who logged in.</returns>
+        /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
+        public UserInfo RequestLogin(LoginData loginData)
+        {
+            var user = _db.Users.Include(u => u.Roles)
+                .FirstOrDefault(u => u.UserName == loginData.UserName);
+            if (user == null || !PasswordService.CompareWithHash(loginData.Password, user.Password))
+            {
+                throw new InvalidCredentialsException();
+            }
+            return new UserInfo(user.UserName, user.Roles.Select(r => r.Name).ToList());
+        }
+
+        /// <summary>
         ///     Disposes of the database context.
         /// </summary>
         public void Dispose()
@@ -41,24 +58,6 @@ namespace PublicTransport.Services
             }
             _db.Dispose();
             _disposed = true;
-        }
-
-        /// <summary>
-        ///     Handles a user login request.
-        /// </summary>
-        /// <param name="loginData">Object containing the credentials: username and hashed password.</param>
-        /// <returns>A <see cref="LoginData" /> object containing minimum required information about the user who logged in.</returns>
-        /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
-        public UserInfo RequestLogin(LoginData loginData)
-        {
-            var user = _db.Users
-                .Include(u => u.Roles)
-                .FirstOrDefault(u => u.UserName == loginData.UserName);
-            if (user == null || !PasswordService.CompareWithHash(loginData.Password, user.Password))
-            {
-                throw new InvalidCredentialsException();
-            }
-            return new UserInfo(user.UserName, user.Roles.Select(r => r.Name).ToList());
         }
     }
 }

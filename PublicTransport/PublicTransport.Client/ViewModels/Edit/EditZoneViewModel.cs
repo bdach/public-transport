@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -23,21 +23,20 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
+        /// <param name="zoneUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="zone">Zone to be edited. If a zone is to be added, this parameter is null (can be left out).</param>
-        public EditZoneViewModel(IScreen screen, Zone zone = null)
+        public EditZoneViewModel(IScreen screen, ZoneUnitOfWork zoneUnitOfWork, Zone zone = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            var zoneService = new ZoneService();
-            var serviceMethod = zone == null ? new Func<Zone, Zone>(zoneService.Create) : zoneService.Update;
+            var serviceMethod = zone == null ? new Func<Zone, Zone>(zoneUnitOfWork.CreateZone) : zoneUnitOfWork.UpdateZone;
             _zone = zone ?? new Zone();
 
             #endregion
 
             #region SaveZone command
 
-            // Action: Use the service to save to the database.
             SaveZone = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(Zone)); });
             SaveZone.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("The currently edited zone cannot be saved to the database. Please contact the administrator.", ex));

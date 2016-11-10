@@ -8,7 +8,7 @@
     <CheckBox Margin ="10"
               x:Name="SelectedCheckBox">
         <CheckBox.Content>
-            <TextBlock x:Name="Name"
+            <TextBlock x:Name="RoleName"
                Style="{StaticResource PrimaryText}"
                Text="{Binding Role.Name}" />
         </CheckBox.Content>

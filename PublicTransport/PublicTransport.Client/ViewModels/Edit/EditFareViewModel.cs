@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -20,14 +20,9 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Route" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteService _routeService;
-
-        /// <summary>
-        ///     Service used to fetch <see cref="Zone" /> data from the database.
-        /// </summary>
-        private readonly ZoneService _zoneService;
+        private readonly FareUnitOfWork _fareUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.FareAttribute" /> object being edited in the window.
@@ -73,26 +68,22 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
+        /// <param name="fareUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="fareAttribute">Fare to be edited. If a fare is to be added, this parameter should be left null.</param>
-        public EditFareViewModel(IScreen screen, FareAttribute fareAttribute = null)
+        public EditFareViewModel(IScreen screen, FareUnitOfWork fareUnitOfWork, FareAttribute fareAttribute = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
+            _fareUnitOfWork = fareUnitOfWork;
+            _routeFilter = new RouteFilter();
             RouteSuggestions = new ReactiveList<Route>();
             OriginZoneSuggestions = new ReactiveList<Zone>();
             DestinationZoneSuggestions = new ReactiveList<Zone>();
-
-            _routeService = new RouteService();
-            _zoneService = new ZoneService();
-            _routeFilter = new RouteFilter();
-            var fareAttributeService = new FareAttributeService();
-            var fareRuleService = new FareRuleService();
-
             TransferCounts = new ReactiveList<TransferCount>(Enum.GetValues(typeof(TransferCount)).Cast<TransferCount>());
 
-            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(fareAttributeService.Create) : fareAttributeService.Update;
-            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(fareRuleService.Create) : fareRuleService.Update;
+            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(_fareUnitOfWork.CreateFareAttribute) : _fareUnitOfWork.UpdateFareAttribute;
+            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(_fareUnitOfWork.CreateFareRule) : _fareUnitOfWork.UpdateFareRule;
             _fareAttribute = fareAttribute ?? new FareAttribute();
             _fareRule = _fareAttribute.FareRule ?? new FareRule();
             _selectedRoute = _fareRule.Route;
@@ -105,6 +96,13 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
+            this.WhenAnyValue(vm => vm.SelectedRoute).Select(r => r != null)
+                .Where(b => b).Subscribe(_ => FareRule.RouteId = SelectedRoute.Id);
+            this.WhenAnyValue(vm => vm.SelectedOriginZone).Select(o => o != null)
+                .Where(b => b).Subscribe(_ => FareRule.OriginId = SelectedOriginZone.Id);
+            this.WhenAnyValue(vm => vm.SelectedDestinationZone).Select(d => d != null)
+                .Where(b => b).Subscribe(_ => FareRule.DestinationId = SelectedDestinationZone.Id);
+
             var allSelected = this.WhenAnyValue(vm => vm.SelectedRoute, vm => vm.SelectedOriginZone,
                 vm => vm.SelectedDestinationZone, (r, o, d) => r != null && o != null && d != null);
 
@@ -112,24 +110,10 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveFare = ReactiveCommand.CreateAsyncTask(allSelected, async _ =>
             {
-                // TODO: Fix this when refactoring services.
-                FareRule.Route = null;
-                FareRule.RouteId = SelectedRoute.Id;
-                FareRule.Origin = null;
-                FareRule.OriginId = SelectedOriginZone.Id;
-                FareRule.Destination = null;
-                FareRule.DestinationId = SelectedDestinationZone.Id;
-
-                var ruleResult = await Task.Run(() => ruleServiceMethod(FareRule));
-                FareRule.Route = SelectedRoute;
-                FareRule.Origin = SelectedOriginZone;
-                FareRule.Destination = SelectedDestinationZone;
-
-                FareAttribute.FareRule = null;
-                FareAttribute.FareRuleId = ruleResult.Id;
-                var result = await Task.Run(() => fareServiceMethod(FareAttribute));
-                FareAttribute.FareRule = ruleResult;
-                return result;
+                var result = await Task.Run(() => ruleServiceMethod(FareRule));
+                FareAttribute.FareRule = result;
+                FareAttribute.FareRuleId = result.Id;
+                return await Task.Run(() => fareServiceMethod(FareAttribute));
             });
             SaveFare.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("The currently edited fare cannot be saved to the database. Please contact the system administrator.", ex));
@@ -139,7 +123,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions commands
 
             UpdateRouteSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+                await Task.Run(() => _fareUnitOfWork.FilterRoutes(RouteFilter)));
             UpdateRouteSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
@@ -149,7 +133,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             UpdateOriginZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _zoneService.GetZonesContainingString(OriginZoneFilter)));
+                await Task.Run(() => _fareUnitOfWork.FilterZones(OriginZoneFilter)));
             UpdateOriginZoneSuggestions.Subscribe(results =>
             {
                 OriginZoneSuggestions.Clear();
@@ -159,7 +143,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             UpdateDestinationZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _zoneService.GetZonesContainingString(DestinationZoneFilter)));
+                await Task.Run(() => _fareUnitOfWork.FilterZones(DestinationZoneFilter)));
             UpdateDestinationZoneSuggestions.Subscribe(results =>
             {
                 DestinationZoneSuggestions.Clear();

@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Filter
@@ -20,14 +20,9 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="FareAttribute" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly FareAttributeService _fareAttributeService;
-
-        /// <summary>
-        ///     Service used to fetch <see cref="FareRule" /> data from the database.
-        /// </summary>
-        private readonly FareRuleService _fareRuleService;
+        private readonly FareUnitOfWork _fareUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
@@ -48,8 +43,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Field/property initialization
 
             HostScreen = screen;
-            _fareAttributeService = new FareAttributeService();
-            _fareRuleService = new FareRuleService();
+            _fareUnitOfWork = new FareUnitOfWork();
             _fareFilter = new FareFilter();
             FareAttributes = new ReactiveList<FareAttribute>();
 
@@ -57,9 +51,9 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             var canExecuteOnSelectedItem = this.WhenAnyValue(vm => vm.SelectedFare).Select(s => s != null);
 
-            #region Stop filtering command
+            #region Fare filtering command
 
-            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareAttributeService.FilterFares(FareFilter)));
+            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareUnitOfWork.FilterFares(FareFilter)));
             FilterFares.Subscribe(result =>
             {
                 FareAttributes.Clear();
@@ -70,7 +64,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
-            #region Updating the list of filtered stops upon filter change
+            #region Updating the list of filtered fares upon filter change
 
             this.WhenAnyValue(
                     vm => vm.FareFilter.RouteNameFilter,
@@ -82,12 +76,12 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
-            #region Delete stop command
+            #region Delete fare command
 
             DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _fareRuleService.Delete(SelectedFare.FareRule));
-                //await Task.Run(() => _fareAttributeService.Delete(SelectedFare)); // commented because of cascade delete
+                await Task.Run(() => _fareUnitOfWork.DeleteFareRule(SelectedFare.FareRule));
+                //await Task.Run(() => _fareUnitOfWork.DeleteFareAttribute(SelectedFare)); // commented because of cascade delete
                 return Unit.Default;
             });
             DeleteFare.Subscribe(_ => SelectedFare = null);
@@ -100,13 +94,13 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit fare commands
 
             AddFare = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareUnitOfWork)));
             EditFare = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, SelectedFare)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareUnitOfWork, SelectedFare)));
 
             #endregion
 
-            #region Updating the list of stops upon navigating back
+            #region Updating the list of fares upon navigating back
 
             HostScreen.Router.NavigateBack
                 .Where(_ => HostScreen.Router.NavigationStack.Last() == this && FareFilter.IsValid)

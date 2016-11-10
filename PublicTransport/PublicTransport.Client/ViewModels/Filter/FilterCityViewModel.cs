@@ -8,7 +8,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Filter
@@ -19,9 +19,9 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterCityViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="City" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly CityService _cityService;
+        private readonly CityUnitOfWork _cityUnitOfWork;
 
         /// <summary>
         ///     String containing the city name filter.
@@ -42,7 +42,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Field/property initialization
 
             HostScreen = screen;
-            _cityService = new CityService();
+            _cityUnitOfWork = new CityUnitOfWork();
             Cities = new ReactiveList<City>();
 
             #endregion
@@ -51,7 +51,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region City filtering command
 
-            FilterCities = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _cityService.GetCitiesContainingString(NameFilter)); });
+            FilterCities = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _cityUnitOfWork.FilterCities(NameFilter)); });
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
@@ -75,7 +75,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             // TODO: Maybe prompt for confirmation?
             DeleteCity = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _cityService.Delete(SelectedCity));
+                await Task.Run(() => _cityUnitOfWork.DeleteCity(SelectedCity));
                 return Unit.Default;
             });
             DeleteCity.Subscribe(_ => SelectedCity = null);
@@ -88,9 +88,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit city commands
 
             AddCity = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, _cityUnitOfWork)));
             EditCity = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, SelectedCity)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, _cityUnitOfWork, SelectedCity)));
 
             #endregion
 

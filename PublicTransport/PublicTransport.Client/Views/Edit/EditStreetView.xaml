@@ -11,7 +11,6 @@
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
             <Button x:Name="Save">Save</Button>
-            <Button x:Name="ToCity">Navigate to city</Button>
             <Button x:Name="Close">Close</Button>
         </StackPanel>
         <Grid>
@@ -26,7 +25,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Style="{StaticResource TextBoxLabel}">Street name</TextBlock>
-            <TextBox x:Name="Name"
+            <TextBox x:Name="StreetName"
                      Grid.Row="0"
                      Grid.Column="1" />
             <TextBlock Grid.Row="1"

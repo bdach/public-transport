@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -11,17 +10,26 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing user roles.
     /// </summary>
-    public class RoleService : IDisposable
+    public class RoleService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
+
+        public RoleService()
+        {
+
+        }
 
         /// <summary>
-        ///     Determines whether the database context has already been disposed.
+        ///     Constructor.
         /// </summary>
-        private bool _disposed;
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
+        public RoleService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts a <see cref="Role" /> record into the database.
@@ -99,16 +107,6 @@ namespace PublicTransport.Services
         public List<Role> GetAllRoles()
         {
             return _db.Roles.ToList();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }
