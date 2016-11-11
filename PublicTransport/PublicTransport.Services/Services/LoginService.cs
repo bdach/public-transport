@@ -55,9 +55,8 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public UserInfo RequestLogin(LoginData loginData)
         {
-            var user = _db.Users.Include(u => u.Roles)
-                .FirstOrDefault(u => u.UserName == loginData.UserName);
-            if ((user == null) || !_passwordService.CompareWithHash(loginData.Password, user.Password))
+            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == loginData.UserName);
+            if (user == null || !_passwordService.CompareWithHash(loginData.Password, user.Password))
             {
                 throw new InvalidCredentialsException();
             }
@@ -65,14 +64,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Disposes of the database context.
+        ///     Disposes the database context if not disposed already.
         /// </summary>
         public void Dispose()
         {
-            if (_disposed)
-            {
-                return;
-            }
+            if (_disposed) return;
             _db.Dispose();
             _disposed = true;
         }

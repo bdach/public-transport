@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -10,17 +9,26 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing calendars.
     /// </summary>
-    public class CalendarService : IDisposable
+    public class CalendarService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
-        private readonly PublicTransportContext _db = new PublicTransportContext();
+        private readonly PublicTransportContext _db;
+
+        public CalendarService()
+        {
+
+        }
 
         /// <summary>
-        ///     Determines whether the database context has already been disposed.
+        ///     Constructor.
         /// </summary>
-        private bool _disposed;
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
+        public CalendarService(PublicTransportContext db)
+        {
+            _db = db;
+        }
 
         /// <summary>
         ///     Inserts an <see cref="Calendar" /> record into the database.
@@ -87,16 +95,6 @@ namespace PublicTransport.Services
 
             _db.Entry(old).State = EntityState.Deleted;
             _db.SaveChanges();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }

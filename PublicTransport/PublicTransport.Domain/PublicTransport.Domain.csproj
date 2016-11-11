@@ -52,7 +52,6 @@
     <Compile Include="Context\PublicTransportContext.cs" />
     <Compile Include="Entities\Agency.cs" />
     <Compile Include="Entities\Calendar.cs" />
-    <Compile Include="Entities\CalendarDate.cs" />
     <Compile Include="Entities\City.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\FareAttribute.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="Entities\Trip.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Zone.cs" />
-    <Compile Include="Enums\ExceptionType.cs" />
     <Compile Include="Enums\RoleType.cs" />
     <Compile Include="Enums\RouteType.cs" />
     <Compile Include="Enums\TransferCount.cs" />
@@ -83,6 +81,10 @@
     <Compile Include="Migrations\201611072008272_RequiredTransferCount.cs" />
     <Compile Include="Migrations\201611072008272_RequiredTransferCount.Designer.cs">
       <DependentUpon>201611072008272_RequiredTransferCount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611111057405_RemovedCalendarDate.cs" />
+    <Compile Include="Migrations\201611111057405_RemovedCalendarDate.Designer.cs">
+      <DependentUpon>201611111057405_RemovedCalendarDate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611072008272_RequiredTransferCount.resx">
       <DependentUpon>201611072008272_RequiredTransferCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611111057405_RemovedCalendarDate.resx">
+      <DependentUpon>201611111057405_RemovedCalendarDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

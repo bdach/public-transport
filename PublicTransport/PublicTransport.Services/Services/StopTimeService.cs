@@ -12,23 +12,22 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing stop times.
     /// </summary>
-    public class StopTimeService : IDisposable
+    public class StopTimeService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        /// <summary>
-        ///     Determines whether the database context has already been disposed.
-        /// </summary>
-        private bool _disposed;
-
         public StopTimeService()
         {
-            _db = new PublicTransportContext();
+
         }
 
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
         public StopTimeService(PublicTransportContext db)
         {
             _db = db;
@@ -162,16 +161,6 @@ namespace PublicTransport.Services
                     && st.Trip.Service.EndDate >= filter.Date.Value))
                 .Where(st => !filter.Time.HasValue || st.ArrivalTime >= filter.Time.Value)
                 .Where(isActive).ToList();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }

@@ -16,8 +16,6 @@ DELETE FROM [FareAttributes]
 DELETE FROM [FareRules]
 DELETE FROM [StopTimes]
 DELETE FROM [Trips]
-DELETE FROM [CalendarCalendarDates]
-DELETE FROM [CalendarDates]
 DELETE FROM [Calendars]
 DELETE FROM [Routes]
 DELETE FROM [Agencies]
@@ -52,7 +50,6 @@ DBCC CHECKIDENT ('[FareAttributes]', RESEED, 0)
 DBCC CHECKIDENT ('[FareRules]', RESEED, 0)
 DBCC CHECKIDENT ('[StopTimes]', RESEED, 0)
 DBCC CHECKIDENT ('[Trips]', RESEED, 0)
-DBCC CHECKIDENT ('[CalendarDates]', RESEED, 0)
 DBCC CHECKIDENT ('[Calendars]', RESEED, 0)
 DBCC CHECKIDENT ('[Routes]', RESEED, 0)
 DBCC CHECKIDENT ('[Agencies]', RESEED, 0)
@@ -168,18 +165,6 @@ INSERT INTO [Calendars]
 VALUES
 	('2016-01-01', '2017-12-31', 1, 1, 1, 1, 1, 0, 0),	-- Line does not run on weekends.
 	('2016-10-29', '2017-10-29', 1, 1, 1, 1, 1, 1, 1)	-- Line runs every day.
-GO
-
-INSERT INTO [CalendarDates]
-	([Date], [ExceptionType])
-VALUES
-	('2016-01-01', 1)	-- Service does not run on November 1.
-GO
-
-INSERT INTO [CalendarCalendarDates]
-	([Calendar_Id], [CalendarDate_Id])
-VALUES
-	(1, 1)				-- Remove Nov 1 from the ZTM line.
 GO
 
 INSERT INTO [Trips]

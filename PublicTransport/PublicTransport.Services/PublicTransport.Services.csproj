@@ -62,7 +62,6 @@
     <Compile Include="Exceptions\InvalidCredentialsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AgencyService.cs" />
-    <Compile Include="Services\CalendarDateService.cs" />
     <Compile Include="Services\CalendarService.cs" />
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\FareAttributeService.cs" />

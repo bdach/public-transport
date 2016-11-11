@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -11,23 +10,22 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing trips.
     /// </summary>
-    public class TripService : IDisposable
+    public class TripService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        /// <summary>
-        ///     Determines whether the database context has already been disposed.
-        /// </summary>
-        private bool _disposed;
-
         public TripService()
         {
-            _db = new PublicTransportContext();
+
         }
 
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
         public TripService(PublicTransportContext db)
         {
             _db = db;
@@ -144,19 +142,6 @@ namespace PublicTransport.Services
                 .Where(t => t.TripId == trip.Id)
                 .OrderBy(t => t.StopSequence)
                 .ToList();
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _db.Dispose();
-            _disposed = true;
         }
     }
 }

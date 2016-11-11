@@ -30,11 +30,6 @@ namespace PublicTransport.Domain.Context
         public DbSet<Calendar> Calendars { get; set; }
 
         /// <summary>
-        ///     Returns a DbSet of <see cref="CalendarDate" /> records contained in the database.
-        /// </summary>
-        public DbSet<CalendarDate> CalendarDates { get; set; }
-
-        /// <summary>
         ///     Returns a DbSet of <see cref="City" /> records contained in the database.
         /// </summary>
         public DbSet<City> Cities { get; set; }
