@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using PublicTransport.Domain.Context;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     /// <summary>
     ///     Base test class for all tests that should hit the database.

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransport.Services", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransport.Client", "PublicTransport.Client\PublicTransport.Client.csproj", "{88B3CF59-7005-4B30-A245-E3755485F46D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransport.Services.Tests", "PublicTransport.Services.Tests\PublicTransport.Services.Tests.csproj", "{ABBA20C1-9EDA-4016-BE37-1815A63AC4C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransport.Tests", "PublicTransport.Tests\PublicTransport.Tests.csproj", "{ABBA20C1-9EDA-4016-BE37-1815A63AC4C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

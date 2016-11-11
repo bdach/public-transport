@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using PublicTransport.Services;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     [TestFixture]
     public class PasswordServiceTest

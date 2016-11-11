@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicTransport.Services.Tests.Properties {
+namespace PublicTransport.Tests.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PublicTransport.Services.Tests.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PublicTransport.Services.Tests.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PublicTransport.Tests.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -79,10 +79,11 @@ namespace PublicTransport.Services.Tests.Properties {
         ///DELETE FROM [FareRules]
         ///DELETE FROM [StopTimes]
         ///DELETE FROM [Trips]
-        ///DELETE FROM [CalendarCalendarDates]
-        ///DELETE FROM [CalendarDates]
         ///DELETE FROM [Calendars]
         ///DELETE FROM [Routes]
+        ///DELETE FROM [Agencies]
+        ///DELETE FROM [Stops]
+        ///DELETE FROM [Zones]
         ///DELETE [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestingDataScript {

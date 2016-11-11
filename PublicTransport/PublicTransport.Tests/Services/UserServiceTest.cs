@@ -4,9 +4,10 @@ using Moq;
 using NUnit.Framework;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     public class UserServiceTest : ServiceTest
     {

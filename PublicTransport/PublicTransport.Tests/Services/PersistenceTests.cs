@@ -4,10 +4,10 @@ using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using NUnit.Framework;
 using PublicTransport.Domain.Context;
-using PublicTransport.Services.Tests.Properties;
+using PublicTransport.Tests.Properties;
 using Database = System.Data.Entity.Database;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     /// <summary>
     ///     Main class responsible for setting up the persistence tests.

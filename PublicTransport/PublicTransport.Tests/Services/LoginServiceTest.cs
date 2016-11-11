@@ -2,10 +2,11 @@
 using Moq;
 using NUnit.Framework;
 using PublicTransport.Domain.Enums;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     [TestFixture]
     public class LoginServiceTest : ServiceTest

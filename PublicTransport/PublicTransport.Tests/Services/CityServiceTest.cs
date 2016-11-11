@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services;
 using PublicTransport.Services.Exceptions;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     [TestFixture]
     public class CityServiceTest : ServiceTest

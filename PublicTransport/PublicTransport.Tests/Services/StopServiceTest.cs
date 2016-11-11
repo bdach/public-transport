@@ -3,9 +3,10 @@ using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
 
-namespace PublicTransport.Services.Tests
+namespace PublicTransport.Tests.Services
 {
     [TestFixture]
     public class StopServiceTest : ServiceTest
