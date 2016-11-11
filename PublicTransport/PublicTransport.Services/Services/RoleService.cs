@@ -17,11 +17,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        public RoleService()
-        {
-
-        }
-
         /// <summary>
         ///     Constructor.
         /// </summary>

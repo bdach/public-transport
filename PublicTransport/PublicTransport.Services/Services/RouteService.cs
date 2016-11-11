@@ -18,11 +18,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        public RouteService()
-        {
-
-        }
-
         /// <summary>
         ///     Constructor.
         /// </summary>

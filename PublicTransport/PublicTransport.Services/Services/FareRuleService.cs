@@ -16,11 +16,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        public FareRuleService()
-        {
-            
-        }
-        
         /// <summary>
         ///     Constructor.
         /// </summary>

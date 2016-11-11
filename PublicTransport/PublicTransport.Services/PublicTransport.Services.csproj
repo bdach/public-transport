@@ -79,6 +79,7 @@
     <Compile Include="UnitsOfWork\AgencyUnitOfWork.cs" />
     <Compile Include="UnitsOfWork\CityUnitOfWork.cs" />
     <Compile Include="UnitsOfWork\FareUnitOfWork.cs" />
+    <Compile Include="UnitsOfWork\RouteUnitOfWork.cs" />
     <Compile Include="UnitsOfWork\StopUnitOfWork.cs" />
     <Compile Include="UnitsOfWork\StreetUnitOfWork.cs" />
     <Compile Include="UnitsOfWork\UserUnitOfWork.cs" />

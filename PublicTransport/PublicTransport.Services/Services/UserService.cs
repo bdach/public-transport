@@ -23,11 +23,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly IPasswordService _passwordService;
 
-        public UserService()
-        {
-
-        }
-
         /// <summary>
         ///     Constructor.
         /// </summary>

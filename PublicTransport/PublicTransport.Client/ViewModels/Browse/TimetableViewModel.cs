@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Browse
@@ -17,19 +17,9 @@ namespace PublicTransport.Client.ViewModels.Browse
     public class TimetableViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Stop" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly StopService _stopService;
-
-        /// <summary>
-        ///     Service used to fetch <see cref="StopTime" /> data from the database.
-        /// </summary>
-        private readonly StopTimeService _stopTimeService;
-
-        /// <summary>
-        ///     Service used to fetch <see cref="Trip" /> data from the database.
-        /// </summary>
-        private readonly TripService _tripService;
+        private readonly RouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed in the view.
@@ -55,19 +45,18 @@ namespace PublicTransport.Client.ViewModels.Browse
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
+        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="route">The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.</param>
-        public TimetableViewModel(IScreen screen, Route route)
+        public TimetableViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Route route)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _stopService = new StopService();
-            _stopTimeService = new StopTimeService();
-            _tripService = new TripService();
             Route = route;
             Stops = new ReactiveList<Stop>();
             StopTimes = new ReactiveList<StopTime>();
             StopTimeFilter = new StopTimeFilter { RouteId = route.Id };
+            _routeUnitOfWork = routeUnitOfWork;
 
             #endregion
 
@@ -75,7 +64,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Getting stops
 
-            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.GetStopsByRouteId(Route.Id)));
+            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.GetStopsByRouteId(Route.Id)));
             GetStops.Subscribe(results =>
             {
                 Stops.Clear();
@@ -91,7 +80,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Updating stop times
 
-            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopTimeService.GetRouteTimetableByStopId(StopTimeFilter)));
+            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.GetRouteTimetableByStopId(StopTimeFilter)));
             UpdateStopTimes.Subscribe(results =>
             {
                 StopTimes.Clear();
@@ -107,12 +96,12 @@ namespace PublicTransport.Client.ViewModels.Browse
             DeleteTrip = ReactiveCommand.CreateAsyncTask(stopTimeSelected, async _ =>
             {
                 // should cascade delete all stop times
-                await Task.Run(() => _tripService.Delete(SelectedStopTime.Trip));
+                await Task.Run(() => _routeUnitOfWork.DeleteTrip(SelectedStopTime.Trip));
                 return Unit.Default;
             });
             DeleteTrip.Subscribe(_ => SelectedStopTime = null);
-            DeleteTrip.InvokeCommand(UpdateStopTimes);
             DeleteTrip.InvokeCommand(GetStops);
+            GetStops.InvokeCommand(UpdateStopTimes);
             DeleteTrip.ThrownExceptions.Subscribe(e => UserError.Throw("Cannot delete the selected trip. Please contact the system administrator.", e));
 
             #endregion
@@ -120,9 +109,9 @@ namespace PublicTransport.Client.ViewModels.Browse
             #region Add/edit trip commands
 
             AddTrip = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, Route, Stops)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, _routeUnitOfWork, Route, Stops)));
             EditTrip = ReactiveCommand.CreateAsyncObservable(stopTimeSelected, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, SelectedStopTime.Trip)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, _routeUnitOfWork, SelectedStopTime.Trip)));
 
             #endregion
 

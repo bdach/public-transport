@@ -15,12 +15,7 @@ namespace PublicTransport.Services
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
-
-        public CalendarService()
-        {
-
-        }
-
+        
         /// <summary>
         ///     Constructor.
         /// </summary>

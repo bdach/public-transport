@@ -11,7 +11,7 @@ using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Filter
@@ -22,9 +22,9 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterRouteViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Route" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteService _routeService;
+        private readonly RouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.RouteFilter" /> object used to send query data to the service layer.
@@ -45,7 +45,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Field/property initialization
 
             HostScreen = screen;
-            _routeService = new RouteService();
+            _routeUnitOfWork = new RouteUnitOfWork();
             _routeFilter = new RouteFilter();
             Routes = new ReactiveList<Route>();
             RouteTypes = new ReactiveList<RouteType>(Enum.GetValues(typeof(RouteType)).Cast<RouteType>());
@@ -56,7 +56,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Route filtering command
 
-            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.FilterRoutes(RouteFilter)));
             FilterRoutes.Subscribe(result =>
             {
                 Routes.Clear();
@@ -77,11 +77,11 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
-            #region Delete agency command
+            #region Delete route command
 
             DeleteRoute = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _routeService.Delete(SelectedRoute));
+                await Task.Run(() => _routeUnitOfWork.DeleteRoute(SelectedRoute));
                 return Unit.Default;
             });
             DeleteRoute.Subscribe(_ => SelectedRoute = null);
@@ -94,11 +94,11 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Button commands
 
             AddRoute = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeUnitOfWork)));
             EditRoute = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, SelectedRoute)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeUnitOfWork, SelectedRoute)));
             ShowTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, SelectedRoute)));
+                HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, _routeUnitOfWork, SelectedRoute)));
 
             #endregion
 

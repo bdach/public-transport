@@ -16,12 +16,7 @@ namespace PublicTransport.Services
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
-
-        public CityService()
-        {
-                
-        }
-
+        
         /// <summary>
         ///     Constructor.
         /// </summary>

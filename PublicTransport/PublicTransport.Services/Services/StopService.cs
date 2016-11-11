@@ -18,11 +18,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        public StopService()
-        {
-            
-        }
-
         /// <summary>
         ///     Constructor.
         /// </summary>

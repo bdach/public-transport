@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -19,11 +19,6 @@ namespace PublicTransport.Client.ViewModels.Edit
     /// </summary>
     public class EditRouteViewModel : ReactiveObject, IDetailViewModel
     {
-        /// <summary>
-        ///     Service used to fetch <see cref="Agency" /> data from the database.
-        /// </summary>
-        private readonly AgencyService _agencyService;
-
         /// <summary>
         ///     Filter used to make queries about <see cref="Agency" /> objects.
         /// </summary>
@@ -40,21 +35,26 @@ namespace PublicTransport.Client.ViewModels.Edit
         private Agency _selectedAgency;
 
         /// <summary>
+        ///     Unit of work used in the view model to access the database.
+        /// </summary>
+        private readonly RouteUnitOfWork _routeUnitOfWork;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
+        /// <param name="routeUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="route">Route to be edited. If a route is to be added, this parameter should be left null.</param>
-        public EditRouteViewModel(IScreen screen, Route route = null)
+        public EditRouteViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Route route = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             AgencySuggestions = new ReactiveList<Agency>();
             RouteTypes = new ReactiveList<RouteType>(Enum.GetValues(typeof(RouteType)).Cast<RouteType>());
-            _agencyService = new AgencyService();
             _agencyFilter = new AgencyFilter();
-            var routeService = new RouteService();
-            var serviceMethod = route == null ? new Func<Route, Route>(routeService.Create) : routeService.Update;
+            _routeUnitOfWork = routeUnitOfWork;
+            var serviceMethod = route == null ? new Func<Route, Route>(routeUnitOfWork.CreateRoute) : routeUnitOfWork.UpdateRoute;
             _route = route ?? new Route();
             _selectedAgency = _route.Agency;
             _agencyFilter.AgencyNameFilter = _route.Agency?.Name ?? "";
@@ -62,18 +62,11 @@ namespace PublicTransport.Client.ViewModels.Edit
             #endregion
 
             var agencySelected = this.WhenAnyValue(vm => vm.SelectedAgency).Select(s => s != null);
+            agencySelected.Where(b => b).Subscribe(_ => Route.AgencyId = SelectedAgency.Id);
 
             #region SaveRoute command
 
-            SaveRoute = ReactiveCommand.CreateAsyncTask(agencySelected, async _ =>
-            {
-                // TODO: Fix this when refactoring services.
-                Route.Agency = null;
-                Route.AgencyId = SelectedAgency.Id;
-                var result = await Task.Run(() => serviceMethod(Route));
-                Route.Agency = SelectedAgency;
-                return result;
-            });
+            SaveRoute = ReactiveCommand.CreateAsyncTask(agencySelected, async _ => await Task.Run(() => serviceMethod(Route)));
             SaveRoute.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("The currently edited route cannot be saved to the database. Please contact the system administrator.", ex));
 
@@ -82,7 +75,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions command
 
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
+                await Task.Run(() => _routeUnitOfWork.FilterAgencies(AgencyFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 AgencySuggestions.Clear();

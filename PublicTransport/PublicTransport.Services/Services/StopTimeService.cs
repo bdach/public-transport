@@ -19,11 +19,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        public StopTimeService()
-        {
-
-        }
-
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -154,7 +149,7 @@ namespace PublicTransport.Services
             }
             return _db.StopTimes.Include(st => st.Trip.Service)
                 .Include(st => st.Stop.Street.City)
-                .Include(st => st.Trip.Route.Agency)
+                .Include(st => st.Trip.Route.Agency.Street.City)
                 .Where(st => st.StopId == filter.StopId)
                 .Where(st => st.Trip.RouteId == filter.RouteId)
                 .Where(st => !filter.Date.HasValue || (st.Trip.Service.StartDate <= filter.Date.Value 

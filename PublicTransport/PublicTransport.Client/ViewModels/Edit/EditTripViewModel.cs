@@ -8,7 +8,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -19,19 +19,9 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditTripViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Route" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteService _routeService;
-
-        /// <summary>
-        ///     Service used to fetch <see cref="Stop" /> data from the database.
-        /// </summary>
-        private readonly StopService _stopService;
-
-        /// <summary>
-        ///     Service used to fetch and saving <see cref="Domain.Entities.Trip" /> data from the database.
-        /// </summary>
-        private readonly TripService _tripService;
+        private readonly RouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     Used for filtering <see cref="Route" /> objects.
@@ -54,17 +44,21 @@ namespace PublicTransport.Client.ViewModels.Edit
         private Trip _trip;
 
         /// <summary>
+        ///     Stores service schedule data for the currently edited trip.
+        /// </summary>
+        private Calendar _serviceCalendar;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display to.</param>
-        public EditTripViewModel(IScreen screen)
+        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
+        private EditTripViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork)
         {
             HostScreen = screen;
             RouteSuggestions = new ReactiveList<Route>();
-            _tripService = new TripService();
-            _routeService = new RouteService();
+            _routeUnitOfWork = routeUnitOfWork;
             _routeFilter = new RouteFilter();
-            _stopService = new StopService();
             StopTimes = new ReactiveList<EditStopTimeViewModel>();
         }
 
@@ -72,12 +66,13 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor. Used when a trip is being edited.
         /// </summary>
         /// <param name="screen">Screen to display on.</param>
+        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="trip">Trip to edit.</param>
-        public EditTripViewModel(IScreen screen, Trip trip) : this(screen)
+        public EditTripViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Trip trip) : this(screen, routeUnitOfWork)
         {
             Trip = trip;
-            var toAdd = _tripService.GetTripStops(trip);
-            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_stopService, s)));
+            var toAdd = _routeUnitOfWork.GetTripStops(trip);
+            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_routeUnitOfWork, s)));
             SetUp(false);
         }
 
@@ -85,9 +80,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor. Used for adding a trip of an existing route.
         /// </summary>
         /// <param name="screen">Screen to display on.</param>
+        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="route">Route to add to.</param>
         /// <param name="stops">List of stops to initialize the stop list with.</param>
-        public EditTripViewModel(IScreen screen, Route route, IEnumerable<Stop> stops) : this(screen)
+        public EditTripViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Route route, IEnumerable<Stop> stops) : this(screen, routeUnitOfWork)
         {
             Trip = new Trip
             {
@@ -100,7 +96,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 StopId = s.Id,
                 Stop = s
             }).ToList();
-            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_stopService, s)));
+            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_routeUnitOfWork, s)));
             SetUp(true);
         }
 
@@ -186,6 +182,15 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
+        ///     Stores service schedule data for the currently edited trip.
+        /// </summary>
+        public Calendar ServiceCalendar
+        {
+            get { return _serviceCalendar; }
+            set { this.RaiseAndSetIfChanged(ref _serviceCalendar, value); }
+        }
+
+        /// <summary>
         ///     String uniquely identifying the current view model.
         /// </summary>
         public string UrlPathSegment => AssociatedMenuOption.ToString();
@@ -208,32 +213,28 @@ namespace PublicTransport.Client.ViewModels.Edit
         {
             #region Field/property initialization
 
-            var tripServiceMethod = isNew ? new Func<Trip, Trip>(_tripService.Create) : _tripService.Update;
-            var calendarService = new CalendarService();
-            var calendarServiceMethod = isNew ? new Func<Calendar, Calendar>(calendarService.Create) : calendarService.Update;
+            var tripServiceMethod = isNew ? new Func<Trip, Trip>(_routeUnitOfWork.CreateTrip) : _routeUnitOfWork.UpdateTrip;
             SelectedRoute = _trip.Route;
             RouteSuggestions.Add(SelectedRoute);
             _routeFilter.ShortNameFilter = _trip.ShortName ?? "";
+            ServiceCalendar = _trip.Service;
 
             #endregion
 
-            var agencySelected = this.WhenAnyValue(vm => vm.SelectedRoute).Select(r => r != null);
+            var routeSelected = this.WhenAnyValue(vm => vm.SelectedRoute).Select(r => r != null);
+            routeSelected.Where(b => b).Subscribe(_ => Trip.RouteId = SelectedRoute.Id);
+
+            var canSave = this.WhenAnyValue(vm => vm.SelectedRoute, vm => vm.ServiceCalendar)
+                .Select(t => t.Item1 != null && t.Item2 != null);
 
             #region SaveTrip command
 
-            SaveTrip = ReactiveCommand.CreateAsyncTask(agencySelected, async _ =>
+            SaveTrip = ReactiveCommand.CreateAsyncTask(canSave, async _ =>
             {
-                // TODO: Fix this when refactoring services.
-                var schedule = await Task.Run(() => calendarServiceMethod(Trip.Service));
-                Trip.Route = null;
-                Trip.Service = null;
-                Trip.RouteId = SelectedRoute.Id;
-                Trip.ServiceId = schedule.Id;
+                Trip.Service = ServiceCalendar;
                 var result = await Task.Run(() => tripServiceMethod(Trip));
                 var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
-                await Task.Run(() => _tripService.UpdateStops(Trip.Id, stopTimes));
-                Trip.Route = SelectedRoute;
-                Trip.Service = schedule;
+                await Task.Run(() => _routeUnitOfWork.UpdateStops(Trip.Id, stopTimes));
                 return result;
             });
             // On exceptions: Display error.
@@ -244,7 +245,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.FilterRoutes(RouteFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
@@ -269,8 +270,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             NavigateToCalendar = ReactiveCommand.Create();
             NavigateToCalendar.Subscribe(_ =>
             {
-                Trip.Service = Trip.Service ?? new Calendar();
-                HostScreen.Router.Navigate.Execute(new EditCalendarViewModel(HostScreen, Trip.Service));
+                ServiceCalendar = ServiceCalendar ?? new Calendar();
+                HostScreen.Router.Navigate.Execute(new EditCalendarViewModel(HostScreen, ServiceCalendar));
             });
 
             #endregion
@@ -278,7 +279,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region Adding a new stop
 
             AddStop = ReactiveCommand.Create();
-            AddStop.Subscribe(_ => StopTimes.Add(new EditStopTimeViewModel(_stopService)));
+            AddStop.Subscribe(_ => StopTimes.Add(new EditStopTimeViewModel(_routeUnitOfWork)));
 
             #endregion
 

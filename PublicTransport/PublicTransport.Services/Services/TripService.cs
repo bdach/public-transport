@@ -17,11 +17,6 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        public TripService()
-        {
-
-        }
-
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -94,7 +89,7 @@ namespace PublicTransport.Services
                 throw new EntryNotFoundException();
             }
 
-            _db.Entry(old).State = EntityState.Deleted;
+            _db.Trips.Remove(old);
             _db.SaveChanges();
         }
 
