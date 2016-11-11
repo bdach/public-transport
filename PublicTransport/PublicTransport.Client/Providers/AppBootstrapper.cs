@@ -9,6 +9,7 @@ using PublicTransport.Client.Views.Edit;
 using PublicTransport.Client.Views.Entities;
 using PublicTransport.Client.Views.Filter;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Providers;
 using ReactiveUI;
 using Splat;
 
@@ -25,6 +26,8 @@ namespace PublicTransport.Client.Providers
         public AppBootstrapper()
         {
             Router = new RoutingState();
+            var serviceBootstrapper = new ServiceBootstrapper();
+            serviceBootstrapper.RegisterServices();
 
             // Startup objects.
             Locator.CurrentMutable.RegisterLazySingleton(() => this, typeof(IScreen));

@@ -21,7 +21,7 @@ namespace PublicTransport.Tests.Client.ViewModels
                 // then
                 s.AdvanceByMs(5000);
                 notificationViewModel.IsVisible.Should().BeTrue();
-                s.AdvanceByMs(50000);
+                s.AdvanceByMs(5000);
                 notificationViewModel.IsVisible.Should().BeFalse();
             });
         }
