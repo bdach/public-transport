@@ -50,6 +50,16 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
+        public void DeleteCity_CannotExecuteIfNoCitySelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedCity = null;
+            // then
+            _viewModel.DeleteCity.CanExecute(null).Should().BeFalse();
+        }
+
+        [Test]
         public void AddCity()
         {
             // given
