@@ -10,6 +10,7 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
@@ -21,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly CityUnitOfWork _cityUnitOfWork;
+        private readonly ICityUnitOfWork _cityUnitOfWork;
 
         /// <summary>
         ///     String containing the city name filter.
@@ -37,12 +38,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        public FilterCityViewModel(IScreen screen)
+        /// <param name="cityUnitOfWork">Unit of work used in the view model to access the database.</param>
+        public FilterCityViewModel(IScreen screen, ICityUnitOfWork cityUnitOfWork = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _cityUnitOfWork = new CityUnitOfWork();
+            _cityUnitOfWork = cityUnitOfWork ?? Locator.Current.GetService<ICityUnitOfWork>();
             Cities = new ReactiveList<City>();
 
             #endregion

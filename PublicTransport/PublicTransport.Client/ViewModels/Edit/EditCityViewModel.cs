@@ -25,7 +25,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="cityUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="city">City to be edited. If a city is to be added, this parameter is null (can be left out).</param>
-        public EditCityViewModel(IScreen screen, CityUnitOfWork cityUnitOfWork, City city = null)
+        public EditCityViewModel(IScreen screen, ICityUnitOfWork cityUnitOfWork, City city = null)
         {
             #region Field/property initialization
 

@@ -5,10 +5,52 @@ using PublicTransport.Domain.Entities;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
+    public interface ICityUnitOfWork : IDisposable
+    {
+        /// <summary>
+        ///     Calls <see cref="CityService"/> create method.
+        /// </summary>
+        /// <param name="city"><see cref="City"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="City"/> object successfully inserted into the database.
+        /// </returns>
+        City CreateCity(City city);
+
+        /// <summary>
+        ///     Calls <see cref="CityService"/> update method.
+        /// </summary>
+        /// <param name="city"><see cref="City"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="City"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="City" /> could not be found in the database.
+        /// </exception>
+        City UpdateCity(City city);
+
+        /// <summary>
+        ///     Calls <see cref="CityService"/> delete method.
+        /// </summary>
+        /// <param name="city"><see cref="City"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="City" /> could not be found in the database.
+        /// </exception>
+        void DeleteCity(City city);
+
+        /// <summary>
+        ///     Calls <see cref="CityService"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="City"/> objects matching the filtering query.
+        /// </returns>
+        List<City> FilterCities(string name);
+    }
+
     /// <summary>
     ///     Unit of work used to manage city data.
     /// </summary>
-    public class CityUnitOfWork : IDisposable
+    public class CityUnitOfWork : ICityUnitOfWork
     {
         /// <summary>
         ///     Service used to fetch <see cref="City"/> data from the database.
