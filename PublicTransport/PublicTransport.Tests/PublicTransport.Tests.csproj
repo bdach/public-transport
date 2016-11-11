@@ -139,8 +139,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\RoutableViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Edit\EditAgencyViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Edit\EditCityViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterAgencyViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterCityViewModelTest.cs" />
     <Compile Include="Client\ViewModels\LoginViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\MenuViewModelTest.cs" />
     <Compile Include="Client\ViewModels\NotificationViewModelTest.cs" />
     <Compile Include="Services\AgencyServiceTest.cs" />
     <Compile Include="Services\CityServiceTest.cs" />

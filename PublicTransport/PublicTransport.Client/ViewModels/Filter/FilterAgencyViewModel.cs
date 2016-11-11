@@ -11,6 +11,7 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
@@ -22,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly AgencyUnitOfWork _agencyUnitOfWork;
+        private readonly IAgencyUnitOfWork _agencyUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.AgencyFilter" /> object used to send query data to the service layer.
@@ -38,12 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        public FilterAgencyViewModel(IScreen screen)
+        /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        public FilterAgencyViewModel(IScreen screen, IAgencyUnitOfWork agencyUnitOfWork = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _agencyUnitOfWork = new AgencyUnitOfWork();
+            _agencyUnitOfWork = agencyUnitOfWork ?? Locator.Current.GetService<IAgencyUnitOfWork>();
             _agencyFilter = new AgencyFilter();
             Agencies = new ReactiveList<Agency>();
 
@@ -69,7 +71,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             this.WhenAnyValue(vm => vm.AgencyFilter.AgencyNameFilter, vm => vm.AgencyFilter.CityNameFilter,
                     vm => vm.AgencyFilter.StreetNameFilter)
                 .Where(_ => AgencyFilter.IsValid)
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.FilterAgencies);
 
             #endregion

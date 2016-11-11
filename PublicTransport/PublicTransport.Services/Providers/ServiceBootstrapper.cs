@@ -9,6 +9,7 @@ namespace PublicTransport.Services.Providers
         {
             Locator.CurrentMutable.Register(() => new LoginService(), typeof(ILoginService));
 
+            Locator.CurrentMutable.Register(() => new AgencyUnitOfWork(), typeof(IAgencyUnitOfWork));
             Locator.CurrentMutable.Register(() => new CityUnitOfWork(), typeof(ICityUnitOfWork));
         }
     }

@@ -6,10 +6,61 @@ using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
+    public interface IAgencyUnitOfWork : IDisposable
+    {
+        /// <summary>
+        ///     Calls <see cref="AgencyService"/> create method.
+        /// </summary>
+        /// <param name="agency"><see cref="Agency"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="Agency"/> object successfully inserted into the database.
+        /// </returns>
+        Agency CreateAgency(Agency agency);
+
+        /// <summary>
+        ///     Calls <see cref="AgencyService"/> update method.
+        /// </summary>
+        /// <param name="agency"><see cref="Agency"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Agency"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
+        /// </exception>
+        Agency UpdateAgency(Agency agency);
+
+        /// <summary>
+        ///     Calls <see cref="AgencyService"/> delete method.
+        /// </summary>
+        /// <param name="agency"><see cref="Agency"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
+        /// </exception>
+        void DeleteAgency(Agency agency);
+
+        /// <summary>
+        ///     Calls <see cref="AgencyService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Agency"/> objects matching the filtering query.
+        /// </returns>
+        List<Agency> FilterAgencies(IAgencyFilter filter);
+
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        List<Street> FilterStreets(IStreetFilter filter);
+    }
+
     /// <summary>
     ///     Unit of work used to manage agency data.
     /// </summary>
-    public class AgencyUnitOfWork : IDisposable
+    public class AgencyUnitOfWork : IAgencyUnitOfWork
     {
         /// <summary>
         ///     Service used to fetch <see cref="Agency"/> data from the database.

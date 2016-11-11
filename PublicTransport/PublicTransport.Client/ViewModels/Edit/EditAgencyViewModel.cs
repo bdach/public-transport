@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly AgencyUnitOfWork _agencyUnitOfWork;
+        private readonly IAgencyUnitOfWork _agencyUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
@@ -43,7 +43,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="agency">Agency to be edited. If an agency is to be added, this parameter should be left null.</param>
-        public EditAgencyViewModel(IScreen screen, AgencyUnitOfWork agencyUnitOfWork, Agency agency = null)
+        public EditAgencyViewModel(IScreen screen, IAgencyUnitOfWork agencyUnitOfWork, Agency agency = null)
         {
             #region Field/property initialization
 
@@ -85,7 +85,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             this.WhenAnyValue(vm => vm.StreetFilter.StreetNameFilter)
                 .Where(s => (s != SelectedStreet?.Name) && StreetFilter.IsValid)
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
             #endregion
