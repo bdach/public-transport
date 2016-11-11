@@ -88,7 +88,13 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
+            this.WhenAnyValue(vm => vm.SelectedZone).Select(z => z != null)
+                .Where(b => b).Subscribe(_ => Stop.ZoneId = SelectedZone.Id);
+            this.WhenAnyValue(vm => vm.SelectedParentStation).Select(ps => ps != null)
+                .Where(b => b).Subscribe(_ => Stop.ParentStationId = SelectedParentStation.Id);
+
             var streetSelected = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
+            streetSelected.Where(b => b).Subscribe(_ => Stop.StreetId = SelectedStreet.Id);
 
             #region SaveStop command
 

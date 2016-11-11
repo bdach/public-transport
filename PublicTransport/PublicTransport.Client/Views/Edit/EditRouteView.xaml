@@ -12,7 +12,6 @@
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
             <Button x:Name="SaveButton">Save</Button>
-            <!--<Button x:Name="ToAgencyButton">Navigate to agency</Button>-->
             <Button x:Name="CloseButton">Close</Button>
         </StackPanel>
         <Grid>

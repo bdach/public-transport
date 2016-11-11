@@ -7,7 +7,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -18,9 +18,9 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Street" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly StreetService _streetService;
+        private readonly AgencyUnitOfWork _agencyUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
@@ -41,36 +41,28 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
+        /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="agency">Agency to be edited. If an agency is to be added, this parameter should be left null.</param>
-        public EditAgencyViewModel(IScreen screen, Agency agency = null)
+        public EditAgencyViewModel(IScreen screen, AgencyUnitOfWork agencyUnitOfWork, Agency agency = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             StreetSuggestions = new ReactiveList<Street>();
-            _streetService = new StreetService();
-            _streetFilter = new StreetFilter();
-            var agencyService = new AgencyService();
-            var serviceMethod = agency == null ? new Func<Agency, Agency>(agencyService.Create) : agencyService.Update;
+            _agencyUnitOfWork = agencyUnitOfWork;
+            var serviceMethod = agency == null ? new Func<Agency, Agency>(_agencyUnitOfWork.CreateAgency) : _agencyUnitOfWork.UpdateAgency;
             _agency = agency ?? new Agency();
             _selectedStreet = _agency.Street;
-            _streetFilter.StreetNameFilter = _agency.Street?.Name ?? "";
+            _streetFilter = new StreetFilter { StreetNameFilter = _agency.Street?.Name ?? "" };
 
             #endregion
 
             var streetSelected = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
+            streetSelected.Where(b => b).Subscribe(_ => Agency.StreetId = SelectedStreet.Id);
 
             #region SaveAgency command
 
-            SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ =>
-            {
-                // TODO: Fix this when refactoring services.
-                Agency.Street = null;
-                Agency.StreetId = SelectedStreet.Id;
-                var result = await Task.Run(() => serviceMethod(Agency));
-                Agency.Street = SelectedStreet;
-                return result;
-            });
+            SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ => await Task.Run(() => serviceMethod(Agency)));
             SaveAgency.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("The currently edited agency cannot be saved to the database. Please contact the system administrator.", ex));
 
@@ -78,7 +70,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _streetService.FilterStreets(StreetFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyUnitOfWork.FilterStreets(StreetFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();

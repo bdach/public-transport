@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Filter
@@ -20,9 +20,9 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Agency" /> data from the database.
+        ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly AgencyService _agencyService;
+        private readonly AgencyUnitOfWork _agencyUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.AgencyFilter" /> object used to send query data to the service layer.
@@ -43,7 +43,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Field/property initialization
 
             HostScreen = screen;
-            _agencyService = new AgencyService();
+            _agencyUnitOfWork = new AgencyUnitOfWork();
             _agencyFilter = new AgencyFilter();
             Agencies = new ReactiveList<Agency>();
 
@@ -53,7 +53,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Agency filtering command
 
-            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
+            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyUnitOfWork.FilterAgencies(AgencyFilter)));
             FilterAgencies.Subscribe(result =>
             {
                 Agencies.Clear();
@@ -78,7 +78,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteAgency = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _agencyService.Delete(SelectedAgency));
+                await Task.Run(() => _agencyUnitOfWork.DeleteAgency(SelectedAgency));
                 return Unit.Default;
             });
             DeleteAgency.Subscribe(_ => SelectedAgency = null);
@@ -91,9 +91,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit agency commands
 
             AddAgency = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyUnitOfWork)));
             EditAgency = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, SelectedAgency)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyUnitOfWork, SelectedAgency)));
 
             #endregion
 

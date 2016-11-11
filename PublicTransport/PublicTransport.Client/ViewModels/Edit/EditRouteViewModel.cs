@@ -63,13 +63,6 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             var agencySelected = this.WhenAnyValue(vm => vm.SelectedAgency).Select(s => s != null);
 
-            #region DisplayAgencyView command
-
-            DisplayAgencyView = ReactiveCommand.CreateAsyncObservable(agencySelected, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(screen, SelectedAgency)));
-
-            #endregion
-
             #region SaveRoute command
 
             SaveRoute = ReactiveCommand.CreateAsyncTask(agencySelected, async _ =>
@@ -126,11 +119,6 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     The list of <see cref="RouteType" /> enumeration values.
         /// </summary>
         public ReactiveList<RouteType> RouteTypes { get; protected set; }
-
-        /// <summary>
-        ///     Command allowing to edit the selected <see cref="Agency" /> object.
-        /// </summary>
-        public ReactiveCommand<object> DisplayAgencyView { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the agency suggestions.

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -12,46 +11,25 @@ namespace PublicTransport.Services
     /// <summary>
     ///     Service for managing agencies.
     /// </summary>
-    public class AgencyService : IDisposable
+    public class AgencyService
     {
         /// <summary>
         ///     An instance of database context.
         /// </summary>
         private readonly PublicTransportContext _db;
-
-        /// <summary>
-        ///     Determines whether the database context has already been disposed.
-        /// </summary>
-        private bool _disposed;
-
-        /// <summary>
-        ///     Default constructor.
-        /// </summary>
+        
         public AgencyService()
         {
-            _db = new PublicTransportContext();
+
         }
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db">Database context to inject.</param>
+        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
         public AgencyService(PublicTransportContext db)
         {
             _db = db;
-        }
-
-        /// <summary>
-        ///     Disposes database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _db.Dispose();
-            _disposed = true;
         }
 
         /// <summary>

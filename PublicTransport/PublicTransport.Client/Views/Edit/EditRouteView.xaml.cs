@@ -29,8 +29,6 @@ namespace PublicTransport.Client.Views.Edit
             this.Bind(ViewModel, vm => vm.Route.ShortName, v => v.ShortNameTextBox.Text);
             this.Bind(ViewModel, vm => vm.Route.LongName, v => v.LongNameTextBox.Text);
             this.Bind(ViewModel, vm => vm.Route.RouteType, v => v.RouteTypesComboBox.SelectedItem);
-            // TODO: Commented out due to not working properly as-is; I don't want to include the whole object hierarchy
-            //this.BindCommand(ViewModel, vm => vm.DisplayAgencyView, v => v.ToAgencyButton);
             this.BindCommand(ViewModel, vm => vm.SaveRoute, v => v.SaveButton);
             this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
             this.WhenAnyObservable(v => v.ViewModel.UpdateSuggestions)
