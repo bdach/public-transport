@@ -6,10 +6,61 @@ using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
+    public interface IStreetUnitOfWork : IDisposable
+    {
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> create method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="Street"/> object successfully inserted into the database.
+        /// </returns>
+        Street CreateStreet(Street street);
+
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> update method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Street"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        /// </exception>
+        Street UpdateStreet(Street street);
+
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> delete method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        /// </exception>
+        void DeleteStreet(Street street);
+
+        /// <summary>
+        ///     Calls <see cref="CityService"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="City"/> objects matching the filtering query.
+        /// </returns>
+        List<City> FilterCities(string name);
+
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        List<Street> FilterStreets(IStreetFilter filter);
+    }
+
     /// <summary>
     ///     Unit of work used to manage street data.
     /// </summary>
-    public class StreetUnitOfWork : IDisposable
+    public class StreetUnitOfWork : IStreetUnitOfWork
     {
         /// <summary>
         ///     Service used to fetch <see cref="City"/> data from the database.

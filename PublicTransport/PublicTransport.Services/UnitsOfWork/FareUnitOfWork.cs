@@ -6,10 +6,100 @@ using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
+    public interface IFareUnitOfWork : IDisposable
+    {
+        /// <summary>
+        ///     Calls <see cref="FareAttributeService"/> create method.
+        /// </summary>
+        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="FareAttribute"/> object successfully inserted into the database.
+        /// </returns>
+        FareAttribute CreateFareAttribute(FareAttribute fareAttribute);
+
+        /// <summary>
+        ///     Calls <see cref="FareAttributeService"/> update method.
+        /// </summary>
+        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="FareAttribute"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareAttribute" /> could not be found in the database.
+        /// </exception>
+        FareAttribute UpdateFareAttribute(FareAttribute fareAttribute);
+
+        /// <summary>
+        ///     Calls <see cref="FareAttributeService"/> delete method.
+        /// </summary>
+        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareAttribute" /> could not be found in the database.
+        /// </exception>
+        void DeleteFareAttribute(FareAttribute fareAttribute);
+
+        /// <summary>
+        ///     Calls <see cref="FareRuleService"/> create method.
+        /// </summary>
+        /// <param name="fareRule"><see cref="FareRule"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="FareRule"/> object successfully inserted into the database.
+        /// </returns>
+        FareRule CreateFareRule(FareRule fareRule);
+
+        /// <summary>
+        ///     Calls <see cref="FareRuleService"/> update method.
+        /// </summary>
+        /// <param name="fareRule"><see cref="FareRule"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="FareRule"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareRule" /> could not be found in the database.
+        /// </exception>
+        FareRule UpdateFareRule(FareRule fareRule);
+
+        /// <summary>
+        ///     Calls <see cref="FareRuleService"/> delete method.
+        /// </summary>
+        /// <param name="fareRule"><see cref="FareRule"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareRule" /> could not be found in the database.
+        /// </exception>
+        void DeleteFareRule(FareRule fareRule);
+
+        /// <summary>
+        ///     Calls <see cref="FareAttributeService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="FareAttribute"/> objects matching the filtering query.
+        /// </returns>
+        List<FareAttribute> FilterFares(IFareFilter filter);
+
+        /// <summary>
+        ///     Calls <see cref="RouteService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Route"/> objects matching the filtering query.
+        /// </returns>
+        List<Route> FilterRoutes(IRouteFilter filter);
+
+        /// <summary>
+        ///     Calls <see cref="ZoneService"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        /// </returns>
+        List<Zone> FilterZones(string name);
+    }
+
     /// <summary>
     ///     Unit of work used to manage fare data.
     /// </summary>
-    public class FareUnitOfWork : IDisposable
+    public class FareUnitOfWork : IFareUnitOfWork
     {
         /// <summary>
         ///     Service used to fetch <see cref="FareAttribute"/> data from the database.

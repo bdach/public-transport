@@ -140,6 +140,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\ViewModels\Filter\FilterCityViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterFareViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterStopViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterStreetViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterUserViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterZoneViewModelTest.cs" />
     <Compile Include="Client\ViewModels\LoginViewModelTest.cs" />
     <Compile Include="Client\ViewModels\NotificationViewModelTest.cs" />
     <Compile Include="Services\AgencyServiceTest.cs" />

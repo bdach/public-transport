@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly StopUnitOfWork _stopUnitOfWork;
+        private readonly IStopUnitOfWork _stopUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Agency" /> object being edited in the window.
@@ -63,7 +63,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="stopUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="stop">Stop to be edited. If a stop is to be added, this parameter should be left null.</param>
-        public EditStopViewModel(IScreen screen, StopUnitOfWork stopUnitOfWork, Stop stop = null)
+        public EditStopViewModel(IScreen screen, IStopUnitOfWork stopUnitOfWork, Stop stop = null)
         {
             #region Field/property initialization
 

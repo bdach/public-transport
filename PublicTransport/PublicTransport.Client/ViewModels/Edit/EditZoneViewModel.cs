@@ -25,7 +25,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="zoneUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="zone">Zone to be edited. If a zone is to be added, this parameter is null (can be left out).</param>
-        public EditZoneViewModel(IScreen screen, ZoneUnitOfWork zoneUnitOfWork, Zone zone = null)
+        public EditZoneViewModel(IScreen screen, IZoneUnitOfWork zoneUnitOfWork, Zone zone = null)
         {
             #region Field/property initialization
 

@@ -11,6 +11,7 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
@@ -22,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly StopUnitOfWork _stopUnitOfWork;
+        private readonly IStopUnitOfWork _stopUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.StopFilter" /> object used to send query data to the service layer.
@@ -38,12 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        public FilterStopViewModel(IScreen screen)
+        /// <param name="stopUnitOfWork">Unit of work used in the view model to access the database.</param>
+        public FilterStopViewModel(IScreen screen, IStopUnitOfWork stopUnitOfWork = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _stopUnitOfWork = new StopUnitOfWork();
+            _stopUnitOfWork = stopUnitOfWork ?? Locator.Current.GetService<IStopUnitOfWork>();
             _stopFilter = new StopFilter();
             Stops = new ReactiveList<Stop>();
 

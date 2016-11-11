@@ -11,6 +11,7 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
@@ -22,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly StreetUnitOfWork _streetUnitOfWork;
+        private readonly IStreetUnitOfWork _streetUnitOfWork;
 
         /// <summary>
         ///     <see cref="Street" /> object currently selected in the view.
@@ -38,12 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        public FilterStreetViewModel(IScreen screen)
+        /// <param name="streetUnitOfWork">Unit of work used in the view model to access the database.</param>
+        public FilterStreetViewModel(IScreen screen, IStreetUnitOfWork streetUnitOfWork = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _streetUnitOfWork = new StreetUnitOfWork();
+            _streetUnitOfWork = streetUnitOfWork ?? Locator.Current.GetService<IStreetUnitOfWork>();
             _streetFilter = new StreetFilter();
             Streets = new ReactiveList<Street>();
 
