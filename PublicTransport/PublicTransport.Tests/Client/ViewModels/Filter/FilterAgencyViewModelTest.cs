@@ -29,7 +29,6 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterAgencies()
         {
             // given
-            _viewModel.AgencyFilter.AgencyNameFilter = "test";
             _agencyUnitOfWork.Setup(a => a.FilterAgencies(It.IsAny<IAgencyFilter>())).Returns(new List<Agency> {new Agency()});
             // when
             var task = _viewModel.FilterAgencies.ExecuteAsyncTask();
