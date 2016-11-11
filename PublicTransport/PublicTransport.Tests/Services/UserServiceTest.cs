@@ -80,7 +80,7 @@ namespace PublicTransport.Tests.Services
             // given
             RoleType? type = RoleType.Administrator;
             _userFilter.Setup(uf => uf.UserNameFilter).Returns("");
-            _userFilter.Setup(uf => uf.RoleNameFilter).Returns(type);
+            _userFilter.Setup(uf => uf.RoleTypeFilter).Returns(type);
             // when
             var users = _userService.FilterUsers(_userFilter.Object);
             // then

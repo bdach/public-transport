@@ -72,7 +72,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             this.WhenAnyValue(
                     vm => vm.UserFilter.UserNameFilter,
-                    vm => vm.UserFilter.RoleNameFilter)
+                    vm => vm.UserFilter.RoleTypeFilter)
                 .Where(_ => UserFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterUsers);
@@ -105,7 +105,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Clearing enum choice
 
             ClearRoleTypeChoice = ReactiveCommand.Create();
-            ClearRoleTypeChoice.Subscribe(_ => UserFilter.RoleNameFilter = null);
+            ClearRoleTypeChoice.Subscribe(_ => UserFilter.RoleTypeFilter = null);
 
             #endregion
 

@@ -19,27 +19,39 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterRouteViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IRouteUnitOfWork> _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
+        private Mock<IRouteUnitOfWork> _routeUnitOfWork;
         private FilterRouteViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
             _viewModel = new FilterRouteViewModel(Screen.Object, _routeUnitOfWork.Object);
-            _routeUnitOfWork.Setup(r => r.FilterAgencies(It.IsAny<IAgencyFilter>())).Returns(new List<Agency>());
-            _routeUnitOfWork.Setup(r => r.FilterRoutes(It.IsAny<IRouteFilter>())).Returns(new List<Route>());
-            _routeUnitOfWork.Setup(r => r.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop>());
         }
 
         [Test]
         public void FilterRoutes()
         {
             // given
-            _viewModel.RouteFilter = new RouteFilter();
+            _routeUnitOfWork.Setup(r => r.FilterRoutes(It.IsAny<IRouteFilter>())).Returns(new List<Route> { new Route() });
             // when
             _viewModel.FilterRoutes.ExecuteAsync().Wait();
             // then
             _routeUnitOfWork.Verify(r => r.FilterRoutes(_viewModel.RouteFilter), Times.Once);
+            _viewModel.Routes.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterRoutes_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.RouteFilter.AgencyNameFilter = "";
+            _viewModel.RouteFilter.LongNameFilter = "";
+            _viewModel.RouteFilter.ShortNameFilter = "";
+            _viewModel.RouteFilter.RouteTypeFilter = null;
+            // then
+            _routeUnitOfWork.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
         }
 
         [Test]

@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
@@ -17,27 +16,40 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterStopViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IStopUnitOfWork> _stopUnitOfWork = new Mock<IStopUnitOfWork>();
+        private Mock<IStopUnitOfWork> _stopUnitOfWork;
         private FilterStopViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _stopUnitOfWork = new Mock<IStopUnitOfWork>();
             _viewModel = new FilterStopViewModel(Screen.Object, _stopUnitOfWork.Object);
-            _stopUnitOfWork.Setup(s => s.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop>());
-            _stopUnitOfWork.Setup(s => s.FilterStreets(It.IsAny<IStreetFilter>())).Returns(new List<Street>());
-            _stopUnitOfWork.Setup(s => s.FilterZones(It.IsAny<string>())).Returns(new List<Zone>());
         }
 
         [Test]
         public void FilterStops()
         {
             // given
-            _viewModel.StopFilter = new StopFilter();
+            _stopUnitOfWork.Setup(s => s.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop> { new Stop() });
             // when
             _viewModel.FilterStops.ExecuteAsync().Wait();
             // then
             _stopUnitOfWork.Verify(s => s.FilterStops(_viewModel.StopFilter), Times.Once);
+            _viewModel.Stops.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterStops_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.StopFilter.StopNameFilter = "";
+            _viewModel.StopFilter.CityNameFilter = "";
+            _viewModel.StopFilter.StreetNameFilter = "";
+            _viewModel.StopFilter.ZoneNameFilter = "";
+            _viewModel.StopFilter.ParentStationNameFilter = "";
+            // then
+            _stopUnitOfWork.Verify(s => s.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
         }
 
         [Test]

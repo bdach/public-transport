@@ -15,26 +15,36 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterCityViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<ICityUnitOfWork> _cityUnitOfWork = new Mock<ICityUnitOfWork>();
+        private Mock<ICityUnitOfWork> _cityUnitOfWork;
         private FilterCityViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _cityUnitOfWork = new Mock<ICityUnitOfWork>();
             _viewModel = new FilterCityViewModel(Screen.Object, _cityUnitOfWork.Object);
-            _cityUnitOfWork.Setup(c => c.FilterCities(It.IsAny<string>())).Returns(new List<City>());
         }
-        
+
         [Test]
         public void FilterCities()
         {
             // given
-            _viewModel.NameFilter = "Warszawa";
+            _cityUnitOfWork.Setup(c => c.FilterCities(It.IsAny<string>())).Returns(new List<City> { new City() });
             // when
-            var task = _viewModel.FilterCities.ExecuteAsync();
-            task.Wait();
+            _viewModel.FilterCities.ExecuteAsync().Wait();
             // then
             _cityUnitOfWork.Verify(c => c.FilterCities(_viewModel.NameFilter), Times.Once);
+            _viewModel.Cities.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterCities_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.NameFilter = "";
+            // then
+            _cityUnitOfWork.Verify(c => c.FilterCities(It.IsAny<string>()), Times.Never);
         }
 
         [Test]
@@ -44,8 +54,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var city = new City();
             // when
             _viewModel.SelectedCity = city;
-            var task = _viewModel.DeleteCity.ExecuteAsync();
-            task.Wait();
+            _viewModel.DeleteCity.ExecuteAsync().Wait();
             // then
             _cityUnitOfWork.Verify(c => c.DeleteCity(city), Times.Once);
         }

@@ -16,6 +16,6 @@ namespace PublicTransport.Services.DataTransfer.Filters
         /// <summary>
         ///     Contains the role name enum filter parameter.
         /// </summary>
-        RoleType? RoleNameFilter { get; }
+        RoleType? RoleTypeFilter { get; }
     }
 }

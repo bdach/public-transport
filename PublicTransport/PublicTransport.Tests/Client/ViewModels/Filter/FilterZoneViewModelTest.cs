@@ -15,25 +15,36 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterZoneViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IZoneUnitOfWork> _zoneUnitOfWork = new Mock<IZoneUnitOfWork>();
+        private Mock<IZoneUnitOfWork> _zoneUnitOfWork;
         private FilterZoneViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _zoneUnitOfWork = new Mock<IZoneUnitOfWork>();
             _viewModel = new FilterZoneViewModel(Screen.Object, _zoneUnitOfWork.Object);
-            _zoneUnitOfWork.Setup(z => z.FilterZones(It.IsAny<string>())).Returns(new List<Zone>());
         }
 
         [Test]
         public void FilterZones()
         {
             // given
-            _viewModel.NameFilter = "ZTM";
+            _zoneUnitOfWork.Setup(z => z.FilterZones(It.IsAny<string>())).Returns(new List<Zone> { new Zone() });
             // when
             _viewModel.FilterZones.ExecuteAsync().Wait();
             // then
             _zoneUnitOfWork.Verify(z => z.FilterZones(_viewModel.NameFilter), Times.Once);
+            _viewModel.Zones.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterZones_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.NameFilter = "";
+            // then
+            _zoneUnitOfWork.Verify(z => z.FilterZones(It.IsAny<string>()), Times.Never);
         }
 
         [Test]

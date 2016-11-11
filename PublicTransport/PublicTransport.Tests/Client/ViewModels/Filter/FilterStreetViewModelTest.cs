@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
@@ -17,26 +16,37 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterStreetViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IStreetUnitOfWork> _streetUnitOfWork = new Mock<IStreetUnitOfWork>();
+        private Mock<IStreetUnitOfWork> _streetUnitOfWork;
         private FilterStreetViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _streetUnitOfWork = new Mock<IStreetUnitOfWork>();
             _viewModel = new FilterStreetViewModel(Screen.Object, _streetUnitOfWork.Object);
-            _streetUnitOfWork.Setup(s => s.FilterCities(It.IsAny<string>())).Returns(new List<City>());
-            _streetUnitOfWork.Setup(s => s.FilterStreets(It.IsAny<IStreetFilter>())).Returns(new List<Street>());
         }
 
         [Test]
         public void FilterStreets()
         {
             // given
-            _viewModel.StreetFilter = new StreetFilter();
+            _streetUnitOfWork.Setup(s => s.FilterStreets(It.IsAny<IStreetFilter>())).Returns(new List<Street> { new Street() });
             // when
             _viewModel.FilterStreets.ExecuteAsync().Wait();
             // then
             _streetUnitOfWork.Verify(s => s.FilterStreets(_viewModel.StreetFilter), Times.Once);
+            _viewModel.Streets.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterStreets_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.StreetFilter.CityNameFilter = "";
+            _viewModel.StreetFilter.StreetNameFilter = "";
+            // then
+            _streetUnitOfWork.Verify(s => s.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
         }
 
         [Test]

@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
@@ -17,25 +16,38 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterFareViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IFareUnitOfWork> _fareUnitOfWork = new Mock<IFareUnitOfWork>();
+        private Mock<IFareUnitOfWork> _fareUnitOfWork;
         private FilterFareViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _fareUnitOfWork = new Mock<IFareUnitOfWork>();
             _viewModel = new FilterFareViewModel(Screen.Object, _fareUnitOfWork.Object);
-            _fareUnitOfWork.Setup(f => f.FilterFares(It.IsAny<IFareFilter>())).Returns(new List<FareAttribute>());
         }
 
         [Test]
         public void FilterFares()
         {
             // given
-            _viewModel.FareFilter = new FareFilter();
+            _fareUnitOfWork.Setup(f => f.FilterFares(It.IsAny<IFareFilter>())).Returns(new List<FareAttribute> { new FareAttribute() });
             // when
             _viewModel.FilterFares.ExecuteAsync().Wait();
             // then
             _fareUnitOfWork.Verify(f => f.FilterFares(_viewModel.FareFilter), Times.Once);
+            _viewModel.FareAttributes.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterFares_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.FareFilter.RouteNameFilter = "";
+            _viewModel.FareFilter.OriginZoneNameFilter = "";
+            _viewModel.FareFilter.DestinationZoneNameFilter = "";
+            // then
+            _fareUnitOfWork.Verify(f => f.FilterFares(It.IsAny<IFareFilter>()), Times.Never);
         }
 
         [Test]

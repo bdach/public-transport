@@ -18,26 +18,37 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterUserViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IUserUnitOfWork> _userUnitOfWork = new Mock<IUserUnitOfWork>();
+        private Mock<IUserUnitOfWork> _userUnitOfWork;
         private FilterUserViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
+            _userUnitOfWork = new Mock<IUserUnitOfWork>();
             _viewModel = new FilterUserViewModel(Screen.Object, _userUnitOfWork.Object);
-            _userUnitOfWork.Setup(u => u.FilterUsers(It.IsAny<IUserFilter>())).Returns(new List<User>());
-            _userUnitOfWork.Setup(u => u.GetAllRoles()).Returns(new List<Role>());
         }
 
         [Test]
         public void FilterUsers()
         {
             // given
-            _viewModel.UserFilter = new UserFilter();
+            _userUnitOfWork.Setup(u => u.FilterUsers(It.IsAny<IUserFilter>())).Returns(new List<User> { new User() });
             // when
             _viewModel.FilterUsers.ExecuteAsync().Wait();
             // then
             _userUnitOfWork.Verify(u => u.FilterUsers(_viewModel.UserFilter), Times.Once);
+            _viewModel.Users.Count.ShouldBeEquivalentTo(1);
+        }
+
+        [Test]
+        public void FilterUsers_InvalidFilter()
+        {
+            // given
+            // when
+            _viewModel.UserFilter.UserNameFilter = "";
+            _viewModel.UserFilter.RoleTypeFilter = null;
+            // then
+            _userUnitOfWork.Verify(u => u.FilterUsers(It.IsAny<IUserFilter>()), Times.Never);
         }
 
         [Test]
@@ -99,11 +110,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void ClearRoleType()
         {
             // given
-            _viewModel.UserFilter = new UserFilter { RoleNameFilter = RoleType.Administrator };
+            _viewModel.UserFilter = new UserFilter { RoleTypeFilter = RoleType.Administrator };
             // when
             _viewModel.ClearRoleTypeChoice.Execute(null);
             // then
-            _viewModel.UserFilter.RoleNameFilter.Should().BeNull();
+            _viewModel.UserFilter.RoleTypeFilter.Should().BeNull();
         }
     }
 }

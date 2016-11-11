@@ -17,7 +17,7 @@ namespace PublicTransport.Client.DataTransfer
         /// <summary>
         ///     Contains the role name enum filter parameter.
         /// </summary>
-        private RoleType? _roleNameFilter;
+        private RoleType? _roleTypeFilter;
 
         /// <summary>
         ///     Contains the username string filter parameter.
@@ -31,10 +31,10 @@ namespace PublicTransport.Client.DataTransfer
         /// <summary>
         ///     Contains the role name enum filter parameter.
         /// </summary>
-        public RoleType? RoleNameFilter
+        public RoleType? RoleTypeFilter
         {
-            get { return _roleNameFilter; }
-            set { this.RaiseAndSetIfChanged(ref _roleNameFilter, value); }
+            get { return _roleTypeFilter; }
+            set { this.RaiseAndSetIfChanged(ref _roleTypeFilter, value); }
         }
 
         /// <summary>
@@ -42,6 +42,6 @@ namespace PublicTransport.Client.DataTransfer
         /// </summary>
         public bool IsValid =>
             !string.IsNullOrWhiteSpace(_userNameFilter) ||
-            RoleNameFilter.HasValue;
+            RoleTypeFilter.HasValue;
     }
 }

@@ -164,7 +164,7 @@ namespace PublicTransport.Services
         {
             var users = _db.Users.Include(u => u.Roles)
                 .Where(u => u.UserName.Contains(filter.UserNameFilter))
-                .Where(u => !filter.RoleNameFilter.HasValue || u.Roles.Any(r => r.Name == filter.RoleNameFilter.Value))
+                .Where(u => !filter.RoleTypeFilter.HasValue || u.Roles.Any(r => r.Name == filter.RoleTypeFilter.Value))
                 .Take(20)
                 .ToList();
             users.ForEach(u => u.Password = null);
