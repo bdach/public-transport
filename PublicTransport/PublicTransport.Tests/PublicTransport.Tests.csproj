@@ -141,6 +141,7 @@
   <ItemGroup>
     <Compile Include="Client\ViewModels\Filter\FilterCityViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterFareViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterRouteViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterStopViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterStreetViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterUserViewModelTest.cs" />

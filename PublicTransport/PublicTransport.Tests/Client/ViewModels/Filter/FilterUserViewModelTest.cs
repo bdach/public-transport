@@ -7,6 +7,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Domain.Enums;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
@@ -91,6 +92,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editUserViewModel = _router.GetCurrentViewModel() as EditUserViewModel;
             editUserViewModel.Should().NotBeNull();
             editUserViewModel.User.ShouldBeEquivalentTo(_viewModel.SelectedUser);
+        }
+
+        [Test]
+        public void ClearRoleType()
+        {
+            // given
+            _viewModel.UserFilter = new UserFilter { RoleNameFilter = RoleType.Administrator };
+            // when
+            _viewModel.ClearRoleTypeChoice.Execute(null);
+            // then
+            _viewModel.UserFilter.RoleNameFilter.Should().BeNull();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     Filter used to make queries about <see cref="Agency" /> objects.
@@ -45,7 +45,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="routeUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="route">Route to be edited. If a route is to be added, this parameter should be left null.</param>
-        public EditRouteViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Route route = null)
+        public EditRouteViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Route route = null)
         {
             #region Field/property initialization
 

@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed in the view.
@@ -47,7 +47,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <param name="screen">Screen to display view model on.</param>
         /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="route">The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.</param>
-        public TimetableViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Route route)
+        public TimetableViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Route route)
         {
             #region Field/property initialization
 
