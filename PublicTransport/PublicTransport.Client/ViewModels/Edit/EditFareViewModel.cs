@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly FareUnitOfWork _fareUnitOfWork;
+        private readonly IFareUnitOfWork _fareUnitOfWork;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.FareAttribute" /> object being edited in the window.
@@ -70,7 +70,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="fareUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="fareAttribute">Fare to be edited. If a fare is to be added, this parameter should be left null.</param>
-        public EditFareViewModel(IScreen screen, FareUnitOfWork fareUnitOfWork, FareAttribute fareAttribute = null)
+        public EditFareViewModel(IScreen screen, IFareUnitOfWork fareUnitOfWork, FareAttribute fareAttribute = null)
         {
             #region Field/property initialization
 

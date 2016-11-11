@@ -12,6 +12,7 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
@@ -23,7 +24,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly UserUnitOfWork _userUnitOfWork;
+        private readonly IUserUnitOfWork _userUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.UserFilter" /> object used to send query data to the service layer.
@@ -39,12 +40,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        public FilterUserViewModel(IScreen screen)
+        /// <param name="userUnitOfWork">Unit of work used in the view model to access the database.</param>
+        public FilterUserViewModel(IScreen screen, IUserUnitOfWork userUnitOfWork = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _userUnitOfWork = new UserUnitOfWork();
+            _userUnitOfWork = userUnitOfWork ?? Locator.Current.GetService<IUserUnitOfWork>();
             _userFilter = new UserFilter();
             Users = new ReactiveList<User>();
             Roles = new ReactiveList<RoleType>(Enum.GetValues(typeof(RoleType)).Cast<RoleType>());

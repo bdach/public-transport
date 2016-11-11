@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     Used for filtering <see cref="Route" /> objects.
@@ -53,7 +53,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// </summary>
         /// <param name="screen">Screen to display to.</param>
         /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
-        private EditTripViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork)
+        private EditTripViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork)
         {
             HostScreen = screen;
             RouteSuggestions = new ReactiveList<Route>();
@@ -68,7 +68,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">Screen to display on.</param>
         /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="trip">Trip to edit.</param>
-        public EditTripViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Trip trip) : this(screen, routeUnitOfWork)
+        public EditTripViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Trip trip) : this(screen, routeUnitOfWork)
         {
             Trip = trip;
             var toAdd = _routeUnitOfWork.GetTripStops(trip);
@@ -83,7 +83,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="route">Route to add to.</param>
         /// <param name="stops">List of stops to initialize the stop list with.</param>
-        public EditTripViewModel(IScreen screen, RouteUnitOfWork routeUnitOfWork, Route route, IEnumerable<Stop> stops) : this(screen, routeUnitOfWork)
+        public EditTripViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Route route, IEnumerable<Stop> stops) : this(screen, routeUnitOfWork)
         {
             Trip = new Trip
             {

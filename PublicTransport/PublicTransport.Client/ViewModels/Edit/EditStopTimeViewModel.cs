@@ -17,7 +17,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly RouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     Currently selected <see cref="Stop"/> object.
@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// </summary>
         /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
         /// <param name="stopTime">Stop time to edit; null if a stop time is to be added.</param>
-        public EditStopTimeViewModel(RouteUnitOfWork routeUnitOfWork, StopTime stopTime = null)
+        public EditStopTimeViewModel(IRouteUnitOfWork routeUnitOfWork, StopTime stopTime = null)
         {
             #region Property/field initialization
 

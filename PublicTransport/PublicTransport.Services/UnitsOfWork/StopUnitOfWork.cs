@@ -6,10 +6,70 @@ using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
+    public interface IStopUnitOfWork : IDisposable
+    {
+        /// <summary>
+        ///     Calls <see cref="StopService"/> create method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="Stop"/> object successfully inserted into the database.
+        /// </returns>
+        Stop CreateStop(Stop stop);
+
+        /// <summary>
+        ///     Calls <see cref="StopService"/> update method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Stop"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        Stop UpdateStop(Stop stop);
+
+        /// <summary>
+        ///     Calls <see cref="StopService"/> delete method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        void DeleteStop(Stop stop);
+
+        /// <summary>
+        ///     Calls <see cref="StopService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Stop"/> objects matching the filtering query.
+        /// </returns>
+        List<Stop> FilterStops(IStopFilter filter);
+
+        /// <summary>
+        ///     Calls <see cref="ZoneService"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        /// </returns>
+        List<Zone> FilterZones(string name);
+
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        List<Street> FilterStreets(IStreetFilter filter);
+    }
+
     /// <summary>
     ///     Unit of work used to manage stop data.
     /// </summary>
-    public class StopUnitOfWork : IDisposable
+    public class StopUnitOfWork : IStopUnitOfWork
     {
         /// <summary>
         ///     Service used to fetch <see cref="Stop" /> data from the database.

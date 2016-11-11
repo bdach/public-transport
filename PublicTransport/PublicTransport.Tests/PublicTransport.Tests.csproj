@@ -144,6 +144,12 @@
     <Compile Include="Client\ViewModels\Edit\EditCityViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterAgencyViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterCityViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterFareViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterRouteViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterStopViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterStreetViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterUserViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Filter\FilterZoneViewModelTest.cs" />
     <Compile Include="Client\ViewModels\LoginViewModelTest.cs" />
     <Compile Include="Client\ViewModels\MenuViewModelTest.cs" />
     <Compile Include="Client\ViewModels\NotificationViewModelTest.cs" />

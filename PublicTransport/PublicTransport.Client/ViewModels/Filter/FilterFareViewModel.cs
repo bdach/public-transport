@@ -11,6 +11,7 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using Splat;
 
 namespace PublicTransport.Client.ViewModels.Filter
 {
@@ -22,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly FareUnitOfWork _fareUnitOfWork;
+        private readonly IFareUnitOfWork _fareUnitOfWork;
 
         /// <summary>
         ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
@@ -38,12 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        public FilterFareViewModel(IScreen screen)
+        /// <param name="fareUnitOfWork">Unit of work used in the view model to access the database.</param>
+        public FilterFareViewModel(IScreen screen, IFareUnitOfWork fareUnitOfWork = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _fareUnitOfWork = new FareUnitOfWork();
+            _fareUnitOfWork = fareUnitOfWork ?? Locator.Current.GetService<IFareUnitOfWork>();
             _fareFilter = new FareFilter();
             FareAttributes = new ReactiveList<FareAttribute>();
 

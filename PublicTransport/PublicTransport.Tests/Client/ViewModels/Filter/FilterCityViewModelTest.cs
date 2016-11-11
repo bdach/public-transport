@@ -31,7 +31,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // when
             _viewModel.FilterCities.Execute(null);
             // then
-            _cityUnitOfWork.Verify(c => c.FilterCities("Warszawa"), Times.Once);
+            _cityUnitOfWork.Verify(c => c.FilterCities(_viewModel.NameFilter), Times.Once);
         }
 
         [Test]
@@ -47,12 +47,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void DeleteCity_CannotExecuteIfNoCitySelected()
+        public void EditDeleteCity_CannotExecuteIfNoCitySelected()
         {
             // given
             // when
             _viewModel.SelectedCity = null;
             // then
+            _viewModel.EditCity.CanExecute(null).Should().BeFalse();
             _viewModel.DeleteCity.CanExecute(null).Should().BeFalse();
         }
 

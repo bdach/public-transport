@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly StreetUnitOfWork _streetUnitOfWork;
+        private readonly IStreetUnitOfWork _streetUnitOfWork;
 
         /// <summary>
         ///     City name supplied by the user. This field is used to supply suggestions.
@@ -42,7 +42,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="streetUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="street">Street to be edited. If a steet is to be added, this parameter is null (can be left out).</param>
-        public EditStreetViewModel(IScreen screen, StreetUnitOfWork streetUnitOfWork, Street street = null)
+        public EditStreetViewModel(IScreen screen, IStreetUnitOfWork streetUnitOfWork, Street street = null)
         {
             #region Field/property initialization
 
