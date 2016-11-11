@@ -30,7 +30,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditCityViewModel(Screen.Object, _cityUnitOfWork.Object);
             // when
-            _viewModel.SaveCity.Execute(null);
+            _viewModel.SaveCity.ExecuteAsyncTask().Wait();
             // then
             _cityUnitOfWork.Verify(c => c.CreateCity(It.IsAny<City>()));
         }
@@ -41,8 +41,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditCityViewModel(Screen.Object, _cityUnitOfWork.Object, _city);
             // when
-            var task = _viewModel.SaveCity.ExecuteAsyncTask();
-            task.Wait();
+            _viewModel.SaveCity.ExecuteAsyncTask().Wait();
             // then
             _cityUnitOfWork.Verify(c => c.UpdateCity(_city));
         }

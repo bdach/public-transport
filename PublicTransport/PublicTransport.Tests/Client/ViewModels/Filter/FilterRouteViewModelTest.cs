@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
@@ -9,24 +10,25 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
+using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
 {
     [TestFixture]
-    public class FilterRouteViewModelTest
+    public class FilterRouteViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IScreen> _screen = new Mock<IScreen>();
-        private readonly RoutingState _router = new RoutingState();
         private readonly Mock<IRouteUnitOfWork> _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
         private FilterRouteViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _screen.Setup(s => s.Router).Returns(_router);
-            _viewModel = new FilterRouteViewModel(_screen.Object, _routeUnitOfWork.Object);
+            _viewModel = new FilterRouteViewModel(Screen.Object, _routeUnitOfWork.Object);
+            _routeUnitOfWork.Setup(r => r.FilterAgencies(It.IsAny<IAgencyFilter>())).Returns(new List<Agency>());
+            _routeUnitOfWork.Setup(r => r.FilterRoutes(It.IsAny<IRouteFilter>())).Returns(new List<Route>());
+            _routeUnitOfWork.Setup(r => r.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop>());
         }
 
         [Test]
@@ -35,7 +37,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             _viewModel.RouteFilter = new RouteFilter();
             // when
-            _viewModel.FilterRoutes.Execute(null);
+            _viewModel.FilterRoutes.ExecuteAsync().Wait();
             // then
             _routeUnitOfWork.Verify(r => r.FilterRoutes(_viewModel.RouteFilter), Times.Once);
         }
@@ -68,7 +70,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditRouteViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
@@ -83,14 +85,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             var navigatedToEdit = false;
             _viewModel.SelectedRoute = new Route();
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditRouteViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
             _viewModel.AddRoute.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
-            var editRouteViewModel = _router.GetCurrentViewModel() as EditRouteViewModel;
+            var editRouteViewModel = Router.GetCurrentViewModel() as EditRouteViewModel;
             editRouteViewModel.Should().NotBeNull();
             editRouteViewModel.Route.ShouldBeEquivalentTo(_viewModel.SelectedRoute);
         }
@@ -101,14 +103,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             var navigatedToTimetable = false;
             _viewModel.SelectedRoute = new Route();
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is TimetableViewModel)
                 .Subscribe(_ => navigatedToTimetable = true);
             // when
             _viewModel.ShowTimetable.Execute(null);
             // then
             navigatedToTimetable.Should().BeTrue();
-            var timetableViewModel = _router.GetCurrentViewModel() as TimetableViewModel;
+            var timetableViewModel = Router.GetCurrentViewModel() as TimetableViewModel;
             timetableViewModel.Should().NotBeNull();
             timetableViewModel.Route.ShouldBeEquivalentTo(_viewModel.SelectedRoute);
         }

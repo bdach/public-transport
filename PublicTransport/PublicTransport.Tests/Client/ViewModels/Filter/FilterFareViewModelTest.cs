@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
@@ -7,24 +8,23 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
 {
     [TestFixture]
-    public class FilterFareViewModelTest
+    public class FilterFareViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IScreen> _screen = new Mock<IScreen>();
-        private readonly RoutingState _router = new RoutingState();
         private readonly Mock<IFareUnitOfWork> _fareUnitOfWork = new Mock<IFareUnitOfWork>();
         private FilterFareViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _screen.Setup(s => s.Router).Returns(_router);
-            _viewModel = new FilterFareViewModel(_screen.Object, _fareUnitOfWork.Object);
+            _viewModel = new FilterFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _fareUnitOfWork.Setup(f => f.FilterFares(It.IsAny<IFareFilter>())).Returns(new List<FareAttribute>());
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             _viewModel.FareFilter = new FareFilter();
             // when
-            _viewModel.FilterFares.Execute(null);
+            _viewModel.FilterFares.ExecuteAsync().Wait();
             // then
             _fareUnitOfWork.Verify(f => f.FilterFares(_viewModel.FareFilter), Times.Once);
         }
@@ -45,7 +45,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var fare = new FareAttribute();
             // when
             _viewModel.SelectedFare = fare;
-            _viewModel.DeleteFare.Execute(null);
+            _viewModel.DeleteFare.ExecuteAsync().Wait();
             // then
             _fareUnitOfWork.Verify(f => f.DeleteFareAttribute(fare), Times.Never);
             _fareUnitOfWork.Verify(f => f.DeleteFareRule(fare.FareRule), Times.Once);
@@ -67,7 +67,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditFareViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
@@ -82,14 +82,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             var navigatedToEdit = false;
             _viewModel.SelectedFare = new FareAttribute();
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditFareViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
             _viewModel.AddFare.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
-            var editFareViewModel = _router.GetCurrentViewModel() as EditFareViewModel;
+            var editFareViewModel = Router.GetCurrentViewModel() as EditFareViewModel;
             editFareViewModel.Should().NotBeNull();
             editFareViewModel.FareAttribute.ShouldBeEquivalentTo(_viewModel.SelectedFare);
         }

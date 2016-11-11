@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
@@ -12,18 +13,16 @@ using ReactiveUI;
 namespace PublicTransport.Tests.Client.ViewModels.Filter
 {
     [TestFixture]
-    public class FilterZoneViewModelTest
+    public class FilterZoneViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IScreen> _screen = new Mock<IScreen>();
-        private readonly RoutingState _router = new RoutingState();
         private readonly Mock<IZoneUnitOfWork> _zoneUnitOfWork = new Mock<IZoneUnitOfWork>();
         private FilterZoneViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _screen.Setup(s => s.Router).Returns(_router);
-            _viewModel = new FilterZoneViewModel(_screen.Object, _zoneUnitOfWork.Object);
+            _viewModel = new FilterZoneViewModel(Screen.Object, _zoneUnitOfWork.Object);
+            _zoneUnitOfWork.Setup(z => z.FilterZones(It.IsAny<string>())).Returns(new List<Zone>());
         }
 
         [Test]
@@ -32,7 +31,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             _viewModel.NameFilter = "ZTM";
             // when
-            _viewModel.FilterZones.Execute(null);
+            _viewModel.FilterZones.ExecuteAsync().Wait();
             // then
             _zoneUnitOfWork.Verify(z => z.FilterZones(_viewModel.NameFilter), Times.Once);
         }
@@ -44,7 +43,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var zone = new Zone();
             // when
             _viewModel.SelectedZone = zone;
-            _viewModel.DeleteZone.Execute(null);
+            _viewModel.DeleteZone.ExecuteAsync().Wait();
             // then
             _zoneUnitOfWork.Verify(z => z.DeleteZone(zone), Times.Once);
         }
@@ -65,7 +64,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditZoneViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
@@ -80,14 +79,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             var navigatedToEdit = false;
             _viewModel.SelectedZone = new Zone();
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditZoneViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
             _viewModel.AddZone.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
-            var editZoneViewModel = _router.GetCurrentViewModel() as EditZoneViewModel;
+            var editZoneViewModel = Router.GetCurrentViewModel() as EditZoneViewModel;
             editZoneViewModel.Should().NotBeNull();
             editZoneViewModel.Zone.ShouldBeEquivalentTo(_viewModel.SelectedZone);
         }

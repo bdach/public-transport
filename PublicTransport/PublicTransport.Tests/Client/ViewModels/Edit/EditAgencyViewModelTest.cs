@@ -33,8 +33,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object);
             // when
-            var task = _viewModel.SaveAgency.ExecuteAsyncTask();
-            task.Wait();
+            _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
             _agencyUnitOfWork.Verify(a => a.CreateAgency(It.IsAny<Agency>()));
         }
@@ -45,8 +44,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object, _agency);
             // when
-            var task = _viewModel.SaveAgency.ExecuteAsyncTask();
-            task.Wait();
+            _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
             _agencyUnitOfWork.Verify(a => a.UpdateAgency(_agency));
         }

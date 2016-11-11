@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
@@ -8,24 +9,24 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
+using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
 {
     [TestFixture]
-    public class FilterUserViewModelTest
+    public class FilterUserViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IScreen> _screen = new Mock<IScreen>();
-        private readonly RoutingState _router = new RoutingState();
         private readonly Mock<IUserUnitOfWork> _userUnitOfWork = new Mock<IUserUnitOfWork>();
         private FilterUserViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _screen.Setup(s => s.Router).Returns(_router);
-            _viewModel = new FilterUserViewModel(_screen.Object, _userUnitOfWork.Object);
+            _viewModel = new FilterUserViewModel(Screen.Object, _userUnitOfWork.Object);
+            _userUnitOfWork.Setup(u => u.FilterUsers(It.IsAny<IUserFilter>())).Returns(new List<User>());
+            _userUnitOfWork.Setup(u => u.GetAllRoles()).Returns(new List<Role>());
         }
 
         [Test]
@@ -34,7 +35,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             _viewModel.UserFilter = new UserFilter();
             // when
-            _viewModel.FilterUsers.Execute(null);
+            _viewModel.FilterUsers.ExecuteAsync().Wait();
             // then
             _userUnitOfWork.Verify(u => u.FilterUsers(_viewModel.UserFilter), Times.Once);
         }
@@ -46,7 +47,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var user = new User();
             // when
             _viewModel.SelectedUser = user;
-            _viewModel.DeleteUser.Execute(null);
+            _viewModel.DeleteUser.ExecuteAsync().Wait();
             // then
             _userUnitOfWork.Verify(u => u.DeleteUser(user), Times.Once);
         }
@@ -67,7 +68,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditUserViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
@@ -82,14 +83,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             var navigatedToEdit = false;
             _viewModel.SelectedUser = new User();
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditUserViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
             _viewModel.AddUser.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
-            var editUserViewModel = _router.GetCurrentViewModel() as EditUserViewModel;
+            var editUserViewModel = Router.GetCurrentViewModel() as EditUserViewModel;
             editUserViewModel.Should().NotBeNull();
             editUserViewModel.User.ShouldBeEquivalentTo(_viewModel.SelectedUser);
         }

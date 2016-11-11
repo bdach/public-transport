@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
@@ -7,24 +8,25 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
 {
     [TestFixture]
-    public class FilterStopViewModelTest
+    public class FilterStopViewModelTest : RoutableViewModelTest
     {
-        private readonly Mock<IScreen> _screen = new Mock<IScreen>();
-        private readonly RoutingState _router = new RoutingState();
         private readonly Mock<IStopUnitOfWork> _stopUnitOfWork = new Mock<IStopUnitOfWork>();
         private FilterStopViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _screen.Setup(s => s.Router).Returns(_router);
-            _viewModel = new FilterStopViewModel(_screen.Object, _stopUnitOfWork.Object);
+            _viewModel = new FilterStopViewModel(Screen.Object, _stopUnitOfWork.Object);
+            _stopUnitOfWork.Setup(s => s.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop>());
+            _stopUnitOfWork.Setup(s => s.FilterStreets(It.IsAny<IStreetFilter>())).Returns(new List<Street>());
+            _stopUnitOfWork.Setup(s => s.FilterZones(It.IsAny<string>())).Returns(new List<Zone>());
         }
 
         [Test]
@@ -33,7 +35,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             _viewModel.StopFilter = new StopFilter();
             // when
-            _viewModel.FilterStops.Execute(null);
+            _viewModel.FilterStops.ExecuteAsync().Wait();
             // then
             _stopUnitOfWork.Verify(s => s.FilterStops(_viewModel.StopFilter), Times.Once);
         }
@@ -45,7 +47,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var stop = new Stop();
             // when
             _viewModel.SelectedStop = stop;
-            _viewModel.DeleteStop.Execute(null);
+            _viewModel.DeleteStop.ExecuteAsync().Wait();
             // then
             _stopUnitOfWork.Verify(s => s.DeleteStop(stop), Times.Once);
         }
@@ -66,7 +68,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditStopViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
@@ -81,14 +83,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             var navigatedToEdit = false;
             _viewModel.SelectedStop = new Stop();
-            _router.Navigate
+            Router.Navigate
                 .Where(vm => vm is EditStopViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
             // when
             _viewModel.AddStop.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
-            var editStopViewModel = _router.GetCurrentViewModel() as EditStopViewModel;
+            var editStopViewModel = Router.GetCurrentViewModel() as EditStopViewModel;
             editStopViewModel.Should().NotBeNull();
             editStopViewModel.Stop.ShouldBeEquivalentTo(_viewModel.SelectedStop);
         }

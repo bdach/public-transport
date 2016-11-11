@@ -29,7 +29,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterAgencies()
         {
             // given
-            _agencyUnitOfWork.Setup(a => a.FilterAgencies(It.IsAny<IAgencyFilter>())).Returns(new List<Agency> {new Agency()});
+            _agencyUnitOfWork.Setup(a => a.FilterAgencies(It.IsAny<IAgencyFilter>())).Returns(new List<Agency> { new Agency() });
             // when
             var task = _viewModel.FilterAgencies.ExecuteAsyncTask();
             task.Wait();
@@ -57,7 +57,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var agency = new Agency();
             // when
             _viewModel.SelectedAgency = agency;
-            _viewModel.DeleteAgency.Execute(null);
+            var task = _viewModel.DeleteAgency.ExecuteAsyncTask();
+            task.Wait();
             // then
             _agencyUnitOfWork.Verify(c => c.DeleteAgency(agency), Times.Once);
         }

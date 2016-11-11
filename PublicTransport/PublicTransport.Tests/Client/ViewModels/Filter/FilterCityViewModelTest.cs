@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
@@ -21,6 +22,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void SetUp()
         {
             _viewModel = new FilterCityViewModel(Screen.Object, _cityUnitOfWork.Object);
+            _cityUnitOfWork.Setup(c => c.FilterCities(It.IsAny<string>())).Returns(new List<City>());
         }
         
         [Test]
@@ -29,7 +31,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // given
             _viewModel.NameFilter = "Warszawa";
             // when
-            _viewModel.FilterCities.Execute(null);
+            var task = _viewModel.FilterCities.ExecuteAsync();
+            task.Wait();
             // then
             _cityUnitOfWork.Verify(c => c.FilterCities(_viewModel.NameFilter), Times.Once);
         }
@@ -41,7 +44,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var city = new City();
             // when
             _viewModel.SelectedCity = city;
-            _viewModel.DeleteCity.Execute(null);
+            var task = _viewModel.DeleteCity.ExecuteAsync();
+            task.Wait();
             // then
             _cityUnitOfWork.Verify(c => c.DeleteCity(city), Times.Once);
         }
