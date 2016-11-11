@@ -20,6 +20,11 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditRouteViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
+        ///     Unit of work used in the view model to access the database.
+        /// </summary>
+        private readonly RouteUnitOfWork _routeUnitOfWork;
+
+        /// <summary>
         ///     Filter used to make queries about <see cref="Agency" /> objects.
         /// </summary>
         private AgencyFilter _agencyFilter;
@@ -33,11 +38,6 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     The <see cref="Agency" /> currently selected by the user.
         /// </summary>
         private Agency _selectedAgency;
-
-        /// <summary>
-        ///     Unit of work used in the view model to access the database.
-        /// </summary>
-        private readonly RouteUnitOfWork _routeUnitOfWork;
 
         /// <summary>
         ///     Constructor.

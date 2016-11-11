@@ -57,8 +57,7 @@ namespace PublicTransport.Services
         /// <param name="trip"><see cref="Trip" /> object to update.</param>
         /// <returns>Updated <see cref="Trip" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         public Trip Update(Trip trip)
         {
@@ -78,8 +77,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="trip"><see cref="Trip" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         public void Delete(Trip trip)
         {

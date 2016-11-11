@@ -56,8 +56,7 @@ namespace PublicTransport.Services
         /// <param name="calendar"><see cref="Calendar" /> object to update.</param>
         /// <returns>Updated <see cref="Calendar" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
         /// </exception>
         public Calendar Update(Calendar calendar)
         {
@@ -77,8 +76,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="calendar"><see cref="Calendar" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
         /// </exception>
         public void Delete(Calendar calendar)
         {

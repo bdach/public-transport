@@ -54,24 +54,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="AgencyService"/> delete method.
-        /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be deleted from the database.</param>
-        public void DeleteAgency(Agency agency)
-        {
-            _agencyService.Delete(agency);
-        }
-
-        /// <summary>
         ///     Calls <see cref="AgencyService"/> update method.
         /// </summary>
         /// <param name="agency"><see cref="Agency"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="Agency"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
+        /// </exception>
         public Agency UpdateAgency(Agency agency)
         {
             return _agencyService.Update(agency);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="AgencyService"/> delete method.
+        /// </summary>
+        /// <param name="agency"><see cref="Agency"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
+        /// </exception>
+        public void DeleteAgency(Agency agency)
+        {
+            _agencyService.Delete(agency);
         }
 
         /// <summary>

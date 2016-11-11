@@ -58,8 +58,7 @@ namespace PublicTransport.Services
         /// <param name="agency"><see cref="Agency" /> object to update.</param>
         /// <returns>Updated <see cref="Agency" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
         /// </exception>
         public Agency Update(Agency agency)
         {
@@ -79,8 +78,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="agency"><see cref="Agency" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
         /// </exception>
         public void Delete(Agency agency)
         {

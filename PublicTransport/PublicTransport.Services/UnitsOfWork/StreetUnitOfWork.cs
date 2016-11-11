@@ -54,24 +54,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetService"/> delete method.
-        /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
-        public void DeleteStreet(Street street)
-        {
-            _streetService.Delete(street);
-        }
-
-        /// <summary>
         ///     Calls <see cref="StreetService"/> update method.
         /// </summary>
         /// <param name="street"><see cref="Street"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="Street"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        /// </exception>
         public Street UpdateStreet(Street street)
         {
             return _streetService.Update(street);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="StreetService"/> delete method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        /// </exception>
+        public void DeleteStreet(Street street)
+        {
+            _streetService.Delete(street);
         }
 
         /// <summary>

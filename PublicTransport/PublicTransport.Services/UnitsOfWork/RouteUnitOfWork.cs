@@ -21,11 +21,6 @@ namespace PublicTransport.Services.UnitsOfWork
         private readonly CalendarService _calendarService;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
-        /// </summary>
-        private readonly PublicTransportContext _db;
-
-        /// <summary>
         ///     Service used to fetch <see cref="Route" /> data from the database.
         /// </summary>
         private readonly RouteService _routeService;
@@ -44,6 +39,11 @@ namespace PublicTransport.Services.UnitsOfWork
         ///     Service used to fetch <see cref="Trip" /> data from the database.
         /// </summary>
         private readonly TripService _tripService;
+
+        /// <summary>
+        ///     Database context common for services in this unit of work used to access data.
+        /// </summary>
+        private readonly PublicTransportContext _db;
 
         /// <summary>
         ///     Determines whether the database context has been disposed.
@@ -81,19 +81,6 @@ namespace PublicTransport.Services.UnitsOfWork
 
         #endregion
 
-        /// <summary>
-        ///     Disposes the database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _db.Dispose();
-            _disposed = true;
-        }
-
         #region Agency methods
 
         #region Calendar methods
@@ -114,8 +101,7 @@ namespace PublicTransport.Services.UnitsOfWork
         /// <param name="calendar"><see cref="Calendar" /> object to update.</param>
         /// <returns>Updated <see cref="Calendar" /> object.</returns>
         /// <exception cref="Exceptions.EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
         /// </exception>
         public Calendar UpdateCalendar(Calendar calendar)
         {
@@ -156,8 +142,7 @@ namespace PublicTransport.Services.UnitsOfWork
         /// <param name="route"><see cref="Route" /> object to update.</param>
         /// <returns>Updated <see cref="Route" /> object.</returns>
         /// <exception cref="Exceptions.EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         public Route UpdateRoute(Route route)
         {
@@ -169,8 +154,7 @@ namespace PublicTransport.Services.UnitsOfWork
         /// </summary>
         /// <param name="route"><see cref="Route" /> object to delete.</param>
         /// <exception cref="Exceptions.EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         public void DeleteRoute(Route route)
         {
@@ -235,8 +219,7 @@ namespace PublicTransport.Services.UnitsOfWork
         /// <param name="trip"><see cref="Trip" /> object to update.</param>
         /// <returns>Updated <see cref="Trip" /> object.</returns>
         /// <exception cref="Exceptions.EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         public Trip UpdateTrip(Trip trip)
         {
@@ -248,8 +231,7 @@ namespace PublicTransport.Services.UnitsOfWork
         /// </summary>
         /// <param name="trip"><see cref="Trip" /> object to delete.</param>
         /// <exception cref="Exceptions.EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         public void DeleteTrip(Trip trip)
         {
@@ -280,5 +262,15 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         #endregion
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return; 
+            _db.Dispose();
+            _disposed = true;
+        }
     }
 }

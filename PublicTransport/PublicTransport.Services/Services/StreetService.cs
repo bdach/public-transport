@@ -58,8 +58,7 @@ namespace PublicTransport.Services
         /// <param name="street"><see cref="Street" /> object to update.</param>
         /// <returns>Updated <see cref="Street" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Street" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
         /// </exception>
         public Street Update(Street street)
         {
@@ -79,8 +78,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="street"><see cref="Street" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Street" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
         /// </exception>
         public void Delete(Street street)
         {

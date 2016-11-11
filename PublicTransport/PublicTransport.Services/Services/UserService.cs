@@ -92,8 +92,7 @@ namespace PublicTransport.Services
         /// <param name="user"><see cref="User" /> object to update.</param>
         /// <returns>Updated <see cref="User" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="User" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         public User Update(User user)
         {
@@ -140,8 +139,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="user"><see cref="User" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="User" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         public void Delete(User user)
         {

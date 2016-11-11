@@ -57,8 +57,7 @@ namespace PublicTransport.Services
         /// <param name="zone"><see cref="Zone" /> object to update.</param>
         /// <returns>Updated <see cref="Zone" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         public Zone Update(Zone zone)
         {
@@ -78,8 +77,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="zone"><see cref="Zone" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         public void Delete(Zone zone)
         {

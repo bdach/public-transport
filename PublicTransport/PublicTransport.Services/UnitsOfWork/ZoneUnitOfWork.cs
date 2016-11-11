@@ -47,24 +47,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="ZoneService"/> delete method.
-        /// </summary>
-        /// <param name="zone"><see cref="Zone"/> object to be deleted from the database.</param>
-        public void DeleteZone(Zone zone)
-        {
-            _zoneService.Delete(zone);
-        }
-
-        /// <summary>
         ///     Calls <see cref="ZoneService"/> update method.
         /// </summary>
         /// <param name="zone"><see cref="Zone"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="Zone"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
+        /// </exception>
         public Zone UpdateZone(Zone zone)
         {
             return _zoneService.Update(zone);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="ZoneService"/> delete method.
+        /// </summary>
+        /// <param name="zone"><see cref="Zone"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
+        /// </exception>
+        public void DeleteZone(Zone zone)
+        {
+            _zoneService.Delete(zone);
         }
 
         /// <summary>

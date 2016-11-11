@@ -57,8 +57,7 @@ namespace PublicTransport.Services
         /// <param name="role"><see cref="Role" /> object to update.</param>
         /// <returns>Updated <see cref="Role" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Role" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Role" /> could not be found in the database.
         /// </exception>
         public Role Update(Role role)
         {
@@ -78,8 +77,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="role"><see cref="Role" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Role" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Role" /> could not be found in the database.
         /// </exception>
         public void Delete(Role role)
         {

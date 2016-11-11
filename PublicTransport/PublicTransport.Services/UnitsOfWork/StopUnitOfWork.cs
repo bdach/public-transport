@@ -60,24 +60,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="StopService"/> delete method.
-        /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
-        public void DeleteStop(Stop stop)
-        {
-            _stopService.Delete(stop);
-        }
-
-        /// <summary>
         ///     Calls <see cref="StopService"/> update method.
         /// </summary>
         /// <param name="stop"><see cref="Stop"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="Stop"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
         public Stop UpdateStop(Stop stop)
         {
             return _stopService.Update(stop);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="StopService"/> delete method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        public void DeleteStop(Stop stop)
+        {
+            _stopService.Delete(stop);
         }
 
         /// <summary>

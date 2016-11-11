@@ -58,8 +58,7 @@ namespace PublicTransport.Services
         /// <param name="stop"><see cref="Stop" /> object to update.</param>
         /// <returns>Updated <see cref="Stop" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
         public Stop Update(Stop stop)
         {
@@ -79,8 +78,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="stop"><see cref="Stop" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
         public void Delete(Stop stop)
         {

@@ -47,24 +47,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="CityService"/> delete method.
-        /// </summary>
-        /// <param name="city"><see cref="City"/> object to be deleted from the database.</param>
-        public void DeleteCity(City city)
-        {
-            _cityService.Delete(city);
-        }
-
-        /// <summary>
         ///     Calls <see cref="CityService"/> update method.
         /// </summary>
         /// <param name="city"><see cref="City"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="City"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="City" /> could not be found in the database.
+        /// </exception>
         public City UpdateCity(City city)
         {
             return _cityService.Update(city);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="CityService"/> delete method.
+        /// </summary>
+        /// <param name="city"><see cref="City"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="City" /> could not be found in the database.
+        /// </exception>
+        public void DeleteCity(City city)
+        {
+            _cityService.Delete(city);
         }
 
         /// <summary>

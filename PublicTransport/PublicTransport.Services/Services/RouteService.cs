@@ -58,8 +58,7 @@ namespace PublicTransport.Services
         /// <param name="route"><see cref="Route" /> object to update.</param>
         /// <returns>Updated <see cref="Route" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         public Route Update(Route route)
         {
@@ -79,8 +78,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="route"><see cref="Route" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the
-        ///     database.
+        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         public void Delete(Route route)
         {

@@ -54,24 +54,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="UserService"/> delete method.
-        /// </summary>
-        /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
-        public void DeleteUser(User user)
-        {
-            _userService.Delete(user);
-        }
-
-        /// <summary>
         ///     Calls <see cref="UserService"/> update method.
         /// </summary>
         /// <param name="user"><see cref="User"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="User"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        /// </exception>
         public User UpdateUser(User user)
         {
             return _userService.Update(user);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="UserService"/> delete method.
+        /// </summary>
+        /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        /// </exception>
+        public void DeleteUser(User user)
+        {
+            _userService.Delete(user);
         }
 
         /// <summary>

@@ -66,24 +66,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="FareAttributeService"/> delete method.
-        /// </summary>
-        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be deleted from the database.</param>
-        public void DeleteFareAttribute(FareAttribute fareAttribute)
-        {
-            _fareAttributeService.Delete(fareAttribute);
-        }
-
-        /// <summary>
         ///     Calls <see cref="FareAttributeService"/> update method.
         /// </summary>
         /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="FareAttribute"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareAttribute" /> could not be found in the database.
+        /// </exception>
         public FareAttribute UpdateFareAttribute(FareAttribute fareAttribute)
         {
             return _fareAttributeService.Update(fareAttribute);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="FareAttributeService"/> delete method.
+        /// </summary>
+        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareAttribute" /> could not be found in the database.
+        /// </exception>
+        public void DeleteFareAttribute(FareAttribute fareAttribute)
+        {
+            _fareAttributeService.Delete(fareAttribute);
         }
 
         /// <summary>
@@ -99,24 +105,30 @@ namespace PublicTransport.Services.UnitsOfWork
         }
 
         /// <summary>
-        ///     Calls <see cref="FareRuleService"/> delete method.
-        /// </summary>
-        /// <param name="fareRule"><see cref="FareRule"/> object to be deleted from the database.</param>
-        public void DeleteFareRule(FareRule fareRule)
-        {
-            _fareRuleService.Delete(fareRule);
-        }
-
-        /// <summary>
         ///     Calls <see cref="FareRuleService"/> update method.
         /// </summary>
         /// <param name="fareRule"><see cref="FareRule"/> object to be updated in the database.</param>
         /// <returns>
         ///     <see cref="FareRule"/> object successfully updated in the database.
         /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareRule" /> could not be found in the database.
+        /// </exception>
         public FareRule UpdateFareRule(FareRule fareRule)
         {
             return _fareRuleService.Update(fareRule);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="FareRuleService"/> delete method.
+        /// </summary>
+        /// <param name="fareRule"><see cref="FareRule"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="FareRule" /> could not be found in the database.
+        /// </exception>
+        public void DeleteFareRule(FareRule fareRule)
+        {
+            _fareRuleService.Delete(fareRule);
         }
 
         /// <summary>
