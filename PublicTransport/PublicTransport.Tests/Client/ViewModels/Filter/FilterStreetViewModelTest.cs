@@ -62,21 +62,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void EditDeleteStreet_CannotExecuteIfNoStreetSelected()
-        {
-            // given
-            // when
-            _viewModel.SelectedStreet = null;
-            // then
-            _viewModel.EditStreet.CanExecute(null).Should().BeFalse();
-            _viewModel.DeleteStreet.CanExecute(null).Should().BeFalse();
-        }
-
-        [Test]
         public void AddStreet()
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedStreet = new Street();
             Router.Navigate
                 .Where(vm => vm is EditStreetViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -84,6 +74,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddStreet.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editStreetViewModel = Router.GetCurrentViewModel() as EditStreetViewModel;
+            editStreetViewModel.Should().NotBeNull();
+            editStreetViewModel.Street.Should().NotBe(_viewModel.SelectedStreet);
         }
 
         [Test]
@@ -102,6 +95,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editStreetViewModel = Router.GetCurrentViewModel() as EditStreetViewModel;
             editStreetViewModel.Should().NotBeNull();
             editStreetViewModel.Street.ShouldBeEquivalentTo(_viewModel.SelectedStreet);
+        }
+
+        [Test]
+        public void EditDeleteStreet_CannotExecuteIfNoStreetSelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedStreet = null;
+            // then
+            _viewModel.EditStreet.CanExecute(null).Should().BeFalse();
+            _viewModel.DeleteStreet.CanExecute(null).Should().BeFalse();
         }
     }
 }

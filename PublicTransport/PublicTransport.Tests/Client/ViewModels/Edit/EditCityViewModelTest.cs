@@ -49,8 +49,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         {
             // given
             var navigatedBack = false;
-            Router.NavigateBack.Subscribe(s => navigatedBack = true);
             _viewModel = new EditCityViewModel(Screen.Object, _cityUnitOfWork.Object, _city);
+            Router.NavigateBack.Subscribe(_ => navigatedBack = true);
             // when
             _viewModel.Close.Execute(null);
             // then

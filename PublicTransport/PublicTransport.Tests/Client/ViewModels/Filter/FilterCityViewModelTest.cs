@@ -60,21 +60,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void EditDeleteCity_CannotExecuteIfNoCitySelected()
-        {
-            // given
-            // when
-            _viewModel.SelectedCity = null;
-            // then
-            _viewModel.EditCity.CanExecute(null).Should().BeFalse();
-            _viewModel.DeleteCity.CanExecute(null).Should().BeFalse();
-        }
-
-        [Test]
         public void AddCity()
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedCity = new City();
             Router.Navigate
                 .Where(vm => vm is EditCityViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -82,6 +72,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddCity.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editCityViewModel = Router.GetCurrentViewModel() as EditCityViewModel;
+            editCityViewModel.Should().NotBeNull();
+            editCityViewModel.City.Should().NotBe(_viewModel.SelectedCity);
         }
 
         [Test]
@@ -100,6 +93,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editCityViewModel = Router.GetCurrentViewModel() as EditCityViewModel;
             editCityViewModel.Should().NotBeNull();
             editCityViewModel.City.ShouldBeEquivalentTo(_viewModel.SelectedCity);
+        }
+
+        [Test]
+        public void EditDeleteCity_CannotExecuteIfNoCitySelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedCity = null;
+            // then
+            _viewModel.EditCity.CanExecute(null).Should().BeFalse();
+            _viewModel.DeleteCity.CanExecute(null).Should().BeFalse();
         }
     }
 }

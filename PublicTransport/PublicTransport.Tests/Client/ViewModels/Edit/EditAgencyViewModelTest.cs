@@ -11,6 +11,7 @@ using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
+    [TestFixture]
     public class EditAgencyViewModelTest : RoutableChildViewModelTest
     {
         private Mock<IAgencyUnitOfWork> _agencyUnitOfWork;

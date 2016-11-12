@@ -67,21 +67,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void EditDeleteRoute_CannotExecuteIfNoRouteSelected()
-        {
-            // given
-            // when
-            _viewModel.SelectedRoute = null;
-            // then
-            _viewModel.EditRoute.CanExecute(null).Should().BeFalse();
-            _viewModel.DeleteRoute.CanExecute(null).Should().BeFalse();
-        }
-
-        [Test]
         public void AddRoute()
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedRoute = new Route();
             Router.Navigate
                 .Where(vm => vm is EditRouteViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -89,6 +79,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddRoute.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editRouteViewModel = Router.GetCurrentViewModel() as EditRouteViewModel;
+            editRouteViewModel.Should().NotBeNull();
+            editRouteViewModel.Route.Should().NotBe(_viewModel.SelectedRoute);
         }
 
         [Test]
@@ -107,6 +100,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editRouteViewModel = Router.GetCurrentViewModel() as EditRouteViewModel;
             editRouteViewModel.Should().NotBeNull();
             editRouteViewModel.Route.ShouldBeEquivalentTo(_viewModel.SelectedRoute);
+        }
+
+        [Test]
+        public void EditDeleteRoute_CannotExecuteIfNoRouteSelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedRoute = null;
+            // then
+            _viewModel.EditRoute.CanExecute(null).Should().BeFalse();
+            _viewModel.DeleteRoute.CanExecute(null).Should().BeFalse();
         }
 
         [Test]

@@ -60,21 +60,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void EditDeleteZone_CannotExecuteIfNoZoneSelected()
-        {
-            // given
-            // when
-            _viewModel.SelectedZone = null;
-            // then
-            _viewModel.EditZone.CanExecute(null).Should().BeFalse();
-            _viewModel.DeleteZone.CanExecute(null).Should().BeFalse();
-        }
-
-        [Test]
         public void AddZone()
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedZone = new Zone();
             Router.Navigate
                 .Where(vm => vm is EditZoneViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -82,6 +72,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddZone.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editZoneViewModel = Router.GetCurrentViewModel() as EditZoneViewModel;
+            editZoneViewModel.Should().NotBeNull();
+            editZoneViewModel.Zone.Should().NotBe(_viewModel.SelectedZone);
         }
 
         [Test]
@@ -100,6 +93,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editZoneViewModel = Router.GetCurrentViewModel() as EditZoneViewModel;
             editZoneViewModel.Should().NotBeNull();
             editZoneViewModel.Zone.ShouldBeEquivalentTo(_viewModel.SelectedZone);
+        }
+
+        [Test]
+        public void EditDeleteZone_CannotExecuteIfNoZoneSelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedZone = null;
+            // then
+            _viewModel.EditZone.CanExecute(null).Should().BeFalse();
+            _viewModel.DeleteZone.CanExecute(null).Should().BeFalse();
         }
     }
 }
