@@ -143,6 +143,11 @@
     <Compile Include="Client\RoutableViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditAgencyViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditCityViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Edit\EditStopViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Edit\EditStreetViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Edit\EditUserViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Edit\EditZoneViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Browse\TimetableViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterAgencyViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterCityViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Filter\FilterFareViewModelTest.cs" />

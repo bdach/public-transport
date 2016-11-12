@@ -64,21 +64,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void EditDeleteFare_CannotExecuteIfNoFareSelected()
-        {
-            // given
-            // when
-            _viewModel.SelectedFare = null;
-            // then
-            _viewModel.EditFare.CanExecute(null).Should().BeFalse();
-            _viewModel.DeleteFare.CanExecute(null).Should().BeFalse();
-        }
-
-        [Test]
         public void AddFare()
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedFare = new FareAttribute();
             Router.Navigate
                 .Where(vm => vm is EditFareViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -86,6 +76,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddFare.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editFareViewModel = Router.GetCurrentViewModel() as EditFareViewModel;
+            editFareViewModel.Should().NotBeNull();
+            editFareViewModel.FareAttribute.ShouldBeEquivalentTo(_viewModel.SelectedFare);
         }
 
         [Test]
@@ -104,6 +97,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editFareViewModel = Router.GetCurrentViewModel() as EditFareViewModel;
             editFareViewModel.Should().NotBeNull();
             editFareViewModel.FareAttribute.ShouldBeEquivalentTo(_viewModel.SelectedFare);
+        }
+
+        [Test]
+        public void EditDeleteFare_CannotExecuteIfNoFareSelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedFare = null;
+            // then
+            _viewModel.EditFare.CanExecute(null).Should().BeFalse();
+            _viewModel.DeleteFare.CanExecute(null).Should().BeFalse();
         }
     }
 }

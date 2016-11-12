@@ -30,7 +30,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveCity.ExecuteAsyncTask().Wait();
             // then
-            _cityUnitOfWork.Verify(c => c.CreateCity(It.IsAny<City>()));
+            _cityUnitOfWork.Verify(c => c.CreateCity(It.IsAny<City>()), Times.Once);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveCity.ExecuteAsyncTask().Wait();
             // then
-            _cityUnitOfWork.Verify(c => c.UpdateCity(_city));
+            _cityUnitOfWork.Verify(c => c.UpdateCity(_city), Times.Once);
         }
 
         [Test]
@@ -49,8 +49,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         {
             // given
             var navigatedBack = false;
-            Router.NavigateBack.Subscribe(s => navigatedBack = true);
             _viewModel = new EditCityViewModel(Screen.Object, _cityUnitOfWork.Object, _city);
+            Router.NavigateBack.Subscribe(_ => navigatedBack = true);
             // when
             _viewModel.Close.Execute(null);
             // then

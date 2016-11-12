@@ -75,6 +75,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // then
             navigatedToEdit.Should().BeTrue();
             var editViewModel = Router.GetCurrentViewModel() as EditAgencyViewModel;
+            editViewModel.Should().NotBeNull();
             editViewModel.Agency.Should().NotBe(_viewModel.SelectedAgency);
         }
 
@@ -92,6 +93,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // then
             navigatedToEdit.Should().BeTrue();
             var editViewModel = Router.GetCurrentViewModel() as EditAgencyViewModel;
+            editViewModel.Should().NotBeNull();
             editViewModel.Agency.ShouldBeEquivalentTo(_viewModel.SelectedAgency);
         }
 

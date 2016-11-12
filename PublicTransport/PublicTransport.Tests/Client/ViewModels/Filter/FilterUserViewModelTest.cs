@@ -79,6 +79,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedUser = new User();
             Router.Navigate
                 .Where(vm => vm is EditUserViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -86,6 +87,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddUser.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editUserViewModel = Router.GetCurrentViewModel() as EditUserViewModel;
+            editUserViewModel.Should().NotBeNull();
+            editUserViewModel.User.Should().NotBe(_viewModel.SelectedUser);
         }
 
         [Test]

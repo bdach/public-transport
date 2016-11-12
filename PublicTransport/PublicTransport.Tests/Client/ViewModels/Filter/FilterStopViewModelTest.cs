@@ -65,21 +65,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         }
 
         [Test]
-        public void EditDeleteStop_CannotExecuteIfNoStopSelected()
-        {
-            // given
-            // when
-            _viewModel.SelectedStop = null;
-            // then
-            _viewModel.EditStop.CanExecute(null).Should().BeFalse();
-            _viewModel.DeleteStop.CanExecute(null).Should().BeFalse();
-        }
-
-        [Test]
         public void AddStop()
         {
             // given
             var navigatedToEdit = false;
+            _viewModel.SelectedStop = new Stop();
             Router.Navigate
                 .Where(vm => vm is EditStopViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -87,6 +77,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AddStop.Execute(null);
             // then
             navigatedToEdit.Should().BeTrue();
+            var editStopViewModel = Router.GetCurrentViewModel() as EditStopViewModel;
+            editStopViewModel.Should().NotBeNull();
+            editStopViewModel.Stop.Should().NotBe(_viewModel.SelectedStop);
         }
 
         [Test]
@@ -105,6 +98,17 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var editStopViewModel = Router.GetCurrentViewModel() as EditStopViewModel;
             editStopViewModel.Should().NotBeNull();
             editStopViewModel.Stop.ShouldBeEquivalentTo(_viewModel.SelectedStop);
+        }
+
+        [Test]
+        public void EditDeleteStop_CannotExecuteIfNoStopSelected()
+        {
+            // given
+            // when
+            _viewModel.SelectedStop = null;
+            // then
+            _viewModel.EditStop.CanExecute(null).Should().BeFalse();
+            _viewModel.DeleteStop.CanExecute(null).Should().BeFalse();
         }
     }
 }

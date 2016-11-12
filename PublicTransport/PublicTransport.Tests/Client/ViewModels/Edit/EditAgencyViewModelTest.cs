@@ -11,6 +11,7 @@ using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
+    [TestFixture]
     public class EditAgencyViewModelTest : RoutableChildViewModelTest
     {
         private Mock<IAgencyUnitOfWork> _agencyUnitOfWork;
@@ -32,7 +33,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyUnitOfWork.Verify(a => a.CreateAgency(It.IsAny<Agency>()));
+            _agencyUnitOfWork.Verify(a => a.CreateAgency(It.IsAny<Agency>()), Times.Once);
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyUnitOfWork.Verify(a => a.UpdateAgency(_agency));
+            _agencyUnitOfWork.Verify(a => a.UpdateAgency(_agency), Times.Once);
         }
 
         [Test]
