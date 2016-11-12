@@ -233,6 +233,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             {
                 Trip.Service = ServiceCalendar;
                 var result = await Task.Run(() => tripServiceMethod(Trip));
+                Trip = result;
                 var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
                 await Task.Run(() => _routeUnitOfWork.UpdateStops(Trip.Id, stopTimes));
                 return result;
@@ -260,7 +261,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             this.WhenAnyValue(vm => vm.RouteFilter.ShortNameFilter)
                 .Where(s => (s != SelectedRoute?.ShortName) && RouteFilter.IsValid)
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
             #endregion

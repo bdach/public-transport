@@ -90,7 +90,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             this.WhenAnyValue(vm => vm.AgencyFilter.AgencyNameFilter)
                 .Where(s => (s != SelectedAgency?.Name) && AgencyFilter.IsValid)
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
             #endregion

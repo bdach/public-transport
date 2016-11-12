@@ -66,7 +66,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             this.WhenAnyValue(vm => vm.StopFilter.StopNameFilter)
                 .Where(s => (s != SelectedStop?.Name) && StopFilter.IsValid)
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
             this.WhenAnyValue(vm => vm.SelectedStop)

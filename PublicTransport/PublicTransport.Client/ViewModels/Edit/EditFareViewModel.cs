@@ -158,17 +158,17 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             this.WhenAnyValue(vm => vm.RouteFilter.ShortNameFilter)
                 .Where(s => (s != SelectedRoute?.ShortName) && RouteFilter.IsValid)
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateRouteSuggestions);
 
             this.WhenAnyValue(vm => vm.OriginZoneFilter)
                 .Where(z => (z != SelectedOriginZone?.Name) && !string.IsNullOrEmpty(OriginZoneFilter))
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateOriginZoneSuggestions);
 
             this.WhenAnyValue(vm => vm.DestinationZoneFilter)
                 .Where(ps => (ps != SelectedDestinationZone?.Name) && !string.IsNullOrEmpty(DestinationZoneFilter))
-                .Throttle(TimeSpan.FromSeconds(0.5))
+                .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateDestinationZoneSuggestions);
 
             #endregion

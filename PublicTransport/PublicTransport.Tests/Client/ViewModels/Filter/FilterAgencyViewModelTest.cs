@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
+using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
@@ -10,6 +11,7 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
+using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
 {

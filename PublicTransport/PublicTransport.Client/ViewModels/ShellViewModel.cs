@@ -20,9 +20,9 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     Factory used for supplying instances of <see cref="IDetailViewModel" />. Used in navigation.
         /// </summary>
-        private readonly DetailViewModelFactory _viewModelFactory;
+        private readonly IDetailViewModelFactory _viewModelFactory;
 
-        public ShellViewModel(IScreen screen, DetailViewModelFactory factory)
+        public ShellViewModel(IScreen screen, IDetailViewModelFactory factory)
         {
             #region Field/property initialization
 
@@ -62,7 +62,6 @@ namespace PublicTransport.Client.ViewModels
                 .Where(e => e != null)
                 .Subscribe(e =>
                 {
-                    // TODO: Fix this to use the menu enum instead
                     if (e.Item.Option.ToString() == HostScreen.Router.NavigationStack.Last().UrlPathSegment)
                     {
                         return;
@@ -76,7 +75,9 @@ namespace PublicTransport.Client.ViewModels
 
             #region Updating the selected menu item upon switch caused by another view model
 
-            HostScreen.Router.CurrentViewModel.Subscribe(cvm =>
+            HostScreen.Router.CurrentViewModel
+                .Where(cvm => cvm is IDetailViewModel)
+                .Subscribe(cvm =>
             {
                 var detailViewModel = cvm as IDetailViewModel;
                 MenuViewModel.SelectedOption =
