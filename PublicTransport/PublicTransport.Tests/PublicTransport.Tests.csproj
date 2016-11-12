@@ -139,6 +139,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\RoutableChildViewModelTest.cs" />
     <Compile Include="Client\RoutableViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditAgencyViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditCityViewModelTest.cs" />

@@ -5,23 +5,21 @@ using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.UnitsOfWork;
-using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
     [TestFixture]
-    public class EditCityViewModelTest : RoutableViewModelTest
+    public class EditCityViewModelTest : RoutableChildViewModelTest
     {
-        private readonly Mock<ICityUnitOfWork> _cityUnitOfWork = new Mock<ICityUnitOfWork>();
+        private Mock<ICityUnitOfWork> _cityUnitOfWork;
         private EditCityViewModel _viewModel;
         private City _city;
 
         [SetUp]
         public void SetUp()
         {
+            _cityUnitOfWork = new Mock<ICityUnitOfWork>();
             _city = new City();
-            var mockRoutable = new Mock<IRoutableViewModel>();
-            Router.NavigationStack.Add(mockRoutable.Object);
         }
 
         [Test]

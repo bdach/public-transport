@@ -7,12 +7,11 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.UnitsOfWork;
-using ReactiveUI;
 using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
-    public class EditAgencyViewModelTest : RoutableViewModelTest
+    public class EditAgencyViewModelTest : RoutableChildViewModelTest
     {
         private Mock<IAgencyUnitOfWork> _agencyUnitOfWork;
         private EditAgencyViewModel _viewModel;
@@ -23,8 +22,6 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         {
             _agencyUnitOfWork = new Mock<IAgencyUnitOfWork>();
             _agency = new Agency();
-            var mockRoutable = new Mock<IRoutableViewModel>();
-            Router.NavigationStack.Add(mockRoutable.Object);
         }
 
         [Test]
