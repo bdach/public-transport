@@ -248,4 +248,5 @@ ModelManifest.xml
 *.aux
 *.log
 *.out
+*.synctex.gz
 *.toc

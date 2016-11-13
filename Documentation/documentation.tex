@@ -38,6 +38,14 @@ Lista zmian w dokumencie:
 	\hline
 	16.10.2016 & Bartłomiej Dach, Tymon Felski & Określenie wymagań projektu oraz harmonogramu prac & 1.0 \\
 	\hline
+	17.10.2016 & Bartłomiej Dach, Tymon Felski & Specyfikacja architektury systemu & 1.1 \\
+	\hline
+	18.10.2016 & Bartłomiej Dach, Tymon Felski & Dodanie administratora & 1.2 \\
+	\hline
+	10.11.2016 & Tymon Felski & Dodanie wymagań systemowych, instrukcji uruchomienia i utrzymania & 1.3 \\
+	\hline
+	11.11.2016 & Tymon Felski & Dodanie opisu modelu danych, scenariuszy i raportu z testów akceptacyjnych & 1.4 \\
+	\hline
 \end{tabularx}
 \end{table}
 
@@ -64,7 +72,20 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		\hline
 		\textbf{Aktor} & \textbf{Nazwa} & \textbf{Opis} & \textbf{Odpowiedź systemu} \\
 		\hline
-		\multirow{20}{*}{\rotatebox[origin=c]{90}{Pracownik}}
+		\multirow{6}{*}{\rotatebox[origin=c]{90}{Administrator}}
+		& Dodanie użytkownika
+		& Dodanie nowego użytkownika do systemu
+		& Potwierdzenie dodania użytkownika \\
+		\cline {2-4}
+		& Modyfikacja użytkownika
+		& Zmiana danych istniejącego użytkownika systemu
+		& Potwierdzenie zmodyfikowania rekordu \\
+		\cline{2-4}
+		& Usunięcie użytkownika
+		& Usunięcie konta użytkownika i jego danych z systemu
+		& Potwierdzenie usunięcia użytkownika \\
+		\hline
+		\multirow{26}{*}{\rotatebox[origin=c]{90}{Pracownik}}
 		& Zalogowanie się 
 		& Zalogowanie się użytkownika do systemu
 		& Potwierdzenie zalogowania się lub komunikat o błędzie \\
@@ -77,6 +98,10 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Zmiana danych przewoźnika przechowywanych w bazie
 		& Potwierdzenie zmodyfikowania rekordu \\
 		\cline{2-4}
+		& Usunięcie przewoźnika
+		& Usunięcie danych przewoźnika przechowywanych w bazie
+		& Potwierdzenie usunięcia rekordu \\
+		\cline{2-4}
 		& Dodanie linii połączeń
 		& Dodanie nowej linii połączeń danego przewoźnika
 		& Potwierdzenie dodania linii do bazy \\
@@ -85,9 +110,9 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Modyfikacja linii połączeń danego przewoźnika
 		& Potwierdzenie modyfikacji rekordu \\
 		\cline{2-4}
-		& Wyszukiwanie połączeń
-		& Wyszukiwanie połączeń przewoźników między wybranymi punktami
-		& Widok z listą znalezionych połączeń \\
+		& Usunięcie linii połączeń
+		& Usunięcie linii połączeń danego przewoźnika
+		& Potwierdzenie usunięcia rekordu \\
 		\cline{2-4}
 		& Wyświetlanie rozkładu
 		& Wyświetlanie rozkładu jazdy wybranej linii
@@ -108,22 +133,28 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 \subsubsection*{User stories}
 \begin{enumerate}
 	\bfseries
+	\item Interfejs administracyjny dla administratora
+	\begin{enumerate}[label*=\arabic*.]
+		\mdseries
+		\item Jako zalogowany administrator dodaję/modyfikuję użytkownika systemu.\\
+			Dowolny zalogowany administrator może dodać nowego użytkowanika lub zmodyfikować informacje o istniejącym użytkowniku, takie jak jego login, hasło oraz uprawnienia.
+		\item Jako zalogowany administrator wyszukuję użytkownika. \\
+		    Dowolny zalogowany administrator może wyszukać istniejących użytkowników systemu.
+	\end{enumerate}
 	\item Interfejs administracyjny dla pracownika
 	\begin{enumerate}[label*=\arabic*.]
 		\mdseries
 		\item Jako zalogowany pracownik dodaję/modyfikuję przewoźnika. \\
-			Dowolny zalogowany pracownik może dodać nowego przewoźnika lub zmodyfikować informacje o przewoźniku, takie, jak: nazwę i adres firmy, numer REGON, dane kontaktowe osoby odpowiadającej za współpracę w kwestii sprzedaży biletów.
+			Dowolny zalogowany pracownik może dodać nowego przewoźnika lub zmodyfikować informacje o przewoźniku, takie, jak: nazwę i adres firmy, numer REGON oraz jej stronę internetową.
 		\item Jako zalogowany pracownik dodaję/modyfikuję linię połączeń. \\
-			Dowolny zalogowany pracownik może dodać lub zmodyfikować informacje o nowym połączeniu takie jak: przystanki początkowe, pośrednie i końcowe, czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu oraz wysokość zniżek.
-		\item Jako zalogowany pracownik wyświetlam rozkład jazdy dla wybranej linii. \\
-		Dowolny zalogowany pracownik może wyświetlić rozkład jazdy wybranej linii. Z poziomu wyświetlania rozkładu pracownik może: dodać nowe połączenie tej linii, usunąć istniejące połączenie lub wygenerować rozkład jazdy w postaci pliku.
+			Dowolny zalogowany pracownik może dodać nowe połączenie lub zmodyfikować informacje o istniejącym połączeniu takie jak: przystanki , czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu.
 		\item Jako zalogowany pracownik wyszukuję połączenie. \\
 		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
 		    wprowadzonymi miastami.
 	 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy danej linii. \\
 		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danej linii
 		    komunikacyjnej i go wyświetlić.
-	    	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
+    	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
 		    Dowolny zalogowany pracownik może wyświetlić połączenia od danego przewoźnika.
 	\end{enumerate}
 \end{enumerate}
@@ -192,21 +223,27 @@ Biorąc pod uwagę opisany powyżej charakter zamówionego rozwiązania, wybrana
 \end{figure}
 Planowana architektura aplikacji klienckiej ma charakter warstwowy. Wyróżnione zostały następujące warstwy:
 \begin{itemize}
-\item warstwa dostępu do danych - odpowiedzialna za kontakt z bazą oraz odczyt i zapis przechowywanych tam danych,
-\item warstwa biznesowa - odpowiedzialna za wykonywanie poszczególnych usług (np. dodania czy modyfikacji przewoźnika),
-\item warstwa prezentacji - odpowiedzialna za wyświetlanie interfejsu użytkownika.
-\end{itemize}
-Głównymi powodami zaproponowania architektury warstwowej były:
-\begin{itemize}
-\item możliwość wymiany silnika bazodanowego oraz warstwy prezentacji bez naruszania warstwy biznesowej,
-\item podział odpowiedzialności na poszczególne warstwy,
-\item spójny charakter wymagań - podział na podsystemy jest zbędny.
+	\item warstwa dostępu do danych - odpowiedzialna za kontakt z bazą oraz odczyt i zapis przechowywanych tam danych,
+	\item warstwa biznesowa - odpowiedzialna za wykonywanie poszczególnych usług (np. dodania czy modyfikacji przewoźnika),
+	\item warstwa prezentacji - odpowiedzialna za wyświetlanie interfejsu użytkownika.
+	\end{itemize}
+	Głównymi powodami zaproponowania architektury warstwowej były:
+	\begin{itemize}
+	\item możliwość wymiany silnika bazodanowego oraz warstwy prezentacji bez naruszania warstwy biznesowej,
+	\item podział odpowiedzialności na poszczególne warstwy,
+	\item spójny charakter wymagań - podział na podsystemy jest zbędny.
 \end{itemize}
 Ze względu na małą liczbę użytkowników niska skalowalność oraz wydajność rozwiązań warstwowych zostały uznane za ryzyko drugorzędne.
 
 \section{Dokumentacja końcowa (powykonawcza)}
 
 \subsection{Wymagania systemowe}
+Aby zapewnić poprawne działanie systemu, wymagane są następujące komponenty:
+\begin{enumerate}
+	\item System operacyjny Windows 7 lub nowszy.
+	\item MS SQL Server 2014 lub nowszy.
+	\item .NET Framework 4.5.2 lub nowszy.
+\end{enumerate}
 % Punkt obowiązkowy.
 %
 % Rozdział powinien zawierać wymagania systemowe, wymagane oprogramowanie zewnętrzne
@@ -280,6 +317,10 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 % instalacji na czystym systemie operacyjnym.
 
 \subsection{Instrukcja uruchomienia}
+\begin{enumerate}
+	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instacja MS SQL serwera jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i uruchamiamy instancję serwera (\textbf{MSSQLSERVER}), jeżeli jest wyłączona.
+	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
+\end{enumerate}
 % Punkt obowiązkowy.
 % 
 % Niniejszy rozdział powinien zawierać kompletną instrukcję uruchomienia systemu/aplikacji
@@ -292,6 +333,7 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 % umożliwiająca osobie oceniającej weryfikację poprawności działania systemu.
 
 \subsection{Instrukcja utrzymania}
+Co kurwa...
 % Punkt obowiązkowy.
 %
 % Niniejszy rozdział powinien zawierać kompletną instrukcję utrzymania systemu obejmującą procedury
@@ -321,6 +363,21 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 % systemu lub systemami.
 
 \subsection{Model danych}
+Model danych użyty w systemie został przedstawiony w formie diagramu relacji na poniższej grafice:
+\begin{center}
+\includegraphics[scale = 0.33]{data-model.jpg}
+\end{center}
+Poniżej opisano znaczenie i rodzaj poszczególnych relacji zachodzących pomiędzy encjami w systemie.
+\begin{enumerate}
+	\item \textbf{User - Role} jest relacją wiele do wielu zrealizowaną przy pomocy tabeli pomocniczej UserRoles. Są to tabele niezależne od reszty systemu, ponieważ służą jedynie zdefiniowaniu elementów aplikacji dostępnych dla danego użytkownika.
+	\item \textbf{City - Street} to relacja jeden do wielu. Ulice zdefiniowane w systemie zawierają informację o mieście, w którym są.
+	\item Informacje o ulicy (a co za tym idzie również o mieście) zawarte są w poszczególnych agencjach (przewoźnikach) oraz przystankach, stąd relacje jeden do wielu \textbf{Street - Agency} oraz \textbf{Street - Stop}.
+	\item Każdy przewoźnik zapewnia wiele połączeń różnymi środkami komunikacji, dlatego relacja \textbf{Agency - Route} jest relacją jeden do wielu.
+	\item Poszczególne połączenia są jedynie definicją trasy. Sam przejazd (których może być wiele) pomiędzy punktami trasy zawarty jest w tabeli \textbf{Trips}. Przejazd musi zostać ponadto umieszczony w czasie, stąd dodatkowa tabela \textbf{Calendars}, która mówi w jakich dniach połączenie będzie funkcjonować. Tak określone relacje \textbf{Route - Trip} oraz \textbf{Calendar - Trip} są jeden do wielu.
+	\item Należy również określić konkretne czasy postojów na trasie przejazdu. Tym zajmuje się tabela \textbf{StopTimes}, w której zdefiniowane poszczególne postoje są skojarzone z konkretnym przejazdem i przystankiem. To powoduje, że relacje \textbf{Trip - StopTime} oraz \textbf{Stop - StopTime} są jeden do wielu.
+	\item Należy równiez zdefiniować strefy przejazdu, czym zajmuje się tabela \textbf{Zones}. Każdy przystanek ma przypisaną konkretną strefę w której się znajduje, więc relacja \textbf{Zone - Stop} jest jeden do wielu.
+	\item TODO: Opis FareRule - FareAttribute oraz Route - FareAttribute
+\end{enumerate}
 % W przypadku projektów półsemestralnych lub dłuższych, gdy system składuje dane, należy opisać
 % model danych. Model danych powinien być wyrażony przez diagram entity relationship w przypadku
 % relacyjnej bazy danych. Zalecane jest wówczas opisanie znaczenia poszczególnych relacji, jak
@@ -333,6 +390,85 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 % tworzonych w systemie plików HDFS.
 
 \subsection{Scenariusz testów akceptacyjnych}
+ROLA | CO TESTUJEMY | OPIS | CO WYJDZIE | WYSZŁO? | CO UMOŻLIWIA | UWAGI\\
+
+Administrator\\
+Dodanie nowego użytkownika\\
+Wybranie zakładki Users na bocznym pasku aplikacji, przejście do widoku dodawania użytkownika po wciśnięciu przycisku Add New oraz zapisanie zmian przyciskiem Save.\\
+Nowy użytkownik zostanie dodany do bazy danych.\\
+Tak\\
+
+Administrator\\
+Modyfikacja istniejącego użytkownika\\
+Wybranie zakładki Users na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika, przejście do widoku edycji użytkownika po zaznaczeniu jednego z listy i wciśnięciu przycisku Edit Selected oraz zapisanie zmian przyciskiem Save.\\
+Dane wybranego użytkownika zostaną zmodyfikowane.\\
+Tak\\
+
+Administrator\\
+Usunięcie istniejącego użytkownika\\
+Wybranie zakładki Users na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku Delete Selected po wybraniu jednego z listy.\\
+Dane wybranego użytkownika zostaną usunięte.\\
+Tak\\
+
+Użytkownik\\
+Zalogowanie się\\
+Wpisanie loginu i hasła w odpowiednie pola na ekranie logowania i wciśnięcie przycisku Login\\
+Zalogowanie się do systemu w przypadku poprawnych danych, odmowa dostępu w przypadku niepoprawnych danych\\
+Tak\\
+
+Zalogowany użytkownik\\
+Wylogowanie się\\
+Wciśniecię przycisku Logout na bocznym pasku aplikacji.\\
+Poprawne wylogowanie się z zystemu i przejście do ekranu logowania.\\
+Tak\\
+
+Pracownik\\
+Dodanie nowego przewoźnika\\
+Wybranie zakładki Agencies w bocznym pasku aplikacji, przejście do widoku dodania przewoźnika po wciśnięciu przycisku Add New oraz zapisanie zmian przyciskiem Save.\\
+Nowy przewoźnik zostanie dodany do bazy danych.\\
+Tak\\
+
+Pracownik\\
+Modyfiacja istniejącego przewoźnika\\
+Wybranie zakładki Agencies na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika, przejście do widoku edycji przewoźnika po zaznaczeniu jednego z listy i wciśnięciu przycisku Edit Selected oraz zapisanie zmian przyciskiem Save.\\
+Dane wybranego przewoźnika zostaną zmodyfikowane.\\
+Tak\\
+
+Pracownik\\
+Usunięcie istniejącego przewoźnika\\
+Wybranie zakładki Agencies na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przycisku Delete Selected po wybraniu jednego z listy.\\
+Dane wybranego przewoźnika zostaną usunięte.\\
+Tak\\
+
+Pracownik\\
+Dodanie nowej linii połączeń\\
+Wybranie zakładki Routes w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przycisku Add New oraz zapisanie zmian przyciskiem Save.\\
+Nowe połączenie zostanie dodane do bazy danych.\\
+Tak\\
+
+Pracownik\\
+Modyfikacja istniejącej linii połączeń\\
+Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia, przejście do widoku edycji połączenia po zaznaczeniu jednego z listy i wciśnięciu przycisku Edit Selected oraz zapisanie zmian przyciskiem Save.\\
+Dane dotyczące wybranego połączenia zostaną zmodyfikowane.\\
+Tak\\
+
+Pracownik\\
+Usunięcie istniejącej linii połączeń\\
+Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku Delete Selected po wybraniu jednego z listy.\\
+Dane dotyczące wybranego połączenia zostaną usunięte.\\
+Tak\\
+
+Pracownik\\
+Wyświetlanie połączeń przewoźnika\\
+Wybranie zakładki Routes na bocznym pasku aplikacji i wybranie konkretnego przewoźnika w opcjach filtrowania.\\
+Wyświetlona lista połączeń zapewnionych przez wybranego przewoźnika.\\
+Tak\\
+
+Pracownik\\
+Wyświetlanie rozkładu jazdy\\
+Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku Show Timetable po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii.\\
+Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki.\\
+Tak\\
 % W przypadku projektów półsemestralnych np. realizowanych w ramach projektu zespołowego.
 % Rozdział powinien zawierać scenariusze testów akceptacyjnych nawiązujących do wymagań
 % funkcjonalnych i niefunkcjonalnych systemu.
