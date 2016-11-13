@@ -240,3 +240,12 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# VS Code
+.vscode
+
+# LaTeX outputs
+*.aux
+*.log
+*.out
+*.toc
