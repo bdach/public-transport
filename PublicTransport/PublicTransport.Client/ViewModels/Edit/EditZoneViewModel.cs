@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveZone = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(Zone)); });
             SaveZone.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited zone cannot be saved to the database. Please contact the administrator.", ex));
+                UserError.Throw("The currently edited zone cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 

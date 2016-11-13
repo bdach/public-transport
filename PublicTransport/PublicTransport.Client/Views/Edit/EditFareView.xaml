@@ -28,14 +28,14 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource TextBoxLabel}">Route name</TextBlock>
+            <TextBlock Style="{StaticResource RequiredTextBoxLabel}">Route name</TextBlock>
             <ComboBox Grid.Row="0"
                       Grid.Column="1"
                       x:Name="RouteComboBox"
                       TextSearch.TextPath="ShortName"/>
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Origin zone name</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Origin zone name</TextBlock>
             <ComboBox x:Name="OriginZoneComboBox" 
                       Grid.Row="1"
                       Grid.Column="1"
@@ -43,7 +43,7 @@
                       TextSearch.TextPath="Name" />
             <TextBlock Grid.Row="2"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Destination zone name</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Destination zone name</TextBlock>
             <ComboBox x:Name="DestinationZoneComboBox" 
                       Grid.Row="2"
                       Grid.Column="1"
@@ -51,7 +51,7 @@
                       TextSearch.TextPath="Name" />
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Price</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Price</TextBlock>
             <TextBox x:Name="PriceTextBox" 
                      Grid.Row="3"
                      Grid.Column="1"
@@ -59,7 +59,7 @@
                      TextSearch.TextPath="Name" />
             <TextBlock Grid.Row="4"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Allowed transfers</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Allowed transfers</TextBlock>
             <ComboBox Style="{StaticResource EnumComboBox}"
                       Grid.Row="4"
                       Grid.Column="1"

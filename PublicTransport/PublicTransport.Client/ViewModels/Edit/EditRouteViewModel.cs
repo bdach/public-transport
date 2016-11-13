@@ -68,7 +68,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveRoute = ReactiveCommand.CreateAsyncTask(agencySelected, async _ => await Task.Run(() => serviceMethod(Route)));
             SaveRoute.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited route cannot be saved to the database. Please contact the system administrator.", ex));
+                UserError.Throw("The currently edited route cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 

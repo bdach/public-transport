@@ -116,7 +116,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 return await Task.Run(() => fareServiceMethod(FareAttribute));
             });
             SaveFare.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited fare cannot be saved to the database. Please contact the system administrator.", ex));
+                UserError.Throw("The currently edited fare cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 

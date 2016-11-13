@@ -63,7 +63,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveStreet = ReactiveCommand.CreateAsyncTask(citySelected, async _ => await Task.Run(() => serviceMethod(Street)));
             SaveStreet.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited street cannot be saved to the database. Please contact the system administrator.", ex));
+                UserError.Throw("The currently edited street cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 

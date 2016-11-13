@@ -240,7 +240,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             });
             // On exceptions: Display error.
             SaveTrip.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited trip cannot be saved to the database. Please contact the system administrator.", ex));
+                UserError.Throw("The currently edited trip cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 

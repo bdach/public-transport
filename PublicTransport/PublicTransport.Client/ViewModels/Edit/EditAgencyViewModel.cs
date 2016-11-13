@@ -64,7 +64,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ => await Task.Run(() => serviceMethod(Agency)));
             SaveAgency.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited agency cannot be saved to the database. Please contact the system administrator.", ex));
+                UserError.Throw("The currently edited agency cannot be saved to the database. Please check the required fields and try again later..", ex));
 
             #endregion
 

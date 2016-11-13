@@ -147,7 +147,7 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		\item Jako zalogowany pracownik dodaję/modyfikuję przewoźnika. \\
 			Dowolny zalogowany pracownik może dodać nowego przewoźnika lub zmodyfikować informacje o przewoźniku, takie, jak: nazwę i adres firmy, numer REGON oraz jej stronę internetową.
 		\item Jako zalogowany pracownik dodaję/modyfikuję linię połączeń. \\
-			Dowolny zalogowany pracownik może dodać nowe połączenie lub zmodyfikować informacje o istniejącym połączeniu takie jak: przystanki , czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu.
+			Dowolny zalogowany pracownik może dodać nowe połączenie lub zmodyfikować informacje o istniejącym połączeniu takie jak: przystanki, czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu.
 		\item Jako zalogowany pracownik wyszukuję połączenie. \\
 		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
 		    wprowadzonymi miastami.
@@ -310,27 +310,138 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 \end{table}
 
 \subsection{Instrukcja instalacji}
-% Punkt obowiązkowy.
-%
-% Niniejszy rozdział powinien kompletną instrukcję instalacji systemu/aplikacji umożliwiająca osobie
-% oceniającej implementację danego rozwiązania. Uwaga: instrukcja powinna być dostoswana do
-% instalacji na czystym systemie operacyjnym.
+Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące kroki:
+
+\begin{enumerate}
+	\item \textbf{Instalacja .NET Framework w wersji 4.5.2 lub późniejszej} \\
+	W celu zainstalowania .NET Framework, należy pobrać oficjalny instalator Microsoftu znajdujący się pod adresem \cite{netframework}, a następnie postępować zgodnie z instrukcjami wyświetlonymi na ekranie.
+	\item \textbf{Instalacja Microsoft SQL Server w wersji 2014 lub późniejszej} \\
+	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}.
+	\item \textbf{Instalacja aplikacji} \\
+	Po zainstalowaniu serwera, należy uruchomić instalator aplikacji dostarczony przez autorów i postępować zgodnie z instrukcjami. Po zakończeniu instalacji aplikacja powinna ukazać się w menu Start.
+	\item \textbf{Edycja ustawień połączenia} \\
+	Po instalacji, należy przejść do katalogu instalacji aplikacji i zmienić zawartość pliku \\ \texttt{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \texttt{connectionString} o nazwie \texttt{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji SQL Server.
+	\item \textbf{Uruchomienie serwera} \\
+	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \texttt{SQL Server Configuration Manager} i sprawdzając, czy status usługi \texttt{MSSQLSERVER} to \texttt{Running}.
+	\item \textbf{Pierwsze uruchomienie} \\
+	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \emph{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \texttt{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
+	\item \textbf{Wykonanie skryptu z przykładowymi danymi} \\
+	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \texttt{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
+\end{enumerate}
 
 \subsection{Instrukcja uruchomienia}
 \begin{enumerate}
 	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instacja MS SQL serwera jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i uruchamiamy instancję serwera (\textbf{MSSQLSERVER}), jeżeli jest wyłączona.
 	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
 \end{enumerate}
-% Punkt obowiązkowy.
-% 
-% Niniejszy rozdział powinien zawierać kompletną instrukcję uruchomienia systemu/aplikacji
-% umożliwiającą osobie oceniającej weryfikację poprawności działania systemu.
 
 \subsection{Instrukcja użycia}
-% Punkt obowiązkowy.
-%
-% Niniejszy rozdział powinien zawierać kompletną instrukcję użycia (manual) systemu/aplikacji
-% umożliwiająca osobie oceniającej weryfikację poprawności działania systemu.
+
+\subsubsection{Logowanie do systemu}
+Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predefiniowane są następujące konta użytkowników:
+\begin{itemize}
+	\item użytkownik \texttt{root}, hasło \texttt{root}: konto z uprawnieniami administratora,
+	\item użytkownik \texttt{employee}, hasło \texttt{password}: konto z uprawnieniami użytkownika,
+	\item użytkownik \texttt{guest}, hasło \texttt{guest}: konto bez nadanych uprawnień.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/01_login_screen.png}
+	\caption{Okno logowania do systemu}
+\end{figure}
+
+\subsubsection{Główne okno aplikacji}
+Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zostaje główne okno aplikacji. Po lewej stronie znajduje się menu nawigacyjne, które umożliwia dostęp do poszczególnych części systemu, zaś pod menu znajduje się zaś przycisk odpowiadający za wylogowanie użytkownika z systemu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/02_main_window.png}
+	\caption{Główny widok aplikacji}
+\end{figure}
+Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się formularz wyszukiwania odpowiadający wybranej opcji. Dostępne opcje to:
+\begin{itemize}
+	\item \emph{Cities}, \emph{Streets} -- łączy funkcjonalności związane z miastami i ulicami,
+	\item \emph{Agencies} -- agreguje informacje dotyczące przewoźników,
+	\item \emph{Routes} -- wyświetla dane o trasach i przejazdach,
+	\item \emph{Stops} -- pozwala wyszukiwać, edytować i dodawać przystanki,
+	\item \emph{Zones} -- umożliwia wyznaczanie stref taryfowych, na podstawie których obliczana będzie cena biletu,
+	\item \emph{Fares} -- zbiera dane dotyczące taryf przejazdowych i cen biletów,
+	\item \emph{Users} -- zawiera informacje o użytkownikach; widok ten dostępny jest tylko dla administratorów.
+\end{itemize}
+
+\subsubsection{Wyszukiwanie}
+W przypadku wszystkich wyżej wymienionych opcji, po wybraniu po prawej stronie pokazuje się widok pozwalający na przeszukiwanie danych zawartych w bazie dotyczących wybranej zakładki.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/13_filter_stops.png}
+	\caption{Przykładowy widok wyszukiwania}
+\end{figure}
+Po wybraniu opcji lista znalezionych rekordów w bazie będzie pusta. Aby rozpocząć wyszukiwanie, należy zacząć wprowadzanie kryteriów wyszukiwania w polach znajdujących się nad listą. Zawartość listy zaktualizuje się automatycznie w ciągu pół sekundy od zakończenia wprowadzania danych.
+
+Poniżej listy umieszczony jest pasek narzędziowy, umożliwiający dodanie nowego rekordu (\emph{Add New}) oraz edycję (\emph{Edit Selected}) bądź usunięcie (\emph{Delete Selected}) obecnie zaznaczonego rekordu. Pierwszy z tych przycisków jest aktywny zawsze, zaś pozostałe uaktywniają się, gdy zaznaczony jest jeden z elementów listy z wynikami wyszukiwania.
+
+\subsubsection{Edycja}
+Po wybraniu opcji dodania lub edycji rekordu, po prawej stronie wyświetli się formularz umożliwiający na wprowadzenie danych nowego rekordu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/08_edit_agency.png}
+	\caption{Przykładowy widok edycji dla przewoźników}
+\end{figure}
+Etykiety pól obowiązkowych oznaczone są pogrubioną czcionką. Można wyróżnić dwa rodzaje pól:
+\begin{itemize}
+	\item zwykłe -- nie są związane z żadnymi innymi obiektami systemu,
+	\item menu rozwijane -- zawartość tego pola jest związane z inną częścią systemu. Przykładem takiego pola jest pole \emph{Street} na powyższym rysunku. Aby wybrać wartość w tym polu, należy wprowadzić początek nazwy żądanego obiektu -- po chwili pojawi się menu rozwijane z sugestiami, z którego można wybrać żądany obiekt.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/06_edit_street.png}
+	\caption{Przykład podpowiedzi}
+\end{figure}
+Na dole ekranu znajdują się przyciski zapisu (\emph{Save}) umożliwiający zatwierdzenie zmian oraz zamknięcia (\emph{Close}), który pozwala na cofnięcie się do widoku wyszukiwania i odrzucenie ostatnich zmian. W przypadku próby zapisu obiektu, który nie ma wypełnionych wszystkich pól, pojawia się poniżej przedstawiony pasek z wiadomością o błędzie:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/21_not_all_fields.png}
+	\caption{Błąd zapisu}
+\end{figure}
+
+\subsubsection{Wyświetlanie rozkładu jazdy wybranej linii}
+Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \emph{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \emph{Show Timetable}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/09_filter_route.png}
+	\caption{Widok tras z przyciskiem wyświetlania rozkładu}
+\end{figure}
+Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują się poszczególne przystanki, między którymi kursuje wybrana trasa. Po wybraniu konkretnego przystanku, po prawej stronie pojawiają się czasy przyjazdu i odjazdu wszystkich kursów tej linii dotyczące wybranej opcji.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/10_timetable.png}
+	\caption{Widok rozkładu jazdy}
+\end{figure}
+Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \emph{Time}. Dodatkowo, dostępne są opcje dodawania (\emph{Add Trip}), edycji (\emph{Edit Trip}) oraz usuwania (\emph{Delete Trip}) wybranego przejazdu.
+
+\subsubsection{Edycja przejazdu}
+Poniżej widoczny jest ekran edycji pojedynczego kursu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/11_edit_trip.png}
+	\caption{Widok edycji przejazdu}
+\end{figure}
+Przewijana lista w dolnej części ekranu zawiera informacje o kolejnych przystankach edytowanego przejazdu oraz czasach przyjazdu i odjazdu. Można dodawać oraz usuwać przystanki za pomocą opcji \emph{Add stop...} i \emph{Remove stop...} 
+
+Przycisk \emph{Edit...} obok etykiety \emph{Schedule details} pozwala na edycję informacji o harmonogramie danego kursu, takich, jak: pierwszy i ostatni dzień funkcjonowania kursu oraz dni tygodnia, w które odbywa się dany przejazd.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/12_edit_schedule.png}
+	\caption{Widok edycji harmonogramu}
+\end{figure}
+
+\subsubsection{Edycja użytkowników}
+Konta administratorów mają dostęp również do widoku edycji użytkowników.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/19_edit_user.png}
+	\caption{Widok edycji użytkowników}
+\end{figure}
+W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
 
 \subsection{Instrukcja utrzymania}
 Co kurwa...
@@ -354,13 +465,39 @@ Co kurwa...
 \subsection{Pseudokod}
 
 \subsection{Diagramy sekwencji}
-% Punkt obowiązkowy
-%
-% W przypadku projektów półsemestralnych lub dłuższych: w przypadku, gdy system składa się z
-% komponentów rozproszonych należy dołączyć diagram(y) sekwencji. Rozdział zawierać powinien
-% zawierać diagramy sekwencji opisujące komunikację pomiędzy systemami lub komponentami
-% systemu. Należy w nim uwzględnić wszystkie przepływy komunikatów pomiędzy komponentami
-% systemu lub systemami.
+Przebieg komunikacji klienta z relacyjną bazą danych jest przedstawiony na poniższym diagramie sekwencji.
+\begin{figure}[H]
+	\includegraphics[width=16cm]{sequence.pdf}
+	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z bazą danych}
+\end{figure}
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|l|l|X|}
+		\hline
+		\textbf{Funkcjonalność} & \textbf{System} & \textbf{Opis} \\
+		\hline
+		Wywołanie akcji &
+		Aplikacja kliencka &
+		\textbf{Działanie biznesowe:} \\
+		& & Administrator lub pracownik wykonują akcję za pośrednictwem interfejsu graficznego aplikacji klienckiej. \\
+		& & \textbf{Wejście:} Akcja wykonana w interfejsie graficznym. \\
+		& & \textbf{Wyjście:} Wyświetlenie rezultatu akcji -- wyszukiwanych danych lub komunikatu o niepowodzeniu akcji. \\
+		\hline
+		Wywołanie funkcji interfejsu &
+		Obiekty serwisowe &
+		\textbf{Działanie biznesowe:} \\
+		& & Aplikacja kliencka przesyła dane dotyczące akcji podjętej przez użytkownika do warstwy serwisowej za pomocą jej interfejsu publicznego. \\
+		& & \textbf{Wejście:} Dane dotyczące podjętej akcji. \\
+		& & \textbf{Wyjście:} Obiekty transferu danych zawierające informacje o rezultacie danej akcji. \\
+		\hline
+		Zapytanie SQL &
+		Silnik bazy danych &
+		\textbf{Działanie biznesowe:} \\
+		& & Dane odebrane od klienta są przetwarzane na zapytania SQL do bazy danych. \\
+		& & \textbf{Wejście:} Zapytanie SQL służące pobraniu lub modyfikacji danych. \\
+		& & \textbf{Wyjście:} Rekordy wynikowe pobrane z bazy danych. \\
+		\hline
+	\end{tabularx}
+\end{table}
 
 \subsection{Model danych}
 Model danych użyty w systemie został przedstawiony w formie diagramu relacji na poniższej grafice:
@@ -378,16 +515,6 @@ Poniżej opisano znaczenie i rodzaj poszczególnych relacji zachodzących pomię
 	\item Należy równiez zdefiniować strefy przejazdu, czym zajmuje się tabela \textbf{Zones}. Każdy przystanek ma przypisaną konkretną strefę w której się znajduje, więc relacja \textbf{Zone - Stop} jest jeden do wielu.
 	\item TODO: Opis FareRule - FareAttribute oraz Route - FareAttribute
 \end{enumerate}
-% W przypadku projektów półsemestralnych lub dłuższych, gdy system składuje dane, należy opisać
-% model danych. Model danych powinien być wyrażony przez diagram entity relationship w przypadku
-% relacyjnej bazy danych. Zalecane jest wówczas opisanie znaczenia poszczególnych relacji, jak
-% również czytelne oznaczenie rodzaju relacji (np. jeden do wielu) oraz kluczy głównych i kluczy obcych.
-% W przypadku wykorzystania platform nierelacyjnych np. platform NoSQL lub składowania danych w
-% plikach Apache Hadoop należy przedstawić opis konwencji zapisu danych. Jest to szczególnie istotne,
-% gdy model danych jest prowadzony w trybie tzw. schema-on-read tzn. nie jest egzekwowany przez
-% platformę składowania danych, a zależy wyłącznie od konwencji stosowanej przez aplikację np.
-% konwencji nazewnictwa kolumn, treści wpisów w formacie JSON lub formatu sekwencji plików
-% tworzonych w systemie plików HDFS.
 
 \subsection{Scenariusz testów akceptacyjnych}
 ROLA | CO TESTUJEMY | OPIS | CO WYJDZIE | WYSZŁO? | CO UMOŻLIWIA | UWAGI\\
@@ -518,6 +645,10 @@ Tak\\
 	\emph{Moq 4},
 	\url{https://github.com/moq/moq4}
 
+\bibitem{netframework}
+Microsoft .NET Framework 4.5.2 (instalator offline) dla systemów Windows Vista z dodatkiem SP2, Windows 7 z dodatkiem SP1, Windows 8, Windows 8.1, Windows Server 2008 z dodatkiem SP2, Windows Server 2008 R2 z dodatkiem SP1, Windows Server 2012 i Windows Server 2012 R2,
+	\url{https://www.microsoft.com/pl-PL/download/details.aspx?id=42642}
+
 \bibitem{nunit}
 	NUnit,
 	\emph{NUnit},
@@ -537,6 +668,11 @@ Tak\\
 	Paul Betts,
 	\emph{Splat},
 	\url{https://github.com/paulcbetts/splat}
+
+\bibitem{sqlserver}
+	Installing SQL Server 2014 Step By Step Tutorial,
+	Microsoft TechNet,
+	\url{http://social.technet.microsoft.com/wiki/contents/articles/23878.installing-sql-server-2014-step-by-step-tutorial.aspx}.
 
 \end{thebibliography}
 \end{document}

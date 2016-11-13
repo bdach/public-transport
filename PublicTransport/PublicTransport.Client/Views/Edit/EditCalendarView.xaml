@@ -31,7 +31,7 @@
 
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Days of service</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Days of service</TextBlock>
             <ToggleButton Grid.Row="0"
                           Grid.Column="1"
                           x:Name="MondayToggleButton">Mon</ToggleButton>
@@ -55,7 +55,7 @@
                           x:Name="SundayToggleButton">Sun</ToggleButton>
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Service start/end</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Service start/end</TextBlock>
             <DatePicker Grid.Row="1"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"

@@ -61,7 +61,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 return await Task.Run(() => serviceMethod(User));
             });
             SaveUser.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited user cannot be saved to the database. Please contact the system administrator.", ex));
+                UserError.Throw("The currently edited user cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 

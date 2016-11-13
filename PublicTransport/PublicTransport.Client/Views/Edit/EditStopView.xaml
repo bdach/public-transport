@@ -26,13 +26,13 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource TextBoxLabel}">Stop name</TextBlock>
+            <TextBlock Style="{StaticResource RequiredTextBoxLabel}">Stop name</TextBlock>
             <TextBox Grid.Row="0"
                      Grid.Column="1"
                      x:Name="NameTextBox" />
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Street</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Street</TextBlock>
             <ComboBox x:Name="StreetComboBox" 
                       Grid.Row="1"
                       Grid.Column="1"
@@ -56,7 +56,7 @@
                       TextSearch.TextPath="Name" />
             <TextBlock Grid.Row="4"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Is Station</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Is Station</TextBlock>
             <CheckBox x:Name="IsStationCheckBox" 
                       Grid.Row="4"
                       Grid.Column="1"

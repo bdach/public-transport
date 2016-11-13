@@ -26,13 +26,13 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Username</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Username</TextBlock>
             <TextBox Grid.Row="0"
                      Grid.Column="1"
                      x:Name="UserNameTextBox" />
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Password</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Password</TextBlock>
             <TextBox Grid.Row="1"
                      Grid.Column="1"
                      x:Name="PasswordTextBox" />

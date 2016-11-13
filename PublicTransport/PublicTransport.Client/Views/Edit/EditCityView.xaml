@@ -22,7 +22,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource TextBoxLabel}">City name</TextBlock>
+            <TextBlock Style="{StaticResource RequiredTextBoxLabel}">City name</TextBlock>
             <TextBox Grid.Row="0"
                      Grid.Column="1"
                      x:Name="NameTextBox" />

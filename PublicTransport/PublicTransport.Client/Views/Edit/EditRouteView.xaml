@@ -28,7 +28,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Agency</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Agency</TextBlock>
             <ComboBox x:Name="AgencyComboBox" 
                       Grid.Row="0"
                       Grid.Column="1"
@@ -36,7 +36,7 @@
                       TextSearch.TextPath="Name" />
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Short name</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Short name</TextBlock>
             <TextBox Grid.Row="1"
                      Grid.Column="1"
                      x:Name="ShortNameTextBox" />
@@ -48,7 +48,7 @@
                      x:Name="LongNameTextBox" />
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Type</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Type</TextBlock>
             <ComboBox Style="{StaticResource EnumComboBox}"
                       Grid.Row="3"
                       Grid.Column="1"

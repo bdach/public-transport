@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 using Splat;
 
@@ -60,7 +61,12 @@ namespace PublicTransport.Client.ViewModels
                 _loginService = new LoginService();
             });
             SendLoginRequest.ThrownExceptions
+                .Where(ex => ex is InvalidCredentialsException)
                 .SelectMany(ex => UserError.Throw("Invalid username or password.", ex))
+                .Subscribe();
+            SendLoginRequest.ThrownExceptions
+                .Where(ex => !(ex is InvalidCredentialsException))
+                .SelectMany(ex => UserError.Throw("Could not connect to database.", ex))
                 .Subscribe();
 
             #endregion

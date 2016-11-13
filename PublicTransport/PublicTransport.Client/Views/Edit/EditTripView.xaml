@@ -29,7 +29,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Route</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Route</TextBlock>
             <ComboBox x:Name="RouteComboBox" 
                       Grid.Row="0"
                       Grid.Column="1"
@@ -52,7 +52,7 @@
                      x:Name="ShortNameTextBox" />
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Schedule details</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Schedule details</TextBlock>
             <Button Grid.Row="3"
                     Grid.Column="2"
                     x:Name="EditScheduleButton">Edit...</Button>

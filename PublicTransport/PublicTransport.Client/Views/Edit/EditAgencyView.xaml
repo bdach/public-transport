@@ -27,7 +27,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource TextBoxLabel}">Agency name</TextBlock>
+            <TextBlock Style="{StaticResource RequiredTextBoxLabel}">Agency name</TextBlock>
             <TextBox Grid.Row="0"
                      Grid.Column="1"
                      x:Name="NameTextBox" />
@@ -49,7 +49,7 @@
                      x:Name="StreetNumberTextBox" />
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Phone number</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Phone number</TextBlock>
             <TextBox Grid.Row="3"
                      Grid.Column="1"
                      x:Name="PhoneNumberTextBox" />

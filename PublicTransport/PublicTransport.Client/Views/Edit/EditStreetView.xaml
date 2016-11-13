@@ -24,13 +24,13 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Style="{StaticResource TextBoxLabel}">Street name</TextBlock>
+            <TextBlock Style="{StaticResource RequiredTextBoxLabel}">Street name</TextBlock>
             <TextBox x:Name="StreetName"
                      Grid.Row="0"
                      Grid.Column="1" />
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">City</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">City</TextBlock>
             <ComboBox x:Name="City" 
                       Grid.Row="1"
                       Grid.Column="1"

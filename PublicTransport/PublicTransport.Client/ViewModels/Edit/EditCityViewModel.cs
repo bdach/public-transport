@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveCity = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(City)); });
             SaveCity.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited city cannot be saved to the database. Please contact the administrator.", ex));
+                UserError.Throw("The currently edited city cannot be saved to the database. Please check the required fields and try again later.", ex));
 
             #endregion
 
