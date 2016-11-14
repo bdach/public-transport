@@ -7,7 +7,7 @@
 \usepackage{multirow}
 \usepackage{helvet}
 \usepackage{verbatim}
-\usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{float}
 \usepackage[polish]{babel}
@@ -42,13 +42,20 @@ Lista zmian w dokumencie:
 	\hline
 	18.10.2016 & Bartłomiej Dach, Tymon Felski & Dodanie administratora & 1.2 \\
 	\hline
-	10.11.2016 & Tymon Felski & Dodanie wymagań systemowych, instrukcji uruchomienia i utrzymania & 1.3 \\
+	19.10.2016 & Tymon Felski & Usunięcie zduplikowanego przypadku użycia & 1.3 \\
 	\hline
-	11.11.2016 & Tymon Felski & Dodanie opisu modelu danych, scenariuszy i raportu z testów akceptacyjnych & 1.4 \\
+	9.11.2016 & Bartłomiej Dach & Dodanie użytych bibliotek i ich licencji, instrukcji instalacji & 1.4 \\
+	\hline
+	10.11.2016 & Tymon Felski & Dodanie wymagań systemowych, instrukcji uruchomienia i utrzymania & 1.5 \\
+	\hline
+	10.11.2016 & Bartłomiej Dach & Dodanie diagramu sekwencji, instrukcji użycia & 1.6 \\
+	\hline
+	11.11.2016 & Tymon Felski & Dodanie opisu modelu danych, scenariuszy i raportu z testów akceptacyjnych & 1.7 \\
 	\hline
 \end{tabularx}
 \end{table}
 
+\newpage
 \tableofcontents
 \newpage
 
@@ -90,6 +97,10 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Zalogowanie się użytkownika do systemu
 		& Potwierdzenie zalogowania się lub komunikat o błędzie \\
 		\cline{2-4}
+		& Wylogowanie się
+		& Wylogowanie się pracownika z systemu
+		& Potwierdzenie zakończenia pracy z systemem \\
+		\cline{2-4}
 		& Dodanie przewoźnika
 		& Dodanie informacji o nowym przewoźniku do bazy
 		& Potwierdzenie dodania danych do bazy \\
@@ -122,9 +133,9 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Wyświetlanie połączeń obsługiwanych przez danego przewoźnika
 		& Widok zawierający informacje o liniach danej firmy \\
 		\cline{2-4}
-		& Wylogowanie się
-		& Wylogowanie się pracownika z systemu
-		& Potwierdzenie zakończenia pracy z systemem \\
+		& Wyszukiwanie połączeń
+		& Wyszukiwanie połączeń przewoźników między wybranymi punktami
+		& Widok z listą znalezionych połączeń \\
 		\hline
 	\end{tabularx}
 	\caption{Opisy przypadków użycia dla użytkownika}
@@ -192,7 +203,7 @@ Poniższa tabela zawiera rozpisane wymagania niefunkcjonalne narzucone dla syste
 Prace przy projekcie będą realizowane według następującego harmonogramu:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=16cm]{gantt.pdf}
+	\includegraphics[width=14cm]{gantt.pdf}
 	\caption{Diagram Gantta z planowanym harmonogramem projektu}
 \end{figure}
 Kamienie milowe:
@@ -235,6 +246,7 @@ Planowana architektura aplikacji klienckiej ma charakter warstwowy. Wyróżnione
 \end{itemize}
 Ze względu na małą liczbę użytkowników niska skalowalność oraz wydajność rozwiązań warstwowych zostały uznane za ryzyko drugorzędne.
 
+\newpage
 \section{Dokumentacja końcowa (powykonawcza)}
 
 \subsection{Wymagania systemowe}
@@ -444,12 +456,9 @@ Konta administratorów mają dostęp również do widoku edycji użytkowników.
 W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
 
 \subsection{Instrukcja utrzymania}
-Co kurwa...
-% Punkt obowiązkowy.
-%
-% Niniejszy rozdział powinien zawierać kompletną instrukcję utrzymania systemu obejmującą procedury
-% włączenia, wyłączenia systemu oraz procedury backup/restore.
+Instrukcja stworzenia kopii zapasowej.
 
+\begin{comment}
 \subsection{Raport odstępstw od specyfikacji wymagań}
 % Punkt obowiązkowy.
 
@@ -459,10 +468,14 @@ Co kurwa...
 % Niniejszy rozdział powinien w przypadku, gdy system udostępnia publiczne usługi web services
 % powinien zawierać dokumentację usług zamieszczone w formie opisowej lub np. wg specyfikacji
 % swagger.
+\end{comment}
 
+\newpage
 \section{Dokumentacja końcowa (powykonawcza) -- punkty wymagane przez prowadzącego zajęcia}
 
+\begin{comment}
 \subsection{Pseudokod}
+\end{comment}
 
 \subsection{Diagramy sekwencji}
 Przebieg komunikacji klienta z relacyjną bazą danych jest przedstawiony na poniższym diagramie sekwencji.
@@ -499,12 +512,15 @@ Przebieg komunikacji klienta z relacyjną bazą danych jest przedstawiony na pon
 	\end{tabularx}
 \end{table}
 
+\newpage
 \subsection{Model danych}
 Model danych użyty w systemie został przedstawiony w formie diagramu relacji na poniższej grafice:
-\begin{center}
-\includegraphics[scale = 0.33]{data-model.jpg}
-\end{center}
-Poniżej opisano znaczenie i rodzaj poszczególnych relacji zachodzących pomiędzy encjami w systemie.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale = 0.33]{data-model.jpg}
+	\caption{Diagram relacji}
+\end{figure}
+Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w systemie.
 \begin{enumerate}
 	\item \textbf{User - Role} jest relacją wiele do wielu zrealizowaną przy pomocy tabeli pomocniczej UserRoles. Są to tabele niezależne od reszty systemu, ponieważ służą jedynie zdefiniowaniu elementów aplikacji dostępnych dla danego użytkownika.
 	\item \textbf{City - Street} to relacja jeden do wielu. Ulice zdefiniowane w systemie zawierają informację o mieście, w którym są.
@@ -513,10 +529,10 @@ Poniżej opisano znaczenie i rodzaj poszczególnych relacji zachodzących pomię
 	\item Poszczególne połączenia są jedynie definicją trasy. Sam przejazd (których może być wiele) pomiędzy punktami trasy zawarty jest w tabeli \textbf{Trips}. Przejazd musi zostać ponadto umieszczony w czasie, stąd dodatkowa tabela \textbf{Calendars}, która mówi w jakich dniach połączenie będzie funkcjonować. Tak określone relacje \textbf{Route - Trip} oraz \textbf{Calendar - Trip} są jeden do wielu.
 	\item Należy również określić konkretne czasy postojów na trasie przejazdu. Tym zajmuje się tabela \textbf{StopTimes}, w której zdefiniowane poszczególne postoje są skojarzone z konkretnym przejazdem i przystankiem. To powoduje, że relacje \textbf{Trip - StopTime} oraz \textbf{Stop - StopTime} są jeden do wielu.
 	\item Należy równiez zdefiniować strefy przejazdu, czym zajmuje się tabela \textbf{Zones}. Każdy przystanek ma przypisaną konkretną strefę w której się znajduje, więc relacja \textbf{Zone - Stop} jest jeden do wielu.
-	\item TODO: Opis FareRule - FareAttribute oraz Route - FareAttribute
+	\item Każda trasa może mieć inny cennik, a cena biletu może się zmieniać w zależności od początkowej i końcowej strefy. Stąd relacja \textbf{Route - FareAttribute} jest jeden do wielu. Ponadto wiele tras może korzystać z jednego cennika, dlatego relacja \textbf{FareRule - FareAttribute} jest również jeden do wielu.
 \end{enumerate}
 
-\subsection{Scenariusz testów akceptacyjnych}
+\subsection{Scenariusze testów akceptacyjnych i raport z ich przeprowadzenia}
 ROLA | CO TESTUJEMY | OPIS | CO WYJDZIE | WYSZŁO? | CO UMOŻLIWIA | UWAGI\\
 
 Administrator\\
@@ -596,14 +612,10 @@ Wyświetlanie rozkładu jazdy\\
 Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku Show Timetable po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii.\\
 Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki.\\
 Tak\\
-% W przypadku projektów półsemestralnych np. realizowanych w ramach projektu zespołowego.
-% Rozdział powinien zawierać scenariusze testów akceptacyjnych nawiązujących do wymagań
-% funkcjonalnych i niefunkcjonalnych systemu.
 
+\begin{comment}
 \subsection{Raport z przeprowadzonych testów}
-% W przypadku projektów półsemestralnych np. realizowanych w ramach projektu zespołowego.
-% Rozdział powinien zawierać scenariusze testów akceptacyjnych nawiązujących do wymagań
-% funkcjonalnych i niefunkcjonalnych systemu i wyniki ich przeprowadzenia.
+\end{comment}
 
 \section{Lista użytych skrótów}
 \label{abbr:bsd}
@@ -621,6 +633,7 @@ Tak\\
 \label{abbr:wpf}
 \paragraph{WPF} Windows Presentation Framework
 
+\newpage
 \renewcommand*{\refname}{\vspace*{-2em}}
 \section{Bibliografia}
 \begin{thebibliography}{99}
