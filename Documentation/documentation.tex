@@ -4,6 +4,7 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{ltablex}
 \usepackage{multirow}
 \usepackage{helvet}
 \usepackage{verbatim}
@@ -312,8 +313,8 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 		\cite{reactiveextensions} \\
 		\hline
 		8 &
-		Splat, 2.0.0 &
-		Kontener \hyperref[abbr:IoC]{IoC} wspomagający w realizacji wzorca wstrzykiwania zależności. &
+		Splat, 1.4.0 &
+		Kontener \hyperref[abbr:ioc]{IoC} wspomagający w realizacji wzorca wstrzykiwania zależności. &
 		\mbox{\hyperref[abbr:mit]{MIT}} &
 		\cite{splat} \\
 		\hline
@@ -325,26 +326,25 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące kroki:
 
 \begin{enumerate}
-	\item \textbf{Instalacja .NET Framework w wersji 4.5.2 lub późniejszej} \\
-	W celu zainstalowania .NET Framework, należy pobrać oficjalny instalator Microsoftu znajdujący się pod adresem \cite{netframework}, a następnie postępować zgodnie z instrukcjami wyświetlonymi na ekranie.
 	\item \textbf{Instalacja Microsoft SQL Server w wersji 2014 lub późniejszej} \\
 	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}.
 	\item \textbf{Instalacja aplikacji} \\
-	Po zainstalowaniu serwera, należy uruchomić instalator aplikacji dostarczony przez autorów i postępować zgodnie z instrukcjami. Po zakończeniu instalacji aplikacja powinna ukazać się w menu Start.
+	Po zainstalowaniu serwera, należy uruchomić instalator aplikacji dostarczony przez autorów i postępować zgodnie z instrukcjami. Instalator w razie potrzeby zainstaluje również .NET Framework w wersji 4.5.2 lub wyższej. Po zakończeniu instalacji aplikacja powinna ukazać się w menu Start.
 	\item \textbf{Edycja ustawień połączenia} \\
-	Po instalacji, należy przejść do katalogu instalacji aplikacji i zmienić zawartość pliku \\ \texttt{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \texttt{connectionString} o nazwie \texttt{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji SQL Server.
+	Jeżeli baza, do której ma być podłączona aplikacja, jest bazą umieszczoną na serwerze lokalnym używającą autoryzacji Windows (\emph{Windows Authentication}), poniższy krok można pominąć. \\
+	Po instalacji, należy przejść do katalogu, w którym znajduje się zainstalowana aplikacja i zmienić zawartość pliku \emph{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \emph{connectionString} o nazwie \emph{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji SQL Server.
 	\item \textbf{Uruchomienie serwera} \\
-	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \texttt{SQL Server Configuration Manager} i sprawdzając, czy status usługi \texttt{MSSQLSERVER} to \texttt{Running}.
+	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \emph{SQL Server Configuration Manager} i sprawdzając, czy status usługi \emph{MSSQLSERVER} to \emph{Running}.
 	\item \textbf{Pierwsze uruchomienie} \\
-	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \emph{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \texttt{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
+	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \emph{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \emph{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
 	\item \textbf{Wykonanie skryptu z przykładowymi danymi} \\
-	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \texttt{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
+	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \emph{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
 \end{enumerate}
 
 \subsection{Instrukcja uruchomienia}
 \begin{enumerate}
-	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instacja MS SQL serwera jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i uruchamiamy instancję serwera (\textbf{MSSQLSERVER}), jeżeli jest wyłączona.
-	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
+	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instacja MS SQL serwera jest uruchomiona. Otwieramy \emph{SQL Server Configuration Manager} i uruchamiamy instancję serwera (\textbf{MSSQLSERVER}), jeżeli jest wyłączona.
+	\item Klikamy dwukrotnie plik wykonywalny \emph{PublicTransport.exe}, aby uruchomić aplikację.
 \end{enumerate}
 
 \subsection{Instrukcja użycia}
@@ -458,10 +458,14 @@ W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz re
 \subsection{Instrukcja utrzymania}
 Instrukcja stworzenia kopii zapasowej.
 
-\begin{comment}
 \subsection{Raport odstępstw od specyfikacji wymagań}
-% Punkt obowiązkowy.
 
+\paragraph{Przesunięcie wyszukiwania połączeń między wybranymi miastami na kolejny etap prac}
+\subparagraph{Dotyczy:} Przypadek użycia ,,Wyszukiwanie połączeń''
+\subparagraph{Zmiana:} Przesunięcie wykonania wymagania na następny etap prac
+\subparagraph{Uzasadnienie:} Z uwagi na niskie zapotrzebowanie na funkcjonalność wyszukiwania połączeń na tym etapie prac postanowiono przełożyć prace w tym kierunku na następny etap rozwoju.
+
+\begin{comment}
 \subsection{Dokumentacja usług Web Services}
 % Punkt obowiązkowy
 %
@@ -533,85 +537,95 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 \end{enumerate}
 
 \subsection{Scenariusze testów akceptacyjnych i raport z ich przeprowadzenia}
-ROLA | CO TESTUJEMY | OPIS | CO WYJDZIE | WYSZŁO? | CO UMOŻLIWIA | UWAGI\\
-
-Administrator\\
-Dodanie nowego użytkownika\\
-Wybranie zakładki Users na bocznym pasku aplikacji, przejście do widoku dodawania użytkownika po wciśnięciu przycisku Add New oraz zapisanie zmian przyciskiem Save.\\
-Nowy użytkownik zostanie dodany do bazy danych.\\
-Tak\\
-
-Administrator\\
-Modyfikacja istniejącego użytkownika\\
-Wybranie zakładki Users na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika, przejście do widoku edycji użytkownika po zaznaczeniu jednego z listy i wciśnięciu przycisku Edit Selected oraz zapisanie zmian przyciskiem Save.\\
-Dane wybranego użytkownika zostaną zmodyfikowane.\\
-Tak\\
-
-Administrator\\
-Usunięcie istniejącego użytkownika\\
-Wybranie zakładki Users na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku Delete Selected po wybraniu jednego z listy.\\
-Dane wybranego użytkownika zostaną usunięte.\\
-Tak\\
-
-Użytkownik\\
-Zalogowanie się\\
-Wpisanie loginu i hasła w odpowiednie pola na ekranie logowania i wciśnięcie przycisku Login\\
-Zalogowanie się do systemu w przypadku poprawnych danych, odmowa dostępu w przypadku niepoprawnych danych\\
-Tak\\
-
-Zalogowany użytkownik\\
-Wylogowanie się\\
-Wciśniecię przycisku Logout na bocznym pasku aplikacji.\\
-Poprawne wylogowanie się z zystemu i przejście do ekranu logowania.\\
-Tak\\
-
-Pracownik\\
-Dodanie nowego przewoźnika\\
-Wybranie zakładki Agencies w bocznym pasku aplikacji, przejście do widoku dodania przewoźnika po wciśnięciu przycisku Add New oraz zapisanie zmian przyciskiem Save.\\
-Nowy przewoźnik zostanie dodany do bazy danych.\\
-Tak\\
-
-Pracownik\\
-Modyfiacja istniejącego przewoźnika\\
-Wybranie zakładki Agencies na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika, przejście do widoku edycji przewoźnika po zaznaczeniu jednego z listy i wciśnięciu przycisku Edit Selected oraz zapisanie zmian przyciskiem Save.\\
-Dane wybranego przewoźnika zostaną zmodyfikowane.\\
-Tak\\
-
-Pracownik\\
-Usunięcie istniejącego przewoźnika\\
-Wybranie zakładki Agencies na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przycisku Delete Selected po wybraniu jednego z listy.\\
-Dane wybranego przewoźnika zostaną usunięte.\\
-Tak\\
-
-Pracownik\\
-Dodanie nowej linii połączeń\\
-Wybranie zakładki Routes w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przycisku Add New oraz zapisanie zmian przyciskiem Save.\\
-Nowe połączenie zostanie dodane do bazy danych.\\
-Tak\\
-
-Pracownik\\
-Modyfikacja istniejącej linii połączeń\\
-Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia, przejście do widoku edycji połączenia po zaznaczeniu jednego z listy i wciśnięciu przycisku Edit Selected oraz zapisanie zmian przyciskiem Save.\\
-Dane dotyczące wybranego połączenia zostaną zmodyfikowane.\\
-Tak\\
-
-Pracownik\\
-Usunięcie istniejącej linii połączeń\\
-Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku Delete Selected po wybraniu jednego z listy.\\
-Dane dotyczące wybranego połączenia zostaną usunięte.\\
-Tak\\
-
-Pracownik\\
-Wyświetlanie połączeń przewoźnika\\
-Wybranie zakładki Routes na bocznym pasku aplikacji i wybranie konkretnego przewoźnika w opcjach filtrowania.\\
-Wyświetlona lista połączeń zapewnionych przez wybranego przewoźnika.\\
-Tak\\
-
-Pracownik\\
-Wyświetlanie rozkładu jazdy\\
-Wybranie zakładki Routes na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku Show Timetable po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii.\\
-Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki.\\
-Tak\\
+\begin{tabularx}{\textwidth}{|X|X|X|X|l|}
+	\hline
+	\textbf{Rola} & \textbf{Testowana funkcjonalność} & \textbf{Opis czynności} & \textbf{Oczekiwany rezultat} & \textbf{Wynik testu} \\
+	\hline
+	Administrator &
+	Dodanie nowego użytkownika &
+	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, przejście do widoku dodawania użytkownika po wciśnięciu przycisku \emph{Add New} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Nowy użytkownik zostanie dodany do bazy danych. &
+	Pozytywny \\
+	\hline
+	Administrator &
+	Modyfikacja istniejącego użytkownika &
+	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika, przejście do widoku edycji użytkownika po zaznaczeniu jednego z listy i wciśnięciu przycisku \emph{Edit Selected} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Dane wybranego użytkownika zostaną zmodyfikowane. &
+	Pozytywny \\
+	\hline
+	Administrator &
+	Usunięcie istniejącego użytkownika &
+	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Dane wybranego użytkownika zostaną usunięte. &
+	Pozytywny \\
+	\hline
+	Administrator &
+	Usunięcie istniejącego użytkownika &
+	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Dane wybranego użytkownika zostaną usunięte. &
+	Pozytywny \\
+	\hline 
+	Użytkownik &
+	Zalogowanie się &
+	Wpisanie loginu i hasła w odpowiednie pola na ekranie logowania i wciśnięcie przycisku \emph{Login} &
+	Zalogowanie się do systemu w przypadku poprawnych danych, odmowa dostępu w przypadku niepoprawych danych &
+	Pozytywny \\
+	\hline
+	Zalogowany użytkownik &
+	Wylogowanie się &
+	Wciśniecię przycisku \emph{Logout} na bocznym pasku aplikacji. &
+	Poprawne wylogowanie się z zystemu i przejście do ekranu logowania. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Dodanie nowego przewoźnika &
+	Wybranie zakładki \emph{Agencies} w bocznym pasku aplikacji, przejście do widoku dodania przewoźnika po wciśnięciu przycisku \emph{Add New} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Nowy przewoźnik zostanie dodany do bazy danych. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Modyfiacja istniejącego przewoźnika &
+	Wybranie zakładki \emph{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika, przejście do widoku edycji przewoźnika po zaznaczeniu jednego z listy i wciśnięciu przycisku \emph{Edit Selected} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Dane wybranego przewoźnika zostaną zmodyfikowane. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Usunięcie istniejącego przewoźnika &
+	Wybranie zakładki \emph{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Dane wybranego przewoźnika zostaną usunięte. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Dodanie nowej linii połączeń &
+	Wybranie zakładki \emph{Routes} w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przycisku \emph{Add New} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Nowe połączenie zostanie dodane do bazy danych. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Modyfikacja istniejącej linii połączeń &
+	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia, przejście do widoku edycji połączenia po zaznaczeniu jednego z listy i wciśnięciu przycisku \emph{Edit Selected} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Dane dotyczące wybranego połączenia zostaną zmodyfikowane. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Usunięcie istniejącej linii połączeń &
+	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Dane dotyczące wybranego połączenia zostaną usunięte. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Wyświetlanie połączeń przewoźnika &
+	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji i wybranie konkretnego przewoźnika w opcjach filtrowania. &
+	Wyświetlona lista połączeń zapewnionych przez wybranego przewoźnika. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Wyświetlanie rozkładu jazdy &
+	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku \emph{Show Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
+	Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki. &
+	Pozytywny \\
+	\hline
+\end{tabularx}
 
 \begin{comment}
 \subsection{Raport z przeprowadzonych testów}
@@ -620,6 +634,9 @@ Tak\\
 \section{Lista użytych skrótów}
 \label{abbr:bsd}
 \paragraph{BSD} Berkeley Software Distribution
+
+\label{abbr:ioc}
+\paragraph{IoC} Inversion of Control
 
 \label{abbr:mit}
 \paragraph{MIT} Massachussetts Institute of Technology  
@@ -633,7 +650,6 @@ Tak\\
 \label{abbr:wpf}
 \paragraph{WPF} Windows Presentation Framework
 
-\newpage
 \renewcommand*{\refname}{\vspace*{-2em}}
 \section{Bibliografia}
 \begin{thebibliography}{99}
@@ -657,10 +673,6 @@ Tak\\
 	Moq,
 	\emph{Moq 4},
 	\url{https://github.com/moq/moq4}
-
-\bibitem{netframework}
-Microsoft .NET Framework 4.5.2 (instalator offline) dla systemów Windows Vista z dodatkiem SP2, Windows 7 z dodatkiem SP1, Windows 8, Windows 8.1, Windows Server 2008 z dodatkiem SP2, Windows Server 2008 R2 z dodatkiem SP1, Windows Server 2012 i Windows Server 2012 R2,
-	\url{https://www.microsoft.com/pl-PL/download/details.aspx?id=42642}
 
 \bibitem{nunit}
 	NUnit,
