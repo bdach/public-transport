@@ -30,6 +30,7 @@ namespace PublicTransport.Services
         public UserService(PublicTransportContext db)
         {
             _db = db;
+            _passwordService = new PasswordService();
         }
 
         /// <summary>

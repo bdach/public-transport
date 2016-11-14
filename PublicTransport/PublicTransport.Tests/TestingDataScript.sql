@@ -1,4 +1,4 @@
--- Sample data script.
+Ôªø-- Sample data script.
 -- Clears database contents and populates the database with sample data for testing purposes.
 
 USE [PublicTransport]
@@ -92,8 +92,8 @@ VALUES
 	(N'Warszawa'),				-- 1
 	-- Inter-city example.
 	(N'Zawiercie'),				-- 2
-	(N'£azy'),					-- 3
-	(N'Zπbkowice ålπskie'),		-- 4
+	(N'≈Åazy'),					-- 3
+	(N'ZƒÖbkowice ≈ölƒÖskie'),		-- 4
 	(N'Sosnowiec'),				-- 5
 	(N'Katowice'),				-- 6
 	(N'Gliwice')				-- 7
@@ -104,18 +104,18 @@ INSERT INTO [Streets]
 VALUES
 	-- Streets on the path of the E-1 ZTM line.
 	(1, N'Sokola'),									-- 1
-	(1, N'Wa≥ MiedzeszyÒski'),						-- 2
+	(1, N'Wa≈Ç Miedzeszy≈Ñski'),						-- 2
 	(1, N'Saska'),									-- 3
 	(1, N'Bora-Komorowskiego'),						-- 4
 	-- Addresses of rail stations of the 101 PKP Intercity line.
 	(2, N'3 Maja'),									-- 5
 	(3, N'Dworcowa'),								-- 6
-	(4, N'Niepodleg≥oúci'),							-- 7
+	(4, N'Niepodleg≈Ço≈õci'),							-- 7
 	(5, N'3 Maja'),									-- 8
-	(6, N'Plac Oddzia≥Ûw M≥odzieøy PowstaÒczej'),	-- 9
-	(7, N'BohaterÛw Getta Warszawskiego'),			-- 10
+	(6, N'Plac Oddzia≈Ç√≥w M≈Çodzie≈ºy Powsta≈Ñczej'),	-- 9
+	(7, N'Bohater√≥w Getta Warszawskiego'),			-- 10
 	-- Agency locations.
-	(1, N'Øelazna')									-- 11
+	(1, N'≈ªelazna')									-- 11
 GO
 
 INSERT INTO [Zones]
@@ -131,17 +131,17 @@ VALUES
 	(N'Metro Stadion Narodowy', 1, 1, NULL, 0),			-- 1
 	(N'Kryniczna', 2, 1, NULL, 0),						-- 2
 	(N'Saska', 3, 1, NULL, 0),							-- 3
-	(N'AfrykaÒska', 4, 1, NULL, 0),						-- 4
-	(N'Wa≥ Goc≥awski', 4, 1, NULL, 0),					-- 5
+	(N'Afryka≈Ñska', 4, 1, NULL, 0),						-- 4
+	(N'Wa≈Ç Goc≈Çawski', 4, 1, NULL, 0),					-- 5
 	(N'Abrahama', 4, 1, NULL, 0),						-- 6
 	(N'Bora-Komorowskiego', 4, 1, NULL, 0),				-- 7
 	(N'Horbaczewskiego', 4, 1, NULL, 0),				-- 8
-	(N'Goc≥aw', 4, 1, NULL, 0),							-- 9
+	(N'Goc≈Çaw', 4, 1, NULL, 0),							-- 9
 	-- Rail stops.
 	(N'Zawiercie D.K.', 5, NULL, NULL, 0),				-- 10
-	(N'£azy D.K.', 6, NULL, NULL, 0),					-- 11
-	(N'Dπbrowa GÛrnicza Zπbkowice', 7, NULL, NULL, 0),	-- 12
-	(N'Sosnowiec G≥Ûwny', 8, NULL, NULL, 0),			-- 13
+	(N'≈Åazy D.K.', 6, NULL, NULL, 0),					-- 11
+	(N'DƒÖbrowa G√≥rnicza ZƒÖbkowice', 7, NULL, NULL, 0),	-- 12
+	(N'Sosnowiec G≈Ç√≥wny', 8, NULL, NULL, 0),			-- 13
 	(N'Katowice', 9, NULL, NULL, 0),					-- 14
 	(N'Gliwice', 10, NULL, NULL, 0)						-- 15
 GO
@@ -149,14 +149,14 @@ GO
 INSERT INTO [Agencies]
 	([Name], [Phone], [Url], [Regon], [StreetId], [StreetNumber])
 VALUES
-	(N'Zarzπd Transportu Miejskiego', '19 115', 'http://www.ztm.waw.pl', '012605780', 11, '61'),	-- 1
+	(N'ZarzƒÖd Transportu Miejskiego', '19 115', 'http://www.ztm.waw.pl', '012605780', 11, '61'),	-- 1
 	(N'PKP Intercity', '19 757', 'http://www.intercity.pl', '017258024', 11, '59a')				-- 2
 GO
 
 INSERT INTO [Routes]
 	([AgencyId], [ShortName], [LongName], [RouteType])
 VALUES
-	(1, N'E-1', N'Goc≥aw-Metro Stadion Narodowy', 3),		-- 1; route type 3 is a Bus
+	(1, N'E-1', N'Goc≈Çaw-Metro Stadion Narodowy', 3),		-- 1; route type 3 is a Bus
 	(2, N'101', N'Zawiercie-Gliwice', 2)					-- 2; route type 2 is Rail
 GO
 
@@ -170,7 +170,7 @@ GO
 INSERT INTO [Trips]
 	([RouteId], [ServiceId], [Headsign], [ShortName], [Direction])
 VALUES
-	(1, 1, N'Goc≥aw', NULL, 0),							-- 1
+	(1, 1, N'Goc≈Çaw', NULL, 0),							-- 1
 	(1, 1, N'Metro Stadion Narodowy', NULL, 1),			-- 2
 	(2, 2, N'Gliwice', NULL, 0)							-- 3
 GO
