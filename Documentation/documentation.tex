@@ -257,10 +257,6 @@ Aby zapewnić poprawne działanie systemu, wymagane są następujące komponenty
 	\item MS SQL Server 2014 lub nowszy.
 	\item .NET Framework 4.5.2 lub nowszy.
 \end{enumerate}
-% Punkt obowiązkowy.
-%
-% Rozdział powinien zawierać wymagania systemowe, wymagane oprogramowanie zewnętrzne
-% (RDBMS, etc.)
 
 \subsection{Biblioteki wraz z określeniem licencji}
 W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty firm trzecich:
@@ -456,7 +452,21 @@ Konta administratorów mają dostęp również do widoku edycji użytkowników.
 W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
 
 \subsection{Instrukcja utrzymania}
-Instrukcja stworzenia kopii zapasowej.
+Uruchamianie, restartowanie lub zatrzymywanie serwera bazodanowego.\\
+\begin{enumerate}
+	\item Uruchom \textbf{SQL Server Configuration Manager}.
+	\item Jeśli pojawi się okno dialogowe \textbf{Kontrola konta użytkownika}, kliknij przycisk \textbf{Tak}.
+	\item Wybierz instancję serwera SQL (MSSQLSERVER), kliknij prawym przyciskiem myszy, a następnie wybierz jedną z opcji \textbf{Start, Stop, Pause, Resume} lub \textbf{Restart}.
+\end{enumerate}
+Tworzenie kopii zapasowej bazy danych.
+\begin{enumerate}
+	\item Połącz się z instancją serwera bazodanowego i w \textbf{Eksploratorze obiektów} przejdź do węzła \textbf{Databases}.
+	\item Kliknij prawym przyciskiem bazę danych \textbf{PublicTransport}, przejdź do zakładki \textbf{Tasks}, a następnie \textbf{BackUp}.
+	\item Zostanie wyświetlone okno dialogowe \textbf{Back Up Database}. W polu listy \textbf{Database} zweryfikuj nazwę bazy danych.
+	\item W polu listy \textbf{Backup type} wybierz opcję \textbf{Full}.
+	\item W obszarze \textbf{Backup component} kliknij opcję \textbf{Database}.
+	\item Wybierz lokalizację docelową kopii zapasowej i wciśnij przycisk \textbf{OK}.
+\end{enumerate}
 
 \subsection{Raport odstępstw od specyfikacji wymagań}
 
