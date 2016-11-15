@@ -104,6 +104,14 @@ namespace PublicTransport.Client.ViewModels.Filter
                 .InvokeCommand(FilterZones);
 
             #endregion
+
+            #region Disposing of contexts
+
+            HostScreen.Router.NavigateAndReset
+                .Skip(1)
+                .Subscribe(_ => _zoneUnitOfWork.Dispose());
+
+            #endregion
         }
 
         /// <summary>
