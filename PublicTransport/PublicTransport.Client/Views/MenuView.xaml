@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:PublicTransport.Client.ViewModels"
+             mc:Ignorable="d"
+             Width="250"
+             Background="Black">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListView x:Name="SidebarMenu"
+                  BorderThickness="0"
+                  Background="Black">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="viewModels:MenuItemViewModel">
+                    <TextBlock Text="{Binding Item.Label}"
+                               Margin="10"
+                               FontSize="16"
+                               Foreground="White" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Grid.Row="1"
+                Style="{StaticResource LogoutButton}"
+                x:Name="LogOutButton">
+            Log out
+        </Button>
+    </Grid>
+</UserControl>

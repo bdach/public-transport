@@ -1,0 +1,714 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage{multirow}
+\usepackage{helvet}
+\usepackage{verbatim}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{float}
+\usepackage[polish]{babel}
+
+\renewcommand\familydefault{\sfdefault}
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	{\Large Wydział Matematyki i Nauk Informacyjnych Politechniki Warszawskiej \par}
+	\vspace{1cm}
+	\includegraphics[width=0.2\textwidth]{logo.png} \par
+	\vspace{5cm}
+	{\LARGE System informacji oraz sprzedaży biletów\\komunikacji miejskiej i międzymiastowej \par}
+	\vspace{0.5cm}
+	{\Large Bartłomiej Dach, Tymon Felski \par}
+	\vspace{1.5cm}
+	{\Large Wersja 1.0 \par}
+	\vspace{1.5cm}
+	{\Large \today \par}
+\end{titlepage}
+Lista zmian w dokumencie:
+\begin{table}[H]
+\def\arraystretch{1.5}
+\begin{tabularx}{\textwidth}{|l|l|X|l|}
+	\hline
+	\textbf{Data} & \textbf{Autor} & \textbf{Opis zmian} & \textbf{Wersja} \\
+	\hline
+	16.10.2016 & Bartłomiej Dach, Tymon Felski & Określenie wymagań projektu oraz harmonogramu prac & 1.0 \\
+	\hline
+	17.10.2016 & Bartłomiej Dach, Tymon Felski & Specyfikacja architektury systemu & 1.1 \\
+	\hline
+	18.10.2016 & Bartłomiej Dach, Tymon Felski & Dodanie administratora & 1.2 \\
+	\hline
+	19.10.2016 & Tymon Felski & Usunięcie zduplikowanego przypadku użycia & 1.3 \\
+	\hline
+	9.11.2016 & Bartłomiej Dach & Dodanie użytych bibliotek i ich licencji, instrukcji instalacji & 1.4 \\
+	\hline
+	10.11.2016 & Tymon Felski & Dodanie wymagań systemowych, instrukcji uruchomienia i utrzymania & 1.5 \\
+	\hline
+	10.11.2016 & Bartłomiej Dach & Dodanie diagramu sekwencji, instrukcji użycia & 1.6 \\
+	\hline
+	11.11.2016 & Tymon Felski & Dodanie opisu modelu danych, scenariuszy i raportu z testów akceptacyjnych & 1.7 \\
+	\hline
+\end{tabularx}
+\end{table}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Specyfikacja}
+
+\subsection{Opis biznesowy}
+Niniejszy system służy do przechowywania danych o przewoźnikach i połączeniach komunikacji miejskiej oraz międzymiastowej. Składowane dane wykorzystywane są do wyszukiwania konkretnych połączeń oraz sprzedaży biletów.
+
+\subsection{Wymagania funkcjonalne}
+
+\subsubsection*{Przypadki użycia}
+Poniższy diagram UML przedstawia zbiór przypadków użycia aplikacji dla aktora -- pracownika firmy pośredniczącej w sprzedaży biletów wielu przewoźników.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{use-case.pdf}
+	\caption{Diagram przypadków użycia dla aplikacji}
+\end{figure}
+Poszczególne przypadki są opisane szerzej w poniższej tabeli:
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|c|X|X|X|}
+		\hline
+		\textbf{Aktor} & \textbf{Nazwa} & \textbf{Opis} & \textbf{Odpowiedź systemu} \\
+		\hline
+		\multirow{6}{*}{\rotatebox[origin=c]{90}{Administrator}}
+		& Dodanie użytkownika
+		& Dodanie nowego użytkownika do systemu
+		& Potwierdzenie dodania użytkownika \\
+		\cline {2-4}
+		& Modyfikacja użytkownika
+		& Zmiana danych istniejącego użytkownika systemu
+		& Potwierdzenie zmodyfikowania rekordu \\
+		\cline{2-4}
+		& Usunięcie użytkownika
+		& Usunięcie konta użytkownika i jego danych z systemu
+		& Potwierdzenie usunięcia użytkownika \\
+		\hline
+		\multirow{26}{*}{\rotatebox[origin=c]{90}{Pracownik}}
+		& Zalogowanie się 
+		& Zalogowanie się użytkownika do systemu
+		& Potwierdzenie zalogowania się lub komunikat o błędzie \\
+		\cline{2-4}
+		& Wylogowanie się
+		& Wylogowanie się pracownika z systemu
+		& Potwierdzenie zakończenia pracy z systemem \\
+		\cline{2-4}
+		& Dodanie przewoźnika
+		& Dodanie informacji o nowym przewoźniku do bazy
+		& Potwierdzenie dodania danych do bazy \\
+		\cline{2-4}
+		& Modyfikacja przewoźnika
+		& Zmiana danych przewoźnika przechowywanych w bazie
+		& Potwierdzenie zmodyfikowania rekordu \\
+		\cline{2-4}
+		& Usunięcie przewoźnika
+		& Usunięcie danych przewoźnika przechowywanych w bazie
+		& Potwierdzenie usunięcia rekordu \\
+		\cline{2-4}
+		& Dodanie linii połączeń
+		& Dodanie nowej linii połączeń danego przewoźnika
+		& Potwierdzenie dodania linii do bazy \\
+		\cline{2-4}
+		& Modyfikacja linii połączeń
+		& Modyfikacja linii połączeń danego przewoźnika
+		& Potwierdzenie modyfikacji rekordu \\
+		\cline{2-4}
+		& Usunięcie linii połączeń
+		& Usunięcie linii połączeń danego przewoźnika
+		& Potwierdzenie usunięcia rekordu \\
+		\cline{2-4}
+		& Wyświetlanie rozkładu
+		& Wyświetlanie rozkładu jazdy wybranej linii
+		& Widok zawierający informacje o przejazdach na wybranej linii \\
+		\cline{2-4}
+		& Wyświetlanie połączeń przewoźnika
+		& Wyświetlanie połączeń obsługiwanych przez danego przewoźnika
+		& Widok zawierający informacje o liniach danej firmy \\
+		\cline{2-4}
+		& Wyszukiwanie połączeń
+		& Wyszukiwanie połączeń przewoźników między wybranymi punktami
+		& Widok z listą znalezionych połączeń \\
+		\hline
+	\end{tabularx}
+	\caption{Opisy przypadków użycia dla użytkownika}
+\end{table}
+
+\subsubsection*{User stories}
+\begin{enumerate}
+	\bfseries
+	\item Interfejs administracyjny dla administratora
+	\begin{enumerate}[label*=\arabic*.]
+		\mdseries
+		\item Jako zalogowany administrator dodaję/modyfikuję użytkownika systemu.\\
+			Dowolny zalogowany administrator może dodać nowego użytkowanika lub zmodyfikować informacje o istniejącym użytkowniku, takie jak jego login, hasło oraz uprawnienia.
+		\item Jako zalogowany administrator wyszukuję użytkownika. \\
+		    Dowolny zalogowany administrator może wyszukać istniejących użytkowników systemu.
+	\end{enumerate}
+	\item Interfejs administracyjny dla pracownika
+	\begin{enumerate}[label*=\arabic*.]
+		\mdseries
+		\item Jako zalogowany pracownik dodaję/modyfikuję przewoźnika. \\
+			Dowolny zalogowany pracownik może dodać nowego przewoźnika lub zmodyfikować informacje o przewoźniku, takie, jak: nazwę i adres firmy, numer REGON oraz jej stronę internetową.
+		\item Jako zalogowany pracownik dodaję/modyfikuję linię połączeń. \\
+			Dowolny zalogowany pracownik może dodać nowe połączenie lub zmodyfikować informacje o istniejącym połączeniu takie jak: przystanki, czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu.
+		\item Jako zalogowany pracownik wyszukuję połączenie. \\
+		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
+		    wprowadzonymi miastami.
+	 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy danej linii. \\
+		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danej linii
+		    komunikacyjnej i go wyświetlić.
+    	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
+		    Dowolny zalogowany pracownik może wyświetlić połączenia od danego przewoźnika.
+	\end{enumerate}
+\end{enumerate}
+
+\subsection{Wymagania niefunkcjonalne}
+Poniższa tabela zawiera rozpisane wymagania niefunkcjonalne narzucone dla systemu.
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|c|l|X|}
+		\hline
+		\textbf{Obszar wymagań} & \textbf{Nr} & \textbf{Opis} \\
+		\hline
+		\multirow{5}{*}{Użyteczność (\textit{Usability})}
+		& 1 & Rozmiar czcionki użytej w aplikacji musi być nie mniejszy niż 12 punktów. \\
+		\cline{2-3}
+		& 2 & Aplikacja powinna obsługiwać zmianę rozmiaru okna w sposób który umożliwia korzystanie ze wszystkich jej funkcjonalności (tzw. responsive design). \\
+		\hline
+		\multirow{3}{*}{Niezawodność (\textit{Reliability})}
+		& 3 & Aplikacja musi być odporna na dokonywanie jednoczesnych zmian tego samego rekordu bazy przez wielu pracowników jednocześnie. \\
+		\hline
+		\multirow{7}{*}{Wydajność (\textit{Performance})}
+		& 4 & Aplikacja powinna dodawać nowe obiekty do systemu w czasie nie dłuższym niż 1 sekundę, przy 50 żądaniach dodania obiektu na minutę. \\
+		\cline{2-3}
+		& 5 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 500 megabajtów. \\
+		\cline{2-3}
+		& 6 & Wyszukiwanie połączenia między określonymi miastami powinno trwać mniej niż 2 sekundy, przy ok. 10 tys. rekordów. \\
+		\hline
+		\multirow{2}{*}{Utrzymanie (\textit{Supportability})}
+		& 7 & Do aplikacji dołączona zostanie instrukcja wykonywania kopii zapasowej danych. \\
+		\hline
+	\end{tabularx}
+	\caption{Tabela wymagań niefunkcjonalnych}
+\end{table}
+
+\subsection{Harmonogram projektu}
+Prace przy projekcie będą realizowane według następującego harmonogramu:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{gantt.pdf}
+	\caption{Diagram Gantta z planowanym harmonogramem projektu}
+\end{figure}
+Kamienie milowe:
+\begin{enumerate}
+	\item 18 października: Zakończenie analizy wymagań funkcjonalnych i niefunkcjonalnych projektu.
+	\item 22 października: Zakończenie projektu architektury aplikacji, łącznie z wyróżnieniem komponentów oraz podsystemów.
+	\item 25 października: Wstępna implementacja projektu architektury, naniesienie ewentualnych poprawek do architektury wynikających z problemów implementacyjnych.
+	\item 29 października: Utworzenie encji biznesowych oraz serwisów wykorzystywanych przez użytkowników.
+	\item 1 listopada: Utworzenie głównego widoku aplikacji.
+	\item 5 listopada: Utworzenie widoków dodawania przewoźników oraz linii.
+	\item 8 listopada: Utworzenie widoków wyszukiwania połączeń oraz wyświetlania połączeń danej linii oraz przewoźnika.
+	\item 12 listopada: Zakończenie dokumentacji, testów aplikacji oraz identyfikacji błędów.
+	\item 15 listopada: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
+\end{enumerate}
+
+\subsection{Architektura rozwiązania}
+Docelowym środowiskiem aplikacji są małe lub średnie firmy pośredniczące w sprzedaży biletów komunikacyjnych, tzn. przedsiębiorstwa zatrudniające do 250 pracowników, z czego dostęp do systemu miałby dość niski procent tej liczby (w założeniach ok. 20-30\%). Dane, których przechowywanie jest niezbędne do spełnienia wymagań funkcjonalnych mają dość małą zmienność - stosunkowo rzadko ulegają zmianom lub przedawnieniom. Dodatkowo, ze względu na wewnętrzny charakter przechowywanych danych, system powinien być scentralizowany i znajdować się w jednym fizycznym położeniu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{architecture-global.pdf}
+	\caption{Schemat architektury systemu}
+\end{figure}
+Biorąc pod uwagę opisany powyżej charakter zamówionego rozwiązania, wybrana została prosta architektura z centralną bazą danych oraz aplikacją typu “gruby klient”, wykorzystującą bezpośrednie połączenie z bazą. Rozwiązanie to jest spójne z opisanymi cechami systemu, a poza tym jest dość proste we wdrożeniu i nie wprowadza niepotrzebnych kosztów rozproszenia.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{architecture-fat-client.pdf}
+	\caption{Schemat architektury aplikacji klienckiej}
+\end{figure}
+Planowana architektura aplikacji klienckiej ma charakter warstwowy. Wyróżnione zostały następujące warstwy:
+\begin{itemize}
+	\item warstwa dostępu do danych - odpowiedzialna za kontakt z bazą oraz odczyt i zapis przechowywanych tam danych,
+	\item warstwa biznesowa - odpowiedzialna za wykonywanie poszczególnych usług (np. dodania czy modyfikacji przewoźnika),
+	\item warstwa prezentacji - odpowiedzialna za wyświetlanie interfejsu użytkownika.
+	\end{itemize}
+	Głównymi powodami zaproponowania architektury warstwowej były:
+	\begin{itemize}
+	\item możliwość wymiany silnika bazodanowego oraz warstwy prezentacji bez naruszania warstwy biznesowej,
+	\item podział odpowiedzialności na poszczególne warstwy,
+	\item spójny charakter wymagań - podział na podsystemy jest zbędny.
+\end{itemize}
+Ze względu na małą liczbę użytkowników niska skalowalność oraz wydajność rozwiązań warstwowych zostały uznane za ryzyko drugorzędne.
+
+\newpage
+\section{Dokumentacja końcowa (powykonawcza)}
+
+\subsection{Wymagania systemowe}
+Aby zapewnić poprawne działanie systemu, wymagane są następujące komponenty:
+\begin{enumerate}
+	\item System operacyjny Windows 7 lub nowszy.
+	\item MS SQL Server 2014 lub nowszy.
+	\item .NET Framework 4.5.2 lub nowszy.
+\end{enumerate}
+
+\subsection{Biblioteki wraz z określeniem licencji}
+W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty firm trzecich:
+
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|r|l|X|l|c|}
+		\hline
+		\textbf{Nr} & \textbf{Komponent i wersja} & \textbf{Opis} & \textbf{Licencja} & \\
+		\hline
+		1 & 
+		Castle.Core, 3.3.3 &
+		Wykorzystywana do tworzenia obiektów \textit{proxy}. Zależność biblioteki Moq. &
+		Apache License 2.0 &
+		\cite{castlecore} \\
+		\hline
+		2 &
+		Entity Framework, 6.1.3 &
+		Framework do mapowania obiektowo-relacyjnego (ORM). &
+		Apache License 2.0 &
+		\cite{entityframework} \\
+		\hline
+		3 &
+		FluentAssertions, 4.17.0 &
+		Wykorzystywany w testach jednostkowych w celu ułatwienia pisania asercji. &
+		Apache License 2.0 &
+		\cite{fluentassertions} \\
+		\hline
+		4 &
+		Moq, 4.5.28 &
+		Używany w testach jednostkowych do tworzenia obiektów zastępczych (tzw. \emph{mock object}). &
+		\mbox{\hyperref[abbr:bsd]{BSD}} 3-Clause &
+		\cite{moq} \\
+		\hline
+		5 &
+		NUnit, 3.5.0 &
+		Framework do wykonywania testów jednostkowych. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{nunit} \\
+		\hline
+		6 &
+		ReactiveUI, 6.5.2 &
+		Biblioteka wspomagająca w realizacji wzorca \hyperref[abbr:mvvm]{MVVM} w aplikacji klienckiej, zintegrowana z Reactive Extensions. &
+		\mbox{\hyperref[abbr:mspl]{MS-PL}} &
+		\cite{reactiveui} \\
+		\hline
+		7 &
+		Reactive Extensions, 2.2.5 &
+		Biblioteka wspomagająca w programowaniu aplikacji opartych na asynchronicznym przetwarzaniu danych oraz zdarzeniach. Zależność ReactiveUI. &
+		Apache License 2.0 &
+		\cite{reactiveextensions} \\
+		\hline
+		8 &
+		Splat, 1.4.0 &
+		Kontener \hyperref[abbr:ioc]{IoC} wspomagający w realizacji wzorca wstrzykiwania zależności. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{splat} \\
+		\hline
+	\end{tabularx}
+	\caption{Lista użytych bibliotek i komponentów}
+\end{table}
+
+\subsection{Instrukcja instalacji}
+Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące kroki:
+
+\begin{enumerate}
+	\item \textbf{Instalacja Microsoft SQL Server w wersji 2014 lub późniejszej} \\
+	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}.
+	\item \textbf{Instalacja aplikacji} \\
+	Po zainstalowaniu serwera, należy uruchomić instalator aplikacji dostarczony przez autorów i postępować zgodnie z instrukcjami. Instalator w razie potrzeby zainstaluje również .NET Framework w wersji 4.5.2 lub wyższej. Po zakończeniu instalacji aplikacja powinna ukazać się w menu Start.
+	\item \textbf{Edycja ustawień połączenia} \\
+	Jeżeli baza, do której ma być podłączona aplikacja, jest bazą umieszczoną na serwerze lokalnym używającą autoryzacji Windows (\textbf{Windows Authentication}), poniższy krok można pominąć. \\
+	Po instalacji, należy przejść do katalogu, w którym znajduje się zainstalowana aplikacja i zmienić zawartość pliku \textbf{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \textbf{connectionString} o nazwie \textbf{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji \textbf{SQL Server}.
+	\item \textbf{Uruchomienie serwera} \\
+	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \textbf{SQL Server Configuration Manager} i sprawdzając, czy status usługi \textbf{MSSQLSERVER} to \textbf{Running}.
+	\item \textbf{Pierwsze uruchomienie} \\
+	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \textbf{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \textbf{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
+	\item \textbf{Wykonanie skryptu z przykładowymi danymi} \\
+	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \textbf{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
+\end{enumerate}
+
+\subsection{Instrukcja uruchomienia}
+\begin{enumerate}
+	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instancja serwera MS SQL jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i sprawdzamy, czy status usługi (\textbf{MSSQLSERVER}) to \textbf{Running}. Jeżeli nie, uruchamiamy usługę za pomocą przycisku \textbf{Start Service} na pasku pod menu.
+	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
+\end{enumerate}
+
+\subsection{Instrukcja użycia}
+
+\subsubsection{Logowanie do systemu}
+Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predefiniowane są następujące konta użytkowników:
+\begin{itemize}
+	\item użytkownik \texttt{root}, hasło \texttt{root}: konto z uprawnieniami administratora,
+	\item użytkownik \texttt{employee}, hasło \texttt{password}: konto z uprawnieniami użytkownika,
+	\item użytkownik \texttt{guest}, hasło \texttt{guest}: konto bez nadanych uprawnień.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/01_login_screen.png}
+	\caption{Okno logowania do systemu}
+\end{figure}
+
+\subsubsection{Główne okno aplikacji}
+Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zostaje główne okno aplikacji. Po lewej stronie znajduje się menu nawigacyjne, które umożliwia dostęp do poszczególnych części systemu, zaś pod menu znajduje się zaś przycisk odpowiadający za wylogowanie użytkownika z systemu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/02_main_window.png}
+	\caption{Główny widok aplikacji}
+\end{figure}
+Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się formularz wyszukiwania odpowiadający wybranej opcji. Dostępne opcje to:
+\begin{itemize}
+	\item \textbf{Cities}, \textbf{Streets} -- łączy funkcjonalności związane z miastami i ulicami,
+	\item \textbf{Agencies} -- agreguje informacje dotyczące przewoźników,
+	\item \textbf{Routes} -- wyświetla dane o trasach i przejazdach,
+	\item \textbf{Stops} -- pozwala wyszukiwać, edytować i dodawać przystanki,
+	\item \textbf{Zones} -- umożliwia wyznaczanie stref taryfowych, na podstawie których obliczana będzie cena biletu,
+	\item \textbf{Fares} -- zbiera dane dotyczące taryf przejazdowych i cen biletów,
+	\item \textbf{Users} -- zawiera informacje o użytkownikach; widok ten dostępny jest tylko dla administratorów.
+\end{itemize}
+
+\subsubsection{Wyszukiwanie}
+W przypadku wszystkich wyżej wymienionych opcji, po wybraniu po prawej stronie pokazuje się widok pozwalający na przeszukiwanie danych zawartych w bazie dotyczących wybranej zakładki.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/13_filter_stops.png}
+	\caption{Przykładowy widok wyszukiwania}
+\end{figure}
+Po wybraniu opcji lista znalezionych rekordów w bazie będzie pusta. Aby rozpocząć wyszukiwanie, należy zacząć wprowadzanie kryteriów wyszukiwania w polach znajdujących się nad listą. Zawartość listy zaktualizuje się automatycznie w ciągu pół sekundy od zakończenia wprowadzania danych.
+
+Poniżej listy umieszczony jest pasek narzędziowy, umożliwiający dodanie nowego rekordu (\textbf{Add New}) oraz edycję (\textbf{Edit Selected}) bądź usunięcie (\textbf{Delete Selected}) obecnie zaznaczonego rekordu. Pierwszy z tych przycisków jest aktywny zawsze, zaś pozostałe uaktywniają się, gdy zaznaczony jest jeden z elementów listy z wynikami wyszukiwania.
+
+\subsubsection{Edycja}
+Po wybraniu opcji dodania lub edycji rekordu, po prawej stronie wyświetli się formularz umożliwiający na wprowadzenie danych nowego rekordu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/08_edit_agency.png}
+	\caption{Przykładowy widok edycji dla przewoźników}
+\end{figure}
+Etykiety pól obowiązkowych oznaczone są pogrubioną czcionką. Można wyróżnić dwa rodzaje pól:
+\begin{itemize}
+	\item zwykłe -- nie są związane z żadnymi innymi obiektami systemu,
+	\item menu rozwijane -- zawartość tego pola jest związane z inną częścią systemu. Przykładem takiego pola jest pole \textbf{Street} na powyższym rysunku. Aby wybrać wartość w tym polu, należy wprowadzić początek nazwy żądanego obiektu -- po chwili pojawi się menu rozwijane z sugestiami, z którego można wybrać żądany obiekt.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/06_edit_street.png}
+	\caption{Przykład podpowiedzi}
+\end{figure}
+Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający zatwierdzenie zmian oraz zamknięcia (\textbf{Close}), który pozwala na cofnięcie się do widoku wyszukiwania i odrzucenie ostatnich zmian. W przypadku próby zapisu obiektu, który nie ma wypełnionych wszystkich pól, pojawia się poniżej przedstawiony pasek z wiadomością o błędzie:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/21_not_all_fields.png}
+	\caption{Błąd zapisu}
+\end{figure}
+
+\subsubsection{Wyświetlanie rozkładu jazdy wybranej linii}
+Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{Show Timetable}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/09_filter_route.png}
+	\caption{Widok tras z przyciskiem wyświetlania rozkładu}
+\end{figure}
+Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują się poszczególne przystanki, między którymi kursuje wybrana trasa. Po wybraniu konkretnego przystanku, po prawej stronie pojawiają się czasy przyjazdu i odjazdu wszystkich kursów tej linii dotyczące wybranej opcji.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/10_timetable.png}
+	\caption{Widok rozkładu jazdy}
+\end{figure}
+Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \textbf{Time}. Dodatkowo, dostępne są opcje dodawania (\textbf{Add Trip}), edycji (\textbf{Edit Trip}) oraz usuwania (\textbf{Delete Trip}) wybranego przejazdu.
+
+\subsubsection{Edycja przejazdu}
+Poniżej widoczny jest ekran edycji pojedynczego kursu.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/11_edit_trip.png}
+	\caption{Widok edycji przejazdu}
+\end{figure}
+Przewijana lista w dolnej części ekranu zawiera informacje o kolejnych przystankach edytowanego przejazdu oraz czasach przyjazdu i odjazdu. Można dodawać oraz usuwać przystanki za pomocą opcji \textbf{Add stop...} i \textbf{Remove stop...} 
+
+Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edycję informacji o harmonogramie danego kursu, takich, jak: pierwszy i ostatni dzień funkcjonowania kursu oraz dni tygodnia, w które odbywa się dany przejazd.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/12_edit_schedule.png}
+	\caption{Widok edycji harmonogramu}
+\end{figure}
+
+\subsubsection{Edycja użytkowników}
+Konta administratorów mają dostęp również do widoku edycji użytkowników.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/19_edit_user.png}
+	\caption{Widok edycji użytkowników}
+\end{figure}
+W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
+
+\subsection{Instrukcja utrzymania}
+Uruchamianie, restartowanie lub zatrzymywanie serwera bazodanowego.\\
+\begin{enumerate}
+	\item Uruchom \textbf{SQL Server Configuration Manager}.
+	\item Jeśli pojawi się okno dialogowe \textbf{Kontrola konta użytkownika}, kliknij przycisk \textbf{Tak}.
+	\item Wybierz instancję serwera SQL (MSSQLSERVER), kliknij prawym przyciskiem myszy, a następnie wybierz jedną z opcji \textbf{Start, Stop, Pause, Resume} lub \textbf{Restart}.
+\end{enumerate}
+Tworzenie kopii zapasowej bazy danych.
+\begin{enumerate}
+	\item Połącz się z instancją serwera bazodanowego i w \textbf{Eksploratorze obiektów} przejdź do węzła \textbf{Databases}.
+	\item Kliknij prawym przyciskiem bazę danych \textbf{PublicTransport}, przejdź do zakładki \textbf{Tasks}, a następnie \textbf{BackUp}.
+	\item Zostanie wyświetlone okno dialogowe \textbf{Back Up Database}. W polu listy \textbf{Database} zweryfikuj nazwę bazy danych.
+	\item W polu listy \textbf{Backup type} wybierz opcję \textbf{Full}.
+	\item W obszarze \textbf{Backup component} kliknij opcję \textbf{Database}.
+	\item Wybierz lokalizację docelową kopii zapasowej i wciśnij przycisk \textbf{OK}.
+\end{enumerate}
+
+\subsection{Raport odstępstw od specyfikacji wymagań}
+
+\paragraph{Przesunięcie wyszukiwania połączeń między wybranymi miastami na kolejny etap prac}
+\subparagraph{Dotyczy:} Przypadek użycia ,,Wyszukiwanie połączeń''
+\subparagraph{Zmiana:} Przesunięcie wykonania wymagania na następny etap prac
+\subparagraph{Uzasadnienie:} Z uwagi na niskie zapotrzebowanie na funkcjonalność wyszukiwania połączeń na tym etapie prac postanowiono przełożyć prace w tym kierunku na następny etap rozwoju.
+
+\begin{comment}
+\subsection{Dokumentacja usług Web Services}
+% Punkt obowiązkowy
+%
+% Niniejszy rozdział powinien w przypadku, gdy system udostępnia publiczne usługi web services
+% powinien zawierać dokumentację usług zamieszczone w formie opisowej lub np. wg specyfikacji
+% swagger.
+\end{comment}
+
+\newpage
+\section{Dokumentacja końcowa (powykonawcza) -- punkty wymagane przez prowadzącego zajęcia}
+
+\begin{comment}
+\subsection{Pseudokod}
+\end{comment}
+
+\subsection{Diagramy sekwencji}
+Przebieg komunikacji klienta z relacyjną bazą danych jest przedstawiony na poniższym diagramie sekwencji.
+\begin{figure}[H]
+	\includegraphics[width=16cm]{sequence.pdf}
+	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z bazą danych}
+\end{figure}
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|l|l|X|}
+		\hline
+		\textbf{Funkcjonalność} & \textbf{System} & \textbf{Opis} \\
+		\hline
+		Wywołanie akcji &
+		Aplikacja kliencka &
+		\textbf{Działanie biznesowe:} \\
+		& & Administrator lub pracownik wykonują akcję za pośrednictwem interfejsu graficznego aplikacji klienckiej. \\
+		& & \textbf{Wejście:} Akcja wykonana w interfejsie graficznym. \\
+		& & \textbf{Wyjście:} Wyświetlenie rezultatu akcji -- wyszukiwanych danych lub komunikatu o niepowodzeniu akcji. \\
+		\hline
+		Wywołanie funkcji interfejsu &
+		Obiekty serwisowe &
+		\textbf{Działanie biznesowe:} \\
+		& & Aplikacja kliencka przesyła dane dotyczące akcji podjętej przez użytkownika do warstwy serwisowej za pomocą jej interfejsu publicznego. \\
+		& & \textbf{Wejście:} Dane dotyczące podjętej akcji. \\
+		& & \textbf{Wyjście:} Obiekty transferu danych zawierające informacje o rezultacie danej akcji. \\
+		\hline
+		Zapytanie SQL &
+		Silnik bazy danych &
+		\textbf{Działanie biznesowe:} \\
+		& & Dane odebrane od klienta są przetwarzane na zapytania SQL do bazy danych. \\
+		& & \textbf{Wejście:} Zapytanie SQL służące pobraniu lub modyfikacji danych. \\
+		& & \textbf{Wyjście:} Rekordy wynikowe pobrane z bazy danych. \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+\newpage
+\subsection{Model danych}
+Model danych użyty w systemie został przedstawiony w formie diagramu relacji na poniższej grafice:
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale = 0.33]{data-model.jpg}
+	\caption{Diagram relacji}
+\end{figure}
+Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w systemie.
+\begin{enumerate}
+	\item \textbf{User - Role} jest relacją wiele do wielu zrealizowaną przy pomocy tabeli pomocniczej UserRoles. Są to tabele niezależne od reszty systemu, ponieważ służą jedynie zdefiniowaniu elementów aplikacji dostępnych dla danego użytkownika.
+	\item \textbf{City - Street} to relacja jeden do wielu. Ulice zdefiniowane w systemie zawierają informację o mieście, w którym są.
+	\item Informacje o ulicy (a co za tym idzie również o mieście) zawarte są w poszczególnych agencjach (przewoźnikach) oraz przystankach, stąd relacje jeden do wielu \textbf{Street - Agency} oraz \textbf{Street - Stop}.
+	\item Każdy przewoźnik zapewnia wiele połączeń różnymi środkami komunikacji, dlatego relacja \textbf{Agency - Route} jest relacją jeden do wielu.
+	\item Poszczególne połączenia są jedynie definicją trasy. Sam przejazd (których może być wiele) pomiędzy punktami trasy zawarty jest w tabeli \textbf{Trips}. Przejazd musi zostać ponadto umieszczony w czasie, stąd dodatkowa tabela \textbf{Calendars}, która mówi w jakich dniach połączenie będzie funkcjonować. Tak określone relacje \textbf{Route - Trip} oraz \textbf{Calendar - Trip} są jeden do wielu.
+	\item Należy również określić konkretne czasy postojów na trasie przejazdu. Tym zajmuje się tabela \textbf{StopTimes}, w której zdefiniowane poszczególne postoje są skojarzone z konkretnym przejazdem i przystankiem. To powoduje, że relacje \textbf{Trip - StopTime} oraz \textbf{Stop - StopTime} są jeden do wielu.
+	\item Należy równiez zdefiniować strefy przejazdu, czym zajmuje się tabela \textbf{Zones}. Każdy przystanek ma przypisaną konkretną strefę w której się znajduje, więc relacja \textbf{Zone - Stop} jest jeden do wielu.
+	\item Każda trasa może mieć inny cennik, a cena biletu może się zmieniać w zależności od początkowej i końcowej strefy. Stąd relacja \textbf{Route - FareAttribute} jest jeden do wielu. Ponadto wiele tras może korzystać z jednego cennika, dlatego relacja \textbf{FareRule - FareAttribute} jest również jeden do wielu.
+\end{enumerate}
+
+\subsection{Scenariusze testów akceptacyjnych i raport z ich przeprowadzenia}
+\begin{tabularx}{\textwidth}{|X|X|X|X|l|}
+	\hline
+	\textbf{Rola} & \textbf{Testowana funkcjonalność} & \textbf{Opis czynności} & \textbf{Oczekiwany rezultat} & \textbf{Wynik testu} \\
+	\hline
+	Administrator &
+	Dodanie nowego użytkownika &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, przejście do widoku dodawania użytkownika po wciśnięciu przycisku \textbf{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Nowy użytkownik zostanie dodany do bazy danych. &
+	Pozytywny \\
+	\hline
+	Administrator &
+	Modyfikacja istniejącego użytkownika &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika, przejście do widoku edycji użytkownika po zaznaczeniu jednego z listy i wciśnięciu przycisku \textbf{Edit Selected} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Dane wybranego użytkownika zostaną zmodyfikowane. &
+	Pozytywny \\
+	\hline
+	Administrator &
+	Usunięcie istniejącego użytkownika &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \textbf{Delete Selected} po wybraniu jednego z listy. &
+	Dane wybranego użytkownika zostaną usunięte. &
+	Pozytywny \\
+	\hline
+	Administrator &
+	Usunięcie istniejącego użytkownika &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \textbf{Delete Selected} po wybraniu jednego z listy. &
+	Dane wybranego użytkownika zostaną usunięte. &
+	Pozytywny \\
+	\hline 
+	Użytkownik &
+	Zalogowanie się &
+	Wpisanie loginu i hasła w odpowiednie pola na ekranie logowania i wciśnięcie przycisku \textbf{Login} &
+	Zalogowanie się do systemu w przypadku poprawnych danych, odmowa dostępu w przypadku niepoprawych danych &
+	Pozytywny \\
+	\hline
+	Zalogowany użytkownik &
+	Wylogowanie się &
+	Wciśniecię przycisku \textbf{Logout} na bocznym pasku aplikacji. &
+	Poprawne wylogowanie się z zystemu i przejście do ekranu logowania. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Dodanie nowego przewoźnika &
+	Wybranie zakładki \textbf{Agencies} w bocznym pasku aplikacji, przejście do widoku dodania przewoźnika po wciśnięciu przycisku \textbf{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Nowy przewoźnik zostanie dodany do bazy danych. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Modyfiacja istniejącego przewoźnika &
+	Wybranie zakładki \textbf{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika, przejście do widoku edycji przewoźnika po zaznaczeniu jednego z listy i wciśnięciu przycisku \textbf{Edit Selected} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Dane wybranego przewoźnika zostaną zmodyfikowane. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Usunięcie istniejącego przewoźnika &
+	Wybranie zakładki \textbf{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przyciskutextbfph{Delete Selected} po wybraniu jednego z listy. &
+	Dane wybranego przewoźnika zostaną usunięte. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Dodanie nowej linii połączeń &
+	Wybranie zakładki \textbf{Routes} w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przyciskutextbfph{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Nowe połączenie zostanie dodane do bazy danych. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Modyfikacja istniejącej linii połączeń &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia, przejście do widoku edycji połączenia po zaznaczeniu jednego z listy i wciśnięciu przyciskiem \textbf{Edit Selected} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Dane dotyczące wybranego połączenia zostaną zmodyfikowane. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Usunięcie istniejącej linii połączeń &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przyciskutextbfph{Delete Selected} po wybraniu jednego z listy. &
+	Dane dotyczące wybranego połączenia zostaną usunięte. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Wyświetlanie połączeń przewoźnika &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji i wybranie konkretnego przewoźnika w opcjach filtrowania. &
+	Wyświetlona lista połączeń zapewnionych przez wybranego przewoźnika. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Wyświetlanie rozkładu jazdy &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przyciskutextbfph{Show Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
+	Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki. &
+	Pozytywny \\
+	\hline
+\end{tabularx}
+
+\begin{comment}
+\subsection{Raport z przeprowadzonych testów}
+\end{comment}
+
+\newpage
+\section{Lista użytych skrótów}
+\label{abbr:bsd}
+\paragraph{BSD} Berkeley Software Distribution
+
+\label{abbr:ioc}
+\paragraph{IoC} Inversion of Control
+
+\label{abbr:mit}
+\paragraph{MIT} Massachussetts Institute of Technology  
+
+\label{abbr:mspl}
+\paragraph{MS-PL} Microsoft Software Public License
+
+\label{abbr:mvvm}
+\paragraph{MVVM} \textbf{ang.} Model-View-ViewModel -- wzorzec używany w projektach realizowanych w technologii \hyperref[abbr:wpf]{WPF} pozwalający na odseparowanie logiki aplikacji od warstwy prezentacyjnej. 
+
+\label{abbr:wpf}
+\paragraph{WPF} Windows Presentation Framework
+
+\renewcommand*{\refname}{\vspace*{-2em}}
+\section{Bibliografia}
+\begin{thebibliography}{99}
+
+\bibitem{castlecore}
+	Castle Project,
+	\emph{Castle Core},
+	\url{https://github.com/castleproject/Core}
+
+\bibitem{entityframework}
+	ASP.NET,
+	\emph{Entity Framework 6},
+	\url{https://github.com/aspnet/EntityFramework6}
+
+\bibitem{fluentassertions}
+	Dennis Doomen,
+	\emph{FluentAssertions},
+	\url{https://github.com/dennisdoomen/fluentassertions}
+
+\bibitem{moq}
+	Moq,
+	\emph{Moq 4},
+	\url{https://github.com/moq/moq4}
+
+\bibitem{nunit}
+	NUnit,
+	\emph{NUnit},
+	\url{https://github.com/nunit/nunit}
+
+\bibitem{reactiveui}
+	ReactiveUI,
+	\emph{ReactiveUI},
+	\url{https://github.com/reactiveui/ReactiveUI}
+
+\bibitem{reactiveextensions}
+	Reactive Extensions,
+	\emph{Rx.NET},
+	\url{https://github.com/Reactive-Extensions/Rx.NET}
+
+\bibitem{splat}
+	Paul Betts,
+	\emph{Splat},
+	\url{https://github.com/paulcbetts/splat}
+
+\bibitem{sqlserver}
+	Installing SQL Server 2014 Step By Step Tutorial,
+	Microsoft TechNet,
+	\url{http://social.technet.microsoft.com/wiki/contents/articles/23878.installing-sql-server-2014-step-by-step-tutorial.aspx}.
+
+\end{thebibliography}
+\end{document}

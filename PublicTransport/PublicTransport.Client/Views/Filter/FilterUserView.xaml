@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="PublicTransport.Client.Views.Filter.FilterUserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:enums="clr-namespace:PublicTransport.Domain.Enums;assembly=PublicTransport.Domain"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <DockPanel>
+        <StackPanel Style="{StaticResource Header}">
+            <TextBlock>Find Users...</TextBlock>
+        </StackPanel>
+        <StackPanel Style="{StaticResource Footer}">
+            <Button x:Name="AddUserButton">Add New</Button>
+            <Button x:Name="DeleteUserButton">Delete Selected</Button>
+            <Button x:Name="EditUserButton">Edit Selected</Button>
+        </StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="0"
+                       Grid.Column="0">Username contains</TextBlock>
+            <TextBox Grid.Row="0"
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2"
+                     x:Name="UserNameFilterTextBox" />
+            <TextBlock Style="{StaticResource TextBoxLabel}"
+                       Grid.Row="1"
+                       Grid.Column="0">Has role</TextBlock>
+            <ComboBox Style="{StaticResource EnumComboBox}"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      x:Name="RoleTypesComboBox">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="enums:RoleType">
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Grid.Row="1"
+                    Grid.Column="2"
+                    x:Name="ClearRoleTypeButton"
+                    Padding="0">Clear</Button>
+            <ListView Margin="10"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      x:Name="UsersListView"
+                      FontSize="16" />
+        </Grid>
+    </DockPanel>
+</UserControl>
