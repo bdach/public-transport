@@ -189,7 +189,7 @@ Poniższa tabela zawiera rozpisane wymagania niefunkcjonalne narzucone dla syste
 		\multirow{7}{*}{Wydajność (\textit{Performance})}
 		& 4 & Aplikacja powinna dodawać nowe obiekty do systemu w czasie nie dłuższym niż 1 sekundę, przy 50 żądaniach dodania obiektu na minutę. \\
 		\cline{2-3}
-		& 5 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 200 megabajtów. \\
+		& 5 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 500 megabajtów. \\
 		\cline{2-3}
 		& 6 & Wyszukiwanie połączenia między określonymi miastami powinno trwać mniej niż 2 sekundy, przy ok. 10 tys. rekordów. \\
 		\hline
@@ -327,20 +327,20 @@ Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące 
 	\item \textbf{Instalacja aplikacji} \\
 	Po zainstalowaniu serwera, należy uruchomić instalator aplikacji dostarczony przez autorów i postępować zgodnie z instrukcjami. Instalator w razie potrzeby zainstaluje również .NET Framework w wersji 4.5.2 lub wyższej. Po zakończeniu instalacji aplikacja powinna ukazać się w menu Start.
 	\item \textbf{Edycja ustawień połączenia} \\
-	Jeżeli baza, do której ma być podłączona aplikacja, jest bazą umieszczoną na serwerze lokalnym używającą autoryzacji Windows (\emph{Windows Authentication}), poniższy krok można pominąć. \\
-	Po instalacji, należy przejść do katalogu, w którym znajduje się zainstalowana aplikacja i zmienić zawartość pliku \emph{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \emph{connectionString} o nazwie \emph{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji SQL Server.
+	Jeżeli baza, do której ma być podłączona aplikacja, jest bazą umieszczoną na serwerze lokalnym używającą autoryzacji Windows (\textbf{Windows Authentication}), poniższy krok można pominąć. \\
+	Po instalacji, należy przejść do katalogu, w którym znajduje się zainstalowana aplikacja i zmienić zawartość pliku \textbf{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \textbf{connectionString} o nazwie \textbf{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji \textbf{SQL Server}.
 	\item \textbf{Uruchomienie serwera} \\
-	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \emph{SQL Server Configuration Manager} i sprawdzając, czy status usługi \emph{MSSQLSERVER} to \emph{Running}.
+	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \textbf{SQL Server Configuration Manager} i sprawdzając, czy status usługi \textbf{MSSQLSERVER} to \textbf{Running}.
 	\item \textbf{Pierwsze uruchomienie} \\
-	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \emph{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \emph{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
+	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \textbf{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \textbf{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
 	\item \textbf{Wykonanie skryptu z przykładowymi danymi} \\
-	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \emph{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
+	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \textbf{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
 \end{enumerate}
 
 \subsection{Instrukcja uruchomienia}
 \begin{enumerate}
-	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instacja MS SQL serwera jest uruchomiona. Otwieramy \emph{SQL Server Configuration Manager} i uruchamiamy instancję serwera (\textbf{MSSQLSERVER}), jeżeli jest wyłączona.
-	\item Klikamy dwukrotnie plik wykonywalny \emph{PublicTransport.exe}, aby uruchomić aplikację.
+	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instancja serwera MS SQL jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i sprawdzamy, czy status usługi (\textbf{MSSQLSERVER}) to \textbf{Running}. Jeżeli nie, uruchamiamy usługę za pomocą przycisku \textbf{Start Service} na pasku pod menu.
+	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
 \end{enumerate}
 
 \subsection{Instrukcja użycia}
@@ -367,13 +367,13 @@ Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zos
 \end{figure}
 Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się formularz wyszukiwania odpowiadający wybranej opcji. Dostępne opcje to:
 \begin{itemize}
-	\item \emph{Cities}, \emph{Streets} -- łączy funkcjonalności związane z miastami i ulicami,
-	\item \emph{Agencies} -- agreguje informacje dotyczące przewoźników,
-	\item \emph{Routes} -- wyświetla dane o trasach i przejazdach,
-	\item \emph{Stops} -- pozwala wyszukiwać, edytować i dodawać przystanki,
-	\item \emph{Zones} -- umożliwia wyznaczanie stref taryfowych, na podstawie których obliczana będzie cena biletu,
-	\item \emph{Fares} -- zbiera dane dotyczące taryf przejazdowych i cen biletów,
-	\item \emph{Users} -- zawiera informacje o użytkownikach; widok ten dostępny jest tylko dla administratorów.
+	\item \textbf{Cities}, \textbf{Streets} -- łączy funkcjonalności związane z miastami i ulicami,
+	\item \textbf{Agencies} -- agreguje informacje dotyczące przewoźników,
+	\item \textbf{Routes} -- wyświetla dane o trasach i przejazdach,
+	\item \textbf{Stops} -- pozwala wyszukiwać, edytować i dodawać przystanki,
+	\item \textbf{Zones} -- umożliwia wyznaczanie stref taryfowych, na podstawie których obliczana będzie cena biletu,
+	\item \textbf{Fares} -- zbiera dane dotyczące taryf przejazdowych i cen biletów,
+	\item \textbf{Users} -- zawiera informacje o użytkownikach; widok ten dostępny jest tylko dla administratorów.
 \end{itemize}
 
 \subsubsection{Wyszukiwanie}
@@ -385,7 +385,7 @@ W przypadku wszystkich wyżej wymienionych opcji, po wybraniu po prawej stronie 
 \end{figure}
 Po wybraniu opcji lista znalezionych rekordów w bazie będzie pusta. Aby rozpocząć wyszukiwanie, należy zacząć wprowadzanie kryteriów wyszukiwania w polach znajdujących się nad listą. Zawartość listy zaktualizuje się automatycznie w ciągu pół sekundy od zakończenia wprowadzania danych.
 
-Poniżej listy umieszczony jest pasek narzędziowy, umożliwiający dodanie nowego rekordu (\emph{Add New}) oraz edycję (\emph{Edit Selected}) bądź usunięcie (\emph{Delete Selected}) obecnie zaznaczonego rekordu. Pierwszy z tych przycisków jest aktywny zawsze, zaś pozostałe uaktywniają się, gdy zaznaczony jest jeden z elementów listy z wynikami wyszukiwania.
+Poniżej listy umieszczony jest pasek narzędziowy, umożliwiający dodanie nowego rekordu (\textbf{Add New}) oraz edycję (\textbf{Edit Selected}) bądź usunięcie (\textbf{Delete Selected}) obecnie zaznaczonego rekordu. Pierwszy z tych przycisków jest aktywny zawsze, zaś pozostałe uaktywniają się, gdy zaznaczony jest jeden z elementów listy z wynikami wyszukiwania.
 
 \subsubsection{Edycja}
 Po wybraniu opcji dodania lub edycji rekordu, po prawej stronie wyświetli się formularz umożliwiający na wprowadzenie danych nowego rekordu.
@@ -397,14 +397,14 @@ Po wybraniu opcji dodania lub edycji rekordu, po prawej stronie wyświetli się 
 Etykiety pól obowiązkowych oznaczone są pogrubioną czcionką. Można wyróżnić dwa rodzaje pól:
 \begin{itemize}
 	\item zwykłe -- nie są związane z żadnymi innymi obiektami systemu,
-	\item menu rozwijane -- zawartość tego pola jest związane z inną częścią systemu. Przykładem takiego pola jest pole \emph{Street} na powyższym rysunku. Aby wybrać wartość w tym polu, należy wprowadzić początek nazwy żądanego obiektu -- po chwili pojawi się menu rozwijane z sugestiami, z którego można wybrać żądany obiekt.
+	\item menu rozwijane -- zawartość tego pola jest związane z inną częścią systemu. Przykładem takiego pola jest pole \textbf{Street} na powyższym rysunku. Aby wybrać wartość w tym polu, należy wprowadzić początek nazwy żądanego obiektu -- po chwili pojawi się menu rozwijane z sugestiami, z którego można wybrać żądany obiekt.
 \end{itemize}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{screenshots/06_edit_street.png}
 	\caption{Przykład podpowiedzi}
 \end{figure}
-Na dole ekranu znajdują się przyciski zapisu (\emph{Save}) umożliwiający zatwierdzenie zmian oraz zamknięcia (\emph{Close}), który pozwala na cofnięcie się do widoku wyszukiwania i odrzucenie ostatnich zmian. W przypadku próby zapisu obiektu, który nie ma wypełnionych wszystkich pól, pojawia się poniżej przedstawiony pasek z wiadomością o błędzie:
+Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający zatwierdzenie zmian oraz zamknięcia (\textbf{Close}), który pozwala na cofnięcie się do widoku wyszukiwania i odrzucenie ostatnich zmian. W przypadku próby zapisu obiektu, który nie ma wypełnionych wszystkich pól, pojawia się poniżej przedstawiony pasek z wiadomością o błędzie:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{screenshots/21_not_all_fields.png}
@@ -412,7 +412,7 @@ Na dole ekranu znajdują się przyciski zapisu (\emph{Save}) umożliwiający zat
 \end{figure}
 
 \subsubsection{Wyświetlanie rozkładu jazdy wybranej linii}
-Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \emph{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \emph{Show Timetable}.
+Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{Show Timetable}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{screenshots/09_filter_route.png}
@@ -424,7 +424,7 @@ Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują si�
 	\includegraphics[width=15cm]{screenshots/10_timetable.png}
 	\caption{Widok rozkładu jazdy}
 \end{figure}
-Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \emph{Time}. Dodatkowo, dostępne są opcje dodawania (\emph{Add Trip}), edycji (\emph{Edit Trip}) oraz usuwania (\emph{Delete Trip}) wybranego przejazdu.
+Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \textbf{Time}. Dodatkowo, dostępne są opcje dodawania (\textbf{Add Trip}), edycji (\textbf{Edit Trip}) oraz usuwania (\textbf{Delete Trip}) wybranego przejazdu.
 
 \subsubsection{Edycja przejazdu}
 Poniżej widoczny jest ekran edycji pojedynczego kursu.
@@ -433,9 +433,9 @@ Poniżej widoczny jest ekran edycji pojedynczego kursu.
 	\includegraphics[width=15cm]{screenshots/11_edit_trip.png}
 	\caption{Widok edycji przejazdu}
 \end{figure}
-Przewijana lista w dolnej części ekranu zawiera informacje o kolejnych przystankach edytowanego przejazdu oraz czasach przyjazdu i odjazdu. Można dodawać oraz usuwać przystanki za pomocą opcji \emph{Add stop...} i \emph{Remove stop...} 
+Przewijana lista w dolnej części ekranu zawiera informacje o kolejnych przystankach edytowanego przejazdu oraz czasach przyjazdu i odjazdu. Można dodawać oraz usuwać przystanki za pomocą opcji \textbf{Add stop...} i \textbf{Remove stop...} 
 
-Przycisk \emph{Edit...} obok etykiety \emph{Schedule details} pozwala na edycję informacji o harmonogramie danego kursu, takich, jak: pierwszy i ostatni dzień funkcjonowania kursu oraz dni tygodnia, w które odbywa się dany przejazd.
+Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edycję informacji o harmonogramie danego kursu, takich, jak: pierwszy i ostatni dzień funkcjonowania kursu oraz dni tygodnia, w które odbywa się dany przejazd.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{screenshots/12_edit_schedule.png}
@@ -553,85 +553,85 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	\hline
 	Administrator &
 	Dodanie nowego użytkownika &
-	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, przejście do widoku dodawania użytkownika po wciśnięciu przycisku \emph{Add New} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, przejście do widoku dodawania użytkownika po wciśnięciu przycisku \textbf{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Nowy użytkownik zostanie dodany do bazy danych. &
 	Pozytywny \\
 	\hline
 	Administrator &
 	Modyfikacja istniejącego użytkownika &
-	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika, przejście do widoku edycji użytkownika po zaznaczeniu jednego z listy i wciśnięciu przycisku \emph{Edit Selected} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika, przejście do widoku edycji użytkownika po zaznaczeniu jednego z listy i wciśnięciu przycisku \textbf{Edit Selected} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Dane wybranego użytkownika zostaną zmodyfikowane. &
 	Pozytywny \\
 	\hline
 	Administrator &
 	Usunięcie istniejącego użytkownika &
-	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \textbf{Delete Selected} po wybraniu jednego z listy. &
 	Dane wybranego użytkownika zostaną usunięte. &
 	Pozytywny \\
 	\hline
 	Administrator &
 	Usunięcie istniejącego użytkownika &
-	Wybranie zakładki \emph{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Wybranie zakładki \textbf{Users} na bocznym pasku aplikacji, wyszukanie istniejącego użytkownika i wciśnięcie przycisku \textbf{Delete Selected} po wybraniu jednego z listy. &
 	Dane wybranego użytkownika zostaną usunięte. &
 	Pozytywny \\
 	\hline 
 	Użytkownik &
 	Zalogowanie się &
-	Wpisanie loginu i hasła w odpowiednie pola na ekranie logowania i wciśnięcie przycisku \emph{Login} &
+	Wpisanie loginu i hasła w odpowiednie pola na ekranie logowania i wciśnięcie przycisku \textbf{Login} &
 	Zalogowanie się do systemu w przypadku poprawnych danych, odmowa dostępu w przypadku niepoprawych danych &
 	Pozytywny \\
 	\hline
 	Zalogowany użytkownik &
 	Wylogowanie się &
-	Wciśniecię przycisku \emph{Logout} na bocznym pasku aplikacji. &
+	Wciśniecię przycisku \textbf{Logout} na bocznym pasku aplikacji. &
 	Poprawne wylogowanie się z zystemu i przejście do ekranu logowania. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Dodanie nowego przewoźnika &
-	Wybranie zakładki \emph{Agencies} w bocznym pasku aplikacji, przejście do widoku dodania przewoźnika po wciśnięciu przycisku \emph{Add New} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Wybranie zakładki \textbf{Agencies} w bocznym pasku aplikacji, przejście do widoku dodania przewoźnika po wciśnięciu przycisku \textbf{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Nowy przewoźnik zostanie dodany do bazy danych. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Modyfiacja istniejącego przewoźnika &
-	Wybranie zakładki \emph{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika, przejście do widoku edycji przewoźnika po zaznaczeniu jednego z listy i wciśnięciu przycisku \emph{Edit Selected} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Wybranie zakładki \textbf{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika, przejście do widoku edycji przewoźnika po zaznaczeniu jednego z listy i wciśnięciu przycisku \textbf{Edit Selected} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Dane wybranego przewoźnika zostaną zmodyfikowane. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Usunięcie istniejącego przewoźnika &
-	Wybranie zakładki \emph{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Wybranie zakładki \textbf{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przyciskutextbfph{Delete Selected} po wybraniu jednego z listy. &
 	Dane wybranego przewoźnika zostaną usunięte. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Dodanie nowej linii połączeń &
-	Wybranie zakładki \emph{Routes} w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przycisku \emph{Add New} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Wybranie zakładki \textbf{Routes} w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przyciskutextbfph{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Nowe połączenie zostanie dodane do bazy danych. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Modyfikacja istniejącej linii połączeń &
-	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia, przejście do widoku edycji połączenia po zaznaczeniu jednego z listy i wciśnięciu przycisku \emph{Edit Selected} oraz zapisanie zmian przyciskiem \emph{Save}. &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia, przejście do widoku edycji połączenia po zaznaczeniu jednego z listy i wciśnięciu przyciskiem \textbf{Edit Selected} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Dane dotyczące wybranego połączenia zostaną zmodyfikowane. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Usunięcie istniejącej linii połączeń &
-	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku \emph{Delete Selected} po wybraniu jednego z listy. &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przyciskutextbfph{Delete Selected} po wybraniu jednego z listy. &
 	Dane dotyczące wybranego połączenia zostaną usunięte. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Wyświetlanie połączeń przewoźnika &
-	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji i wybranie konkretnego przewoźnika w opcjach filtrowania. &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji i wybranie konkretnego przewoźnika w opcjach filtrowania. &
 	Wyświetlona lista połączeń zapewnionych przez wybranego przewoźnika. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Wyświetlanie rozkładu jazdy &
-	Wybranie zakładki \emph{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku \emph{Show Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przyciskutextbfph{Show Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
 	Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki. &
 	Pozytywny \\
 	\hline
@@ -641,6 +641,7 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 \subsection{Raport z przeprowadzonych testów}
 \end{comment}
 
+\newpage
 \section{Lista użytych skrótów}
 \label{abbr:bsd}
 \paragraph{BSD} Berkeley Software Distribution
@@ -655,7 +656,7 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 \paragraph{MS-PL} Microsoft Software Public License
 
 \label{abbr:mvvm}
-\paragraph{MVVM} \emph{ang.} Model-View-ViewModel -- wzorzec używany w projektach realizowanych w technologii \hyperref[abbr:wpf]{WPF} pozwalający na odseparowanie logiki aplikacji od warstwy prezentacyjnej. 
+\paragraph{MVVM} \textbf{ang.} Model-View-ViewModel -- wzorzec używany w projektach realizowanych w technologii \hyperref[abbr:wpf]{WPF} pozwalający na odseparowanie logiki aplikacji od warstwy prezentacyjnej. 
 
 \label{abbr:wpf}
 \paragraph{WPF} Windows Presentation Framework
