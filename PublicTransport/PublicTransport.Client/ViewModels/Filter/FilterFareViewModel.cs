@@ -109,6 +109,14 @@ namespace PublicTransport.Client.ViewModels.Filter
                 .InvokeCommand(FilterFares);
 
             #endregion
+
+            #region Disposing of context
+
+            HostScreen.Router.NavigateAndReset
+                .Skip(1)
+                .Subscribe(_ => _fareUnitOfWork.Dispose());
+
+            #endregion
         }
 
         /// <summary>

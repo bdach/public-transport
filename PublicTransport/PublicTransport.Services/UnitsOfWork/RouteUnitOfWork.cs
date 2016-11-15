@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.UnitsOfWork
 {
-    public interface IRouteUnitOfWork
+    public interface IRouteUnitOfWork : IDisposable
     {
         /// <summary>
         ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop" /> which are associated with a specific

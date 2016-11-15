@@ -66,8 +66,8 @@ namespace PublicTransport.Client.ViewModels
                     {
                         return;
                     }
-                    var viewModel = _viewModelFactory.GetViewModel(HostScreen, e.Item.Option);
                     HostScreen.Router.NavigateAndReset.Execute(_placeholder);
+                    var viewModel = _viewModelFactory.GetViewModel(HostScreen, e.Item.Option);
                     HostScreen.Router.Navigate.Execute(viewModel);
                 });
 

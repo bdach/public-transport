@@ -103,6 +103,14 @@ namespace PublicTransport.Client.ViewModels.Filter
                 .InvokeCommand(FilterCities);
 
             #endregion
+            
+            #region Disposing of context
+
+            HostScreen.Router.NavigateAndReset
+                .Skip(1)
+                .Subscribe(_ => _cityUnitOfWork.Dispose());
+
+            #endregion
         }
 
         /// <summary>
