@@ -26,7 +26,7 @@
 	\vspace{0.5cm}
 	{\Large Bartłomiej Dach, Tymon Felski \par}
 	\vspace{1.5cm}
-	{\Large Wersja 1.0 \par}
+	{\Large Wersja 2.0 \par}
 	\vspace{1.5cm}
 	{\Large \today \par}
 \end{titlepage}
@@ -52,6 +52,8 @@ Lista zmian w dokumencie:
 	10.11.2016 & Bartłomiej Dach & Dodanie diagramu sekwencji, instrukcji użycia & 1.6 \\
 	\hline
 	11.11.2016 & Tymon Felski & Dodanie opisu modelu danych, scenariuszy i raportu z testów akceptacyjnych & 1.7 \\
+	\hline
+	19.11.2016 & Bartłomiej Dach, Tymon Felski & Rozszerzenie specyfikacji o nowe przypadki użycia, wymagania niefunkcjonalne oraz aktualizacja harmonogramu prac i architektury rozwiązania & 2.0 \\
 	\hline
 \end{tabularx}
 \end{table}
@@ -130,12 +132,16 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Wyświetlanie rozkładu jazdy wybranej linii
 		& Widok zawierający informacje o przejazdach na wybranej linii \\
 		\cline{2-4}
+		& (*) Wyświetlanie rozkładu
+		& Wyświetlanie rozkładu jazdy dla wybranego przystanku
+		& Widok zawierający informacje o liniach dla wybranego przystanku \\
+		\cline{2-4}
 		& Wyświetlanie połączeń przewoźnika
 		& Wyświetlanie połączeń obsługiwanych przez danego przewoźnika
 		& Widok zawierający informacje o liniach danej firmy \\
 		\cline{2-4}
-		& Wyszukiwanie połączeń
-		& Wyszukiwanie połączeń przewoźników między wybranymi punktami
+		& (*) Wyszukiwanie połączeń
+		& Wyszukiwanie połączeń między wybranymi punktami
 		& Widok z listą znalezionych połączeń \\
 		\hline
 	\end{tabularx}
@@ -164,10 +170,16 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
 		    wprowadzonymi miastami.
 	 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy danej linii. \\
-		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danej linii
+		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy danej linii
 		    komunikacyjnej i go wyświetlić.
+	 	\item (*) Jako zalogowany pracownik wyświetlam rozkład jazdy dla danego przystanku. \\
+		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danego przystanku
+		    komunikacyjnej i go wyświetlić. \\
     	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
 		    Dowolny zalogowany pracownik może wyświetlić połączenia od danego przewoźnika.
+	 	\item (*) Jako zalogowany pracownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
+		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
+		    wybranymi punktami. \\
 	\end{enumerate}
 \end{enumerate}
 
@@ -178,23 +190,25 @@ Poniższa tabela zawiera rozpisane wymagania niefunkcjonalne narzucone dla syste
 		\hline
 		\textbf{Obszar wymagań} & \textbf{Nr} & \textbf{Opis} \\
 		\hline
-		\multirow{5}{*}{Użyteczność (\textit{Usability})}
+		\multirow{8}{*}{Użyteczność (\textit{Usability})}
 		& 1 & Rozmiar czcionki użytej w aplikacji musi być nie mniejszy niż 12 punktów. \\
 		\cline{2-3}
 		& 2 & Aplikacja powinna obsługiwać zmianę rozmiaru okna w sposób który umożliwia korzystanie ze wszystkich jej funkcjonalności (tzw. responsive design). \\
+		\cline{2-3}
+		& 3 & (*) Dane wprowadzane przez użytkownika powinny być sprawdzane pod kątem poprawności przed wysyłaniem zapytań do bazy. \\
 		\hline
 		\multirow{3}{*}{Niezawodność (\textit{Reliability})}
-		& 3 & Aplikacja musi być odporna na dokonywanie jednoczesnych zmian tego samego rekordu bazy przez wielu pracowników jednocześnie. \\
+		& 4 & Aplikacja musi być odporna na dokonywanie jednoczesnych zmian tego samego rekordu bazy przez wielu pracowników jednocześnie. \\
 		\hline
 		\multirow{7}{*}{Wydajność (\textit{Performance})}
-		& 4 & Aplikacja powinna dodawać nowe obiekty do systemu w czasie nie dłuższym niż 1 sekundę, przy 50 żądaniach dodania obiektu na minutę. \\
+		& 5 & Aplikacja powinna dodawać nowe obiekty do systemu w czasie nie dłuższym niż 1 sekundę, przy 50 żądaniach dodania obiektu na minutę. \\
 		\cline{2-3}
-		& 5 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 500 megabajtów. \\
+		& 6 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 500 megabajtów. \\
 		\cline{2-3}
-		& 6 & Wyszukiwanie połączenia między określonymi miastami powinno trwać mniej niż 2 sekundy, przy ok. 10 tys. rekordów. \\
+		& 7 & Wyszukiwanie połączenia między określonymi miastami powinno trwać mniej niż 2 sekundy, przy ok. 10 tys. rekordów. \\
 		\hline
 		\multirow{2}{*}{Utrzymanie (\textit{Supportability})}
-		& 7 & Do aplikacji dołączona zostanie instrukcja wykonywania kopii zapasowej danych. \\
+		& 8 & Do aplikacji dołączona zostanie instrukcja wykonywania kopii zapasowej danych. \\
 		\hline
 	\end{tabularx}
 	\caption{Tabela wymagań niefunkcjonalnych}
@@ -218,6 +232,17 @@ Kamienie milowe:
 	\item 8 listopada: Utworzenie widoków wyszukiwania połączeń oraz wyświetlania połączeń danej linii oraz przewoźnika.
 	\item 12 listopada: Zakończenie dokumentacji, testów aplikacji oraz identyfikacji błędów.
 	\item 15 listopada: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
+\end{enumerate}
+Drugi etap:
+\begin{enumerate}
+	\item 19 listopada: Zakończenie analizy nowych wymagań funkcjonalnych i niefunkcjonalnych projektu.
+	\item 22 listopada: Zakończenie auktualizacja architektury aplikacji, łącznie z wyróżnieniem komponentów oraz podsystemów.
+	\item 26 listopada: 
+	\item 29 listopada: 
+	\item 3 grudnia: 
+	\item 6 grudnia: 
+	\item 10 grudnia: 
+	\item 13 grudnia: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
 \end{enumerate}
 
 \subsection{Architektura rozwiązania}
