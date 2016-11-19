@@ -82,6 +82,8 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		\hline
 		\textbf{Aktor} & \textbf{Nazwa} & \textbf{Opis} & \textbf{Odpowiedź systemu} \\
 		\hline
+		\multicolumn{4}{|c|}{\textbf{Etap 1}} \\
+		\hline
 		\multirow{6}{*}{\rotatebox[origin=c]{90}{Administrator}}
 		& Dodanie użytkownika
 		& Dodanie nowego użytkownika do systemu
@@ -132,15 +134,18 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Wyświetlanie rozkładu jazdy wybranej linii
 		& Widok zawierający informacje o przejazdach na wybranej linii \\
 		\cline{2-4}
-		& (*) Wyświetlanie rozkładu
-		& Wyświetlanie rozkładu jazdy dla wybranego przystanku
-		& Widok zawierający informacje o liniach dla wybranego przystanku \\
-		\cline{2-4}
 		& Wyświetlanie połączeń przewoźnika
 		& Wyświetlanie połączeń obsługiwanych przez danego przewoźnika
 		& Widok zawierający informacje o liniach danej firmy \\
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Etap 2}} \\
+		\hline
+		\multirow{5}{*}{\rotatebox[origin=c]{90}{Pracownik}}
+		& Wyświetlanie rozkładu
+		& Wyświetlanie rozkładu jazdy dla wybranego przystanku
+		& Widok zawierający informacje o liniach dla wybranego przystanku \\
 		\cline{2-4}
-		& (*) Wyszukiwanie połączeń
+		& Wyszukiwanie połączeń
 		& Wyszukiwanie połączeń między wybranymi punktami
 		& Widok z listą znalezionych połączeń \\
 		\hline
@@ -174,7 +179,7 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		    komunikacyjnej i go wyświetlić.
 	 	\item (*) Jako zalogowany pracownik wyświetlam rozkład jazdy dla danego przystanku. \\
 		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danego przystanku
-		    komunikacyjnej i go wyświetlić. \\
+		    komunikacyjnej i go wyświetlić.
     	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
 		    Dowolny zalogowany pracownik może wyświetlić połączenia od danego przewoźnika.
 	 	\item (*) Jako zalogowany pracownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
@@ -223,26 +228,32 @@ Prace przy projekcie będą realizowane według następującego harmonogramu:
 \end{figure}
 Kamienie milowe:
 \begin{enumerate}
-	\item 18 października: Zakończenie analizy wymagań funkcjonalnych i niefunkcjonalnych projektu.
-	\item 22 października: Zakończenie projektu architektury aplikacji, łącznie z wyróżnieniem komponentów oraz podsystemów.
-	\item 25 października: Wstępna implementacja projektu architektury, naniesienie ewentualnych poprawek do architektury wynikających z problemów implementacyjnych.
-	\item 29 października: Utworzenie encji biznesowych oraz serwisów wykorzystywanych przez użytkowników.
-	\item 1 listopada: Utworzenie głównego widoku aplikacji.
-	\item 5 listopada: Utworzenie widoków dodawania przewoźników oraz linii.
-	\item 8 listopada: Utworzenie widoków wyszukiwania połączeń oraz wyświetlania połączeń danej linii oraz przewoźnika.
-	\item 12 listopada: Zakończenie dokumentacji, testów aplikacji oraz identyfikacji błędów.
-	\item 15 listopada: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
-\end{enumerate}
-Drugi etap:
-\begin{enumerate}
-	\item 19 listopada: Zakończenie analizy nowych wymagań funkcjonalnych i niefunkcjonalnych projektu.
-	\item 22 listopada: Zakończenie auktualizacja architektury aplikacji, łącznie z wyróżnieniem komponentów oraz podsystemów.
-	\item 26 listopada: 
-	\item 29 listopada: 
-	\item 3 grudnia: 
-	\item 6 grudnia: 
-	\item 10 grudnia: 
-	\item 13 grudnia: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
+	\bfseries
+	\item Etap 1:
+	\begin{enumerate}
+		\mdseries
+		\item 18 października: Zakończenie analizy wymagań funkcjonalnych i niefunkcjonalnych projektu.
+		\item 22 października: Zakończenie projektu architektury aplikacji, łącznie z wyróżnieniem komponentów oraz podsystemów.
+		\item 25 października: Wstępna implementacja projektu architektury, naniesienie ewentualnych poprawek do architektury wynikających z problemów implementacyjnych.
+		\item 29 października: Utworzenie encji biznesowych oraz serwisów wykorzystywanych przez użytkowników.
+		\item 1 listopada: Utworzenie głównego widoku aplikacji.
+		\item 5 listopada: Utworzenie widoków dodawania przewoźników oraz linii.
+		\item 8 listopada: Utworzenie widoków wyszukiwania połączeń oraz wyświetlania połączeń danej linii oraz przewoźnika.
+		\item 12 listopada: Zakończenie dokumentacji, testów aplikacji oraz identyfikacji błędów.
+		\item 15 listopada: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
+	\end{enumerate}
+	\item Drugi etap:
+	\begin{enumerate}
+		\mdseries
+		\item 19 listopada: Zakończenie analizy nowych wymagań funkcjonalnych i niefunkcjonalnych projektu.
+		\item 22 listopada: Zakończenie aktualizacji architektury aplikacji, łącznie z wyróżnieniem komponentów oraz podsystemów.
+		\item 26 listopada: Wstępna próba rozproszenia aplikacji.
+		\item 29 listopada: Wydzielenie serwera aplikacyjnego oraz zintegrowanie go z aplikacją kliencką.
+		\item 3 grudnia: Zakończenie implementacji walidacji danych wejściowych.
+		\item 6 grudnia: Implementacja rozkładów dla poszczególnych przystanków oraz stworzenie odpowiedniego widoku w aplikacji klienckiej.
+		\item 10 grudnia: Dodanie funkcjonalności wyszukiwania połączeń między wybranymi przystankami.
+		\item 13 grudnia: Zakończenie poprawy znalezionych błędów, zdanie projektu łącznie z pełną dokumentacją.
+	\end{enumerate}
 \end{enumerate}
 
 \subsection{Architektura rozwiązania}
@@ -252,13 +263,9 @@ Docelowym środowiskiem aplikacji są małe lub średnie firmy pośredniczące w
 	\includegraphics[width=10cm]{architecture-global.pdf}
 	\caption{Schemat architektury systemu}
 \end{figure}
-Biorąc pod uwagę opisany powyżej charakter zamówionego rozwiązania, wybrana została prosta architektura z centralną bazą danych oraz aplikacją typu “gruby klient”, wykorzystującą bezpośrednie połączenie z bazą. Rozwiązanie to jest spójne z opisanymi cechami systemu, a poza tym jest dość proste we wdrożeniu i nie wprowadza niepotrzebnych kosztów rozproszenia.
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=8cm]{architecture-fat-client.pdf}
-	\caption{Schemat architektury aplikacji klienckiej}
-\end{figure}
-Planowana architektura aplikacji klienckiej ma charakter warstwowy. Wyróżnione zostały następujące warstwy:
+Biorąc pod uwagę opisany powyżej charakter zamówionego rozwiązania, wybrany został system rozproszony składający się z aplikacji klienckich typu ,,gruby klient'', instalowanych na stacjach roboczych pracowników oraz administratorów systemu, oraz serwera aplikacyjnego.
+
+Planowana architektura rozwiązania ma charakter warstwowy. Wyróżnione zostały następujące warstwy:
 \begin{itemize}
 	\item warstwa dostępu do danych - odpowiedzialna za kontakt z bazą oraz odczyt i zapis przechowywanych tam danych,
 	\item warstwa biznesowa - odpowiedzialna za wykonywanie poszczególnych usług (np. dodania czy modyfikacji przewoźnika),
@@ -271,6 +278,17 @@ Planowana architektura aplikacji klienckiej ma charakter warstwowy. Wyróżnione
 	\item spójny charakter wymagań - podział na podsystemy jest zbędny.
 \end{itemize}
 Ze względu na małą liczbę użytkowników niska skalowalność oraz wydajność rozwiązań warstwowych zostały uznane za ryzyko drugorzędne.
+
+\subsubsection{Serwer aplikacyjny}
+Serwer aplikacyjny to pojedyncza stacja robocza w sieci wewnętrznej, odpowiadająca za obsługę i odpowiedź na zapytania kierowane do niego przez aplikacje klienckie różnej postaci. Serwer udostępnia wszystkim klientom usługi, w których określone są typy danych wyjściowych i wejściowych. Komunikacja z klientami odbywa się za pomocą protokołu TCP.
+
+\subsubsection{Aplikacja kliencka}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{architecture-fat-client.pdf}
+	\caption{Schemat wykonywania czynności użytkownika}
+\end{figure}
+Aplikacje klienckie mają postać ,,grubego klienta'', instalowanego na stacjach roboczych konkretnych użytkowników. Wykonywanie wszystkich żądań użytkownika delegowane jest do serwera aplikacyjnego za pośrednictwem udostępnionych usług; odpowiedzią jest informacja o powodzeniu, lub błąd wykonania. W aplikacji klienckiej nie znajdują się elementy związane z logiką biznesową.
 
 \newpage
 \section{Dokumentacja końcowa (powykonawcza)}
