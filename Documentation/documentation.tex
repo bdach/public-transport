@@ -130,7 +130,7 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Usunięcie linii połączeń danego przewoźnika
 		& Potwierdzenie usunięcia rekordu \\
 		\cline{2-4}
-		& Wyświetlanie rozkładu
+		& Wyświetlanie rozkładu linii
 		& Wyświetlanie rozkładu jazdy wybranej linii
 		& Widok zawierający informacje o przejazdach na wybranej linii \\
 		\cline{2-4}
@@ -141,7 +141,7 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		\multicolumn{4}{|c|}{\textbf{Etap 2}} \\
 		\hline
 		\multirow{5}{*}{\rotatebox[origin=c]{90}{Pracownik}}
-		& Wyświetlanie rozkładu
+		& Wyświetlanie rozkładu przystanku
 		& Wyświetlanie rozkładu jazdy dla wybranego przystanku
 		& Widok zawierający informacje o liniach dla wybranego przystanku \\
 		\cline{2-4}
@@ -156,64 +156,74 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 \subsubsection*{User stories}
 \begin{enumerate}
 	\bfseries
+	\item Etap 1
+	\begin{enumerate}[label*=\arabic*.]
 	\item Interfejs administracyjny dla administratora
-	\begin{enumerate}[label*=\arabic*.]
-		\mdseries
-		\item Jako zalogowany administrator dodaję/modyfikuję użytkownika systemu.\\
-			Dowolny zalogowany administrator może dodać nowego użytkowanika lub zmodyfikować informacje o istniejącym użytkowniku, takie jak jego login, hasło oraz uprawnienia.
-		\item Jako zalogowany administrator wyszukuję użytkownika. \\
-		    Dowolny zalogowany administrator może wyszukać istniejących użytkowników systemu.
+		\begin{enumerate}[label*=\arabic*.]
+			\mdseries
+			\item Jako zalogowany administrator dodaję/modyfikuję użytkownika systemu.\\
+				Dowolny zalogowany administrator może dodać nowego użytkowanika lub zmodyfikować informacje o istniejącym użytkowniku, takie jak jego login, hasło oraz uprawnienia.
+			\item Jako zalogowany administrator wyszukuję użytkownika. \\
+			    Dowolny zalogowany administrator może wyszukać istniejących użytkowników systemu.
+		\end{enumerate}
+		\item Interfejs administracyjny dla pracownika
+		\begin{enumerate}[label*=\arabic*.]
+			\mdseries
+			\item Jako zalogowany pracownik dodaję/modyfikuję przewoźnika. \\
+				Dowolny zalogowany pracownik może dodać nowego przewoźnika lub zmodyfikować informacje o przewoźniku, takie, jak: nazwę i adres firmy, numer REGON oraz jej stronę internetową.
+			\item Jako zalogowany pracownik dodaję/modyfikuję linię połączeń. \\
+				Dowolny zalogowany pracownik może dodać nowe połączenie lub zmodyfikować informacje o istniejącym połączeniu takie jak: przystanki, czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu.
+			\item Jako zalogowany pracownik wyszukuję połączenie. \\
+			    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
+			    wprowadzonymi miastami.
+		 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy danej linii. \\
+			    Dowolny zalogowany pracownik może wyszukać rozkład jazdy danej linii
+			    komunikacyjnej i go wyświetlić.
+	    	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
+			    Dowolny zalogowany pracownik może wyświetlić połączenia od danego przewoźnika.
+		\end{enumerate}
 	\end{enumerate}
-	\item Interfejs administracyjny dla pracownika
+	\item Etap 2
 	\begin{enumerate}[label*=\arabic*.]
-		\mdseries
-		\item Jako zalogowany pracownik dodaję/modyfikuję przewoźnika. \\
-			Dowolny zalogowany pracownik może dodać nowego przewoźnika lub zmodyfikować informacje o przewoźniku, takie, jak: nazwę i adres firmy, numer REGON oraz jej stronę internetową.
-		\item Jako zalogowany pracownik dodaję/modyfikuję linię połączeń. \\
-			Dowolny zalogowany pracownik może dodać nowe połączenie lub zmodyfikować informacje o istniejącym połączeniu takie jak: przystanki, czas odjazdu i przyjazdu na poszczególnych przystankach, ilość dostępnych miejsc w danym kursie, podstawowa cena biletu.
-		\item Jako zalogowany pracownik wyszukuję połączenie. \\
-		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
-		    wprowadzonymi miastami.
-	 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy danej linii. \\
-		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy danej linii
-		    komunikacyjnej i go wyświetlić.
-	 	\item (*) Jako zalogowany pracownik wyświetlam rozkład jazdy dla danego przystanku. \\
-		    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danego przystanku
-		    komunikacyjnej i go wyświetlić.
-    	\item Jako zalogowany pracownik wyświetlam połączenia dla danego przewoźnika. \\
-		    Dowolny zalogowany pracownik może wyświetlić połączenia od danego przewoźnika.
-	 	\item (*) Jako zalogowany pracownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
-		    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
-		    wybranymi punktami. \\
+		\item Interfejs administracyjny dla pracownika
+		\begin{enumerate}[label*=\arabic*.]
+			\mdseries
+		 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy dla danego przystanku. \\
+			    Dowolny zalogowany pracownik może wyszukać rozkład jazdy dla danego przystanku
+			    komunikacyjnej i go wyświetlić.
+		 	\item Jako zalogowany pracownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
+			    Dowolny zalogowany pracownik może wyszukać dostępne połączenia pomiędzy
+			    wybranymi punktami. \\
+		\end{enumerate}
 	\end{enumerate}
 \end{enumerate}
 
 \subsection{Wymagania niefunkcjonalne}
 Poniższa tabela zawiera rozpisane wymagania niefunkcjonalne narzucone dla systemu.
 \begin{table}[H]
-	\begin{tabularx}{\textwidth}{|c|l|X|}
+	\begin{tabularx}{\textwidth}{|c|c|c|X|}
 		\hline
-		\textbf{Obszar wymagań} & \textbf{Nr} & \textbf{Opis} \\
+		\textbf{Obszar wymagań} & \textbf{Nr} & \textbf{Etap} & \textbf{Opis} \\
 		\hline
 		\multirow{8}{*}{Użyteczność (\textit{Usability})}
-		& 1 & Rozmiar czcionki użytej w aplikacji musi być nie mniejszy niż 12 punktów. \\
-		\cline{2-3}
-		& 2 & Aplikacja powinna obsługiwać zmianę rozmiaru okna w sposób który umożliwia korzystanie ze wszystkich jej funkcjonalności (tzw. responsive design). \\
-		\cline{2-3}
-		& 3 & (*) Dane wprowadzane przez użytkownika powinny być sprawdzane pod kątem poprawności przed wysyłaniem zapytań do bazy. \\
+		& 1 & 1 & Rozmiar czcionki użytej w aplikacji musi być nie mniejszy niż 12 punktów. \\
+		\cline{2-4}
+		& 2 & 1 & Aplikacja powinna obsługiwać zmianę rozmiaru okna w sposób który umożliwia korzystanie ze wszystkich jej funkcjonalności (tzw. responsive design). \\
+		\cline{2-4}
+		& 3 & 2 & Dane wprowadzane przez użytkownika powinny być sprawdzane pod kątem poprawności przed wysyłaniem zapytań do bazy. \\
 		\hline
 		\multirow{3}{*}{Niezawodność (\textit{Reliability})}
-		& 4 & Aplikacja musi być odporna na dokonywanie jednoczesnych zmian tego samego rekordu bazy przez wielu pracowników jednocześnie. \\
+		& 4 & 1 & Aplikacja musi być odporna na dokonywanie jednoczesnych zmian tego samego rekordu bazy przez wielu pracowników jednocześnie. \\
 		\hline
 		\multirow{7}{*}{Wydajność (\textit{Performance})}
-		& 5 & Aplikacja powinna dodawać nowe obiekty do systemu w czasie nie dłuższym niż 1 sekundę, przy 50 żądaniach dodania obiektu na minutę. \\
-		\cline{2-3}
-		& 6 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 500 megabajtów. \\
-		\cline{2-3}
-		& 7 & Wyszukiwanie połączenia między określonymi miastami powinno trwać mniej niż 2 sekundy, przy ok. 10 tys. rekordów. \\
+		& 5 & 1 & Aplikacja powinna dodawać nowe obiekty do systemu w czasie nie dłuższym niż 1 sekundę, przy 50 żądaniach dodania obiektu na minutę. \\
+		\cline{2-4}
+		& 6 & 1 & Zużycie pamięci RAM przez aplikację nie powinno przekroczyć 500 megabajtów. \\
+		\cline{2-4}
+		& 7 & 1 & Wyszukiwanie połączenia między określonymi miastami powinno trwać mniej niż 2 sekundy, przy ok. 10 tys. rekordów. \\
 		\hline
 		\multirow{2}{*}{Utrzymanie (\textit{Supportability})}
-		& 8 & Do aplikacji dołączona zostanie instrukcja wykonywania kopii zapasowej danych. \\
+		& 8 & 1 & Do aplikacji dołączona zostanie instrukcja wykonywania kopii zapasowej danych. \\
 		\hline
 	\end{tabularx}
 	\caption{Tabela wymagań niefunkcjonalnych}
