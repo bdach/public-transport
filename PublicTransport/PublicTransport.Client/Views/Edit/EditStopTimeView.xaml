@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignWidth="500"
              HorizontalAlignment="Stretch">
@@ -10,7 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="150" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -19,17 +20,25 @@
 
         <ComboBox Grid.RowSpan="2"
                   VerticalContentAlignment="Center"
+                  VerticalAlignment="Center"
                   Name="StopComboBox" 
+                  IsEditable="True"
                   TextSearch.TextPath="Name" />
         <TextBlock Grid.Row="0"
-                   Grid.Column="1">Arrival</TextBlock>
-        <TextBox Grid.Row="0"
-                 Grid.Column="2"
-                 Name="ArrivalTimeTextBox" />
+                   Grid.Column="1"
+                   Margin="10,5"
+                   VerticalAlignment="Center">Arrival</TextBlock>
+        <controls:TimePicker Grid.Row="0"
+                             Grid.Column="2"
+                             Margin="5"
+                             Name="ArrivalTimePicker" />
         <TextBlock Grid.Row="1"
-                   Grid.Column="1">Departure</TextBlock>
-        <TextBox Grid.Row="1"
-                 Grid.Column="2"
-                 Name="DepartureTimeTextBox" />
+                   Grid.Column="1"
+                   Margin="10,5"
+                   VerticalAlignment="Center">Departure</TextBlock>
+        <controls:TimePicker Grid.Row="1"
+                             Grid.Column="2"
+                             Margin="5"
+                             Name="DepartureTimePicker" />
     </Grid>
 </UserControl>

@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:PublicTransport.Client.ViewModels"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              Width="250"
-             Background="Black">
+             Background="{StaticResource AccentColorBrush3}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -14,20 +15,21 @@
         </Grid.RowDefinitions>
         <ListView x:Name="SidebarMenu"
                   BorderThickness="0"
-                  Background="Black">
+                  Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="viewModels:MenuItemViewModel">
                     <TextBlock Text="{Binding Item.Label}"
                                Margin="10"
-                               FontSize="16"
-                               Foreground="White" />
+                               FontSize="16" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
         <Button Grid.Row="1"
-                Style="{StaticResource LogoutButton}"
-                x:Name="LogOutButton">
-            Log out
-        </Button>
+                Margin="10"
+                HorizontalAlignment="Center"
+                Style="{DynamicResource MetroCircleButtonStyle}"
+                x:Name="LogOutButton"
+                Width="50" Height="50"
+                Content="{iconPacks:PackIconFontAwesome PowerOff}"/>
     </Grid>
 </UserControl>

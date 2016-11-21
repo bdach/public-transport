@@ -10,10 +10,18 @@
             <TextBlock>Editing Trip...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="SaveButton">Save</Button>
-            <Button x:Name="CloseButton">Close</Button>
+            <Button x:Name="SaveButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Save" />
+            <Button x:Name="CloseButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Close" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition />
@@ -24,13 +32,15 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="15"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
                        Style="{StaticResource RequiredTextBoxLabel}">Route</TextBlock>
             <ComboBox x:Name="RouteComboBox" 
+                      IsEditable="True"
                       Grid.Row="0"
                       Grid.Column="1"
                       Grid.ColumnSpan="2"
@@ -56,20 +66,21 @@
             <Button Grid.Row="3"
                     Grid.Column="2"
                     x:Name="EditScheduleButton">Edit...</Button>
-            <ListView Grid.Row="4"
+            <StackPanel Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button x:Name="AddStopButton">Add stop...</Button>
+                <Button x:Name="DeleteStopButton">Remove stop...</Button>
+            </StackPanel>
+            <ListView Grid.Row="6"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Margin="10"
                       x:Name="StopsListView"
                       VerticalAlignment="Stretch"
                       HorizontalContentAlignment="Stretch" />
-            <StackPanel Grid.Row="5"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3"
-                        Orientation="Horizontal">
-                <Button x:Name="AddStopButton">Add stop...</Button>
-                <Button x:Name="DeleteStopButton">Remove stop...</Button>
-            </StackPanel>
         </Grid>
     </DockPanel>
 </UserControl>

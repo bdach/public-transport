@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:reactiveUi="clr-namespace:ReactiveUI;assembly=ReactiveUI"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
@@ -13,9 +14,21 @@
                                           Margin="10" />
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="AddTripButton">Add New Trip</Button>
-            <Button x:Name="EditTripButton">Edit Trip</Button>
-            <Button x:Name="DeleteTripButton">Delete Trip</Button>
+            <Button x:Name="AddTripButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Add New Trip" />
+            <Button x:Name="EditTripButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Edit Selected Trip" />
+            <Button x:Name="DeleteTripButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Delete Selected Trip" />
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -53,9 +66,9 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="2" 
                        Style="{StaticResource TextBoxLabel}">Time</TextBlock>
-            <TextBox Grid.Row="1"
-                     Grid.Column="3"
-                     x:Name="SearchTimePicker" />
+            <controls:TimePicker Grid.Row="1"
+                                 Grid.Column="3"
+                                 x:Name="SearchTimePicker" />
         </Grid>
     </DockPanel>
 </UserControl>

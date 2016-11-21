@@ -11,10 +11,18 @@
             <TextBlock>Editing Fare...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="SaveButton">Save</Button>
-            <Button x:Name="CloseButton">Close</Button>
+            <Button x:Name="SaveButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Save" />
+            <Button x:Name="CloseButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Close" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition />
@@ -31,12 +39,14 @@
             <TextBlock Style="{StaticResource RequiredTextBoxLabel}">Route name</TextBlock>
             <ComboBox Grid.Row="0"
                       Grid.Column="1"
+                      IsEditable="True"
                       x:Name="RouteComboBox"
                       TextSearch.TextPath="ShortName"/>
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
                        Style="{StaticResource RequiredTextBoxLabel}">Origin zone name</TextBlock>
             <ComboBox x:Name="OriginZoneComboBox" 
+                      IsEditable="True"
                       Grid.Row="1"
                       Grid.Column="1"
                       Height="Auto"
@@ -44,7 +54,8 @@
             <TextBlock Grid.Row="2"
                        Grid.Column="0"
                        Style="{StaticResource RequiredTextBoxLabel}">Destination zone name</TextBlock>
-            <ComboBox x:Name="DestinationZoneComboBox" 
+            <ComboBox x:Name="DestinationZoneComboBox"
+                      IsEditable="True"
                       Grid.Row="2"
                       Grid.Column="1"
                       Height="Auto"
@@ -60,8 +71,7 @@
             <TextBlock Grid.Row="4"
                        Grid.Column="0"
                        Style="{StaticResource RequiredTextBoxLabel}">Allowed transfers</TextBlock>
-            <ComboBox Style="{StaticResource EnumComboBox}"
-                      Grid.Row="4"
+            <ComboBox Grid.Row="4"
                       Grid.Column="1"
                       x:Name="TransferCountComboBox">
                 <ComboBox.ItemTemplate>

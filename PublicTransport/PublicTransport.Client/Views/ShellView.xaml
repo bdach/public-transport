@@ -1,9 +1,10 @@
-﻿<Window x:Class="PublicTransport.Client.Views.ShellView"
+﻿<controls:MetroWindow x:Class="PublicTransport.Client.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:rui="clr-namespace:ReactiveUI;assembly=ReactiveUI"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="Public Transport" Height="720" Width="1280"
         MinHeight="500" MinWidth="750"
@@ -18,4 +19,5 @@
                                VerticalContentAlignment="Stretch" />
         <rui:RoutedViewHost x:Name="ContentView" Width="Auto" />
     </DockPanel>
-</Window>
+</controls:MetroWindow>
+

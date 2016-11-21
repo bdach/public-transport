@@ -25,8 +25,8 @@ namespace PublicTransport.Client.Views.Edit
             this.OneWayBind(ViewModel, vm => vm.StopSuggestions, v => v.StopComboBox.ItemsSource);
             this.Bind(ViewModel, vm => vm.SelectedStop, v => v.StopComboBox.SelectedItem);
             this.Bind(ViewModel, vm => vm.StopFilter.StopNameFilter, v => v.StopComboBox.Text);
-            this.Bind(ViewModel, vm => vm.StopTime.ArrivalTime, v => v.ArrivalTimeTextBox.Text);
-            this.Bind(ViewModel, vm => vm.StopTime.DepartureTime, v => v.DepartureTimeTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StopTime.ArrivalTime, v => v.ArrivalTimePicker.SelectedTime);
+            this.Bind(ViewModel, vm => vm.StopTime.DepartureTime, v => v.DepartureTimePicker.SelectedTime);
 
             this.WhenAnyObservable(v => v.ViewModel.UpdateSuggestions)
                 .Subscribe(_ => StopComboBox.IsDropDownOpen = true);

@@ -11,10 +11,18 @@
             <TextBlock>Editing Route...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="SaveButton">Save</Button>
-            <Button x:Name="CloseButton">Close</Button>
+            <Button x:Name="SaveButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Save" />
+            <Button x:Name="CloseButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Close" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition />
@@ -30,6 +38,7 @@
                        Grid.Column="0"
                        Style="{StaticResource RequiredTextBoxLabel}">Agency</TextBlock>
             <ComboBox x:Name="AgencyComboBox" 
+                      IsEditable="True"
                       Grid.Row="0"
                       Grid.Column="1"
                       Height="Auto"
@@ -49,8 +58,7 @@
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
                        Style="{StaticResource RequiredTextBoxLabel}">Type</TextBlock>
-            <ComboBox Style="{StaticResource EnumComboBox}"
-                      Grid.Row="3"
+            <ComboBox Grid.Row="3"
                       Grid.Column="1"
                       x:Name="RouteTypesComboBox">
                 <ComboBox.ItemTemplate>

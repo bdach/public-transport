@@ -10,9 +10,13 @@
             <TextBlock>Editing Trip Schedule...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="CloseButton">Close</Button>
+            <Button x:Name="CloseButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Close" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition />
