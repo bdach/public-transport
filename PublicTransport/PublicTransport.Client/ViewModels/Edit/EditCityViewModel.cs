@@ -3,8 +3,8 @@ using System.Reactive;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Client.Services.CityService;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -17,21 +17,21 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     The <see cref="Domain.Entities.City" /> object being edited in the window.
         /// </summary>
-        private City _city;
+        private CityDto _city;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="cityUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="cityService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="city">City to be edited. If a city is to be added, this parameter is null (can be left out).</param>
-        public EditCityViewModel(IScreen screen, ICityUnitOfWork cityUnitOfWork, City city = null)
+        public EditCityViewModel(IScreen screen, ICityService cityService, CityDto city = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            var serviceMethod = city == null ? new Func<City, City>(cityUnitOfWork.CreateCity) : cityUnitOfWork.UpdateCity;
-            _city = city ?? new City();
+            var serviceMethod = city == null ? new Func<CityDto, CityDto>(cityService.CreateCity) : cityService.UpdateCity;
+            _city = city ?? new CityDto();
 
             #endregion
 
@@ -54,7 +54,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Property for the <see cref="Domain.Entities.City" /> being edited in the window.
         /// </summary>
-        public City City
+        public CityDto City
         {
             get { return _city; }
             set { this.RaiseAndSetIfChanged(ref _city, value); }
@@ -63,7 +63,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Command adding the <see cref="Domain.Entities.City" /> to the database.
         /// </summary>
-        public ReactiveCommand<City> SaveCity { get; }
+        public ReactiveCommand<CityDto> SaveCity { get; }
 
         /// <summary>
         ///     Command closing the current detail view model.

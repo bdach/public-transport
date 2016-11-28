@@ -1,5 +1,4 @@
-﻿using PublicTransport.Services.UnitsOfWork;
-using Splat;
+﻿using Splat;
 
 namespace PublicTransport.Services.Providers
 {
@@ -9,14 +8,13 @@ namespace PublicTransport.Services.Providers
         {
             Locator.CurrentMutable.Register(() => new LoginService(), typeof(ILoginService));
 
-            Locator.CurrentMutable.Register(() => new AgencyUnitOfWork(), typeof(IAgencyUnitOfWork));
-            Locator.CurrentMutable.Register(() => new CityUnitOfWork(), typeof(ICityUnitOfWork));
-            Locator.CurrentMutable.Register(() => new StreetUnitOfWork(), typeof(IStreetUnitOfWork));
-            Locator.CurrentMutable.Register(() => new ZoneUnitOfWork(), typeof(IZoneUnitOfWork));
-            Locator.CurrentMutable.Register(() => new UserUnitOfWork(), typeof(IUserUnitOfWork));
-            Locator.CurrentMutable.Register(() => new StopUnitOfWork(), typeof(IStopUnitOfWork));
-            Locator.CurrentMutable.Register(() => new FareUnitOfWork(), typeof(IFareUnitOfWork));
-            Locator.CurrentMutable.Register(() => new RouteUnitOfWork(), typeof(IRouteUnitOfWork));
+            Locator.CurrentMutable.Register(() => new AgencyService(), typeof(IAgencyService));
+            Locator.CurrentMutable.Register(() => new StreetService(), typeof(IStreetService));
+            Locator.CurrentMutable.Register(() => new ZoneService(), typeof(IZoneService));
+            Locator.CurrentMutable.Register(() => new UserService(), typeof(IUserService));
+            Locator.CurrentMutable.Register(() => new StopService(), typeof(IStopService));
+            Locator.CurrentMutable.Register(() => new FareService(), typeof(IFareService));
+            Locator.CurrentMutable.Register(() => new RouteService(), typeof(IRouteService));
         }
     }
 }

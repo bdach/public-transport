@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -23,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IFareUnitOfWork _fareUnitOfWork;
+        private readonly IFareService _fareService;
 
         /// <summary>
         ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
@@ -39,13 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        /// <param name="fareUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterFareViewModel(IScreen screen, IFareUnitOfWork fareUnitOfWork = null)
+        /// <param name="fareService">Unit of work used in the view model to access the database.</param>
+        public FilterFareViewModel(IScreen screen, IFareService fareService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _fareUnitOfWork = fareUnitOfWork ?? Locator.Current.GetService<IFareUnitOfWork>();
+            _fareService = fareService ?? Locator.Current.GetService<IFareService>();
             _fareFilter = new FareFilter();
             FareAttributes = new ReactiveList<FareAttribute>();
 
@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Fare filtering command
 
-            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareUnitOfWork.FilterFares(FareFilter)));
+            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareService.FilterFares(FareFilter)));
             FilterFares.Subscribe(result =>
             {
                 FareAttributes.Clear();
@@ -82,7 +82,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _fareUnitOfWork.DeleteFareRule(SelectedFare.FareRule));
+                await Task.Run(() => _fareService.DeleteFareRule(SelectedFare.FareRule));
                 //await Task.Run(() => _fareUnitOfWork.DeleteFareAttribute(SelectedFare)); // commented because of cascade delete
                 return Unit.Default;
             });
@@ -96,9 +96,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit fare commands
 
             AddFare = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareService)));
             EditFare = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareUnitOfWork, SelectedFare)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareService, SelectedFare)));
 
             #endregion
 
@@ -114,7 +114,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _fareUnitOfWork.Dispose());
+                .Subscribe(_ => _fareService.Dispose());
 
             #endregion
         }

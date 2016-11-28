@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IStreetUnitOfWork _streetUnitOfWork;
+        private readonly IStreetService _streetService;
 
         /// <summary>
         ///     City name supplied by the user. This field is used to supply suggestions.
@@ -40,16 +40,16 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="streetUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="streetService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="street">Street to be edited. If a steet is to be added, this parameter is null (can be left out).</param>
-        public EditStreetViewModel(IScreen screen, IStreetUnitOfWork streetUnitOfWork, Street street = null)
+        public EditStreetViewModel(IScreen screen, IStreetService streetService, Street street = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             Suggestions = new ReactiveList<City>();
-            _streetUnitOfWork = streetUnitOfWork;
-            var serviceMethod = street == null ? new Func<Street, Street>(_streetUnitOfWork.CreateStreet) : _streetUnitOfWork.UpdateStreet;
+            _streetService = streetService;
+            var serviceMethod = street == null ? new Func<Street, Street>(_streetService.CreateStreet) : _streetService.UpdateStreet;
             _street = street ?? new Street();
             _selectedCity = _street.City;
             _cityName = _street.City?.Name;
@@ -72,7 +72,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions command
 
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ =>
-                await Task.Run(() => _streetUnitOfWork.FilterCities(CityName)));
+                await Task.Run(() => _streetService.FilterCities(CityName)));
             UpdateSuggestions.Subscribe(results =>
             {
                 Suggestions.Clear();

@@ -2,7 +2,7 @@
 {
     /// <summary>
     ///     Data transfer object interface.
-    ///     Used by the <see cref="StopService" /> to perform filtering.
+    ///     Used by the <see cref="StopRepository" /> to perform filtering.
     /// </summary>
     public interface IStopFilter
     {

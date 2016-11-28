@@ -2,7 +2,7 @@
 {
     /// <summary>
     ///     Data transfer object interface.
-    ///     Used by the <see cref="AgencyService" /> to perform filtering.
+    ///     Used by the <see cref="AgencyRepository" /> to perform filtering.
     /// </summary>
     public interface IAgencyFilter
     {

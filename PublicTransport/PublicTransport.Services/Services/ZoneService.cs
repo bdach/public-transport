@@ -1,106 +1,140 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
-    /// <summary>
-    ///     Service for managing zones.
-    /// </summary>
-    public class ZoneService
+    public interface IZoneService : IDisposable
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Calls <see cref="ZoneRepository"/> create method.
+        /// </summary>
+        /// <param name="zone"><see cref="Zone"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="Zone"/> object successfully inserted into the database.
+        /// </returns>
+        Zone CreateZone(Zone zone);
+
+        /// <summary>
+        ///     Calls <see cref="ZoneRepository"/> update method.
+        /// </summary>
+        /// <param name="zone"><see cref="Zone"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Zone"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
+        /// </exception>
+        Zone UpdateZone(Zone zone);
+
+        /// <summary>
+        ///     Calls <see cref="ZoneRepository"/> delete method.
+        /// </summary>
+        /// <param name="zone"><see cref="Zone"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
+        /// </exception>
+        void DeleteZone(Zone zone);
+
+        /// <summary>
+        ///     Calls <see cref="ZoneRepository"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        /// </returns>
+        List<Zone> FilterZones(string name);
+    }
+
+    /// <summary>
+    ///     Unit of work used to manage zone data.
+    /// </summary>
+    public class ZoneService : IZoneService
+    {
+        /// <summary>
+        ///     Service used to fetch <see cref="Zone"/> data from the database.
+        /// </summary>
+        private readonly ZoneRepository _zoneRepository;
+
+        /// <summary>
+        ///     Database context common for services in this unit of work used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
         /// <summary>
+        ///     Determines whether the database context has been disposed.
+        /// </summary>
+        private bool _disposed;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public ZoneService(PublicTransportContext db)
+        public ZoneService()
         {
-            _db = db;
+            _db = new PublicTransportContext();
+            _zoneRepository = new ZoneRepository(_db);
         }
 
         /// <summary>
-        ///     Inserts a <see cref="Zone" /> record into the database.
+        ///     Calls <see cref="ZoneRepository"/> create method.
         /// </summary>
-        /// <param name="zone"><see cref="Zone" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Zone" /> object corresponding to the inserted record.</returns>
-        public Zone Create(Zone zone)
-        {
-            _db.Zones.Add(zone);
-            _db.SaveChanges();
-            return zone;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="Zone" /> with the supplied <see cref="Zone.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="Zone" />.</param>
+        /// <param name="zone"><see cref="Zone"/> object to be inserted into the database.</param>
         /// <returns>
-        ///     <see cref="Zone" /> object with the supplied ID number, or null if the <see cref="Zone" /> with the supplied ID
-        ///     could not be found in the database.
+        ///     <see cref="Zone"/> object successfully inserted into the database.
         /// </returns>
-        public Zone Read(int id)
+        public Zone CreateZone(Zone zone)
         {
-            return _db.Zones.FirstOrDefault(u => u.Id == id);
+            return _zoneRepository.Create(zone);
         }
 
         /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Zone" />.
+        ///     Calls <see cref="ZoneRepository"/> update method.
         /// </summary>
-        /// <param name="zone"><see cref="Zone" /> object to update.</param>
-        /// <returns>Updated <see cref="Zone" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="zone"><see cref="Zone"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Zone"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
-        public Zone Update(Zone zone)
+        public Zone UpdateZone(Zone zone)
         {
-            var old = Read(zone.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).CurrentValues.SetValues(zone);
-            _db.SaveChanges();
-            return zone;
+            return _zoneRepository.Update(zone);
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="Zone" /> from the database.
+        ///     Calls <see cref="ZoneRepository"/> delete method.
         /// </summary>
-        /// <param name="zone"><see cref="Zone" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="zone"><see cref="Zone"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
-        public void Delete(Zone zone)
+        public void DeleteZone(Zone zone)
         {
-            var old = Read(zone.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
+            _zoneRepository.Delete(zone);
         }
 
         /// <summary>
-        ///     Return a list of <see cref="Zone"/> whose names contain provided string.
+        ///     Calls <see cref="ZoneRepository"/> filtering method.
         /// </summary>
-        /// <param name="str">String which has to be present in the name.</param>
+        /// <param name="name">Filtering parameter.</param>
         /// <returns>
-        ///     Return a list of <see cref="Zone"/>s whose names contain provided string.
+        ///     List of <see cref="Zone"/> objects matching the filtering query.
         /// </returns>
-        public List<Zone> GetZonesContainingString(string str)
+        public List<Zone> FilterZones(string name)
         {
-            return _db.Zones.Where(z => z.Name.Contains(str)).Take(10).ToList();
+            return _zoneRepository.GetZonesContainingString(name);
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

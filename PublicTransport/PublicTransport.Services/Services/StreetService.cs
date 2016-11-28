@@ -1,108 +1,168 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
-    /// <summary>
-    ///     Service for managing streets.
-    /// </summary>
-    public class StreetService
+    public interface IStreetService : IDisposable
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Calls <see cref="StreetRepository"/> create method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="Street"/> object successfully inserted into the database.
+        /// </returns>
+        Street CreateStreet(Street street);
+
+        /// <summary>
+        ///     Calls <see cref="StreetRepository"/> update method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Street"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        /// </exception>
+        Street UpdateStreet(Street street);
+
+        /// <summary>
+        ///     Calls <see cref="StreetRepository"/> delete method.
+        /// </summary>
+        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        /// </exception>
+        void DeleteStreet(Street street);
+
+        /// <summary>
+        ///     Calls <see cref="CityRepository"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="City"/> objects matching the filtering query.
+        /// </returns>
+        List<City> FilterCities(string name);
+
+        /// <summary>
+        ///     Calls <see cref="StreetRepository"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        List<Street> FilterStreets(IStreetFilter filter);
+    }
+
+    /// <summary>
+    ///     Unit of work used to manage street data.
+    /// </summary>
+    public class StreetService : IStreetService
+    {
+        /// <summary>
+        ///     Service used to fetch <see cref="City"/> data from the database.
+        /// </summary>
+        private readonly CityRepository _cityRepository;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Street"/> data from the database.
+        /// </summary>
+        private readonly StreetRepository _streetRepository;
+
+        /// <summary>
+        ///     Database context common for services in this unit of work used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
         /// <summary>
+        ///     Determines whether the database context has been disposed.
+        /// </summary>
+        private bool _disposed;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public StreetService(PublicTransportContext db)
+        public StreetService()
         {
-            _db = db;   
+            _db = new PublicTransportContext();
+            _cityRepository = new CityRepository(_db);
+            _streetRepository = new StreetRepository(_db);
         }
 
         /// <summary>
-        ///     Inserts a <see cref="Street" /> record into the database.
+        ///     Calls <see cref="StreetRepository"/> create method.
         /// </summary>
-        /// <param name="street"><see cref="Street" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Street" /> object corresponding to the inserted record.</returns>
-        public Street Create(Street street)
-        {
-            _db.Streets.Add(street);
-            _db.SaveChanges();
-            return street;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="Street" /> with the supplied <see cref="Street.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="Street" />.</param>
+        /// <param name="street"><see cref="Street"/> object to be inserted into the database.</param>
         /// <returns>
-        ///     <see cref="Street" /> object with the supplied ID number, or null if the <see cref="Street" /> with the supplied ID
-        ///     could not be found in the database.
+        ///     <see cref="Street"/> object successfully inserted into the database.
         /// </returns>
-        public Street Read(int id)
+        public Street CreateStreet(Street street)
         {
-            return _db.Streets.Include(u => u.City).FirstOrDefault(u => u.Id == id);
+            return _streetRepository.Create(street);
         }
 
         /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Street" />.
+        ///     Calls <see cref="StreetRepository"/> update method.
         /// </summary>
-        /// <param name="street"><see cref="Street" /> object to update.</param>
-        /// <returns>Updated <see cref="Street" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="street"><see cref="Street"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Street"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
         /// </exception>
-        public Street Update(Street street)
+        public Street UpdateStreet(Street street)
         {
-            var old = Read(street.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).CurrentValues.SetValues(street);
-            _db.SaveChanges();
-            return street;
+            return _streetRepository.Update(street);
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="Street" /> from the database.
+        ///     Calls <see cref="StreetRepository"/> delete method.
         /// </summary>
-        /// <param name="street"><see cref="Street" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
         /// </exception>
-        public void Delete(Street street)
+        public void DeleteStreet(Street street)
         {
-            var old = Read(street.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
+            _streetRepository.Delete(street);
         }
 
         /// <summary>
-        /// Filters out <see cref="Street"/> objects, using values from the supplied <see cref="IStreetFilter"/> object to perform the query.
+        ///     Calls <see cref="CityRepository"/> filtering method.
         /// </summary>
-        /// <param name="streetFilter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Street> FilterStreets(IStreetFilter streetFilter)
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="City"/> objects matching the filtering query.
+        /// </returns>
+        public List<City> FilterCities(string name)
         {
-            return _db.Streets.Include(s => s.City)
-                .Where(s => s.Name.Contains(streetFilter.StreetNameFilter))
-                .Where(s => s.City.Name.Contains(streetFilter.CityNameFilter))
-                .Take(20).ToList();
+            return _cityRepository.GetCitiesContainingString(name);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="StreetRepository"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        public List<Street> FilterStreets(IStreetFilter filter)
+        {
+            return _streetRepository.FilterStreets(filter);
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

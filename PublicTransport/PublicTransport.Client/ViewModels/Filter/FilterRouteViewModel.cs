@@ -11,7 +11,7 @@ using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -25,7 +25,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IRouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteService _routeService;
 
         /// <summary>
         ///     <see cref="DataTransfer.RouteFilter" /> object used to send query data to the service layer.
@@ -41,13 +41,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterRouteViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork = null)
+        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        public FilterRouteViewModel(IScreen screen, IRouteService routeService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _routeUnitOfWork = routeUnitOfWork ?? Locator.Current.GetService<IRouteUnitOfWork>();
+            _routeService = routeService ?? Locator.Current.GetService<IRouteService>();
             _routeFilter = new RouteFilter();
             Routes = new ReactiveList<Route>();
             RouteTypes = new ReactiveList<RouteType>(Enum.GetValues(typeof(RouteType)).Cast<RouteType>());
@@ -58,7 +58,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Route filtering command
 
-            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.FilterRoutes(RouteFilter)));
+            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
             FilterRoutes.Subscribe(result =>
             {
                 Routes.Clear();
@@ -83,7 +83,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteRoute = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _routeUnitOfWork.DeleteRoute(SelectedRoute));
+                await Task.Run(() => _routeService.DeleteRoute(SelectedRoute));
                 return Unit.Default;
             });
             DeleteRoute.Subscribe(_ => SelectedRoute = null);
@@ -96,11 +96,11 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Button commands
 
             AddRoute = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeService)));
             EditRoute = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeUnitOfWork, SelectedRoute)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeService, SelectedRoute)));
             ShowTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, _routeUnitOfWork, SelectedRoute)));
+                HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, _routeService, SelectedRoute)));
 
             #endregion
 
@@ -123,7 +123,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _routeUnitOfWork.Dispose());
+                .Subscribe(_ => _routeService.Dispose());
 
             #endregion
         }

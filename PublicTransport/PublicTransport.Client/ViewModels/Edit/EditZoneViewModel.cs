@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -23,14 +23,14 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="zoneUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="zoneService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="zone">Zone to be edited. If a zone is to be added, this parameter is null (can be left out).</param>
-        public EditZoneViewModel(IScreen screen, IZoneUnitOfWork zoneUnitOfWork, Zone zone = null)
+        public EditZoneViewModel(IScreen screen, IZoneService zoneService, Zone zone = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            var serviceMethod = zone == null ? new Func<Zone, Zone>(zoneUnitOfWork.CreateZone) : zoneUnitOfWork.UpdateZone;
+            var serviceMethod = zone == null ? new Func<Zone, Zone>(zoneService.CreateZone) : zoneService.UpdateZone;
             _zone = zone ?? new Zone();
 
             #endregion

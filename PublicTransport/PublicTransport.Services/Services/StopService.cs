@@ -1,131 +1,195 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
-    /// <summary>
-    ///     Service for managing stops.
-    /// </summary>
-    public class StopService
+    public interface IStopService : IDisposable
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Calls <see cref="StopRepository"/> create method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="Stop"/> object successfully inserted into the database.
+        /// </returns>
+        Stop CreateStop(Stop stop);
+
+        /// <summary>
+        ///     Calls <see cref="StopRepository"/> update method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Stop"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        Stop UpdateStop(Stop stop);
+
+        /// <summary>
+        ///     Calls <see cref="StopRepository"/> delete method.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        void DeleteStop(Stop stop);
+
+        /// <summary>
+        ///     Calls <see cref="StopRepository"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Stop"/> objects matching the filtering query.
+        /// </returns>
+        List<Stop> FilterStops(IStopFilter filter);
+
+        /// <summary>
+        ///     Calls <see cref="ZoneRepository"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        /// </returns>
+        List<Zone> FilterZones(string name);
+
+        /// <summary>
+        ///     Calls <see cref="StreetRepository"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        List<Street> FilterStreets(IStreetFilter filter);
+    }
+
+    /// <summary>
+    ///     Unit of work used to manage stop data.
+    /// </summary>
+    public class StopService : IStopService
+    {
+        /// <summary>
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
+        /// </summary>
+        private readonly StopRepository _stopRepository;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Zone" /> data from the database.
+        /// </summary>
+        private readonly ZoneRepository _zoneRepository;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Street" /> data from the database.
+        /// </summary>
+        private readonly StreetRepository _streetRepository;
+
+        /// <summary>
+        ///     Database context common for services in this unit of work used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
         /// <summary>
+        ///     Determines whether the database context has been disposed.
+        /// </summary>
+        private bool _disposed;
+        
+        /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public StopService(PublicTransportContext db)
+        public StopService()
         {
-            _db = db;
+            _db = new PublicTransportContext();
+            _stopRepository = new StopRepository(_db);
+            _zoneRepository = new ZoneRepository(_db);
+            _streetRepository = new StreetRepository(_db);
         }
 
         /// <summary>
-        ///     Inserts a <see cref="Stop" /> record into the database.
+        ///     Calls <see cref="StopRepository"/> create method.
         /// </summary>
-        /// <param name="stop"><see cref="Stop" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Stop" /> object corresponding to the inserted record.</returns>
-        public Stop Create(Stop stop)
-        {
-            _db.Stops.Add(stop);
-            _db.SaveChanges();
-            return stop;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="Stop" /> with the supplied <see cref="Stop.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="Stop" />.</param>
+        /// <param name="stop"><see cref="Stop"/> object to be inserted into the database.</param>
         /// <returns>
-        ///     <see cref="Stop" /> object with the supplied ID number, or null if the <see cref="Stop" /> with the supplied ID
-        ///     could not be found in the database.
+        ///     <see cref="Stop"/> object successfully inserted into the database.
         /// </returns>
-        public Stop Read(int id)
+        public Stop CreateStop(Stop stop)
         {
-            return _db.Stops.FirstOrDefault(u => u.Id == id);
+            return _stopRepository.Create(stop);
         }
 
         /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Stop" />.
+        ///     Calls <see cref="StopRepository"/> update method.
         /// </summary>
-        /// <param name="stop"><see cref="Stop" /> object to update.</param>
-        /// <returns>Updated <see cref="Stop" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="stop"><see cref="Stop"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="Stop"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
-        public Stop Update(Stop stop)
+        public Stop UpdateStop(Stop stop)
         {
-            var old = Read(stop.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).CurrentValues.SetValues(stop);
-            _db.SaveChanges();
-            return stop;
+            return _stopRepository.Update(stop);
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="Stop" /> from the database.
+        ///     Calls <see cref="StopRepository"/> delete method.
         /// </summary>
-        /// <param name="stop"><see cref="Stop" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
-        public void Delete(Stop stop)
+        public void DeleteStop(Stop stop)
         {
-            var old = Read(stop.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
+            _stopRepository.Delete(stop);
         }
 
         /// <summary>
-        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
-        /// </summary>
-        /// <param name="routeId">Id of the <see cref="Route"/>.</param>
-        /// <returns>
-        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
-        /// </returns>
-        public List<Stop> GetStopsByRouteId(int routeId)
-        {
-            return _db.StopTimes.Include(st => st.Trip)
-                .Where(st => st.Trip.RouteId == routeId)
-                .OrderBy(st => st.StopSequence)
-                .Select(st => st.Stop)
-                .Include(s => s.Street.City)
-                .Distinct().ToList();
-        }
-
-        /// <summary>
-        ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
-        ///     <see cref="IStopFilter" /> object. The returned name strings all contain the
-        ///     parameters supplied in the <see cref="filter" /> parameter.
+        ///     Calls <see cref="StopRepository"/> filtering method.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
+        /// <returns>
+        ///     List of <see cref="Stop"/> objects matching the filtering query.
+        /// </returns>
         public List<Stop> FilterStops(IStopFilter filter)
         {
-            return _db.Stops.Include(s => s.Street.City).Include(s => s.Zone).Include(s => s.ParentStation)
-                .Where(s => s.Name.Contains(filter.StopNameFilter))
-                .Where(s => s.Street.Name.Contains(filter.StreetNameFilter))
-                .Where(s => s.Street.City.Name.Contains(filter.CityNameFilter))
-                .Where(s => s.Zone == null || s.Zone.Name.Contains(filter.ZoneNameFilter))
-                .Where(s => s.ParentStation == null || s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
-                .Where(s => !filter.OnlyStations || s.IsStation)
-                .Take(20).ToList();
+            return _stopRepository.FilterStops(filter);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="ZoneRepository"/> filtering method.
+        /// </summary>
+        /// <param name="name">Filtering parameter.</param>
+        /// <returns>
+        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        /// </returns>
+        public List<Zone> FilterZones(string name)
+        {
+            return _zoneRepository.GetZonesContainingString(name);
+        }
+
+        /// <summary>
+        ///     Calls <see cref="StreetRepository"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="Street"/> objects matching the filtering query.
+        /// </returns>
+        public List<Street> FilterStreets(IStreetFilter filter)
+        {
+            return _streetRepository.FilterStreets(filter);
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

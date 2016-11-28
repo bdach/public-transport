@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -23,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IAgencyUnitOfWork _agencyUnitOfWork;
+        private readonly IAgencyService _agencyService;
 
         /// <summary>
         ///     <see cref="DataTransfer.AgencyFilter" /> object used to send query data to the service layer.
@@ -39,13 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
-        public FilterAgencyViewModel(IScreen screen, IAgencyUnitOfWork agencyUnitOfWork = null)
+        /// <param name="agencyService">Unit of work exposing methods necessary to manage data.</param>
+        public FilterAgencyViewModel(IScreen screen, IAgencyService agencyService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _agencyUnitOfWork = agencyUnitOfWork ?? Locator.Current.GetService<IAgencyUnitOfWork>();
+            _agencyService = agencyService ?? Locator.Current.GetService<IAgencyService>();
             _agencyFilter = new AgencyFilter();
             Agencies = new ReactiveList<Agency>();
 
@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Agency filtering command
 
-            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyUnitOfWork.FilterAgencies(AgencyFilter)));
+            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyService.FilterAgencies(AgencyFilter)));
             FilterAgencies.Subscribe(result =>
             {
                 Agencies.Clear();
@@ -80,7 +80,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteAgency = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _agencyUnitOfWork.DeleteAgency(SelectedAgency));
+                await Task.Run(() => _agencyService.DeleteAgency(SelectedAgency));
                 return Unit.Default;
             });
             DeleteAgency.Subscribe(_ => SelectedAgency = null);
@@ -93,9 +93,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit agency commands
 
             AddAgency = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyService)));
             EditAgency = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyUnitOfWork, SelectedAgency)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyService, SelectedAgency)));
 
             #endregion
 
@@ -111,7 +111,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _agencyUnitOfWork.Dispose());
+                .Subscribe(_ => _agencyService.Dispose());
 
             #endregion
         }

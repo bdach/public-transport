@@ -2,7 +2,7 @@
 {
     /// <summary>
     ///     Data transfer object interface.
-    ///     Used by the <see cref="StreetService" /> to perform filtering.
+    ///     Used by the <see cref="StreetRepository" /> to perform filtering.
     /// </summary>
     public interface IStreetFilter
     {

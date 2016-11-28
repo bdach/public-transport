@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.CityService;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -22,30 +22,30 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly ICityUnitOfWork _cityUnitOfWork;
+        private readonly ICityService _cityService;
 
         /// <summary>
         ///     String containing the city name filter.
         /// </summary>
-        private string _nameFilter;
+        private string _nameFilter = "";
 
         /// <summary>
         ///     <see cref="City" /> object currently selected in the view.
         /// </summary>
-        private City _selectedCity;
+        private CityDto _selectedCity;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="cityUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterCityViewModel(IScreen screen, ICityUnitOfWork cityUnitOfWork = null)
+        /// <param name="cityService">Unit of work used in the view model to access the database.</param>
+        public FilterCityViewModel(IScreen screen, ICityService cityService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _cityUnitOfWork = cityUnitOfWork ?? Locator.Current.GetService<ICityUnitOfWork>();
-            Cities = new ReactiveList<City>();
+            _cityService = cityService ?? Locator.Current.GetService<ICityService>();
+            Cities = new ReactiveList<CityDto>();
 
             #endregion
 
@@ -53,7 +53,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region City filtering command
 
-            FilterCities = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _cityUnitOfWork.FilterCities(NameFilter)); });
+            FilterCities = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _cityService.FilterCities(NameFilter)); });
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
@@ -77,7 +77,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             // TODO: Maybe prompt for confirmation?
             DeleteCity = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _cityUnitOfWork.DeleteCity(SelectedCity));
+                await Task.Run(() => _cityService.DeleteCity(SelectedCity));
                 return Unit.Default;
             });
             DeleteCity.Subscribe(_ => SelectedCity = null);
@@ -90,9 +90,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit city commands
 
             AddCity = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, _cityUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, _cityService)));
             EditCity = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, _cityUnitOfWork, SelectedCity)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditCityViewModel(screen, _cityService, SelectedCity)));
 
             #endregion
 
@@ -103,25 +103,17 @@ namespace PublicTransport.Client.ViewModels.Filter
                 .InvokeCommand(FilterCities);
 
             #endregion
-            
-            #region Disposing of context
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _cityUnitOfWork.Dispose());
-
-            #endregion
         }
 
         /// <summary>
         ///     Reactive list containing the filtered <see cref="City" /> objects.
         /// </summary>
-        public ReactiveList<City> Cities { get; protected set; }
+        public ReactiveList<CityDto> Cities { get; protected set; }
 
         /// <summary>
         ///     Command responsible for filtering out cities in accordance with the <see cref="NameFilter" />.
         /// </summary>
-        public ReactiveCommand<List<City>> FilterCities { get; protected set; }
+        public ReactiveCommand<CityDto[]> FilterCities { get; protected set; }
 
         /// <summary>
         ///     Command responsible for launching the city editing view.
@@ -150,7 +142,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Property exposing the currently selected <see cref="City" />.
         /// </summary>
-        public City SelectedCity
+        public CityDto SelectedCity
         {
             get { return _selectedCity; }
             set { this.RaiseAndSetIfChanged(ref _selectedCity, value); }

@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Browse
@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IRouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteService _routeService;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed in the view.
@@ -45,9 +45,9 @@ namespace PublicTransport.Client.ViewModels.Browse
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
         /// <param name="route">The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.</param>
-        public TimetableViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Route route)
+        public TimetableViewModel(IScreen screen, IRouteService routeService, Route route)
         {
             #region Field/property initialization
 
@@ -56,7 +56,7 @@ namespace PublicTransport.Client.ViewModels.Browse
             Stops = new ReactiveList<Stop>();
             StopTimes = new ReactiveList<StopTime>();
             StopTimeFilter = new StopTimeFilter { RouteId = route.Id };
-            _routeUnitOfWork = routeUnitOfWork;
+            _routeService = routeService;
 
             #endregion
 
@@ -64,7 +64,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Getting stops
 
-            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.GetStopsByRouteId(Route.Id)));
+            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.GetStopsByRouteId(Route.Id)));
             GetStops.Subscribe(results =>
             {
                 Stops.Clear();
@@ -80,7 +80,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Updating stop times
 
-            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.GetRouteTimetableByStopId(StopTimeFilter)));
+            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.GetRouteTimetableByStopId(StopTimeFilter)));
             UpdateStopTimes.Subscribe(results =>
             {
                 StopTimes.Clear();
@@ -96,7 +96,7 @@ namespace PublicTransport.Client.ViewModels.Browse
             DeleteTrip = ReactiveCommand.CreateAsyncTask(stopTimeSelected, async _ =>
             {
                 // should cascade delete all stop times
-                await Task.Run(() => _routeUnitOfWork.DeleteTrip(SelectedStopTime.Trip));
+                await Task.Run(() => _routeService.DeleteTrip(SelectedStopTime.Trip));
                 return Unit.Default;
             });
             DeleteTrip.Subscribe(_ => SelectedStopTime = null);
@@ -109,9 +109,9 @@ namespace PublicTransport.Client.ViewModels.Browse
             #region Add/edit trip commands
 
             AddTrip = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, _routeUnitOfWork, Route, Stops)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, _routeService, Route, Stops)));
             EditTrip = ReactiveCommand.CreateAsyncObservable(stopTimeSelected, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, _routeUnitOfWork, SelectedStopTime.Trip)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditTripViewModel(screen, _routeService, SelectedStopTime.Trip)));
 
             #endregion
 

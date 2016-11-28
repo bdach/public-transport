@@ -4,7 +4,7 @@ namespace PublicTransport.Services.DataTransfer.Filters
 {
     /// <summary>
     ///     Data transfer object interface.
-    ///     Used by the <see cref="StopTimeService" /> to perform filtering.
+    ///     Used by the <see cref="StopTimeRepository" /> to perform filtering.
     /// </summary>
     public interface IStopTimeFilter
     {

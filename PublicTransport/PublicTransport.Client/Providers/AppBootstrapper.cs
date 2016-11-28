@@ -1,4 +1,5 @@
-﻿using PublicTransport.Client.ViewModels;
+﻿using PublicTransport.Client.Services.CityService;
+using PublicTransport.Client.ViewModels;
 using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Entities;
@@ -9,6 +10,7 @@ using PublicTransport.Client.Views.Edit;
 using PublicTransport.Client.Views.Entities;
 using PublicTransport.Client.Views.Filter;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Providers;
 using ReactiveUI;
 using Splat;
@@ -63,7 +65,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new TimetableView(), typeof(IViewFor<TimetableViewModel>));
 
             // Entity views.
-            Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<City>));
+            Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<CityDto>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
             Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
@@ -73,6 +75,9 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
             Locator.CurrentMutable.Register(() => new RoleView(), typeof(IViewFor<RoleViewModel>));
             Locator.CurrentMutable.Register(() => new UserView(), typeof(IViewFor<User>));
+
+            // WCF services.
+            Locator.CurrentMutable.Register(() => new CityServiceClient(), typeof(ICityService));
         }
 
         /// <summary>

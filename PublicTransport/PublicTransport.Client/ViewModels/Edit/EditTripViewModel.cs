@@ -8,7 +8,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IRouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteService _routeService;
 
         /// <summary>
         ///     Used for filtering <see cref="Route" /> objects.
@@ -52,12 +52,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display to.</param>
-        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
-        private EditTripViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork)
+        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        private EditTripViewModel(IScreen screen, IRouteService routeService)
         {
             HostScreen = screen;
             RouteSuggestions = new ReactiveList<Route>();
-            _routeUnitOfWork = routeUnitOfWork;
+            _routeService = routeService;
             _routeFilter = new RouteFilter();
             StopTimes = new ReactiveList<EditStopTimeViewModel>();
         }
@@ -66,13 +66,13 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor. Used when a trip is being edited.
         /// </summary>
         /// <param name="screen">Screen to display on.</param>
-        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
         /// <param name="trip">Trip to edit.</param>
-        public EditTripViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Trip trip) : this(screen, routeUnitOfWork)
+        public EditTripViewModel(IScreen screen, IRouteService routeService, Trip trip) : this(screen, routeService)
         {
             Trip = trip;
-            var toAdd = _routeUnitOfWork.GetTripStops(trip);
-            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_routeUnitOfWork, s)));
+            var toAdd = _routeService.GetTripStops(trip);
+            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_routeService, s)));
             SetUp(false);
         }
 
@@ -80,10 +80,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor. Used for adding a trip of an existing route.
         /// </summary>
         /// <param name="screen">Screen to display on.</param>
-        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
         /// <param name="route">Route to add to.</param>
         /// <param name="stops">List of stops to initialize the stop list with.</param>
-        public EditTripViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Route route, IEnumerable<Stop> stops) : this(screen, routeUnitOfWork)
+        public EditTripViewModel(IScreen screen, IRouteService routeService, Route route, IEnumerable<Stop> stops) : this(screen, routeService)
         {
             Trip = new Trip
             {
@@ -96,7 +96,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 StopId = s.Id,
                 Stop = s
             }).ToList();
-            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_routeUnitOfWork, s)));
+            StopTimes.AddRange(toAdd.Select(s => new EditStopTimeViewModel(_routeService, s)));
             SetUp(true);
         }
 
@@ -213,7 +213,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         {
             #region Field/property initialization
 
-            var tripServiceMethod = isNew ? new Func<Trip, Trip>(_routeUnitOfWork.CreateTrip) : _routeUnitOfWork.UpdateTrip;
+            var tripServiceMethod = isNew ? new Func<Trip, Trip>(_routeService.CreateTrip) : _routeService.UpdateTrip;
             SelectedRoute = _trip.Route;
             RouteSuggestions.Add(SelectedRoute);
             _routeFilter.ShortNameFilter = _trip.ShortName ?? "";
@@ -235,7 +235,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 var result = await Task.Run(() => tripServiceMethod(Trip));
                 Trip = result;
                 var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
-                await Task.Run(() => _routeUnitOfWork.UpdateStops(Trip.Id, stopTimes));
+                await Task.Run(() => _routeService.UpdateStops(Trip.Id, stopTimes));
                 return result;
             });
             // On exceptions: Display error.
@@ -246,7 +246,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.FilterRoutes(RouteFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
@@ -280,7 +280,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region Adding a new stop
 
             AddStop = ReactiveCommand.Create();
-            AddStop.Subscribe(_ => StopTimes.Add(new EditStopTimeViewModel(_routeUnitOfWork)));
+            AddStop.Subscribe(_ => StopTimes.Add(new EditStopTimeViewModel(_routeService)));
 
             #endregion
 

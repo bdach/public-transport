@@ -7,7 +7,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IStopUnitOfWork _stopUnitOfWork;
+        private readonly IStopService _stopService;
 
         /// <summary>
         ///     The <see cref="Agency" /> object being edited in the window.
@@ -61,9 +61,9 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="stopUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="stopService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="stop">Stop to be edited. If a stop is to be added, this parameter should be left null.</param>
-        public EditStopViewModel(IScreen screen, IStopUnitOfWork stopUnitOfWork, Stop stop = null)
+        public EditStopViewModel(IScreen screen, IStopService stopService, Stop stop = null)
         {
             #region Field/property initialization
 
@@ -71,12 +71,12 @@ namespace PublicTransport.Client.ViewModels.Edit
             StreetSuggestions = new ReactiveList<Street>();
             ZoneSuggestions = new ReactiveList<Zone>();
             ParentStationSuggestions = new ReactiveList<Stop>();
-            _stopUnitOfWork = stopUnitOfWork;
+            _stopService = stopService;
 
             _streetFilter = new StreetFilter();
             _parentStationFilter = new StopFilter { OnlyStations = true };
 
-            var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopUnitOfWork.CreateStop) : _stopUnitOfWork.UpdateStop;
+            var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopService.CreateStop) : _stopService.UpdateStop;
             _stop = stop ?? new Stop();
             _selectedStreet = _stop.Street;
             _selectedZone = _stop.Zone;
@@ -106,7 +106,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions commands
 
-            UpdateStreetSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopUnitOfWork.FilterStreets(StreetFilter)));
+            UpdateStreetSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStreets(StreetFilter)));
             UpdateStreetSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();
@@ -115,7 +115,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             UpdateStreetSuggestions.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopUnitOfWork.FilterZones(ZoneFilter)));
+            UpdateZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterZones(ZoneFilter)));
             UpdateZoneSuggestions.Subscribe(results =>
             {
                 ZoneSuggestions.Clear();
@@ -124,7 +124,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             UpdateZoneSuggestions.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateParentStationSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopUnitOfWork.FilterStops(ParentStationFilter)));
+            UpdateParentStationSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(ParentStationFilter)));
             UpdateParentStationSuggestions.Subscribe(results =>
             {
                 ParentStationSuggestions.Clear();

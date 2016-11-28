@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -23,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IStreetUnitOfWork _streetUnitOfWork;
+        private readonly IStreetService _streetService;
 
         /// <summary>
         ///     <see cref="Street" /> object currently selected in the view.
@@ -39,13 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="streetUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterStreetViewModel(IScreen screen, IStreetUnitOfWork streetUnitOfWork = null)
+        /// <param name="streetService">Unit of work used in the view model to access the database.</param>
+        public FilterStreetViewModel(IScreen screen, IStreetService streetService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _streetUnitOfWork = streetUnitOfWork ?? Locator.Current.GetService<IStreetUnitOfWork>();
+            _streetService = streetService ?? Locator.Current.GetService<IStreetService>();
             _streetFilter = new StreetFilter();
             Streets = new ReactiveList<Street>();
 
@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Street filtering command
 
-            FilterStreets = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _streetUnitOfWork.FilterStreets(StreetFilter)); });
+            FilterStreets = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _streetService.FilterStreets(StreetFilter)); });
             FilterStreets.Subscribe(result =>
             {
                 Streets.Clear();
@@ -80,7 +80,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             // TODO: Maybe prompt for confirmation?
             DeleteStreet = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _streetUnitOfWork.DeleteStreet(SelectedStreet));
+                await Task.Run(() => _streetService.DeleteStreet(SelectedStreet));
                 return Unit.Default;
             });
             DeleteStreet.Subscribe(_ => SelectedStreet = null);
@@ -93,9 +93,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit street commands
 
             AddStreet = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, _streetUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, _streetService)));
             EditStreet = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, _streetUnitOfWork, SelectedStreet)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStreetViewModel(screen, _streetService, SelectedStreet)));
 
             #endregion
 
@@ -111,7 +111,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _streetUnitOfWork.Dispose());
+                .Subscribe(_ => _streetService.Dispose());
 
             #endregion
         }

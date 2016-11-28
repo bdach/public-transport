@@ -7,7 +7,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IAgencyUnitOfWork _agencyUnitOfWork;
+        private readonly IAgencyService _agencyService;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
@@ -41,16 +41,16 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="agencyService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="agency">Agency to be edited. If an agency is to be added, this parameter should be left null.</param>
-        public EditAgencyViewModel(IScreen screen, IAgencyUnitOfWork agencyUnitOfWork, Agency agency = null)
+        public EditAgencyViewModel(IScreen screen, IAgencyService agencyService, Agency agency = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             StreetSuggestions = new ReactiveList<Street>();
-            _agencyUnitOfWork = agencyUnitOfWork;
-            var serviceMethod = agency == null ? new Func<Agency, Agency>(_agencyUnitOfWork.CreateAgency) : _agencyUnitOfWork.UpdateAgency;
+            _agencyService = agencyService;
+            var serviceMethod = agency == null ? new Func<Agency, Agency>(_agencyService.CreateAgency) : _agencyService.UpdateAgency;
             _agency = agency ?? new Agency();
             _selectedStreet = _agency.Street;
             _streetFilter = new StreetFilter { StreetNameFilter = _agency.Street?.Name ?? "" };
@@ -70,7 +70,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyUnitOfWork.FilterStreets(StreetFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyService.FilterStreets(StreetFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();

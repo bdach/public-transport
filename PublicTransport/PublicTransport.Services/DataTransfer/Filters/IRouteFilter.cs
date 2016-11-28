@@ -4,7 +4,7 @@ namespace PublicTransport.Services.DataTransfer.Filters
 {
     /// <summary>
     ///     Data transfer object interface.
-    ///     Used by the <see cref="RouteService" /> to perform filtering.
+    ///     Used by the <see cref="RouteRepository" /> to perform filtering.
     /// </summary>
     public interface IRouteFilter
     {

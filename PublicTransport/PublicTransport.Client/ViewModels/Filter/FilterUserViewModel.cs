@@ -10,7 +10,7 @@ using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -24,7 +24,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IUserUnitOfWork _userUnitOfWork;
+        private readonly IUserService _userService;
 
         /// <summary>
         ///     <see cref="DataTransfer.UserFilter" /> object used to send query data to the service layer.
@@ -40,13 +40,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        /// <param name="userUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterUserViewModel(IScreen screen, IUserUnitOfWork userUnitOfWork = null)
+        /// <param name="userService">Unit of work used in the view model to access the database.</param>
+        public FilterUserViewModel(IScreen screen, IUserService userService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _userUnitOfWork = userUnitOfWork ?? Locator.Current.GetService<IUserUnitOfWork>();
+            _userService = userService ?? Locator.Current.GetService<IUserService>();
             _userFilter = new UserFilter();
             Users = new ReactiveList<User>();
             Roles = new ReactiveList<RoleType>(Enum.GetValues(typeof(RoleType)).Cast<RoleType>());
@@ -57,7 +57,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region User filtering command
 
-            FilterUsers = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _userUnitOfWork.FilterUsers(UserFilter)));
+            FilterUsers = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _userService.FilterUsers(UserFilter)));
             FilterUsers.Subscribe(result =>
             {
                 Users.Clear();
@@ -83,7 +83,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteUser = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _userUnitOfWork.DeleteUser(SelectedUser));
+                await Task.Run(() => _userService.DeleteUser(SelectedUser));
                 return Unit.Default;
             });
             DeleteUser.Subscribe(_ => SelectedUser = null);
@@ -96,9 +96,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit user commands
 
             AddUser = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen, _userUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen, _userService)));
             EditUser = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen, _userUnitOfWork, SelectedUser)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditUserViewModel(HostScreen, _userService, SelectedUser)));
 
             #endregion
 
@@ -121,7 +121,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _userUnitOfWork.Dispose());
+                .Subscribe(_ => _userService.Dispose());
 
             #endregion
         }

@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -23,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IStopUnitOfWork _stopUnitOfWork;
+        private readonly IStopService _stopService;
 
         /// <summary>
         ///     <see cref="DataTransfer.StopFilter" /> object used to send query data to the service layer.
@@ -39,13 +39,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="stopUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterStopViewModel(IScreen screen, IStopUnitOfWork stopUnitOfWork = null)
+        /// <param name="stopService">Unit of work used in the view model to access the database.</param>
+        public FilterStopViewModel(IScreen screen, IStopService stopService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _stopUnitOfWork = stopUnitOfWork ?? Locator.Current.GetService<IStopUnitOfWork>();
+            _stopService = stopService ?? Locator.Current.GetService<IStopService>();
             _stopFilter = new StopFilter();
             Stops = new ReactiveList<Stop>();
 
@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Stop filtering command
 
-            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopUnitOfWork.FilterStops(StopFilter)));
+            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
             FilterStops.Subscribe(result =>
             {
                 Stops.Clear();
@@ -84,7 +84,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteStop = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _stopUnitOfWork.DeleteStop(SelectedStop));
+                await Task.Run(() => _stopService.DeleteStop(SelectedStop));
                 return Unit.Default;
             });
             DeleteStop.Subscribe(_ => SelectedStop = null);
@@ -97,9 +97,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit stop command
 
             AddStop = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopService)));
             EditStop = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopUnitOfWork, SelectedStop)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopService, SelectedStop)));
 
             #endregion
 
@@ -115,7 +115,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _stopUnitOfWork.Dispose());
+                .Subscribe(_ => _stopService.Dispose());
 
             #endregion
         }

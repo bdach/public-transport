@@ -2,7 +2,7 @@
 {
     /// <summary>
     ///     Data transfer object interface.
-    ///     Used by the <see cref="FareAttributeService" /> to perform filtering.
+    ///     Used by the <see cref="FareAttributeRepository" /> to perform filtering.
     /// </summary>
     public interface IFareFilter
     {

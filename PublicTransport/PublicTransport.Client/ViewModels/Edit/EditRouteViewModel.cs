@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IRouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteService _routeService;
 
         /// <summary>
         ///     Filter used to make queries about <see cref="Agency" /> objects.
@@ -43,9 +43,9 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="routeUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="routeService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="route">Route to be edited. If a route is to be added, this parameter should be left null.</param>
-        public EditRouteViewModel(IScreen screen, IRouteUnitOfWork routeUnitOfWork, Route route = null)
+        public EditRouteViewModel(IScreen screen, IRouteService routeService, Route route = null)
         {
             #region Field/property initialization
 
@@ -53,8 +53,8 @@ namespace PublicTransport.Client.ViewModels.Edit
             AgencySuggestions = new ReactiveList<Agency>();
             RouteTypes = new ReactiveList<RouteType>(Enum.GetValues(typeof(RouteType)).Cast<RouteType>());
             _agencyFilter = new AgencyFilter();
-            _routeUnitOfWork = routeUnitOfWork;
-            var serviceMethod = route == null ? new Func<Route, Route>(routeUnitOfWork.CreateRoute) : routeUnitOfWork.UpdateRoute;
+            _routeService = routeService;
+            var serviceMethod = route == null ? new Func<Route, Route>(routeService.CreateRoute) : routeService.UpdateRoute;
             _route = route ?? new Route();
             _selectedAgency = _route.Agency;
             _agencyFilter.AgencyNameFilter = _route.Agency?.Name ?? "";
@@ -75,7 +75,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions command
 
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _routeUnitOfWork.FilterAgencies(AgencyFilter)));
+                await Task.Run(() => _routeService.FilterAgencies(AgencyFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 AgencySuggestions.Clear();

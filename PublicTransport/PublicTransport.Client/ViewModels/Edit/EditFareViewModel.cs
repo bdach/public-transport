@@ -9,7 +9,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IFareUnitOfWork _fareUnitOfWork;
+        private readonly IFareService _fareService;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.FareAttribute" /> object being edited in the window.
@@ -68,22 +68,22 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="fareUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="fareService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="fareAttribute">Fare to be edited. If a fare is to be added, this parameter should be left null.</param>
-        public EditFareViewModel(IScreen screen, IFareUnitOfWork fareUnitOfWork, FareAttribute fareAttribute = null)
+        public EditFareViewModel(IScreen screen, IFareService fareService, FareAttribute fareAttribute = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _fareUnitOfWork = fareUnitOfWork;
+            _fareService = fareService;
             _routeFilter = new RouteFilter();
             RouteSuggestions = new ReactiveList<Route>();
             OriginZoneSuggestions = new ReactiveList<Zone>();
             DestinationZoneSuggestions = new ReactiveList<Zone>();
             TransferCounts = new ReactiveList<TransferCount>(Enum.GetValues(typeof(TransferCount)).Cast<TransferCount>());
 
-            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(_fareUnitOfWork.CreateFareAttribute) : _fareUnitOfWork.UpdateFareAttribute;
-            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(_fareUnitOfWork.CreateFareRule) : _fareUnitOfWork.UpdateFareRule;
+            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(_fareService.CreateFareAttribute) : _fareService.UpdateFareAttribute;
+            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(_fareService.CreateFareRule) : _fareService.UpdateFareRule;
             _fareAttribute = fareAttribute ?? new FareAttribute();
             _fareRule = _fareAttribute.FareRule ?? new FareRule();
             _selectedRoute = _fareRule.Route;
@@ -123,7 +123,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions commands
 
             UpdateRouteSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareUnitOfWork.FilterRoutes(RouteFilter)));
+                await Task.Run(() => _fareService.FilterRoutes(RouteFilter)));
             UpdateRouteSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
@@ -133,7 +133,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             UpdateOriginZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareUnitOfWork.FilterZones(OriginZoneFilter)));
+                await Task.Run(() => _fareService.FilterZones(OriginZoneFilter)));
             UpdateOriginZoneSuggestions.Subscribe(results =>
             {
                 OriginZoneSuggestions.Clear();
@@ -143,7 +143,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             UpdateDestinationZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareUnitOfWork.FilterZones(DestinationZoneFilter)));
+                await Task.Run(() => _fareService.FilterZones(DestinationZoneFilter)));
             UpdateDestinationZoneSuggestions.Subscribe(results =>
             {
                 DestinationZoneSuggestions.Clear();

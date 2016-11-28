@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -17,7 +17,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IRouteUnitOfWork _routeUnitOfWork;
+        private readonly IRouteService _routeService;
 
         /// <summary>
         ///     Currently selected <see cref="Stop"/> object.
@@ -37,14 +37,14 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="routeUnitOfWork">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
         /// <param name="stopTime">Stop time to edit; null if a stop time is to be added.</param>
-        public EditStopTimeViewModel(IRouteUnitOfWork routeUnitOfWork, StopTime stopTime = null)
+        public EditStopTimeViewModel(IRouteService routeService, StopTime stopTime = null)
         {
             #region Property/field initialization
 
             StopSuggestions = new ReactiveList<Stop>();
-            _routeUnitOfWork = routeUnitOfWork;
+            _routeService = routeService;
             _stopFilter = new StopFilter { StopNameFilter = stopTime?.Stop?.Name ?? "" };
             SelectedStop = stopTime?.Stop;
             _stopTime = stopTime ?? new StopTime();
@@ -53,7 +53,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeUnitOfWork.FilterStops(StopFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterStops(StopFilter)));
             UpdateSuggestions.Subscribe(results =>
             {
                 StopSuggestions.Clear();

@@ -1,175 +1,166 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
-    /// <summary>
-    ///     Service for managing users.
-    /// </summary>
-    public class UserService
+    public interface IUserService : IDisposable
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Calls <see cref="UserRepository"/> create method.
+        /// </summary>
+        /// <param name="user"><see cref="User"/> object to be inserted into the database.</param>
+        /// <returns>
+        ///     <see cref="User"/> object successfully inserted into the database.
+        /// </returns>
+        User CreateUser(User user);
+
+        /// <summary>
+        ///     Calls <see cref="UserRepository"/> update method.
+        /// </summary>
+        /// <param name="user"><see cref="User"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="User"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        /// </exception>
+        User UpdateUser(User user);
+
+        /// <summary>
+        ///     Calls <see cref="UserRepository"/> delete method.
+        /// </summary>
+        /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        /// </exception>
+        void DeleteUser(User user);
+
+        /// <summary>
+        ///     Calls <see cref="UserRepository"/> filtering method.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="User"/> objects matching the filtering query.
+        /// </returns>
+        List<User> FilterUsers(IUserFilter filter);
+
+        /// <summary>
+        ///     Returns a list of all roles from the database.
+        /// </summary>
+        /// <returns>
+        ///     List of all roles from the database.
+        /// </returns>
+        List<Role> GetAllRoles();
+    }
+
+    /// <summary>
+    ///     Unit of work used to manage user data.
+    /// </summary>
+    public class UserService : IUserService
+    {
+        /// <summary>
+        ///     Service used to fetch <see cref="User"/> data from the database.
+        /// </summary>
+        private readonly UserRepository _userRepository;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Role"/> data from the database.
+        /// </summary>
+        private readonly RoleRepository _roleRepository;
+
+        /// <summary>
+        ///     Database context common for services in this unit of work used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
         /// <summary>
-        ///     Service providing password hashing capabilities.
+        ///     Determines whether the database context has been disposed.
         /// </summary>
-        private readonly IPasswordService _passwordService;
+        private bool _disposed;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public UserService(PublicTransportContext db)
+        public UserService()
         {
-            _db = db;
-            _passwordService = new PasswordService();
+            _db = new PublicTransportContext();
+            _userRepository = new UserRepository(_db);
+            _roleRepository = new RoleRepository(_db);
         }
 
         /// <summary>
-        ///     Constructor.
+        ///     Calls <see cref="UserRepository"/> create method.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        /// <param name="passwordService">Password service to use for generating and comparing hashes.</param>
-        public UserService(PublicTransportContext db, IPasswordService passwordService)
-        {
-            _db = db;
-            _passwordService = passwordService;
-        }
-
-        /// <summary>
-        ///     Inserts a <see cref="User" /> record into the database.
-        /// </summary>
-        /// <param name="user"><see cref="User" /> object to insert into the database.</param>
-        /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
-        public User Create(User user)
-        {
-            user.Password = _passwordService.GenerateHash(user.Password);
-            var roles = new List<Role>();
-            foreach (var role in user.Roles)
-            {
-                var currentRole = _db.Roles.FirstOrDefault(r => r.Id == role.Id && r.Name == role.Name);
-                if (currentRole == null)
-                {
-                    return null;
-                }
-                roles.Add(currentRole);
-            }
-            user.Roles = roles;
-
-            _db.Users.Add(user);
-            _db.SaveChanges();
-            return user;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="User" /> with the supplied <see cref="User.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="User" />.</param>
+        /// <param name="user"><see cref="User"/> object to be inserted into the database.</param>
         /// <returns>
-        ///     <see cref="User" /> object with the supplied ID number, or null if the <see cref="User" /> with the supplied ID
-        ///     could not be found in the database.
+        ///     <see cref="User"/> object successfully inserted into the database.
         /// </returns>
-        public User Read(int id)
+        public User CreateUser(User user)
         {
-            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.Id == id);
-            if (user != null)
-            {
-                user.Password = null;
-            }
-            return user;
+            return _userRepository.Create(user);
         }
 
         /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="User" />.
+        ///     Calls <see cref="UserRepository"/> update method.
         /// </summary>
-        /// <param name="user"><see cref="User" /> object to update.</param>
-        /// <returns>Updated <see cref="User" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="user"><see cref="User"/> object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="User"/> object successfully updated in the database.
+        /// </returns>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
-        public User Update(User user)
+        public User UpdateUser(User user)
         {
-            user.Password = _passwordService.GenerateHash(user.Password);
-            var old = Read(user.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            var roles = new List<Role>();
-            foreach (var role in user.Roles)
-            {
-                var currentRole = _db.Roles.FirstOrDefault(r => r.Id == role.Id && r.Name == role.Name);
-                if (currentRole == null)
-                {
-                    return null;
-                }
-                roles.Add(currentRole);
-            }
-            user.Roles = roles;
-
-            var deletedRoles = old.Roles.Except(user.Roles).ToList();
-            var addedRoles = user.Roles.Except(old.Roles).ToList();
-            deletedRoles.ForEach(r => old.Roles.Remove(r));
-            _db.Entry(old).CurrentValues.SetValues(user);
-
-            foreach (var role in addedRoles)
-            {
-                if (_db.Entry(role).State == EntityState.Detached)
-                {
-                    _db.Roles.Attach(role);
-                }
-                old.Roles.Add(role);
-            }
-
-            _db.Entry(old).CurrentValues.SetValues(user);
-            _db.SaveChanges();
-            return user;
+            return _userRepository.Update(user);
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="User" /> from the database.
+        ///     Calls <see cref="UserRepository"/> delete method.
         /// </summary>
-        /// <param name="user"><see cref="User" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
+        /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
+        /// <exception cref="Exceptions.EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
-        public void Delete(User user)
+        public void DeleteUser(User user)
         {
-            var old = Read(user.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
+            _userRepository.Delete(user);
         }
 
         /// <summary>
-        ///     Selects all the <see cref="User" /> objects that match all the criteria specified by the
-        ///     <see cref="IUserFilter" /> object. The returned name strings all contain the
-        ///     parameters supplied in the <see cref="filter" /> parameter.
+        ///     Calls <see cref="UserRepository"/> filtering method.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
+        /// <returns>
+        ///     List of <see cref="User"/> objects matching the filtering query.
+        /// </returns>
         public List<User> FilterUsers(IUserFilter filter)
         {
-            var users = _db.Users.Include(u => u.Roles)
-                .Where(u => u.UserName.Contains(filter.UserNameFilter))
-                .Where(u => !filter.RoleTypeFilter.HasValue || u.Roles.Any(r => r.Name == filter.RoleTypeFilter.Value))
-                .Take(20)
-                .ToList();
-            users.ForEach(u => u.Password = null);
-            return users;
+            return _userRepository.FilterUsers(filter);
+        }
+
+        /// <summary>
+        ///     Returns a list of all roles from the database.
+        /// </summary>
+        /// <returns>
+        ///     List of all roles from the database.
+        /// </returns>
+        public List<Role> GetAllRoles()
+        {
+            return _roleRepository.GetAllRoles();
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

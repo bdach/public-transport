@@ -8,7 +8,7 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 using Splat;
 
@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     Unit of work used in the view model to access the database.
         /// </summary>
-        private readonly IZoneUnitOfWork _zoneUnitOfWork;
+        private readonly IZoneService _zoneService;
 
         /// <summary>
         ///     String containing the zone name filter.
@@ -38,13 +38,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="zoneUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
-        public FilterZoneViewModel(IScreen screen, IZoneUnitOfWork zoneUnitOfWork = null)
+        /// <param name="zoneService">Unit of work exposing methods necessary to manage data.</param>
+        public FilterZoneViewModel(IScreen screen, IZoneService zoneService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _zoneUnitOfWork = zoneUnitOfWork ?? Locator.Current.GetService<IZoneUnitOfWork>();
+            _zoneService = zoneService ?? Locator.Current.GetService<IZoneService>();
             Zones = new ReactiveList<Zone>();
 
             #endregion
@@ -53,7 +53,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Zone filtering command
 
-            FilterZones = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _zoneUnitOfWork.FilterZones(NameFilter)); });
+            FilterZones = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _zoneService.FilterZones(NameFilter)); });
             FilterZones.Subscribe(result =>
             {
                 Zones.Clear();
@@ -78,7 +78,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             // TODO: Maybe prompt for confirmation?
             DeleteZone = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _zoneUnitOfWork.DeleteZone(SelectedZone));
+                await Task.Run(() => _zoneService.DeleteZone(SelectedZone));
                 return Unit.Default;
             });
             DeleteZone.Subscribe(_ => SelectedZone = null);
@@ -91,9 +91,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit zone commands
 
             AddZone = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneService)));
             EditZone = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneUnitOfWork, SelectedZone)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneService, SelectedZone)));
 
             #endregion
 
@@ -109,7 +109,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen.Router.NavigateAndReset
                 .Skip(1)
-                .Subscribe(_ => _zoneUnitOfWork.Dispose());
+                .Subscribe(_ => _zoneService.Dispose());
 
             #endregion
         }
