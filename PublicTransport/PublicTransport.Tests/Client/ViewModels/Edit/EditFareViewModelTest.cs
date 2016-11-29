@@ -5,8 +5,8 @@ using Moq;
 using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
@@ -14,13 +14,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     [TestFixture]
     public class EditFareViewModelTest : RoutableChildViewModelTest
     {
-        private Mock<IFareUnitOfWork> _fareUnitOfWork;
+        private Mock<IFareService> _fareUnitOfWork;
         private EditFareViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _fareUnitOfWork = new Mock<IFareUnitOfWork>();
+            _fareUnitOfWork = new Mock<IFareService>();
         }
 
         [Test]

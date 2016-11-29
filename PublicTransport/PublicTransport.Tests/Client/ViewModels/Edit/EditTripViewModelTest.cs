@@ -8,21 +8,21 @@ using Moq;
 using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
     public class EditTripViewModelTest : RoutableChildViewModelTest
     {
-        private Mock<IRouteUnitOfWork> _routeUnitOfWork;
+        private Mock<IRouteService> _routeService;
         private EditTripViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
+            _routeService = new Mock<IRouteService>();
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             var stops = new List<Stop> { new Stop {Id = 3}, new Stop {Id = 5} };
             var route = new Route {Id = 10};
             // when
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, route, stops);
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, route, stops);
             // then
             _viewModel.Trip.Route.ShouldBeEquivalentTo(route);
             _viewModel.Trip.RouteId.ShouldBeEquivalentTo(10);
@@ -44,9 +44,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var stopTimes = new List<StopTime> {new StopTime(), new StopTime()};
             var trip = new Trip();
-            _routeUnitOfWork.Setup(r => r.GetTripStops(trip)).Returns(stopTimes);
+            _routeService.Setup(r => r.GetTripStops(trip)).Returns(stopTimes);
             // when
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, trip);
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, trip);
             // then
             _viewModel.Trip.ShouldBeEquivalentTo(trip);
             _viewModel.StopTimes.Select(s => s.StopTime).ShouldAllBeEquivalentTo(stopTimes);
@@ -58,7 +58,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var stops = new List<Stop> { new Stop { Id = 3 }, new Stop { Id = 5 } };
             var route = new Route { Id = 10 };
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, route, stops);
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, route, stops);
             // when
             _viewModel.SelectedRoute = null;
             _viewModel.Trip.Service = null;
@@ -76,13 +76,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var stops = new List<Stop> { new Stop { Id = 3 }, new Stop { Id = 5 } };
             var route = new Route { Id = 10 };
-            _routeUnitOfWork.Setup(r => r.CreateTrip(It.IsAny<Trip>())).Returns(new Trip { Id = 42 });
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, route, stops);
+            _routeService.Setup(r => r.CreateTrip(It.IsAny<Trip>())).Returns(new Trip { Id = 42 });
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, route, stops);
             // when
             _viewModel.SaveTrip.ExecuteAsyncTask().Wait();
             // then
-            _routeUnitOfWork.Verify(r => r.CreateTrip(It.IsAny<Trip>()), Times.Once);
-            _routeUnitOfWork.Verify(r => r.UpdateStops(42, It.IsAny<List<StopTime>>()), Times.Once);
+            _routeService.Verify(r => r.CreateTrip(It.IsAny<Trip>()), Times.Once);
+            _routeService.Verify(r => r.UpdateStops(42, It.IsAny<List<StopTime>>()), Times.Once);
         }
 
         [Test]
@@ -91,14 +91,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var stopTimes = new List<StopTime> { new StopTime(), new StopTime() };
             var trip = new Trip { Id = 666 };
-            _routeUnitOfWork.Setup(r => r.GetTripStops(trip)).Returns(stopTimes);
-            _routeUnitOfWork.Setup(r => r.UpdateTrip(It.IsAny<Trip>())).Returns(trip);
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, trip);
+            _routeService.Setup(r => r.GetTripStops(trip)).Returns(stopTimes);
+            _routeService.Setup(r => r.UpdateTrip(It.IsAny<Trip>())).Returns(trip);
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, trip);
             // when
             _viewModel.SaveTrip.ExecuteAsyncTask().Wait();
             // then
-            _routeUnitOfWork.Verify(r => r.UpdateTrip(trip), Times.Once);
-            _routeUnitOfWork.Verify(r => r.UpdateStops(666, It.IsAny<List<StopTime>>()), Times.Once);
+            _routeService.Verify(r => r.UpdateTrip(trip), Times.Once);
+            _routeService.Verify(r => r.UpdateStops(666, It.IsAny<List<StopTime>>()), Times.Once);
         }
 
         [Test]
@@ -106,12 +106,12 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         {
             // given
             var trip = new Trip();
-            _routeUnitOfWork.Setup(r => r.GetTripStops(trip)).Returns(new List<StopTime>());
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, trip);
+            _routeService.Setup(r => r.GetTripStops(trip)).Returns(new List<StopTime>());
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, trip);
             // when
             _viewModel.RouteFilter.ShortNameFilter = "";
             // then
-            _routeUnitOfWork.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
         }
 
         //[Test]
@@ -121,16 +121,16 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             {
                 // given
                 var trip = new Trip();
-                _routeUnitOfWork.Setup(r => r.GetTripStops(trip)).Returns(new List<StopTime>());
-                _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, trip);
+                _routeService.Setup(r => r.GetTripStops(trip)).Returns(new List<StopTime>());
+                _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, trip);
                 s.AdvanceByMs(100);
                 // when
                 _viewModel.RouteFilter.ShortNameFilter = "test";
                 // then
                 s.AdvanceByMs(250);
-                _routeUnitOfWork.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+                _routeService.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _routeUnitOfWork.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Once);
+                _routeService.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Once);
             });
         }
 
@@ -143,8 +143,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 .Where(vm => vm is EditCalendarViewModel)
                 .Subscribe(_ => navigatedToCalendar = true);
             var trip = new Trip();
-            _routeUnitOfWork.Setup(r => r.GetTripStops(trip)).Returns(new List<StopTime>());
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, trip);
+            _routeService.Setup(r => r.GetTripStops(trip)).Returns(new List<StopTime>());
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, trip);
             // when
             _viewModel.NavigateToCalendar.ExecuteAsyncTask().Wait();
             // then
@@ -157,8 +157,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var stops = new List<Stop> { new Stop { Id = 3 }, new Stop { Id = 5 } };
             var route = new Route { Id = 10 };
-            _routeUnitOfWork.Setup(r => r.CreateTrip(It.IsAny<Trip>())).Returns(new Trip { Id = 42 });
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, route, stops);
+            _routeService.Setup(r => r.CreateTrip(It.IsAny<Trip>())).Returns(new Trip { Id = 42 });
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, route, stops);
             // when
             _viewModel.AddStop.ExecuteAsync().Wait();
             // then
@@ -171,8 +171,8 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var stops = new List<Stop> { new Stop { Id = 3 }, new Stop { Id = 5 } };
             var route = new Route { Id = 10 };
-            _routeUnitOfWork.Setup(r => r.CreateTrip(It.IsAny<Trip>())).Returns(new Trip { Id = 42 });
-            _viewModel = new EditTripViewModel(Screen.Object, _routeUnitOfWork.Object, route, stops);
+            _routeService.Setup(r => r.CreateTrip(It.IsAny<Trip>())).Returns(new Trip { Id = 42 });
+            _viewModel = new EditTripViewModel(Screen.Object, _routeService.Object, route, stops);
             _viewModel.SelectedStopTime = _viewModel.StopTimes[0];
             // when
             _viewModel.DeleteStop.ExecuteAsync().Wait();

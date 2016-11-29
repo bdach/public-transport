@@ -53,7 +53,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region City filtering command
 
-            FilterCities = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _cityService.FilterCities(NameFilter)); });
+            FilterCities = ReactiveCommand.CreateAsyncTask(async _ => await _cityService.FilterCitiesAsync(NameFilter));
             FilterCities.Subscribe(result =>
             {
                 Cities.Clear();
@@ -77,7 +77,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             // TODO: Maybe prompt for confirmation?
             DeleteCity = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _cityService.DeleteCity(SelectedCity));
+                await _cityService.DeleteCityAsync(SelectedCity);
                 return Unit.Default;
             });
             DeleteCity.Subscribe(_ => SelectedCity = null);

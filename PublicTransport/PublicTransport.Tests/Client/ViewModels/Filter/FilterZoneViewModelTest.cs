@@ -7,7 +7,7 @@ using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
@@ -15,25 +15,25 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterZoneViewModelTest : RoutableViewModelTest
     {
-        private Mock<IZoneUnitOfWork> _zoneUnitOfWork;
+        private Mock<IZoneService> _zoneService;
         private FilterZoneViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _zoneUnitOfWork = new Mock<IZoneUnitOfWork>();
-            _viewModel = new FilterZoneViewModel(Screen.Object, _zoneUnitOfWork.Object);
+            _zoneService = new Mock<IZoneService>();
+            _viewModel = new FilterZoneViewModel(Screen.Object, _zoneService.Object);
         }
 
         [Test]
         public void FilterZones()
         {
             // given
-            _zoneUnitOfWork.Setup(z => z.FilterZones(It.IsAny<string>())).Returns(new List<Zone> { new Zone() });
+            _zoneService.Setup(z => z.FilterZones(It.IsAny<string>())).Returns(new List<Zone> { new Zone() });
             // when
             _viewModel.FilterZones.ExecuteAsync().Wait();
             // then
-            _zoneUnitOfWork.Verify(z => z.FilterZones(_viewModel.NameFilter), Times.Once);
+            _zoneService.Verify(z => z.FilterZones(_viewModel.NameFilter), Times.Once);
             _viewModel.Zones.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -44,7 +44,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // when
             _viewModel.NameFilter = "";
             // then
-            _zoneUnitOfWork.Verify(z => z.FilterZones(It.IsAny<string>()), Times.Never);
+            _zoneService.Verify(z => z.FilterZones(It.IsAny<string>()), Times.Never);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.SelectedZone = zone;
             _viewModel.DeleteZone.ExecuteAsync().Wait();
             // then
-            _zoneUnitOfWork.Verify(z => z.DeleteZone(zone), Times.Once);
+            _zoneService.Verify(z => z.DeleteZone(zone), Times.Once);
         }
 
         [Test]

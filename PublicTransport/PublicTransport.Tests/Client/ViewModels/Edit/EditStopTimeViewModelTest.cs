@@ -4,8 +4,8 @@ using Moq;
 using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
@@ -13,24 +13,24 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     [TestFixture]
     public class EditStopTimeViewModelTest
     {
-        private Mock<IRouteUnitOfWork> _routeUnitOfWork;
+        private Mock<IRouteService> _routeService;
         private EditStopTimeViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
+            _routeService = new Mock<IRouteService>();
         }
 
         [Test]
         public void UpdateSuggestions_InvalidFilter()
         {
             // given
-            _viewModel = new EditStopTimeViewModel(_routeUnitOfWork.Object);
+            _viewModel = new EditStopTimeViewModel(_routeService.Object);
             // when
             _viewModel.StopFilter.StopNameFilter = "";
             // then
-            _routeUnitOfWork.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
         }
 
         //[Test]
@@ -39,15 +39,15 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             new TestScheduler().With(s =>
             {
                 // given
-                _viewModel = new EditStopTimeViewModel(_routeUnitOfWork.Object);
+                _viewModel = new EditStopTimeViewModel(_routeService.Object);
                 s.AdvanceByMs(100);
                 // when
                 _viewModel.StopFilter.StopNameFilter = "test";
                 // then
                 s.AdvanceByMs(250);
-                _routeUnitOfWork.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+                _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _routeUnitOfWork.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Once);
+                _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Once);
             });
         }
 
@@ -55,7 +55,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         public void SelectStop_IdInserted()
         {
             // given
-            _viewModel = new EditStopTimeViewModel(_routeUnitOfWork.Object);
+            _viewModel = new EditStopTimeViewModel(_routeService.Object);
             // when
             _viewModel.SelectedStop = new Stop {Id = 10};
             // then

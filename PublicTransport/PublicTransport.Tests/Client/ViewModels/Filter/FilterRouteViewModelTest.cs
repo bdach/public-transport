@@ -10,8 +10,8 @@ using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
@@ -19,25 +19,25 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterRouteViewModelTest : RoutableViewModelTest
     {
-        private Mock<IRouteUnitOfWork> _routeUnitOfWork;
+        private Mock<IRouteService> _routeService;
         private FilterRouteViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
-            _viewModel = new FilterRouteViewModel(Screen.Object, _routeUnitOfWork.Object);
+            _routeService = new Mock<IRouteService>();
+            _viewModel = new FilterRouteViewModel(Screen.Object, _routeService.Object);
         }
 
         [Test]
         public void FilterRoutes()
         {
             // given
-            _routeUnitOfWork.Setup(r => r.FilterRoutes(It.IsAny<IRouteFilter>())).Returns(new List<Route> { new Route() });
+            _routeService.Setup(r => r.FilterRoutes(It.IsAny<IRouteFilter>())).Returns(new List<Route> { new Route() });
             // when
             _viewModel.FilterRoutes.ExecuteAsync().Wait();
             // then
-            _routeUnitOfWork.Verify(r => r.FilterRoutes(_viewModel.RouteFilter), Times.Once);
+            _routeService.Verify(r => r.FilterRoutes(_viewModel.RouteFilter), Times.Once);
             _viewModel.Routes.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -51,7 +51,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.RouteFilter.ShortNameFilter = "";
             _viewModel.RouteFilter.RouteTypeFilter = null;
             // then
-            _routeUnitOfWork.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.SelectedRoute = route;
             _viewModel.DeleteRoute.Execute(null);
             // then
-            _routeUnitOfWork.Verify(r => r.DeleteRoute(route), Times.Once);
+            _routeService.Verify(r => r.DeleteRoute(route), Times.Once);
         }
 
         [Test]

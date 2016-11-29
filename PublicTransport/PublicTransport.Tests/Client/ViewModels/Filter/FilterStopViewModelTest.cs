@@ -7,8 +7,8 @@ using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
@@ -16,25 +16,25 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterStopViewModelTest : RoutableViewModelTest
     {
-        private Mock<IStopUnitOfWork> _stopUnitOfWork;
+        private Mock<IStopService> _stopService;
         private FilterStopViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _stopUnitOfWork = new Mock<IStopUnitOfWork>();
-            _viewModel = new FilterStopViewModel(Screen.Object, _stopUnitOfWork.Object);
+            _stopService = new Mock<IStopService>();
+            _viewModel = new FilterStopViewModel(Screen.Object, _stopService.Object);
         }
 
         [Test]
         public void FilterStops()
         {
             // given
-            _stopUnitOfWork.Setup(s => s.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop> { new Stop() });
+            _stopService.Setup(s => s.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop> { new Stop() });
             // when
             _viewModel.FilterStops.ExecuteAsync().Wait();
             // then
-            _stopUnitOfWork.Verify(s => s.FilterStops(_viewModel.StopFilter), Times.Once);
+            _stopService.Verify(s => s.FilterStops(_viewModel.StopFilter), Times.Once);
             _viewModel.Stops.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -49,7 +49,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.StopFilter.ZoneNameFilter = "";
             _viewModel.StopFilter.ParentStationNameFilter = "";
             // then
-            _stopUnitOfWork.Verify(s => s.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+            _stopService.Verify(s => s.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.SelectedStop = stop;
             _viewModel.DeleteStop.ExecuteAsync().Wait();
             // then
-            _stopUnitOfWork.Verify(s => s.DeleteStop(stop), Times.Once);
+            _stopService.Verify(s => s.DeleteStop(stop), Times.Once);
         }
 
         [Test]

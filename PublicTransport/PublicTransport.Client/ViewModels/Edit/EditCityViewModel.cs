@@ -30,14 +30,14 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region Field/property initialization
 
             HostScreen = screen;
-            var serviceMethod = city == null ? new Func<CityDto, CityDto>(cityService.CreateCity) : cityService.UpdateCity;
+            var serviceMethod = city == null ? new Func<CityDto, Task<CityDto>>(cityService.CreateCityAsync) : cityService.UpdateCityAsync;
             _city = city ?? new CityDto();
 
             #endregion
 
             #region SaveCity command
 
-            SaveCity = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(City)); });
+            SaveCity = ReactiveCommand.CreateAsyncTask(async _ => await serviceMethod(City));
             SaveCity.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("The currently edited city cannot be saved to the database. Please check the required fields and try again later.", ex));
 
