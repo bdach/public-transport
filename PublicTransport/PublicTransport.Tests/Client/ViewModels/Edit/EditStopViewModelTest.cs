@@ -51,10 +51,10 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditStopViewModel(Screen.Object, _stopService.Object, _stop);
             // when
-            _viewModel.StreetFilter.CityNameFilter = "";
-            _viewModel.StreetFilter.StreetNameFilter = "";
+            _viewModel.StreetReactiveFilter.CityNameFilter = "";
+            _viewModel.StreetReactiveFilter.StreetNameFilter = "";
             // then
-            _stopService.Verify(s => s.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+            _stopService.Verify(s => s.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.ZoneFilter = "";
             // then
-            _stopService.Verify(s => s.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+            _stopService.Verify(s => s.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             _viewModel.ParentStationFilter.ZoneNameFilter = "";
             _viewModel.ParentStationFilter.ParentStationNameFilter = "";
             // then
-            _stopService.Verify(s => s.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+            _stopService.Verify(s => s.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         [Test]

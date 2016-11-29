@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
@@ -31,7 +32,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="calendar"><see cref="Calendar" /> object to update.</param>
         /// <returns>Updated <see cref="Calendar" /> object.</returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
         /// </exception>
         Calendar UpdateCalendar(Calendar calendar);
@@ -57,7 +58,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="route"><see cref="Route" /> object to update.</param>
         /// <returns>Updated <see cref="Route" /> object.</returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         Route UpdateRoute(Route route);
@@ -66,7 +67,7 @@ namespace PublicTransport.Services
         ///     Deletes the supplied <see cref="Route" /> from the database.
         /// </summary>
         /// <param name="route"><see cref="Route" /> object to delete.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         void DeleteRoute(Route route);
@@ -108,7 +109,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="trip"><see cref="Trip" /> object to update.</param>
         /// <returns>Updated <see cref="Trip" /> object.</returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         Trip UpdateTrip(Trip trip);
@@ -117,7 +118,7 @@ namespace PublicTransport.Services
         ///     Deletes the supplied <see cref="Trip" /> from the database.
         /// </summary>
         /// <param name="trip"><see cref="Trip" /> object to delete.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         void DeleteTrip(Trip trip);
@@ -235,7 +236,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="calendar"><see cref="Calendar" /> object to update.</param>
         /// <returns>Updated <see cref="Calendar" /> object.</returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
         /// </exception>
         public Calendar UpdateCalendar(Calendar calendar)
@@ -276,7 +277,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="route"><see cref="Route" /> object to update.</param>
         /// <returns>Updated <see cref="Route" /> object.</returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         public Route UpdateRoute(Route route)
@@ -288,7 +289,7 @@ namespace PublicTransport.Services
         ///     Deletes the supplied <see cref="Route" /> from the database.
         /// </summary>
         /// <param name="route"><see cref="Route" /> object to delete.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
         public void DeleteRoute(Route route)
@@ -353,7 +354,7 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="trip"><see cref="Trip" /> object to update.</param>
         /// <returns>Updated <see cref="Trip" /> object.</returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         public Trip UpdateTrip(Trip trip)
@@ -365,7 +366,7 @@ namespace PublicTransport.Services
         ///     Deletes the supplied <see cref="Trip" /> from the database.
         /// </summary>
         /// <param name="trip"><see cref="Trip" /> object to delete.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
         public void DeleteTrip(Trip trip)

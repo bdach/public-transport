@@ -130,13 +130,18 @@
     <Compile Include="DataTransfer\RouteFilter.cs" />
     <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StopTimeFilter.cs" />
-    <Compile Include="DataTransfer\StreetFilter.cs" />
+    <Compile Include="DataTransfer\StreetReactiveFilter.cs" />
     <Compile Include="DataTransfer\UserFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Providers\DetailViewModelFactory.cs" />
-    <Compile Include="Service References\Services.CityService\Reference.cs">
+    <Compile Include="Service References\Services.Cities\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Streets\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -438,27 +443,47 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.CityDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StreetDto.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\Services.CityService\cities.xsd">
+    <None Include="Service References\Services.Cities\cities.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Services.CityService\cities1.xsd">
+    <None Include="Service References\Services.Cities\cities1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Services.CityService\cities2.xsd">
+    <None Include="Service References\Services.Cities\cities2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Services.CityService\cities3.xsd">
+    <None Include="Service References\Services.Cities\cities3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Services.CityService\cities31.xsd">
+    <None Include="Service References\Services.Cities\cities31.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Services.CityService\CityService.wsdl" />
+    <None Include="Service References\Services.Cities\CityService.wsdl" />
+    <None Include="Service References\Services.Streets\streets.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\StreetService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -489,16 +514,29 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Services.CityService\" />
+    <WCFMetadataStorage Include="Service References\Services.Cities\" />
+    <WCFMetadataStorage Include="Service References\Services.Streets\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Services.CityService\configuration91.svcinfo" />
+    <None Include="Service References\Services.Cities\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Services.CityService\configuration.svcinfo" />
+    <None Include="Service References\Services.Cities\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Services.CityService\Reference.svcmap">
+    <None Include="Service References\Services.Cities\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Streets\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Streets\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Streets\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

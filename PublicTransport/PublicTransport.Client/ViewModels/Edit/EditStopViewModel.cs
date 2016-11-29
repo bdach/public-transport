@@ -45,7 +45,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Street" /> objects.
         /// </summary>
-        private StreetFilter _streetFilter;
+        private StreetReactiveFilter _streetReactiveFilter;
 
         /// <summary>
         ///     Filter used to make queries about <see cref="Zone" /> objects.
@@ -73,7 +73,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             ParentStationSuggestions = new ReactiveList<Stop>();
             _stopService = stopService;
 
-            _streetFilter = new StreetFilter();
+            _streetReactiveFilter = new StreetReactiveFilter();
             _parentStationFilter = new StopFilter { OnlyStations = true };
 
             var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopService.CreateStop) : _stopService.UpdateStop;
@@ -82,7 +82,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             _selectedZone = _stop.Zone;
             _selectedParentStation = _stop.ParentStation;
 
-            _streetFilter.StreetNameFilter = _stop.Street?.Name ?? "";
+            _streetReactiveFilter.StreetNameFilter = _stop.Street?.Name ?? "";
             _zoneFilter = _stop.Zone?.Name ?? "";
             _parentStationFilter.StopNameFilter = _stop.ParentStation?.Name ?? "";
 
@@ -106,7 +106,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions commands
 
-            UpdateStreetSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStreets(StreetFilter)));
+            UpdateStreetSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStreets(StreetReactiveFilter.Convert())));
             UpdateStreetSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();
@@ -137,8 +137,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region Querying DB for suggestions
 
-            this.WhenAnyValue(vm => vm.StreetFilter.StreetNameFilter)
-                .Where(s => (s != SelectedStreet?.Name) && StreetFilter.IsValid)
+            this.WhenAnyValue(vm => vm.StreetReactiveFilter.StreetNameFilter)
+                .Where(s => (s != SelectedStreet?.Name) && StreetReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.UpdateStreetSuggestions);
 
@@ -241,10 +241,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Street" /> objects.
         /// </summary>
-        public StreetFilter StreetFilter
+        public StreetReactiveFilter StreetReactiveFilter
         {
-            get { return _streetFilter; }
-            set { this.RaiseAndSetIfChanged(ref _streetFilter, value); }
+            get { return _streetReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _streetReactiveFilter, value); }
         }
 
         /// <summary>

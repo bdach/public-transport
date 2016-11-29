@@ -10,13 +10,13 @@ namespace PublicTransport.Tests.Services
     public class StreetRepositoryTest : RepositoryTest
     {
         private StreetRepository _streetRepository;
-        private Mock<IStreetFilter> _streetFilter;
+        private Mock<StreetFilter> _streetFilter;
 
         [SetUp]
         public void ServiceSetUp()
         {
             _streetRepository = new StreetRepository(DbContext);
-            _streetFilter = new Mock<IStreetFilter>();
+            _streetFilter = new Mock<StreetFilter>();
         }
 
         [Test]

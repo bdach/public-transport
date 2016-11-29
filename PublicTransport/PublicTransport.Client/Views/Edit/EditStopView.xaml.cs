@@ -20,7 +20,7 @@ namespace PublicTransport.Client.Views.Edit
             this.OneWayBind(ViewModel, vm => vm.StreetSuggestions, v => v.StreetComboBox.ItemsSource);
             this.OneWayBind(ViewModel, vm => vm.ZoneSuggestions, v => v.ZoneComboBox.ItemsSource);
             this.OneWayBind(ViewModel, vm => vm.ParentStationSuggestions, v => v.ParentStationComboBox.ItemsSource);
-            this.Bind(ViewModel, vm => vm.StreetFilter.StreetNameFilter, v => v.StreetComboBox.Text);
+            this.Bind(ViewModel, vm => vm.StreetReactiveFilter.StreetNameFilter, v => v.StreetComboBox.Text);
             this.Bind(ViewModel, vm => vm.ZoneFilter, v => v.ZoneComboBox.Text);
             this.Bind(ViewModel, vm => vm.ParentStationFilter.StopNameFilter, v => v.ParentStationComboBox.Text);
 

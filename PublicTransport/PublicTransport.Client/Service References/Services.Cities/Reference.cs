@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicTransport.Client.Services.CityService {
+namespace PublicTransport.Client.Services.Cities {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Services.CityService.ICityService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Services.Cities.ICityService")]
     public interface ICityService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/CreateCity", ReplyAction="http://tempuri.org/ICityService/CreateCityResponse")]
@@ -43,12 +43,12 @@ namespace PublicTransport.Client.Services.CityService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ICityServiceChannel : PublicTransport.Client.Services.CityService.ICityService, System.ServiceModel.IClientChannel {
+    public interface ICityServiceChannel : PublicTransport.Client.Services.Cities.ICityService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class CityServiceClient : System.ServiceModel.ClientBase<PublicTransport.Client.Services.CityService.ICityService>, PublicTransport.Client.Services.CityService.ICityService {
+    public partial class CityServiceClient : System.ServiceModel.ClientBase<PublicTransport.Client.Services.Cities.ICityService>, PublicTransport.Client.Services.Cities.ICityService {
         
         public CityServiceClient() {
         }

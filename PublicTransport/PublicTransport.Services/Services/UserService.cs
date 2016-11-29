@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
@@ -24,7 +25,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="User"/> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         User UpdateUser(User user);
@@ -33,7 +34,7 @@ namespace PublicTransport.Services
         ///     Calls <see cref="UserRepository"/> delete method.
         /// </summary>
         /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         void DeleteUser(User user);
@@ -110,7 +111,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="User"/> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         public User UpdateUser(User user)
@@ -122,7 +123,7 @@ namespace PublicTransport.Services
         ///     Calls <see cref="UserRepository"/> delete method.
         /// </summary>
         /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         public void DeleteUser(User user)

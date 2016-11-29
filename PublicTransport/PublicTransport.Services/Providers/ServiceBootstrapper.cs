@@ -9,7 +9,6 @@ namespace PublicTransport.Services.Providers
             Locator.CurrentMutable.Register(() => new LoginService(), typeof(ILoginService));
 
             Locator.CurrentMutable.Register(() => new AgencyService(), typeof(IAgencyService));
-            Locator.CurrentMutable.Register(() => new StreetService(), typeof(IStreetService));
             Locator.CurrentMutable.Register(() => new ZoneService(), typeof(IZoneService));
             Locator.CurrentMutable.Register(() => new UserService(), typeof(IUserService));
             Locator.CurrentMutable.Register(() => new StopService(), typeof(IStopService));

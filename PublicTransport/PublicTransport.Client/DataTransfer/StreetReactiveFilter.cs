@@ -6,7 +6,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.Street" /> objects.
     /// </summary>
-    public class StreetFilter : ReactiveObject, IStreetFilter, IReactiveFilter
+    public class StreetReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     City name filter.
@@ -34,6 +34,15 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _cityNameFilter; }
             set { this.RaiseAndSetIfChanged(ref _cityNameFilter, value); }
+        }
+
+        public StreetFilter Convert()
+        {
+            return new StreetFilter
+            {
+                CityNameFilter = CityNameFilter,
+                StreetNameFilter = StreetNameFilter
+            };
         }
 
         /// <summary>

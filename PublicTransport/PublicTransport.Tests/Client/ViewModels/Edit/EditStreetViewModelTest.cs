@@ -2,9 +2,10 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
@@ -13,13 +14,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     {
         private Mock<IStreetService> _streetService;
         private EditStreetViewModel _viewModel;
-        private Street _street;
+        private StreetDto _street;
 
         [SetUp]
         public void SetUp()
         {
             _streetService = new Mock<IStreetService>();
-            _street = new Street();
+            _street = new StreetDto();
         }
 
         [Test]
@@ -30,7 +31,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveStreet.ExecuteAsyncTask().Wait();
             // then
-            _streetService.Verify(s => s.CreateStreet(It.IsAny<Street>()), Times.Once);
+            _streetService.Verify(s => s.CreateStreetAsync(It.IsAny<StreetDto>()), Times.Once);
         }
 
         [Test]
@@ -41,7 +42,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveStreet.ExecuteAsyncTask().Wait();
             // then
-            _streetService.Verify(s => s.UpdateStreet(_street), Times.Once);
+            _streetService.Verify(s => s.UpdateStreetAsync(_street), Times.Once);
         }
 
         [Test]

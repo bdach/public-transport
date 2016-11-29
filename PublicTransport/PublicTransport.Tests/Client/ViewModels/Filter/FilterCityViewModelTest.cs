@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PublicTransport.Client.Services.CityService;
+using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Services.DataTransfer;

@@ -1,4 +1,5 @@
-﻿using PublicTransport.Client.Services.CityService;
+﻿using PublicTransport.Client.Services.Cities;
+using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.ViewModels;
 using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
@@ -66,7 +67,7 @@ namespace PublicTransport.Client.Providers
 
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<CityDto>));
-            Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<Street>));
+            Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<StreetDto>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
             Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
             Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<Zone>));
@@ -78,6 +79,7 @@ namespace PublicTransport.Client.Providers
 
             // WCF services.
             Locator.CurrentMutable.Register(() => new CityServiceClient(), typeof(ICityService));
+            Locator.CurrentMutable.Register(() => new StreetServiceClient(), typeof(IStreetService));
         }
 
         /// <summary>

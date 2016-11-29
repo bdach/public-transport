@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PublicTransport.Client.Services.CityService;
+using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Services.DataTransfer;
 

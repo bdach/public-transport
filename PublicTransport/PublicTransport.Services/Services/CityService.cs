@@ -3,6 +3,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.ServiceModel;
 using PublicTransport.Domain.Context;
+using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.Exceptions;
@@ -11,7 +12,7 @@ using PublicTransport.Services.Interfaces;
 namespace PublicTransport.Services
 {
     /// <summary>
-    ///     Unit of work used to manage city data.
+    ///     Service used to manage city data.
     /// </summary>
     public class CityService : ICityService
     {
@@ -23,7 +24,7 @@ namespace PublicTransport.Services
         /// <summary>
         ///     Used for converting <see cref="Domain.Entities.City" /> objects to <see cref="CityDto" /> objects and back.
         /// </summary>
-        private readonly CityConverter _converter;
+        private readonly IConverter<City, CityDto> _converter;
 
         /// <summary>
         ///     Database context common for services in this unit of work used to access data.
@@ -90,29 +91,18 @@ namespace PublicTransport.Services
             {
                 throw new ValidationFaultException(ex);
             }
-            catch (EntryNotFoundException)
-            {
-                throw new FaultException("Could not find an entity with the given ID in the database.");
-            }
         }
 
         /// <summary>
         ///     Deletes a <see cref="Domain.Entities.City" /> from the system.
         /// </summary>
         /// <param name="city"><see cref="Domain.Entities.City" /> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Domain.Entities.City" /> could not be found in the database.
         /// </exception>
         public void DeleteCity(CityDto city)
         {
-            try
-            {
-                _cityRepository.Delete(_converter.GetEntity(city));
-            }
-            catch (EntryNotFoundException)
-            {
-                throw new FaultException("Could not find an entity with the given ID in the database.");
-            }
+            _cityRepository.Delete(_converter.GetEntity(city));
         }
 
         /// <summary>

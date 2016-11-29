@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
@@ -23,7 +24,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="Zone"/> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         Zone UpdateZone(Zone zone);
@@ -32,7 +33,7 @@ namespace PublicTransport.Services
         ///     Calls <see cref="ZoneRepository"/> delete method.
         /// </summary>
         /// <param name="zone"><see cref="Zone"/> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         void DeleteZone(Zone zone);
@@ -95,7 +96,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="Zone"/> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         public Zone UpdateZone(Zone zone)
@@ -107,7 +108,7 @@ namespace PublicTransport.Services
         ///     Calls <see cref="ZoneRepository"/> delete method.
         /// </summary>
         /// <param name="zone"><see cref="Zone"/> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         public void DeleteZone(Zone zone)

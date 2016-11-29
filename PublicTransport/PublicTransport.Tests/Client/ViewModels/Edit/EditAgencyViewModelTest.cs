@@ -53,9 +53,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
             // when
-            _viewModel.StreetFilter.StreetNameFilter = "";
+            _viewModel.StreetReactiveFilter.StreetNameFilter = "";
             // then
-            _agencyService.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+            _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         //[Test]
@@ -67,12 +67,12 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 s.AdvanceByMs(100);
                 _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
                 // when
-                _viewModel.StreetFilter.StreetNameFilter = "hello";
+                _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 // then
                 s.AdvanceByMs(250);
-                _agencyService.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+                _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _agencyService.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Once);
+                _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Once);
             });
         }
 
@@ -86,10 +86,10 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
                 _viewModel.SelectedStreet = new Street {Name = "hello"};
                 // when
-                _viewModel.StreetFilter.StreetNameFilter = "hello";
+                _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 s.AdvanceByMs(500);
                 // then
-                _agencyService.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+                _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
             });
         }
 

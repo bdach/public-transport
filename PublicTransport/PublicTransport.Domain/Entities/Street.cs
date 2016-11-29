@@ -11,7 +11,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains an ID that uniquely identifies a city.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The street must be associated with a city.")]
         public int CityId { get; set; }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the name of the street.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The street name cannot be empty.")]
         public string Name { get; set; }
     }
 }

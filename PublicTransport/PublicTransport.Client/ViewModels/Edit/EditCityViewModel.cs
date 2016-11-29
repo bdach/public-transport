@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Client.Services.CityService;
+using PublicTransport.Client.Services.Cities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 using ReactiveUI;
@@ -48,7 +48,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             SaveCity.ThrownExceptions
                 .Where(ex => ex is FaultException<ValidationFault>)
                 .Select(ex => ex as FaultException<ValidationFault>)
-                .Subscribe(ex => UserError.Throw(ex.Detail.Errors[0], ex));
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 

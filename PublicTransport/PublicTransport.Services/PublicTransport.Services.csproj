@@ -73,14 +73,16 @@
     <Compile Include="DataTransfer\CityDto.cs" />
     <Compile Include="DataTransfer\Converters\CityConverter.cs" />
     <Compile Include="DataTransfer\Converters\IConverter.cs" />
+    <Compile Include="DataTransfer\Converters\StreetConverter.cs" />
     <Compile Include="DataTransfer\Filters\IAgencyFilter.cs" />
     <Compile Include="DataTransfer\Filters\IFareFilter.cs" />
     <Compile Include="DataTransfer\Filters\IStopFilter.cs" />
     <Compile Include="DataTransfer\Filters\IRouteFilter.cs" />
     <Compile Include="DataTransfer\Filters\IStopTimeFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IStreetFilter.cs" />
+    <Compile Include="DataTransfer\Filters\StreetFilter.cs" />
     <Compile Include="DataTransfer\Filters\IUserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
+    <Compile Include="DataTransfer\StreetDto.cs" />
     <Compile Include="DataTransfer\UserInfo.cs" />
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Exceptions\InvalidCredentialsException.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Repositories\FareAttributeRepository.cs" />
     <Compile Include="Repositories\FareRuleRepository.cs" />
     <Compile Include="Services\Interfaces\ICityService.cs" />
+    <Compile Include="Services\Interfaces\IStreetService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\PasswordService.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />

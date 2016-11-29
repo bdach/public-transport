@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI;
 
@@ -30,11 +29,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterStreets()
         {
             // given
-            _streetService.Setup(s => s.FilterStreets(It.IsAny<IStreetFilter>())).Returns(new List<Street> { new Street() });
+            _streetService.Setup(s => s.FilterStreetsAsync(It.IsAny<StreetFilter>())).ReturnsAsync(new[] { new StreetDto() });
             // when
             _viewModel.FilterStreets.ExecuteAsync().Wait();
             // then
-            _streetService.Verify(s => s.FilterStreets(_viewModel.StreetFilter), Times.Once);
+            _streetService.Verify(s => s.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Once);
             _viewModel.Streets.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -43,22 +42,22 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             // when
-            _viewModel.StreetFilter.CityNameFilter = "";
-            _viewModel.StreetFilter.StreetNameFilter = "";
+            _viewModel.StreetReactiveFilter.CityNameFilter = "";
+            _viewModel.StreetReactiveFilter.StreetNameFilter = "";
             // then
-            _streetService.Verify(s => s.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+            _streetService.Verify(s => s.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         [Test]
         public void DeleteStreet()
         {
             // given
-            var street = new Street();
+            var street = new StreetDto();
             // when
             _viewModel.SelectedStreet = street;
             _viewModel.DeleteStreet.ExecuteAsync().Wait();
             // then
-            _streetService.Verify(s => s.DeleteStreet(street), Times.Once);
+            _streetService.Verify(s => s.DeleteStreetAsync(street), Times.Once);
         }
 
         [Test]
@@ -66,7 +65,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedStreet = new Street();
+            _viewModel.SelectedStreet = new StreetDto();
             Router.Navigate
                 .Where(vm => vm is EditStreetViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -84,7 +83,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedStreet = new Street();
+            _viewModel.SelectedStreet = new StreetDto();
             Router.Navigate
                 .Where(vm => vm is EditStreetViewModel)
                 .Subscribe(_ => navigatedToEdit = true);

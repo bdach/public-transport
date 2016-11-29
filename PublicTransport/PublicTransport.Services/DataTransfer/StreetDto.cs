@@ -3,22 +3,25 @@
 namespace PublicTransport.Services.DataTransfer
 {
     /// <summary>
-    /// Data transfer object for <see cref="Domain.Entities.City"/> objects.
+    /// DTO for <see cref="Domain.Entities.Street"/> objects.
     /// </summary>
     [DataContract]
-    public class CityDto
+    public class StreetDto
     {
-        // TODO: See if this can be private (probably not)
         /// <summary>
-        /// Identification number of the city.
+        /// Street ID.
         /// </summary>
         [DataMember]
         public int Id { get; set; }
-
         /// <summary>
-        /// City name.
+        /// Street name.
         /// </summary>
         [DataMember]
         public string Name { get; set; }
+        /// <summary>
+        /// The city associated with the street.
+        /// </summary>
+        [DataMember]
+        public CityDto City { get; set; }
     }
 }

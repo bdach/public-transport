@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services
 {
@@ -24,7 +25,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="Stop"/> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
         Stop UpdateStop(Stop stop);
@@ -33,7 +34,7 @@ namespace PublicTransport.Services
         ///     Calls <see cref="StopRepository"/> delete method.
         /// </summary>
         /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
         void DeleteStop(Stop stop);
@@ -63,7 +64,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Street"/> objects matching the filtering query.
         /// </returns>
-        List<Street> FilterStreets(IStreetFilter filter);
+        List<Street> FilterStreets(StreetFilter filter);
     }
 
     /// <summary>
@@ -126,7 +127,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="Stop"/> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
         public Stop UpdateStop(Stop stop)
@@ -138,7 +139,7 @@ namespace PublicTransport.Services
         ///     Calls <see cref="StopRepository"/> delete method.
         /// </summary>
         /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
-        /// <exception cref="Exceptions.EntryNotFoundException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
         public void DeleteStop(Stop stop)
@@ -177,7 +178,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Street"/> objects matching the filtering query.
         /// </returns>
-        public List<Street> FilterStreets(IStreetFilter filter)
+        public List<Street> FilterStreets(StreetFilter filter)
         {
             return _streetRepository.FilterStreets(filter);
         }

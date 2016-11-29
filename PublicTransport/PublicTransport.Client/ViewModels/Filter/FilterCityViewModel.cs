@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Client.Services.CityService;
+using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;

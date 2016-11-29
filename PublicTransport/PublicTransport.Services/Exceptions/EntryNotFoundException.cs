@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ServiceModel;
 
 namespace PublicTransport.Services.Exceptions
 {
     /// <summary>
     /// Thrown when an entry cannot be located in the database.
     /// </summary>
-    public class EntryNotFoundException : ApplicationException
+    public class EntryNotFoundException : FaultException
     {
         /// <summary>
         /// Constructor.

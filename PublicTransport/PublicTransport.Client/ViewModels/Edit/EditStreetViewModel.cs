@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Streets;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -29,12 +31,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     <see cref="City" /> object currently selected by the user.
         /// </summary>
-        private City _selectedCity;
+        private CityDto _selectedCity;
 
         /// <summary>
         ///     <see cref="Domain.Entities.Street" /> objects to be saved to the database.
         /// </summary>
-        private Street _street;
+        private StreetDto _street;
 
         /// <summary>
         ///     Constructor.
@@ -42,28 +44,34 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="streetService">Unit of work exposing methods necessary to manage data.</param>
         /// <param name="street">Street to be edited. If a steet is to be added, this parameter is null (can be left out).</param>
-        public EditStreetViewModel(IScreen screen, IStreetService streetService, Street street = null)
+        public EditStreetViewModel(IScreen screen, IStreetService streetService, StreetDto street = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            Suggestions = new ReactiveList<City>();
+            Suggestions = new ReactiveList<CityDto>();
             _streetService = streetService;
-            var serviceMethod = street == null ? new Func<Street, Street>(_streetService.CreateStreet) : _streetService.UpdateStreet;
-            _street = street ?? new Street();
+            var serviceMethod = street == null ? new Func<StreetDto, Task<StreetDto>>(_streetService.CreateStreetAsync) : _streetService.UpdateStreetAsync;
+            _street = street ?? new StreetDto();
             _selectedCity = _street.City;
             _cityName = _street.City?.Name;
 
             #endregion
 
             var citySelected = this.WhenAnyValue(vm => vm.SelectedCity).Select(c => c != null);
-            citySelected.Where(b => b).Subscribe(_ => Street.CityId = SelectedCity.Id);
+            citySelected.Where(b => b).Subscribe(_ => Street.City = SelectedCity);
 
             #region SaveStreet command
 
-            SaveStreet = ReactiveCommand.CreateAsyncTask(citySelected, async _ => await Task.Run(() => serviceMethod(Street)));
-            SaveStreet.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited street cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveStreet = ReactiveCommand.CreateAsyncTask(citySelected, async _ => await serviceMethod(Street));
+            SaveStreet.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please check the required fields and try again later.", ex));
+            SaveStreet.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 
@@ -71,8 +79,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ =>
-                await Task.Run(() => _streetService.FilterCities(CityName)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(canUpdateSuggestions, async _ => await _streetService.FilterCitiesAsync(CityName));
             UpdateSuggestions.Subscribe(results =>
             {
                 Suggestions.Clear();
@@ -103,17 +110,17 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     List of suggested <see cref="City"/> objects.
         /// </summary>
-        public ReactiveList<City> Suggestions { get; set; }
+        public ReactiveList<CityDto> Suggestions { get; set; }
 
         /// <summary>
         ///     Command responsible for updating the <see cref="Suggestions" /> collection.
         /// </summary>
-        public ReactiveCommand<List<City>> UpdateSuggestions { get; protected set; }
+        public ReactiveCommand<CityDto[]> UpdateSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for saving the <see cref="Street" /> object to the database.
         /// </summary>
-        public ReactiveCommand<Street> SaveStreet { get; protected set; }
+        public ReactiveCommand<StreetDto> SaveStreet { get; protected set; }
 
         /// <summary>
         ///     Command closing the current detail view model.
@@ -123,7 +130,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Property for the <see cref="Domain.Entities.Street" /> being edited in the window.
         /// </summary>
-        public Street Street
+        public StreetDto Street
         {
             get { return _street; }
             set { this.RaiseAndSetIfChanged(ref _street, value); }
@@ -132,7 +139,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     <see cref="City" /> selected by the user in the drop-down menu.
         /// </summary>
-        public City SelectedCity
+        public CityDto SelectedCity
         {
             get { return _selectedCity; }
             set { this.RaiseAndSetIfChanged(ref _selectedCity, value); }

@@ -36,7 +36,7 @@ namespace PublicTransport.Services
         {
             _db.Streets.Add(street);
             _db.SaveChanges();
-            return street;
+            return Read(street.Id);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace PublicTransport.Services
 
             _db.Entry(old).CurrentValues.SetValues(street);
             _db.SaveChanges();
-            return street;
+            return Read(street.Id);
         }
 
         /// <summary>
@@ -93,11 +93,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        /// Filters out <see cref="Street"/> objects, using values from the supplied <see cref="IStreetFilter"/> object to perform the query.
+        /// Filters out <see cref="Street"/> objects, using values from the supplied <see cref="StreetFilter"/> object to perform the query.
         /// </summary>
         /// <param name="streetFilter">Object containing the query parameters.</param>
         /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Street> FilterStreets(IStreetFilter streetFilter)
+        public List<Street> FilterStreets(StreetFilter streetFilter)
         {
             return _db.Streets.Include(s => s.City)
                 .Where(s => s.Name.Contains(streetFilter.StreetNameFilter))
