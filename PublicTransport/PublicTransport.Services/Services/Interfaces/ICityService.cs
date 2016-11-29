@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services.Interfaces
 {
@@ -8,9 +9,11 @@ namespace PublicTransport.Services.Interfaces
     public interface ICityService
     {
         [OperationContract]
+        [FaultContract(typeof(ValidationFault))]
         CityDto CreateCity(CityDto city);
         
         [OperationContract]
+        [FaultContract(typeof(ValidationFault))]
         CityDto UpdateCity(CityDto city);
 
         [OperationContract]

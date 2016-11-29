@@ -452,6 +452,12 @@
     <None Include="Service References\Services.CityService\cities2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\Services.CityService\cities3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.CityService\cities31.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\Services.CityService\CityService.wsdl" />
   </ItemGroup>
   <ItemGroup>

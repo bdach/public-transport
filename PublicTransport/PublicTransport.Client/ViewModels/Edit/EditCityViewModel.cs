@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.CityService;
 using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -38,8 +41,14 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region SaveCity command
 
             SaveCity = ReactiveCommand.CreateAsyncTask(async _ => await serviceMethod(City));
-            SaveCity.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited city cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveCity.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please check the required fields and try again later.", ex));
+            SaveCity.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(ex.Detail.Errors[0], ex));
 
             #endregion
 

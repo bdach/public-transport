@@ -16,12 +16,14 @@ namespace PublicTransport.Client.Services.CityService {
     public interface ICityService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/CreateCity", ReplyAction="http://tempuri.org/ICityService/CreateCityResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(PublicTransport.Services.Exceptions.ValidationFault), Action="http://tempuri.org/ICityService/CreateCityValidationFaultFault", Name="ValidationFault", Namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions")]
         PublicTransport.Services.DataTransfer.CityDto CreateCity(PublicTransport.Services.DataTransfer.CityDto city);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/CreateCity", ReplyAction="http://tempuri.org/ICityService/CreateCityResponse")]
         System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.CityDto> CreateCityAsync(PublicTransport.Services.DataTransfer.CityDto city);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/UpdateCity", ReplyAction="http://tempuri.org/ICityService/UpdateCityResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(PublicTransport.Services.Exceptions.ValidationFault), Action="http://tempuri.org/ICityService/UpdateCityValidationFaultFault", Name="ValidationFault", Namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions")]
         PublicTransport.Services.DataTransfer.CityDto UpdateCity(PublicTransport.Services.DataTransfer.CityDto city);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/UpdateCity", ReplyAction="http://tempuri.org/ICityService/UpdateCityResponse")]

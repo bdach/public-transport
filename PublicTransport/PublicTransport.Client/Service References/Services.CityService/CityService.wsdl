@@ -3,8 +3,10 @@
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8733/cities?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8733/cities?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" />
       <xsd:import schemaLocation="http://localhost:8733/cities?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8733/cities?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" />
+      <xsd:import schemaLocation="http://localhost:8733/cities?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICityService_CreateCity_InputMessage">
@@ -13,11 +15,17 @@
   <wsdl:message name="ICityService_CreateCity_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateCityResponse" />
   </wsdl:message>
+  <wsdl:message name="ICityService_CreateCity_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q1:ValidationFault" />
+  </wsdl:message>
   <wsdl:message name="ICityService_UpdateCity_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateCity" />
   </wsdl:message>
   <wsdl:message name="ICityService_UpdateCity_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateCityResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICityService_UpdateCity_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q2:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="ICityService_DeleteCity_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteCity" />
@@ -35,10 +43,12 @@
     <wsdl:operation name="CreateCity">
       <wsdl:input wsaw:Action="http://tempuri.org/ICityService/CreateCity" message="tns:ICityService_CreateCity_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICityService/CreateCityResponse" message="tns:ICityService_CreateCity_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICityService/CreateCityValidationFaultFault" name="ValidationFaultFault" message="tns:ICityService_CreateCity_ValidationFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="UpdateCity">
       <wsdl:input wsaw:Action="http://tempuri.org/ICityService/UpdateCity" message="tns:ICityService_UpdateCity_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICityService/UpdateCityResponse" message="tns:ICityService_UpdateCity_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICityService/UpdateCityValidationFaultFault" name="ValidationFaultFault" message="tns:ICityService_UpdateCity_ValidationFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="DeleteCity">
       <wsdl:input wsaw:Action="http://tempuri.org/ICityService/DeleteCity" message="tns:ICityService_DeleteCity_InputMessage" />
@@ -59,6 +69,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="UpdateCity">
       <soap:operation soapAction="http://tempuri.org/ICityService/UpdateCity" style="document" />
@@ -68,6 +81,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="DeleteCity">
       <soap:operation soapAction="http://tempuri.org/ICityService/DeleteCity" style="document" />
