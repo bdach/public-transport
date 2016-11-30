@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Tests.Services
 {

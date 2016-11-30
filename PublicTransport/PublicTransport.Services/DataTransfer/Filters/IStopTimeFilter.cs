@@ -1,4 +1,5 @@
 ﻿using System;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.DataTransfer.Filters
 {

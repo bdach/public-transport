@@ -6,6 +6,7 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
 using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Tests.Services
 {

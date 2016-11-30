@@ -7,7 +7,7 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 
-namespace PublicTransport.Services
+namespace PublicTransport.Services.Repositories
 {
     /// <summary>
     ///     Service for managing stop times.

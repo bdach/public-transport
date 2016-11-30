@@ -5,7 +5,7 @@ using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.Exceptions;
 
-namespace PublicTransport.Services
+namespace PublicTransport.Services.Repositories
 {
     /// <summary>
     ///     Service for managing cities.

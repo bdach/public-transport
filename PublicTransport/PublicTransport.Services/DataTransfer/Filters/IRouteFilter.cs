@@ -1,4 +1,5 @@
 ﻿using PublicTransport.Domain.Enums;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.DataTransfer.Filters
 {

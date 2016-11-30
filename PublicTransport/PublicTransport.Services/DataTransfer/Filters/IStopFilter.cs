@@ -1,4 +1,6 @@
-﻿namespace PublicTransport.Services.DataTransfer.Filters
+﻿using PublicTransport.Services.Repositories;
+
+namespace PublicTransport.Services.DataTransfer.Filters
 {
     /// <summary>
     ///     Data transfer object interface.

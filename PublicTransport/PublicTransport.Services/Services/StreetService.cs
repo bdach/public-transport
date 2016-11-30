@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -9,6 +8,7 @@ using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Interfaces;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
