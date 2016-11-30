@@ -2,9 +2,9 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Zones;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
@@ -13,13 +13,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     {
         private Mock<IZoneService> _zoneService;
         private EditZoneViewModel _viewModel;
-        private Zone _zone;
+        private ZoneDto _zone;
 
         [SetUp]
         public void SetUp()
         {
             _zoneService = new Mock<IZoneService>();
-            _zone = new Zone();
+            _zone = new ZoneDto();
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveZone.ExecuteAsyncTask().Wait();
             // then
-            _zoneService.Verify(z => z.CreateZone(It.IsAny<Zone>()), Times.Once);
+            _zoneService.Verify(z => z.CreateZoneAsync(It.IsAny<ZoneDto>()), Times.Once);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveZone.ExecuteAsyncTask().Wait();
             // then
-            _zoneService.Verify(z => z.UpdateZone(_zone), Times.Once);
+            _zoneService.Verify(z => z.UpdateZoneAsync(_zone), Times.Once);
         }
 
         [Test]

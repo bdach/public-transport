@@ -23,7 +23,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the name of the street.
         /// </summary>
-        [Required(ErrorMessage = "The street name cannot be empty.")]
+        [Required(ErrorMessage = "The street name is required.")]
         public string Name { get; set; }
     }
 }

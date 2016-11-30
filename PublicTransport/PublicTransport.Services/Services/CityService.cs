@@ -3,10 +3,10 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.Exceptions;
-using PublicTransport.Services.Interfaces;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
