@@ -13,7 +13,7 @@ using PublicTransport.Services.Repositories;
 namespace PublicTransport.Services
 {
     /// <summary>
-    ///     Unit of work used to manage street data.
+    ///     Service used to manage street data.
     /// </summary>
     public class StreetService : IStreetService
     {
@@ -28,7 +28,7 @@ namespace PublicTransport.Services
         private readonly StreetRepository _streetRepository;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 

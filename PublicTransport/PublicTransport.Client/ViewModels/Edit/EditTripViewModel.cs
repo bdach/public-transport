@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditTripViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IRouteService _routeService;
 
@@ -52,7 +52,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display to.</param>
-        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Service used in the view model to access the database.</param>
         private EditTripViewModel(IScreen screen, IRouteService routeService)
         {
             HostScreen = screen;
@@ -66,7 +66,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor. Used when a trip is being edited.
         /// </summary>
         /// <param name="screen">Screen to display on.</param>
-        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="trip">Trip to edit.</param>
         public EditTripViewModel(IScreen screen, IRouteService routeService, Trip trip) : this(screen, routeService)
         {
@@ -80,7 +80,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor. Used for adding a trip of an existing route.
         /// </summary>
         /// <param name="screen">Screen to display on.</param>
-        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="route">Route to add to.</param>
         /// <param name="stops">List of stops to initialize the stop list with.</param>
         public EditTripViewModel(IScreen screen, IRouteService routeService, Route route, IEnumerable<Stop> stops) : this(screen, routeService)

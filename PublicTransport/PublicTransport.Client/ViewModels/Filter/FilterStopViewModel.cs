@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterStopViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IStopService _stopService;
 
@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="stopService">Unit of work used in the view model to access the database.</param>
+        /// <param name="stopService">Service used in the view model to access the database.</param>
         public FilterStopViewModel(IScreen screen, IStopService stopService = null)
         {
             #region Field/property initialization

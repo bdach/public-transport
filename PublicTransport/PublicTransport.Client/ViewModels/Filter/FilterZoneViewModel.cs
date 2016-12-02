@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Zones;
@@ -21,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IZoneService _zoneService;
 
@@ -39,7 +37,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="zoneService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="zoneService">Service exposing methods necessary to manage data.</param>
         public FilterZoneViewModel(IScreen screen, IZoneService zoneService = null)
         {
             #region Field/property initialization

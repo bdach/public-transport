@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IFareService _fareService;
 
@@ -68,7 +68,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="fareService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="fareService">Service exposing methods necessary to manage data.</param>
         /// <param name="fareAttribute">Fare to be edited. If a fare is to be added, this parameter should be left null.</param>
         public EditFareViewModel(IScreen screen, IFareService fareService, FareAttribute fareAttribute = null)
         {

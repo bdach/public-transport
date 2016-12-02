@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IStreetService _streetService;
 
@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="streetService">Unit of work used in the view model to access the database.</param>
+        /// <param name="streetService">Service used in the view model to access the database.</param>
         public FilterStreetViewModel(IScreen screen, IStreetService streetService = null)
         {
             #region Field/property initialization

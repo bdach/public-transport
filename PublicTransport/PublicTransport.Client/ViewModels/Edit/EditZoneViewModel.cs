@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Zones;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 using ReactiveUI;
@@ -27,7 +26,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="zoneService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="zoneService">Service exposing methods necessary to manage data.</param>
         /// <param name="zone">Zone to be edited. If a zone is to be added, this parameter is null (can be left out).</param>
         public EditZoneViewModel(IScreen screen, IZoneService zoneService, ZoneDto zone = null)
         {

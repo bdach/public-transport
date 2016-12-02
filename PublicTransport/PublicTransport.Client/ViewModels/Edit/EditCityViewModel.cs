@@ -26,7 +26,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="cityService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="cityService">Service exposing methods necessary to manage data.</param>
         /// <param name="city">City to be edited. If a city is to be added, this parameter is null (can be left out).</param>
         public EditCityViewModel(IScreen screen, ICityService cityService, CityDto city = null)
         {

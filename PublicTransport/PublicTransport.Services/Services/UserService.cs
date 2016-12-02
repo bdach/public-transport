@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
@@ -58,7 +59,7 @@ namespace PublicTransport.Services
     }
 
     /// <summary>
-    ///     Unit of work used to manage user data.
+    ///     Service used to manage user data.
     /// </summary>
     public class UserService : IUserService
     {
@@ -73,7 +74,7 @@ namespace PublicTransport.Services
         private readonly RoleRepository _roleRepository;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 

@@ -27,7 +27,7 @@ namespace PublicTransport.Services
         private readonly IConverter<City, CityDto> _converter;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
@@ -77,7 +77,7 @@ namespace PublicTransport.Services
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
-        /// <exception cref="FaultException">
+        /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Domain.Entities.City" /> could not be found in the database.
         /// </exception>
         public CityDto UpdateCity(CityDto city)

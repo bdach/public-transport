@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStreetViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IStreetService _streetService;
 
@@ -42,7 +42,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="streetService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="streetService">Service exposing methods necessary to manage data.</param>
         /// <param name="street">Street to be edited. If a steet is to be added, this parameter is null (can be left out).</param>
         public EditStreetViewModel(IScreen screen, IStreetService streetService, StreetDto street = null)
         {

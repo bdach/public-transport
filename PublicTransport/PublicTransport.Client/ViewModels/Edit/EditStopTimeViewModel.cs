@@ -15,7 +15,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStopTimeViewModel : ReactiveObject
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IRouteService _routeService;
 
@@ -37,7 +37,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="stopTime">Stop time to edit; null if a stop time is to be added.</param>
         public EditStopTimeViewModel(IRouteService routeService, StopTime stopTime = null)
         {

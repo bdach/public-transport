@@ -60,7 +60,7 @@ namespace PublicTransport.Services
     }
 
     /// <summary>
-    ///     Unit of work used to manage agency data.
+    ///     Service used to manage agency data.
     /// </summary>
     public class AgencyService : IAgencyService
     {
@@ -75,7 +75,7 @@ namespace PublicTransport.Services
         private readonly StreetRepository _streetRepository;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 

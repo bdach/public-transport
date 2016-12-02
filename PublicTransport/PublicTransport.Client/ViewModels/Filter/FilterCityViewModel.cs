@@ -19,7 +19,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterCityViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly ICityService _cityService;
 
@@ -37,7 +37,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="cityService">Unit of work used in the view model to access the database.</param>
+        /// <param name="cityService">Service used in the view model to access the database.</param>
         public FilterCityViewModel(IScreen screen, ICityService cityService = null)
         {
             #region Field/property initialization

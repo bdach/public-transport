@@ -146,7 +146,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.Close.ExecuteAsyncTask().Wait();
             // then
-            navigatedBack.Should().BeTrue();;
+            navigatedBack.Should().BeTrue();
         }
     }
 }

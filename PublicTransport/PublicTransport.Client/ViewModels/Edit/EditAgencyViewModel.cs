@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IAgencyService _agencyService;
 
@@ -41,7 +41,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="agencyService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="agencyService">Service exposing methods necessary to manage data.</param>
         /// <param name="agency">Agency to be edited. If an agency is to be added, this parameter should be left null.</param>
         public EditAgencyViewModel(IScreen screen, IAgencyService agencyService, Agency agency = null)
         {

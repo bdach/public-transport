@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditRouteViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IRouteService _routeService;
 
@@ -43,7 +43,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="routeService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="routeService">Service exposing methods necessary to manage data.</param>
         /// <param name="route">Route to be edited. If a route is to be added, this parameter should be left null.</param>
         public EditRouteViewModel(IScreen screen, IRouteService routeService, Route route = null)
         {

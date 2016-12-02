@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 

@@ -12,7 +12,7 @@ using PublicTransport.Services.Repositories;
 namespace PublicTransport.Services
 {
     /// <summary>
-    ///     Unit of work used to manage zone data.
+    ///     Service used to manage zone data.
     /// </summary>
     public class ZoneService : IZoneService
     {
@@ -22,7 +22,7 @@ namespace PublicTransport.Services
         private readonly ZoneRepository _zoneRepository;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 

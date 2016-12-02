@@ -23,7 +23,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterRouteViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IRouteService _routeService;
 
@@ -41,7 +41,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Service used in the view model to access the database.</param>
         public FilterRouteViewModel(IScreen screen, IRouteService routeService = null)
         {
             #region Field/property initialization

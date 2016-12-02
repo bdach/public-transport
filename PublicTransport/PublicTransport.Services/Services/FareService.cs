@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer.Filters;
+using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
@@ -98,7 +99,7 @@ namespace PublicTransport.Services
     }
 
     /// <summary>
-    ///     Unit of work used to manage fare data.
+    ///     Service used to manage fare data.
     /// </summary>
     public class FareService : IFareService
     {
@@ -123,7 +124,7 @@ namespace PublicTransport.Services
         private readonly ZoneRepository _zoneRepository;
 
         /// <summary>
-        ///     Database context common for services in this unit of work used to access data.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 

@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IFareService _fareService;
 
@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        /// <param name="fareService">Unit of work used in the view model to access the database.</param>
+        /// <param name="fareService">Service used in the view model to access the database.</param>
         public FilterFareViewModel(IScreen screen, IFareService fareService = null)
         {
             #region Field/property initialization

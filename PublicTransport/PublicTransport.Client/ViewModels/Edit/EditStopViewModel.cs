@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditStopViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IStopService _stopService;
 
@@ -61,7 +61,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="stopService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="stopService">Service exposing methods necessary to manage data.</param>
         /// <param name="stop">Stop to be edited. If a stop is to be added, this parameter should be left null.</param>
         public EditStopViewModel(IScreen screen, IStopService stopService, Stop stop = null)
         {

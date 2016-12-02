@@ -22,7 +22,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterUserViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IUserService _userService;
 
@@ -40,7 +40,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        /// <param name="userService">Unit of work used in the view model to access the database.</param>
+        /// <param name="userService">Service used in the view model to access the database.</param>
         public FilterUserViewModel(IScreen screen, IUserService userService = null)
         {
             #region Field/property initialization

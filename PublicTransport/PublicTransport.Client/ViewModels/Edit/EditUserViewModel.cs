@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditUserViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IUserService _userService;
 
@@ -31,7 +31,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="userService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="userService">Service exposing methods necessary to manage data.</param>
         /// <param name="user">User to be edited. If a user is to be added, this parameter should be left null.</param>
         public EditUserViewModel(IScreen screen, IUserService userService, User user = null)
         {

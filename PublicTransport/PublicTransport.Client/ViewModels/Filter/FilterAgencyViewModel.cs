@@ -21,7 +21,7 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IAgencyService _agencyService;
 
@@ -39,7 +39,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="agencyService">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="agencyService">Service exposing methods necessary to manage data.</param>
         public FilterAgencyViewModel(IScreen screen, IAgencyService agencyService = null)
         {
             #region Field/property initialization

@@ -17,7 +17,7 @@ namespace PublicTransport.Client.ViewModels.Browse
     public class TimetableViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
         private readonly IRouteService _routeService;
 
@@ -45,7 +45,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="routeService">Unit of work used in the view model to access the database.</param>
+        /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="route">The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.</param>
         public TimetableViewModel(IScreen screen, IRouteService routeService, Route route)
         {
