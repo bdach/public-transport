@@ -1,4 +1,5 @@
-﻿using PublicTransport.Client.Services.Cities;
+﻿using PublicTransport.Client.Services.Agencies;
+using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.Services.Zones;
 using PublicTransport.Client.ViewModels;
@@ -16,6 +17,10 @@ using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Providers;
 using ReactiveUI;
 using Splat;
+using IAgencyService = PublicTransport.Client.Services.Agencies.IAgencyService;
+using ICityService = PublicTransport.Client.Services.Cities.ICityService;
+using IStreetService = PublicTransport.Client.Services.Streets.IStreetService;
+using IZoneService = PublicTransport.Client.Services.Zones.IZoneService;
 
 namespace PublicTransport.Client.Providers
 {
@@ -69,9 +74,10 @@ namespace PublicTransport.Client.Providers
             // Entity views.
             Locator.CurrentMutable.Register(() => new CityView(), typeof(IViewFor<CityDto>));
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<StreetDto>));
-            Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<Agency>));
-            Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
             Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<ZoneDto>));
+            Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<AgencyDto>));
+
+            Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
             Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
             Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTime>));
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
@@ -82,6 +88,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new CityServiceClient(), typeof(ICityService));
             Locator.CurrentMutable.Register(() => new StreetServiceClient(), typeof(IStreetService));
             Locator.CurrentMutable.Register(() => new ZoneServiceClient(), typeof(IZoneService));
+            Locator.CurrentMutable.Register(() => new AgencyServiceClient(), typeof(IAgencyService));
         }
 
         /// <summary>

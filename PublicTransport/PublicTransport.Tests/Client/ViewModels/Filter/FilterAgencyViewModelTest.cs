@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI;
 
@@ -29,11 +28,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterAgencies()
         {
             // given
-            _agencyService.Setup(a => a.FilterAgencies(It.IsAny<IAgencyFilter>())).Returns(new List<Agency> { new Agency() });
+            _agencyService.Setup(a => a.FilterAgenciesAsync(It.IsAny<AgencyFilter>())).ReturnsAsync(new[] { new AgencyDto() });
             // when
             _viewModel.FilterAgencies.ExecuteAsyncTask().Wait();
             // then
-            _agencyService.Verify(a => a.FilterAgencies(_viewModel.AgencyFilter), Times.Once);
+            _agencyService.Verify(a => a.FilterAgencies(_viewModel.AgencyReactiveFilter.Convert()), Times.Once);
             _viewModel.Agencies.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -42,18 +41,18 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             // when
-            _viewModel.AgencyFilter.AgencyNameFilter = "";
-            _viewModel.AgencyFilter.CityNameFilter = "";
-            _viewModel.AgencyFilter.StreetNameFilter = "";
+            _viewModel.AgencyReactiveFilter.AgencyNameFilter = "";
+            _viewModel.AgencyReactiveFilter.CityNameFilter = "";
+            _viewModel.AgencyReactiveFilter.StreetNameFilter = "";
             // then
-            _agencyService.Verify(a => a.FilterAgencies(It.IsAny<IAgencyFilter>()), Times.Never);
+            _agencyService.Verify(a => a.FilterAgencies(It.IsAny<AgencyFilter>()), Times.Never);
         }
 
         [Test]
         public void DeleteAgency()
         {
             // given
-            var agency = new Agency();
+            var agency = new AgencyDto();
             // when
             _viewModel.SelectedAgency = agency;
             _viewModel.DeleteAgency.ExecuteAsyncTask().Wait();
@@ -65,7 +64,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void AddAgency()
         {
             // given
-            _viewModel.SelectedAgency = new Agency();
+            _viewModel.SelectedAgency = new AgencyDto();
             var navigatedToEdit = false;
             Router.Navigate
                 .Where(vm => vm is EditAgencyViewModel)
@@ -83,7 +82,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void EditAgency()
         {
             // given
-            _viewModel.SelectedAgency = new Agency();
+            _viewModel.SelectedAgency = new AgencyDto();
             var navigatedToEdit = false;
             Router.Navigate
                 .Where(vm => vm is EditAgencyViewModel)

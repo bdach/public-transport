@@ -9,14 +9,14 @@ namespace PublicTransport.Tests.Services
     [TestFixture]
     public class StreetRepositoryTest : RepositoryTest
     {
-        private StreetRepository _streetRepository;
         private Mock<StreetFilter> _streetFilter;
+        private StreetRepository _streetRepository;
 
         [SetUp]
         public void ServiceSetUp()
         {
-            _streetRepository = new StreetRepository(DbContext);
             _streetFilter = new Mock<StreetFilter>();
+            _streetRepository = new StreetRepository(DbContext);
         }
 
         [Test]

@@ -9,13 +9,13 @@ namespace PublicTransport.Tests.Services
     [TestFixture]
     public class AgencyRepositoryTest : RepositoryTest
     {
-        private Mock<IAgencyFilter> _agencyFilter;
+        private Mock<AgencyFilter> _agencyFilter;
         private AgencyRepository _agencyRepository;
 
         [SetUp]
         public void ServiceSetUp()
         {
-            _agencyFilter = new Mock<IAgencyFilter>();
+            _agencyFilter = new Mock<AgencyFilter>();
             _agencyRepository = new AgencyRepository(DbContext);
         }
 

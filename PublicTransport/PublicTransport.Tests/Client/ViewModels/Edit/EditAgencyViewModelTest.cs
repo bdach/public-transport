@@ -3,9 +3,9 @@ using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI.Testing;
 
@@ -16,13 +16,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     {
         private Mock<IAgencyService> _agencyService;
         private EditAgencyViewModel _viewModel;
-        private Agency _agency;
+        private AgencyDto _agency;
 
         [SetUp]
         public void SetUp()
         {
             _agencyService = new Mock<IAgencyService>();
-            _agency = new Agency();
+            _agency = new AgencyDto();
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyService.Verify(a => a.CreateAgency(It.IsAny<Agency>()), Times.Once);
+            _agencyService.Verify(a => a.CreateAgency(It.IsAny<AgencyDto>()), Times.Once);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 // given
                 s.AdvanceByMs(100);
                 _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
-                _viewModel.SelectedStreet = new Street {Name = "hello"};
+                _viewModel.SelectedStreet = new StreetDto { Name = "hello" };
                 // when
                 _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 s.AdvanceByMs(500);

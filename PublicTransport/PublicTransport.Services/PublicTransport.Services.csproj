@@ -70,12 +70,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransfer\AgencyDto.cs" />
     <Compile Include="DataTransfer\CityDto.cs" />
+    <Compile Include="DataTransfer\Converters\AgencyConverter.cs" />
     <Compile Include="DataTransfer\Converters\CityConverter.cs" />
     <Compile Include="DataTransfer\Converters\IConverter.cs" />
     <Compile Include="DataTransfer\Converters\StreetConverter.cs" />
     <Compile Include="DataTransfer\Converters\ZoneConverter.cs" />
-    <Compile Include="DataTransfer\Filters\IAgencyFilter.cs" />
+    <Compile Include="DataTransfer\Filters\AgencyFilter.cs" />
     <Compile Include="DataTransfer\Filters\IFareFilter.cs" />
     <Compile Include="DataTransfer\Filters\IStopFilter.cs" />
     <Compile Include="DataTransfer\Filters\IRouteFilter.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Repositories\CityRepository.cs" />
     <Compile Include="Repositories\FareAttributeRepository.cs" />
     <Compile Include="Repositories\FareRuleRepository.cs" />
+    <Compile Include="Services\Contracts\IAgencyService.cs" />
     <Compile Include="Services\Contracts\ICityService.cs" />
     <Compile Include="Services\Contracts\IStreetService.cs" />
     <Compile Include="Services\Contracts\IZoneService.cs" />

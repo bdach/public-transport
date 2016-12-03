@@ -13,6 +13,8 @@ namespace PublicTransport.Services.DataTransfer.Converters
 
         public StreetDto GetDto(Street entity)
         {
+            if (entity == null) return null;
+
             return new StreetDto
             {
                 Id = entity.Id,

@@ -13,13 +13,15 @@ namespace PublicTransport.Services.DataTransfer
         /// </summary>
         [DataMember]
         public int Id { get; set; }
+
         /// <summary>
         /// Street name.
         /// </summary>
         [DataMember]
         public string Name { get; set; }
+
         /// <summary>
-        /// The city associated with the street.
+        /// City associated with the street.
         /// </summary>
         [DataMember]
         public CityDto City { get; set; }

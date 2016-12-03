@@ -1,4 +1,5 @@
-﻿using PublicTransport.Services.Repositories;
+﻿using System.Runtime.Serialization;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.DataTransfer.Filters
 {
@@ -6,21 +7,25 @@ namespace PublicTransport.Services.DataTransfer.Filters
     ///     Data transfer object interface.
     ///     Used by the <see cref="AgencyRepository" /> to perform filtering.
     /// </summary>
-    public interface IAgencyFilter
+    [DataContract]
+    public class AgencyFilter
     {
         /// <summary>
         ///     Contains the agency name string filter parameter.
         /// </summary>
-        string AgencyNameFilter { get; }
+        [DataMember]
+        public string AgencyNameFilter { get; set; }
 
         /// <summary>
         ///     Contains the city name string filter parameter.
         /// </summary>
-        string CityNameFilter { get; }
+        [DataMember]
+        public string CityNameFilter { get; set; }
 
         /// <summary>
         ///     Contains the street name string filter parameter.
         /// </summary>
-        string StreetNameFilter { get; }
+        [DataMember]
+        public string StreetNameFilter { get; set; }
     }
 }

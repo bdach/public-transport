@@ -6,7 +6,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.Agency" /> objects.
     /// </summary>
-    public class AgencyFilter : ReactiveObject, IAgencyFilter, IReactiveFilter
+    public class AgencyReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     Agency name filter.
@@ -48,6 +48,16 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _streetNameFilter; }
             set { this.RaiseAndSetIfChanged(ref _streetNameFilter, value); }
+        }
+
+        public AgencyFilter Convert()
+        {
+            return new AgencyFilter
+            {
+                AgencyNameFilter = AgencyNameFilter,
+                CityNameFilter = CityNameFilter,
+                StreetNameFilter = StreetNameFilter
+            };
         }
 
         /// <summary>

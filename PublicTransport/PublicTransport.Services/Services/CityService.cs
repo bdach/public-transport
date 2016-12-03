@@ -53,6 +53,9 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="Domain.Entities.City" /> object successfully inserted into the database.
         /// </returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
         public CityDto CreateCity(CityDto city)
         {
             try

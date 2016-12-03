@@ -27,7 +27,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Agency" /> objects.
         /// </summary>
-        private AgencyFilter _agencyFilter;
+        private AgencyReactiveFilter _agencyReactiveFilter;
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Route" /> object being edited in the window.
@@ -52,12 +52,12 @@ namespace PublicTransport.Client.ViewModels.Edit
             HostScreen = screen;
             AgencySuggestions = new ReactiveList<Agency>();
             RouteTypes = new ReactiveList<RouteType>(Enum.GetValues(typeof(RouteType)).Cast<RouteType>());
-            _agencyFilter = new AgencyFilter();
+            _agencyReactiveFilter = new AgencyReactiveFilter();
             _routeService = routeService;
             var serviceMethod = route == null ? new Func<Route, Route>(routeService.CreateRoute) : routeService.UpdateRoute;
             _route = route ?? new Route();
             _selectedAgency = _route.Agency;
-            _agencyFilter.AgencyNameFilter = _route.Agency?.Name ?? "";
+            _agencyReactiveFilter.AgencyNameFilter = _route.Agency?.Name ?? "";
 
             #endregion
 
@@ -75,7 +75,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions command
 
             UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _routeService.FilterAgencies(AgencyFilter)));
+                await Task.Run(() => _routeService.FilterAgencies(AgencyReactiveFilter.Convert())));
             UpdateSuggestions.Subscribe(results =>
             {
                 AgencySuggestions.Clear();
@@ -88,8 +88,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region Querying DB for suggestions
 
-            this.WhenAnyValue(vm => vm.AgencyFilter.AgencyNameFilter)
-                .Where(s => (s != SelectedAgency?.Name) && AgencyFilter.IsValid)
+            this.WhenAnyValue(vm => vm.AgencyReactiveFilter.AgencyNameFilter)
+                .Where(s => (s != SelectedAgency?.Name) && AgencyReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
@@ -149,10 +149,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Agency" /> objects.
         /// </summary>
-        public AgencyFilter AgencyFilter
+        public AgencyReactiveFilter AgencyReactiveFilter
         {
-            get { return _agencyFilter; }
-            set { this.RaiseAndSetIfChanged(ref _agencyFilter, value); }
+            get { return _agencyReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _agencyReactiveFilter, value); }
         }
 
         /// <summary>

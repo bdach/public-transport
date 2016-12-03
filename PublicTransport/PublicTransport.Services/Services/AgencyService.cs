@@ -1,64 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
-    public interface IAgencyService : IDisposable
-    {
-        /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> create method.
-        /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be inserted into the database.</param>
-        /// <returns>
-        ///     <see cref="Agency"/> object successfully inserted into the database.
-        /// </returns>
-        Agency CreateAgency(Agency agency);
-
-        /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> update method.
-        /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be updated in the database.</param>
-        /// <returns>
-        ///     <see cref="Agency"/> object successfully updated in the database.
-        /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
-        /// </exception>
-        Agency UpdateAgency(Agency agency);
-
-        /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> delete method.
-        /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
-        /// </exception>
-        void DeleteAgency(Agency agency);
-
-        /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> filtering method.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>
-        ///     List of <see cref="Agency"/> objects matching the filtering query.
-        /// </returns>
-        List<Agency> FilterAgencies(IAgencyFilter filter);
-
-        /// <summary>
-        ///     Calls <see cref="StreetRepository"/> filtering method.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>
-        ///     List of <see cref="Street"/> objects matching the filtering query.
-        /// </returns>
-        List<Street> FilterStreets(StreetFilter filter);
-    }
-
     /// <summary>
     ///     Service used to manage agency data.
     /// </summary>
@@ -73,6 +26,16 @@ namespace PublicTransport.Services
         ///     Service used to fetch <see cref="Street"/> data from the database.
         /// </summary>
         private readonly StreetRepository _streetRepository;
+
+        /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.City" /> objects to <see cref="CityDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Agency, AgencyDto> _agencyConverter;
+
+        /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.City" /> objects to <see cref="CityDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Street, StreetDto> _streetConverter;
 
         /// <summary>
         ///     Database context common for services in this service used to access data.
@@ -92,45 +55,70 @@ namespace PublicTransport.Services
             _db = new PublicTransportContext();
             _agencyRepository = new AgencyRepository(_db);
             _streetRepository = new StreetRepository(_db);
+            _agencyConverter = new AgencyConverter();
+            _streetConverter = new StreetConverter();
         }
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> create method.
+        ///     Creates a <see cref="Domain.Entities.Agency" /> object in the database.
         /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be inserted into the database.</param>
+        /// <param name="agency"><see cref="Domain.Entities.Agency" /> object to be inserted into the database.</param>
         /// <returns>
-        ///     <see cref="Agency"/> object successfully inserted into the database.
+        ///     <see cref="Domain.Entities.Agency" /> object successfully inserted into the database.
         /// </returns>
-        public Agency CreateAgency(Agency agency)
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public AgencyDto CreateAgency(AgencyDto agency)
         {
-            return _agencyRepository.Create(agency);
+            try
+            {
+                var result = _agencyRepository.Create(_agencyConverter.GetEntity(agency));
+                return _agencyConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> update method.
+        ///     Updates a <see cref="Domain.Entities.Agency" /> object in the database, using the data stored in the
+        ///     <see cref="AgencyDto" /> object.
         /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be updated in the database.</param>
+        /// <param name="agency"><see cref="Domain.Entities.Agency" /> object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Agency"/> object successfully updated in the database.
+        ///     <see cref="Domain.Entities.Agency" /> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
-        public Agency UpdateAgency(Agency agency)
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Domain.Entities.Agency" /> could not be found in the database.
+        /// </exception>
+        public AgencyDto UpdateAgency(AgencyDto agency)
         {
-            return _agencyRepository.Update(agency);
+            try
+            {
+                var result = _agencyRepository.Update(_agencyConverter.GetEntity(agency));
+                return _agencyConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> delete method.
+        ///     Deletes a <see cref="Domain.Entities.Agency" /> from the system.
         /// </summary>
-        /// <param name="agency"><see cref="Agency"/> object to be deleted from the database.</param>
+        /// <param name="agency"><see cref="Domain.Entities.Agency" /> object to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Agency" /> could not be found in the database.
+        ///     Thrown when the supplied <see cref="Domain.Entities.Agency" /> could not be found in the database.
         /// </exception>
-        public void DeleteAgency(Agency agency)
+        public void DeleteAgency(AgencyDto agency)
         {
-            _agencyRepository.Delete(agency);
+            _agencyRepository.Delete(_agencyConverter.GetEntity(agency));
         }
 
         /// <summary>
@@ -140,9 +128,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Agency"/> objects matching the filtering query.
         /// </returns>
-        public List<Agency> FilterAgencies(IAgencyFilter filter)
+        public List<AgencyDto> FilterAgencies(AgencyFilter filter)
         {
-            return _agencyRepository.FilterAgencies(filter);
+            return _agencyRepository.FilterAgencies(filter)
+                .Select(_agencyConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>
@@ -152,9 +142,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Street"/> objects matching the filtering query.
         /// </returns>
-        public List<Street> FilterStreets(StreetFilter filter)
+        public List<StreetDto> FilterStreets(StreetFilter filter)
         {
-            return _streetRepository.FilterStreets(filter);
+            return _streetRepository.FilterStreets(filter)
+                .Select(_streetConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>

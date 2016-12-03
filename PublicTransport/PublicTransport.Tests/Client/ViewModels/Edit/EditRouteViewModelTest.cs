@@ -64,9 +64,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditRouteViewModel(Screen.Object, _routeService.Object);
             // when
-            _viewModel.AgencyFilter.AgencyNameFilter = "";
+            _viewModel.AgencyReactiveFilter.AgencyNameFilter = "";
             // then
-            _routeService.Verify(r => r.FilterAgencies(It.IsAny<IAgencyFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterAgencies(It.IsAny<AgencyFilter>()), Times.Never);
         }
 
         //[Test]
@@ -78,12 +78,12 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 s.AdvanceByMs(100);
                 _viewModel = new EditRouteViewModel(Screen.Object, _routeService.Object);
                 // when
-                _viewModel.AgencyFilter.AgencyNameFilter = "test";
+                _viewModel.AgencyReactiveFilter.AgencyNameFilter = "test";
                 // then
                 s.AdvanceByMs(250);
-                _routeService.Verify(r => r.FilterAgencies(It.IsAny<IAgencyFilter>()), Times.Never);
+                _routeService.Verify(r => r.FilterAgencies(It.IsAny<AgencyFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _routeService.Verify(r => r.FilterAgencies(It.IsAny<IAgencyFilter>()), Times.Once);
+                _routeService.Verify(r => r.FilterAgencies(It.IsAny<AgencyFilter>()), Times.Once);
             });
         }
 

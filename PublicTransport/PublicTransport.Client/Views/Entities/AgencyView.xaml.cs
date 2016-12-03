@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.Views.Entities
@@ -7,14 +7,14 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for AgencyView.xaml
     /// </summary>
-    public partial class AgencyView : IViewFor<Agency>
+    public partial class AgencyView : IViewFor<AgencyDto>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(Agency), typeof(AgencyView), new PropertyMetadata(default(Agency)));
+            "ViewModel", typeof(AgencyDto), typeof(AgencyView), new PropertyMetadata(default(AgencyDto)));
 
-        public Agency ViewModel
+        public AgencyDto ViewModel
         {
-            get { return (Agency) GetValue(ViewModelProperty); }
+            get { return (AgencyDto) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
@@ -26,7 +26,7 @@ namespace PublicTransport.Client.Views.Entities
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (Agency) value; }
+            set { ViewModel = (AgencyDto) value; }
         }
     }
 }
