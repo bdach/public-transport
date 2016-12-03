@@ -1,36 +1,45 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using PublicTransport.Domain.Entities;
 
-namespace PublicTransport.Domain.Entities
+namespace PublicTransport.Services.DataTransfer
 {
     /// <summary>
-    ///     Represents a user of the system.
+    /// Data transfer object for <see cref="Domain.Entities.User"/> objects.
     /// </summary>
-    public class User : Entity
+    [DataContract]
+    public class UserDto
     {
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public User()
+        public UserDto()
         {
-            Roles = new List<Role>();
+            Roles = new List<RoleDto>();
         }
+
+        /// <summary>
+        /// Identification number of the city.
+        /// </summary>
+        [DataMember]
+        public int Id { get; set; }
 
         /// <summary>
         ///     Contains the username (login) of the user.
         /// </summary>
-        [Required(ErrorMessage = "Username is required.")]
+        [DataMember]
         public string UserName { get; set; }
 
         /// <summary>
         ///     Contains the password of the user.
         /// </summary>
-        [Required(ErrorMessage = "Password is required.")]
+        [DataMember]
         public string Password { get; set; }
 
         /// <summary>
         ///     Returns a list of <see cref="Role"/>s assigned to the user.
         /// </summary>
-        public IList<Role> Roles { get; set; }
+        [DataMember]
+        public IList<RoleDto> Roles { get; set; }
     }
 }

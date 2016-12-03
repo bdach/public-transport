@@ -7,7 +7,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.User" /> objects.
     /// </summary>
-    public class UserFilter : ReactiveObject, IUserFilter, IReactiveFilter
+    public class UserReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     Contains the username string filter parameter.
@@ -35,6 +35,15 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _roleTypeFilter; }
             set { this.RaiseAndSetIfChanged(ref _roleTypeFilter, value); }
+        }
+
+        public UserFilter Convert()
+        {
+            return new UserFilter
+            {
+                UserNameFilter = UserNameFilter,
+                RoleTypeFilter = RoleTypeFilter
+            };
         }
 
         /// <summary>

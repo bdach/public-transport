@@ -1,6 +1,7 @@
 ﻿using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.Services.Streets;
+using PublicTransport.Client.Services.Users;
 using PublicTransport.Client.Services.Zones;
 using PublicTransport.Client.ViewModels;
 using PublicTransport.Client.ViewModels.Browse;
@@ -21,6 +22,7 @@ using IAgencyService = PublicTransport.Client.Services.Agencies.IAgencyService;
 using ICityService = PublicTransport.Client.Services.Cities.ICityService;
 using IStreetService = PublicTransport.Client.Services.Streets.IStreetService;
 using IZoneService = PublicTransport.Client.Services.Zones.IZoneService;
+using IUserService = PublicTransport.Client.Services.Users.IUserService;
 
 namespace PublicTransport.Client.Providers
 {
@@ -76,19 +78,20 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new StreetView(), typeof(IViewFor<StreetDto>));
             Locator.CurrentMutable.Register(() => new ZoneView(), typeof(IViewFor<ZoneDto>));
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<AgencyDto>));
+            Locator.CurrentMutable.Register(() => new UserView(), typeof(IViewFor<UserDto>));
 
             Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
             Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
             Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTime>));
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
             Locator.CurrentMutable.Register(() => new RoleView(), typeof(IViewFor<RoleViewModel>));
-            Locator.CurrentMutable.Register(() => new UserView(), typeof(IViewFor<User>));
 
             // WCF services.
             Locator.CurrentMutable.Register(() => new CityServiceClient(), typeof(ICityService));
             Locator.CurrentMutable.Register(() => new StreetServiceClient(), typeof(IStreetService));
             Locator.CurrentMutable.Register(() => new ZoneServiceClient(), typeof(IZoneService));
             Locator.CurrentMutable.Register(() => new AgencyServiceClient(), typeof(IAgencyService));
+            Locator.CurrentMutable.Register(() => new UserServiceClient(), typeof(IUserService));
         }
 
         /// <summary>

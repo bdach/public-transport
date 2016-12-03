@@ -7,16 +7,16 @@ namespace PublicTransport.Services.DataTransfer.Filters
     ///     Data transfer object interface.
     ///     Used by the <see cref="UserRepository" /> to perform filtering.
     /// </summary>
-    public interface IUserFilter
+    public class UserFilter
     {
         /// <summary>
         ///     Contains the username string filter parameter.
         /// </summary>
-        string UserNameFilter { get; }
+        public string UserNameFilter { get; set; }
 
         /// <summary>
         ///     Contains the role name enum filter parameter.
         /// </summary>
-        RoleType? RoleTypeFilter { get; }
+        public RoleType? RoleTypeFilter { get; set; }
     }
 }

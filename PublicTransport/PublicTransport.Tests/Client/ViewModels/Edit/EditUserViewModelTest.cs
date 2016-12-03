@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Users;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
 {
@@ -14,13 +13,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     {
         private Mock<IUserService> _userService;
         private EditUserViewModel _viewModel;
-        private User _user;
+        private UserDto _user;
 
         [SetUp]
         public void SetUp()
         {
             _userService = new Mock<IUserService>();
-            _user = new User();
+            _user = new UserDto();
         }
 
         [Test]
@@ -31,7 +30,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveUser.ExecuteAsyncTask().Wait();
             // then
-            _userService.Verify(u => u.CreateUser(It.IsAny<User>()), Times.Once);
+            _userService.Verify(u => u.CreateUserAsync(It.IsAny<UserDto>()), Times.Once);
         }
 
         [Test]
@@ -42,19 +41,19 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveUser.ExecuteAsyncTask().Wait();
             // then
-            _userService.Verify(u => u.UpdateUser(_user), Times.Once);
+            _userService.Verify(u => u.UpdateUserAsync(_user), Times.Once);
         }
 
         [Test]
         public void GetRoles()
         {
             // given
-            _userService.Setup(a => a.GetAllRoles()).Returns(new List<Role> { new Role() });
+            _userService.Setup(a => a.GetAllRoles()).Returns(new[] { new RoleDto() });
             _viewModel = new EditUserViewModel(Screen.Object, _userService.Object);
             // when
             _viewModel.GetRoles.ExecuteAsyncTask().Wait();
             // then
-            _userService.Verify(u => u.GetAllRoles(), Times.Once);
+            _userService.Verify(u => u.GetAllRolesAsync(), Times.Once);
         }
 
         [Test]

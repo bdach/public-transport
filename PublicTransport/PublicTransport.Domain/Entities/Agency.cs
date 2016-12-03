@@ -11,13 +11,13 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     The full name of the transit agency.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The agency name is required.")]
         public string Name { get; set; }
 
         /// <summary>
         ///     Contains a single voice telephone number for the specified agency.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The phone number is required.")]
         public string Phone { get; set; }
 
         /// <summary>

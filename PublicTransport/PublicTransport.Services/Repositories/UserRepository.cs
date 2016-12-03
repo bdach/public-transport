@@ -156,12 +156,12 @@ namespace PublicTransport.Services.Repositories
 
         /// <summary>
         ///     Selects all the <see cref="User" /> objects that match all the criteria specified by the
-        ///     <see cref="IUserFilter" /> object. The returned name strings all contain the
+        ///     <see cref="UserFilter" /> object. The returned name strings all contain the
         ///     parameters supplied in the <see cref="filter" /> parameter.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>List of items satisfying the supplied query.</returns>
-        public List<User> FilterUsers(IUserFilter filter)
+        public List<User> FilterUsers(UserFilter filter)
         {
             var users = _db.Users.Include(u => u.Roles)
                 .Where(u => u.UserName.Contains(filter.UserNameFilter))

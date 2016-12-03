@@ -1,63 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
-    public interface IUserService : IDisposable
-    {
-        /// <summary>
-        ///     Calls <see cref="UserRepository"/> create method.
-        /// </summary>
-        /// <param name="user"><see cref="User"/> object to be inserted into the database.</param>
-        /// <returns>
-        ///     <see cref="User"/> object successfully inserted into the database.
-        /// </returns>
-        User CreateUser(User user);
-
-        /// <summary>
-        ///     Calls <see cref="UserRepository"/> update method.
-        /// </summary>
-        /// <param name="user"><see cref="User"/> object to be updated in the database.</param>
-        /// <returns>
-        ///     <see cref="User"/> object successfully updated in the database.
-        /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
-        /// </exception>
-        User UpdateUser(User user);
-
-        /// <summary>
-        ///     Calls <see cref="UserRepository"/> delete method.
-        /// </summary>
-        /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
-        /// </exception>
-        void DeleteUser(User user);
-
-        /// <summary>
-        ///     Calls <see cref="UserRepository"/> filtering method.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>
-        ///     List of <see cref="User"/> objects matching the filtering query.
-        /// </returns>
-        List<User> FilterUsers(IUserFilter filter);
-
-        /// <summary>
-        ///     Returns a list of all roles from the database.
-        /// </summary>
-        /// <returns>
-        ///     List of all roles from the database.
-        /// </returns>
-        List<Role> GetAllRoles();
-    }
-
     /// <summary>
     ///     Service used to manage user data.
     /// </summary>
@@ -72,6 +26,16 @@ namespace PublicTransport.Services
         ///     Service used to fetch <see cref="Role"/> data from the database.
         /// </summary>
         private readonly RoleRepository _roleRepository;
+
+        /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.User" /> objects to <see cref="UserDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<User, UserDto> _userConverter;
+
+        /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.Role" /> objects to <see cref="RoleDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Role, RoleDto> _roleConverter;
 
         /// <summary>
         ///     Database context common for services in this service used to access data.
@@ -91,6 +55,8 @@ namespace PublicTransport.Services
             _db = new PublicTransportContext();
             _userRepository = new UserRepository(_db);
             _roleRepository = new RoleRepository(_db);
+            _userConverter = new UserConverter();
+            _roleConverter = new RoleConverter();
         }
 
         /// <summary>
@@ -100,24 +66,47 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="User"/> object successfully inserted into the database.
         /// </returns>
-        public User CreateUser(User user)
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public UserDto CreateUser(UserDto user)
         {
-            return _userRepository.Create(user);
+            try
+            {
+                var result = _userRepository.Create(_userConverter.GetEntity(user));
+                return _userConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> update method.
+        ///     Updates a <see cref="Domain.Entities.User" /> object in the database, using the data stored in the
+        ///     <see cref="UserDto" /> object.
         /// </summary>
-        /// <param name="user"><see cref="User"/> object to be updated in the database.</param>
+        /// <param name="user"><see cref="Domain.Entities.User" /> object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="User"/> object successfully updated in the database.
+        ///     <see cref="Domain.Entities.User" /> object successfully updated in the database.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
-        public User UpdateUser(User user)
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Domain.Entities.User" /> could not be found in the database.
+        /// </exception>
+        public UserDto UpdateUser(UserDto user)
         {
-            return _userRepository.Update(user);
+            try
+            {
+                var result = _userRepository.Update(_userConverter.GetEntity(user));
+                return _userConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
@@ -127,9 +116,9 @@ namespace PublicTransport.Services
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
-        public void DeleteUser(User user)
+        public void DeleteUser(UserDto user)
         {
-            _userRepository.Delete(user);
+            _userRepository.Delete(_userConverter.GetEntity(user));
         }
 
         /// <summary>
@@ -139,9 +128,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="User"/> objects matching the filtering query.
         /// </returns>
-        public List<User> FilterUsers(IUserFilter filter)
+        public List<UserDto> FilterUsers(UserFilter filter)
         {
-            return _userRepository.FilterUsers(filter);
+            return _userRepository.FilterUsers(filter)
+                .Select(_userConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>
@@ -150,9 +141,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of all roles from the database.
         /// </returns>
-        public List<Role> GetAllRoles()
+        public List<RoleDto> GetAllRoles()
         {
-            return _roleRepository.GetAllRoles();
+            return _roleRepository.GetAllRoles()
+                .Select(_roleConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>

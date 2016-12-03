@@ -131,7 +131,7 @@
     <Compile Include="DataTransfer\StopFilter.cs" />
     <Compile Include="DataTransfer\StopTimeFilter.cs" />
     <Compile Include="DataTransfer\StreetReactiveFilter.cs" />
-    <Compile Include="DataTransfer\UserFilter.cs" />
+    <Compile Include="DataTransfer\UserReactiveFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -147,6 +147,11 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\Services.Streets\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Users\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -454,7 +459,9 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.AgencyDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.CityDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.RoleDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StreetDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.UserDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.ZoneDto.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -515,6 +522,28 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Streets\StreetService.wsdl" />
+    <None Include="Service References\Services.Users\users.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\UserService.wsdl" />
     <None Include="Service References\Services.Zones\zones.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -564,6 +593,7 @@
     <WCFMetadataStorage Include="Service References\Services.Agencies\" />
     <WCFMetadataStorage Include="Service References\Services.Cities\" />
     <WCFMetadataStorage Include="Service References\Services.Streets\" />
+    <WCFMetadataStorage Include="Service References\Services.Users\" />
     <WCFMetadataStorage Include="Service References\Services.Zones\" />
   </ItemGroup>
   <ItemGroup>
@@ -610,6 +640,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Services.Agencies\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Users\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Users\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Users\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

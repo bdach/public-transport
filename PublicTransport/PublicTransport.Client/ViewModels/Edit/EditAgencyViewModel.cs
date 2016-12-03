@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
@@ -8,6 +9,7 @@ using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -63,8 +65,14 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region SaveAgency command
 
             SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ => await serviceMethod(Agency));
-            SaveAgency.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited agency cannot be saved to the database. Please check the required fields and try again later..", ex));
+            SaveAgency.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please check the required fields and try again later.", ex));
+            SaveAgency.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 

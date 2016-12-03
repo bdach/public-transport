@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Users;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -27,14 +26,14 @@ namespace PublicTransport.Client.ViewModels.Filter
         private readonly IUserService _userService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.UserFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.UserReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private UserFilter _userFilter;
+        private UserReactiveFilter _userReactiveFilter;
 
         /// <summary>
         ///     The <see cref="User" /> currently selected by the user.
         /// </summary>
-        private User _selectedUser;
+        private UserDto _selectedUser;
 
         /// <summary>
         ///     Constructor.
@@ -47,8 +46,8 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen = screen;
             _userService = userService ?? Locator.Current.GetService<IUserService>();
-            _userFilter = new UserFilter();
-            Users = new ReactiveList<User>();
+            _userReactiveFilter = new UserReactiveFilter();
+            Users = new ReactiveList<UserDto>();
             Roles = new ReactiveList<RoleType>(Enum.GetValues(typeof(RoleType)).Cast<RoleType>());
 
             #endregion
@@ -57,7 +56,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region User filtering command
 
-            FilterUsers = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _userService.FilterUsers(UserFilter)));
+            FilterUsers = ReactiveCommand.CreateAsyncTask(async _ => await _userService.FilterUsersAsync(UserReactiveFilter.Convert()));
             FilterUsers.Subscribe(result =>
             {
                 Users.Clear();
@@ -71,9 +70,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of filtered users upon filter change
 
             this.WhenAnyValue(
-                    vm => vm.UserFilter.UserNameFilter,
-                    vm => vm.UserFilter.RoleTypeFilter)
-                .Where(_ => UserFilter.IsValid)
+                    vm => vm.UserReactiveFilter.UserNameFilter,
+                    vm => vm.UserReactiveFilter.RoleTypeFilter)
+                .Where(_ => UserReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterUsers);
 
@@ -83,7 +82,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteUser = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _userService.DeleteUser(SelectedUser));
+                await _userService.DeleteUserAsync(SelectedUser);
                 return Unit.Default;
             });
             DeleteUser.Subscribe(_ => SelectedUser = null);
@@ -105,23 +104,15 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Clearing enum choice
 
             ClearRoleTypeChoice = ReactiveCommand.Create();
-            ClearRoleTypeChoice.Subscribe(_ => UserFilter.RoleTypeFilter = null);
+            ClearRoleTypeChoice.Subscribe(_ => UserReactiveFilter.RoleTypeFilter = null);
 
             #endregion
 
             #region Updating the list of users upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && UserFilter.IsValid)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && UserReactiveFilter.IsValid)
                 .InvokeCommand(FilterUsers);
-
-            #endregion
-
-            #region Disposing of contexts
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _userService.Dispose());
 
             #endregion
         }
@@ -129,19 +120,19 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     The <see cref="User" /> currently selected by the user.
         /// </summary>
-        public User SelectedUser
+        public UserDto SelectedUser
         {
             get { return _selectedUser; }
             set { this.RaiseAndSetIfChanged(ref _selectedUser, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.UserFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.UserReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public UserFilter UserFilter
+        public UserReactiveFilter UserReactiveFilter
         {
-            get { return _userFilter; }
-            set { this.RaiseAndSetIfChanged(ref _userFilter, value); }
+            get { return _userReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _userReactiveFilter, value); }
         }
 
         /// <summary>
@@ -152,13 +143,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     The list of <see cref="Users" /> objects currently displayed by the user.
         /// </summary>
-        public ReactiveList<User> Users { get; protected set; }
+        public ReactiveList<UserDto> Users { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="User" /> objects from the database, using the <see cref="DataTransfer.UserFilter" /> object as a query
+        ///     Fetches <see cref="User" /> objects from the database, using the <see cref="DataTransfer.UserReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<User>> FilterUsers { get; protected set; }
+        public ReactiveCommand<UserDto[]> FilterUsers { get; protected set; }
 
         /// <summary>
         ///     Clears the role type filter.

@@ -14,7 +14,7 @@ namespace PublicTransport.Tests.Services
     {
         private UserRepository _userRepository;
         private Mock<IPasswordService> _passwordService;
-        private Mock<IUserFilter> _userFilter;
+        private UserFilter _userFilter;
 
         [SetUp]
         public void ServiceSetUp()
@@ -22,7 +22,7 @@ namespace PublicTransport.Tests.Services
             _passwordService = new Mock<IPasswordService>();
             _passwordService.Setup(ps => ps.GenerateHash(It.IsAny<string>())).Returns("hashed");
             _userRepository = new UserRepository(DbContext, _passwordService.Object);
-            _userFilter = new Mock<IUserFilter>();
+            _userFilter = new UserFilter();
         }
 
         [Test]
@@ -66,9 +66,9 @@ namespace PublicTransport.Tests.Services
         public void FilterUsersTest_ByUserName()
         {
             // given
-            _userFilter.Setup(uf => uf.UserNameFilter).Returns("o");
+            _userFilter.UserNameFilter = "o";
             // when
-            var users = _userRepository.FilterUsers(_userFilter.Object);
+            var users = _userRepository.FilterUsers(_userFilter);
             // then
             users.Count.ShouldBeEquivalentTo(2);
             users.Should().Contain(u => u.UserName == "root");
@@ -80,10 +80,10 @@ namespace PublicTransport.Tests.Services
         {
             // given
             RoleType? type = RoleType.Administrator;
-            _userFilter.Setup(uf => uf.UserNameFilter).Returns("");
-            _userFilter.Setup(uf => uf.RoleTypeFilter).Returns(type);
+            _userFilter.UserNameFilter = "";
+            _userFilter.RoleTypeFilter = type;
             // when
-            var users = _userRepository.FilterUsers(_userFilter.Object);
+            var users = _userRepository.FilterUsers(_userFilter);
             // then
             users.Should().ContainSingle(u => u.UserName == "root");
         }

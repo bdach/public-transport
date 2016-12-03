@@ -28,12 +28,12 @@ namespace PublicTransport.Services
         private readonly StreetRepository _streetRepository;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.City" /> objects to <see cref="CityDto" /> objects and back.
+        ///     Used for converting <see cref="Domain.Entities.Agency" /> objects to <see cref="AgencyDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Agency, AgencyDto> _agencyConverter;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.City" /> objects to <see cref="CityDto" /> objects and back.
+        ///     Used for converting <see cref="Domain.Entities.Street" /> objects to <see cref="StreetDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Street, StreetDto> _streetConverter;
 
