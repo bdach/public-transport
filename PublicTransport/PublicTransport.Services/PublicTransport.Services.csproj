@@ -104,6 +104,7 @@
     <Compile Include="Repositories\FareRuleRepository.cs" />
     <Compile Include="Services\Contracts\IAgencyService.cs" />
     <Compile Include="Services\Contracts\ICityService.cs" />
+    <Compile Include="Services\Contracts\ILoginService.cs" />
     <Compile Include="Services\Contracts\IStreetService.cs" />
     <Compile Include="Services\Contracts\IUserService.cs" />
     <Compile Include="Services\Contracts\IZoneService.cs" />

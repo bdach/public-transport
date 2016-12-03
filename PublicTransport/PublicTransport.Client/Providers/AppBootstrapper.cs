@@ -1,5 +1,6 @@
 ﻿using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.Services.Cities;
+using PublicTransport.Client.Services.Login;
 using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.Services.Users;
 using PublicTransport.Client.Services.Zones;
@@ -92,6 +93,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new ZoneServiceClient(), typeof(IZoneService));
             Locator.CurrentMutable.Register(() => new AgencyServiceClient(), typeof(IAgencyService));
             Locator.CurrentMutable.Register(() => new UserServiceClient(), typeof(IUserService));
+            Locator.CurrentMutable.Register(() => new LoginServiceClient(), typeof(ILoginService));
         }
 
         /// <summary>

@@ -57,6 +57,7 @@ namespace PublicTransport.Tests.Services
             // when
             _userRepository.Update(user);
             // then
+            // TODO: Check why fails
             _passwordService.Verify(ps => ps.GenerateHash("new"));
             var updatedUser = DbContext.Users.Find(2);
             updatedUser.Roles.Should().ContainSingle(s => s.Name == RoleType.Administrator);

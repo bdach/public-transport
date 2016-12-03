@@ -146,6 +146,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Services.Login\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Services.Streets\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -462,6 +467,7 @@
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.RoleDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StreetDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.UserDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.UserInfo.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.ZoneDto.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -503,6 +509,19 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Cities\CityService.wsdl" />
+    <None Include="Service References\Services.Login\login.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\login1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\login2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\login3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\LoginService.wsdl" />
     <None Include="Service References\Services.Streets\streets.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -592,6 +611,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Services.Agencies\" />
     <WCFMetadataStorage Include="Service References\Services.Cities\" />
+    <WCFMetadataStorage Include="Service References\Services.Login\" />
     <WCFMetadataStorage Include="Service References\Services.Streets\" />
     <WCFMetadataStorage Include="Service References\Services.Users\" />
     <WCFMetadataStorage Include="Service References\Services.Zones\" />
@@ -652,6 +672,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Services.Users\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Login\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Login\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Login\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

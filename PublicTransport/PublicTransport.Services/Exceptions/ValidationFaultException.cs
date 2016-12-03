@@ -8,9 +8,7 @@ namespace PublicTransport.Services.Exceptions
     public class ValidationFaultException : FaultException<ValidationFault>
     {
         public ValidationFaultException(DbEntityValidationException exception) :
-            base(new ValidationFault(exception),
-                "There were one or more validation errors while saving the changes to database.")
-        { }
+            base(new ValidationFault(exception), "There were one or more validation errors while saving the changes to database.") { }
     }
 
     [DataContract]

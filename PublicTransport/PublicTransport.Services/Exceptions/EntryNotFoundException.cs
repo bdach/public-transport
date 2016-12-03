@@ -10,6 +10,6 @@ namespace PublicTransport.Services.Exceptions
         /// <summary>
         /// Constructor.
         /// </summary>
-        public EntryNotFoundException() : base("The supplied entry could not be found in the database.") {}
+        public EntryNotFoundException() : base("The supplied entry could not be found in the database.") { }
     }
 }
