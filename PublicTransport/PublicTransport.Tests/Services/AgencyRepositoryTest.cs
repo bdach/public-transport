@@ -9,13 +9,11 @@ namespace PublicTransport.Tests.Services
     [TestFixture]
     public class AgencyRepositoryTest : RepositoryTest
     {
-        private Mock<AgencyFilter> _agencyFilter;
         private AgencyRepository _agencyRepository;
 
         [SetUp]
         public void ServiceSetUp()
         {
-            _agencyFilter = new Mock<AgencyFilter>();
             _agencyRepository = new AgencyRepository(DbContext);
         }
 
@@ -23,11 +21,14 @@ namespace PublicTransport.Tests.Services
         public void FilterAgenciesTest()
         {
             // given
-            _agencyFilter.Setup(af => af.CityNameFilter).Returns("Warszawa");
-            _agencyFilter.Setup(af => af.AgencyNameFilter).Returns("PKP");
-            _agencyFilter.Setup(af => af.StreetNameFilter).Returns("Żelazna");
+            var agencyFilter = new AgencyFilter
+            {
+                AgencyNameFilter = "PKP",
+                CityNameFilter = "Warszawa",
+                StreetNameFilter = "Żelazna"
+            };
             // when
-            var agencies = _agencyRepository.FilterAgencies(_agencyFilter.Object);
+            var agencies = _agencyRepository.FilterAgencies(agencyFilter);
             // then
             agencies.Count.ShouldBeEquivalentTo(1);
             agencies.Should().ContainSingle(a => a.Name == "PKP Intercity");

@@ -9,13 +9,11 @@ namespace PublicTransport.Tests.Services
     [TestFixture]
     public class StreetRepositoryTest : RepositoryTest
     {
-        private Mock<StreetFilter> _streetFilter;
         private StreetRepository _streetRepository;
 
         [SetUp]
         public void ServiceSetUp()
         {
-            _streetFilter = new Mock<StreetFilter>();
             _streetRepository = new StreetRepository(DbContext);
         }
 
@@ -23,10 +21,13 @@ namespace PublicTransport.Tests.Services
         public void FilterStreetsTest()
         {
             // given
-            _streetFilter.Setup(sf => sf.CityNameFilter).Returns("");
-            _streetFilter.Setup(sf => sf.StreetNameFilter).Returns("3 Maja");
+            var streetFilter = new StreetFilter
+            {
+                CityNameFilter = "",
+                StreetNameFilter = "3 Maja"
+            };
             // when
-            var streets = _streetRepository.FilterStreets(_streetFilter.Object);
+            var streets = _streetRepository.FilterStreets(streetFilter);
             // then
             streets.Count.ShouldBeEquivalentTo(2);
             streets.Should().Contain(s => s.City.Name == "Zawiercie");
