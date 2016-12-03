@@ -32,7 +32,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // when
             _viewModel.FilterAgencies.ExecuteAsyncTask().Wait();
             // then
-            _agencyService.Verify(a => a.FilterAgencies(_viewModel.AgencyReactiveFilter.Convert()), Times.Once);
+            _agencyService.Verify(s => s.FilterAgenciesAsync(It.IsAny<AgencyFilter>()), Times.Once);
             _viewModel.Agencies.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -45,7 +45,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.AgencyReactiveFilter.CityNameFilter = "";
             _viewModel.AgencyReactiveFilter.StreetNameFilter = "";
             // then
-            _agencyService.Verify(a => a.FilterAgencies(It.IsAny<AgencyFilter>()), Times.Never);
+            _agencyService.Verify(a => a.FilterAgenciesAsync(It.IsAny<AgencyFilter>()), Times.Never);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.SelectedAgency = agency;
             _viewModel.DeleteAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyService.Verify(a => a.DeleteAgency(agency), Times.Once);
+            _agencyService.Verify(a => a.DeleteAgencyAsync(agency), Times.Once);
         }
 
         [Test]

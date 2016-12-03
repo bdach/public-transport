@@ -26,7 +26,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     String containing the city name filter.
         /// </summary>
-        private string _nameFilter = "";
+        private string _nameFilter;
 
         /// <summary>
         ///     <see cref="City" /> object currently selected in the view.

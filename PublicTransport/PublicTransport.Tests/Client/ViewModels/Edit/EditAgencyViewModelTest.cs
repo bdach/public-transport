@@ -33,7 +33,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyService.Verify(a => a.CreateAgency(It.IsAny<AgencyDto>()), Times.Once);
+            _agencyService.Verify(a => a.CreateAgencyAsync(It.IsAny<AgencyDto>()), Times.Once);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyService.Verify(a => a.UpdateAgency(_agency), Times.Once);
+            _agencyService.Verify(a => a.UpdateAgencyAsync(_agency), Times.Once);
         }
 
         [Test]

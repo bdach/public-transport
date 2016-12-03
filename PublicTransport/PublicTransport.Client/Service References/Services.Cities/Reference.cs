@@ -36,10 +36,10 @@ namespace PublicTransport.Client.Services.Cities {
         System.Threading.Tasks.Task DeleteCityAsync(PublicTransport.Services.DataTransfer.CityDto city);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/FilterCities", ReplyAction="http://tempuri.org/ICityService/FilterCitiesResponse")]
-        PublicTransport.Services.DataTransfer.CityDto[] FilterCities(string str);
+        PublicTransport.Services.DataTransfer.CityDto[] FilterCities(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICityService/FilterCities", ReplyAction="http://tempuri.org/ICityService/FilterCitiesResponse")]
-        System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.CityDto[]> FilterCitiesAsync(string str);
+        System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.CityDto[]> FilterCitiesAsync(string name);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -93,12 +93,12 @@ namespace PublicTransport.Client.Services.Cities {
             return base.Channel.DeleteCityAsync(city);
         }
         
-        public PublicTransport.Services.DataTransfer.CityDto[] FilterCities(string str) {
-            return base.Channel.FilterCities(str);
+        public PublicTransport.Services.DataTransfer.CityDto[] FilterCities(string name) {
+            return base.Channel.FilterCities(name);
         }
         
-        public System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.CityDto[]> FilterCitiesAsync(string str) {
-            return base.Channel.FilterCitiesAsync(str);
+        public System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.CityDto[]> FilterCitiesAsync(string name) {
+            return base.Channel.FilterCitiesAsync(name);
         }
     }
 }
