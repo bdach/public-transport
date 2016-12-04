@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PublicTransport.Domain.Enums;
 
@@ -25,6 +26,7 @@ namespace PublicTransport.Domain.Entities
         ///     Contains the fare price.
         /// </summary>
         [Required]
+        [Range(0.0, double.MaxValue, ErrorMessage = "The price must be a non-negative decimal number.")]
         public decimal Price { get; set; }
 
         /// <summary>

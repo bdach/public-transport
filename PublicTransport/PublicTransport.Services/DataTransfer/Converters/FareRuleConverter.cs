@@ -15,6 +15,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
 
         public FareRuleDto GetDto(FareRule entity)
         {
+            if (entity == null) return null;
             return new FareRuleDto
             {
                 Id = entity.Id,

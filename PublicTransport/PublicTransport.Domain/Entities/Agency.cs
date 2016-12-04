@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PublicTransport.Domain.DataAnnotations;
 
 namespace PublicTransport.Domain.Entities
 {
@@ -24,11 +25,13 @@ namespace PublicTransport.Domain.Entities
         ///     Contains the URL of the transit agency. The value must be a fully qualified URL that includes <code>http://</code>
         ///     or <code>https://</code>, and any special characters in the URL must be correctly escaped.
         /// </summary>
+        [Url(ErrorMessage = "The agency URL must be valid.")]
         public string Url { get; set; }
 
         /// <summary>
         ///     Contains the REGON number of the transit agency.
         /// </summary>
+        [Regon(ErrorMessage = "The supplied REGON number is invalid.")]
         public string Regon { get; set; }
 
         /// <summary>

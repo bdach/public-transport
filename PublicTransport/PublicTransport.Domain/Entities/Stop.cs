@@ -16,13 +16,13 @@ namespace PublicTransport.Domain.Entities
         ///     Contains the name of a stop or station. Please use a name that people will understand in the local and tourist
         ///     vernacular.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The stop name is required.")]
         public string Name { get; set; }
 
         /// <summary>
         ///     Contains an ID that uniquely identifies the <see cref="Entities.Street" /> the stop is located on.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The stop must be associated with a street.")]
         public int StreetId { get; set; }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Identifies whether this stop object represents a stop or station.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Please specify whether the stop is a station.")]
         public bool IsStation { get; set; }
     }
 }

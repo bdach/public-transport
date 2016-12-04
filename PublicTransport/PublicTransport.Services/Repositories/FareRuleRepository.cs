@@ -48,7 +48,11 @@ namespace PublicTransport.Services.Repositories
         /// </returns>
         public FareRule Read(int id)
         {
-            return _db.FareRules.FirstOrDefault(u => u.Id == id);
+            return _db.FareRules
+                .Include(fr => fr.Route)
+                .Include(fr => fr.Origin)
+                .Include(fr => fr.Destination)
+                .FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -69,7 +73,7 @@ namespace PublicTransport.Services.Repositories
 
             _db.Entry(old).CurrentValues.SetValues(fareRule);
             _db.SaveChanges();
-            return fareRule;
+            return old;
         }
 
         /// <summary>

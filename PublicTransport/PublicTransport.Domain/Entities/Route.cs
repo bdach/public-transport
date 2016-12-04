@@ -12,7 +12,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Defines an agency for the specified route.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The route must be associated with an agency.")]
         public int AgencyId { get; set; }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Describes the type of transportation used on a route.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The route type is required.")]
         public RouteType RouteType { get; set; }
     }
 }

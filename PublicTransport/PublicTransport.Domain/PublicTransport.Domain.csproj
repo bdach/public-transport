@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\PublicTransportContext.cs" />
+    <Compile Include="DataAnnotations\RegonAttribute.cs" />
     <Compile Include="Entities\Agency.cs" />
     <Compile Include="Entities\Calendar.cs" />
     <Compile Include="Entities\City.cs" />
