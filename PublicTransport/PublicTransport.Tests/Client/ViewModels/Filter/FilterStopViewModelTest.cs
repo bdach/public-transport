@@ -30,11 +30,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterStops()
         {
             // given
-            _stopService.Setup(s => s.FilterStops(It.IsAny<IStopFilter>())).Returns(new List<Stop> { new Stop() });
+            _stopService.Setup(s => s.FilterStops(It.IsAny<StopFilter>())).Returns(new List<Stop> { new Stop() });
             // when
             _viewModel.FilterStops.ExecuteAsync().Wait();
             // then
-            _stopService.Verify(s => s.FilterStops(_viewModel.StopFilter), Times.Once);
+            _stopService.Verify(s => s.FilterStops(It.IsAny<StopFilter>()), Times.Once);
             _viewModel.Stops.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -43,13 +43,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             // when
-            _viewModel.StopFilter.StopNameFilter = "";
-            _viewModel.StopFilter.CityNameFilter = "";
-            _viewModel.StopFilter.StreetNameFilter = "";
-            _viewModel.StopFilter.ZoneNameFilter = "";
-            _viewModel.StopFilter.ParentStationNameFilter = "";
+            _viewModel.StopReactiveFilter.StopNameFilter = "";
+            _viewModel.StopReactiveFilter.CityNameFilter = "";
+            _viewModel.StopReactiveFilter.StreetNameFilter = "";
+            _viewModel.StopReactiveFilter.ZoneNameFilter = "";
+            _viewModel.StopReactiveFilter.ParentStationNameFilter = "";
             // then
-            _stopService.Verify(s => s.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+            _stopService.Verify(s => s.FilterStops(It.IsAny<StopFilter>()), Times.Never);
         }
 
         [Test]

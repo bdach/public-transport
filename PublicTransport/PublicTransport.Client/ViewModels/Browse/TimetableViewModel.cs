@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -7,9 +6,9 @@ using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Browse
@@ -24,22 +23,22 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed in the view.
         /// </summary>
-        private Route _route;
+        private RouteDto _route;
 
         /// <summary>
         ///     <see cref="Stop" /> object currently selected in the view.
         /// </summary>
-        private Stop _selectedStop;
+        private StopDto _selectedStop;
 
         /// <summary>
         ///     <see cref="StopTime" /> object currently selected by the user.
         /// </summary>
-        private StopTime _selectedStopTime;
+        private StopTimeDto _selectedStopTime;
 
         /// <summary>
         ///     Object used for querying the database for stop times.
         /// </summary>
-        private StopTimeFilter _stopTimeFilter;
+        private StopTimeReactiveFilter _stopTimeReactiveFilter;
 
         /// <summary>
         ///     Constructor.
@@ -47,15 +46,15 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <param name="screen">Screen to display view model on.</param>
         /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="route">The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.</param>
-        public TimetableViewModel(IScreen screen, IRouteService routeService, Route route)
+        public TimetableViewModel(IScreen screen, IRouteService routeService, RouteDto route)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             Route = route;
-            Stops = new ReactiveList<Stop>();
-            StopTimes = new ReactiveList<StopTime>();
-            StopTimeFilter = new StopTimeFilter { RouteId = route.Id };
+            Stops = new ReactiveList<StopDto>();
+            StopTimes = new ReactiveList<StopTimeDto>();
+            StopTimeReactiveFilter = new StopTimeReactiveFilter { RouteId = route.Id };
             _routeService = routeService;
 
             #endregion
@@ -64,7 +63,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Getting stops
 
-            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.GetStopsByRouteId(Route.Id)));
+            GetStops = ReactiveCommand.CreateAsyncTask(async _ => await _routeService.GetStopsByRouteIdAsync(Route.Id));
             GetStops.Subscribe(results =>
             {
                 Stops.Clear();
@@ -80,7 +79,7 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Updating stop times
 
-            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.GetRouteTimetableByStopId(StopTimeFilter)));
+            UpdateStopTimes = ReactiveCommand.CreateAsyncTask(async _ => await _routeService.GetRouteTimetableByStopIdAsync(StopTimeReactiveFilter.Convert()));
             UpdateStopTimes.Subscribe(results =>
             {
                 StopTimes.Clear();
@@ -123,10 +122,10 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #endregion
 
-            this.WhenAnyValue(vm => vm.SelectedStop, vm => vm.StopTimeFilter.Date, vm => vm.StopTimeFilter.Time)
+            this.WhenAnyValue(vm => vm.SelectedStop, vm => vm.StopTimeReactiveFilter.Date, vm => vm.StopTimeReactiveFilter.Time)
                 .Select(s => s.Item1?.Id)
                 .Where(id => id.HasValue)
-                .Select(s => StopTimeFilter.StopId = s.Value)
+                .Select(s => StopTimeReactiveFilter.StopId = s.Value)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(UpdateStopTimes);
         }
@@ -134,22 +133,22 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     Reactive list containing the filtered <see cref="Stop" /> objects.
         /// </summary>
-        public ReactiveList<Stop> Stops { get; protected set; }
+        public ReactiveList<StopDto> Stops { get; protected set; }
 
         /// <summary>
         ///     Reactive list containing the filtered <see cref="StopTime" /> objects.
         /// </summary>
-        public ReactiveList<StopTime> StopTimes { get; protected set; }
+        public ReactiveList<StopTimeDto> StopTimes { get; protected set; }
 
         /// <summary>
         ///     Command responsible for fetching the list of stops.
         /// </summary>
-        public ReactiveCommand<List<Stop>> GetStops { get; protected set; }
+        public ReactiveCommand<StopDto[]> GetStops { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating stop times.
         /// </summary>
-        public ReactiveCommand<List<StopTime>> UpdateStopTimes { get; protected set; }
+        public ReactiveCommand<StopTimeDto[]> UpdateStopTimes { get; protected set; }
 
         /// <summary>
         ///     Command responsible for launching the trip adding view.
@@ -169,7 +168,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     The <see cref="Domain.Entities.Route"/> whose timetable is displayed in the view.
         /// </summary>
-        public Route Route
+        public RouteDto Route
         {
             get { return _route; }
             set { this.RaiseAndSetIfChanged(ref _route, value); }
@@ -178,7 +177,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     Property exposing the currently selected <see cref="Stop" />.
         /// </summary>
-        public Stop SelectedStop
+        public StopDto SelectedStop
         {
             get { return _selectedStop; }
             set { this.RaiseAndSetIfChanged(ref _selectedStop, value); }
@@ -187,7 +186,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     Property exposing the currently selected <see cref="StopTime" />.
         /// </summary>
-        public StopTime SelectedStopTime
+        public StopTimeDto SelectedStopTime
         {
             get { return _selectedStopTime; }
             set { this.RaiseAndSetIfChanged(ref _selectedStopTime, value); }
@@ -196,10 +195,10 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <summary>
         ///     Object user for querying database for stop times.
         /// </summary>
-        public StopTimeFilter StopTimeFilter
+        public StopTimeReactiveFilter StopTimeReactiveFilter
         {
-            get { return _stopTimeFilter; }
-            set { this.RaiseAndSetIfChanged(ref _stopTimeFilter, value); }
+            get { return _stopTimeReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _stopTimeReactiveFilter, value); }
         }
 
         /// <summary>

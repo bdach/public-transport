@@ -6,6 +6,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
     {
         public ZoneDto GetDto(Zone entity)
         {
+            if (entity == null) return null;
             return new ZoneDto
             {
                 Id = entity.Id,

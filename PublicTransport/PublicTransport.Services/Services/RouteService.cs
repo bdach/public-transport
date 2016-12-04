@@ -1,146 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
-    public interface IRouteService : IDisposable
-    {
-        /// <summary>
-        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop" /> which are associated with a specific
-        ///     <see cref="Route" />.
-        /// </summary>
-        /// <returns>
-        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop" /> which are associated with a specific
-        ///     <see cref="Route" />.
-        /// </returns>
-        List<StopTime> GetRouteTimetableByStopId(IStopTimeFilter filter);
-
-        /// <summary>
-        ///     Inserts an <see cref="Calendar" /> record into the database.
-        /// </summary>
-        /// <param name="calendar"><see cref="Calendar" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Calendar" /> object corresponding to the inserted record.</returns>
-        Calendar CreateCalendar(Calendar calendar);
-
-        /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Calendar" />.
-        /// </summary>
-        /// <param name="calendar"><see cref="Calendar" /> object to update.</param>
-        /// <returns>Updated <see cref="Calendar" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
-        /// </exception>
-        Calendar UpdateCalendar(Calendar calendar);
-
-        /// <summary>
-        ///     Selects all the <see cref="Agency" /> objects that match all the criteria specified by the
-        ///     <see cref="AgencyFilter" /> object. The returned agencies' name, street name and city name strings all contain the
-        ///     parameters supplied in the <see cref="filter" /> parameter.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
-        List<Agency> FilterAgencies(AgencyFilter filter);
-
-        /// <summary>
-        ///     Inserts a <see cref="Route" /> record into the database.
-        /// </summary>
-        /// <param name="route"><see cref="Route" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Route" /> object corresponding to the inserted record.</returns>
-        Route CreateRoute(Route route);
-
-        /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Route" />.
-        /// </summary>
-        /// <param name="route"><see cref="Route" /> object to update.</param>
-        /// <returns>Updated <see cref="Route" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
-        /// </exception>
-        Route UpdateRoute(Route route);
-
-        /// <summary>
-        ///     Deletes the supplied <see cref="Route" /> from the database.
-        /// </summary>
-        /// <param name="route"><see cref="Route" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
-        /// </exception>
-        void DeleteRoute(Route route);
-
-        /// <summary>
-        ///     Filters routes using the supplied <see cref="IRouteFilter" />.
-        /// </summary>
-        /// <param name="filter">Filter to use while searching.</param>
-        /// <returns>List of routes satisfying the search criteria.</returns>
-        List<Route> FilterRoutes(IRouteFilter filter);
-
-        /// <summary>
-        ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
-        ///     <see cref="IStopFilter" /> object. The returned name strings all contain the
-        ///     parameters supplied in the <see cref="filter" /> parameter.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
-        List<Stop> FilterStops(IStopFilter filter);
-
-        /// <summary>
-        ///     Returns a list of <see cref="Stop" />s associated with a certain <see cref="Route" />.
-        /// </summary>
-        /// <param name="routeId">Id of the <see cref="Route" />.</param>
-        /// <returns>
-        ///     Returns a list of <see cref="Stop" />s associated with a certain <see cref="Route" />.
-        /// </returns>
-        List<Stop> GetStopsByRouteId(int routeId);
-
-        /// <summary>
-        ///     Inserts a <see cref="Trip" /> record into the database.
-        /// </summary>
-        /// <param name="trip"><see cref="Trip" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Trip" /> object corresponding to the inserted record.</returns>
-        Trip CreateTrip(Trip trip);
-
-        /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Trip" />.
-        /// </summary>
-        /// <param name="trip"><see cref="Trip" /> object to update.</param>
-        /// <returns>Updated <see cref="Trip" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
-        /// </exception>
-        Trip UpdateTrip(Trip trip);
-
-        /// <summary>
-        ///     Deletes the supplied <see cref="Trip" /> from the database.
-        /// </summary>
-        /// <param name="trip"><see cref="Trip" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
-        /// </exception>
-        void DeleteTrip(Trip trip);
-
-        /// <summary>
-        ///     Updates the <see cref="StopTime" /> associated with this trip.
-        /// </summary>
-        /// <param name="tripId">ID number of trip to update</param>
-        /// <param name="stops">The stops which should be saved.</param>
-        /// <returns>List of stops after saving.</returns>
-        List<StopTime> UpdateStops(int tripId, List<StopTime> stops);
-
-        /// <summary>
-        ///     Return a list of <see cref="Stop" />s that are assinged to the provided <see cref="Trip" />.
-        /// </summary>
-        /// <param name="trip"><see cref="Trip" /> to filter stops by.</param>
-        /// <returns>
-        ///     Return a list of <see cref="Stop" />s that are assinged to the provided <see cref="Trip" />.
-        /// </returns>
-        List<StopTime> GetTripStops(Trip trip);
-    }
-
     /// <summary>
     ///     Service used to manage route data.
     /// </summary>
@@ -177,6 +48,36 @@ namespace PublicTransport.Services
         private readonly TripRepository _tripRepository;
 
         /// <summary>
+        ///     Used to convert <see cref="Agency" /> objects to <see cref="AgencyDto"/> objects and back.
+        /// </summary>
+        private readonly IConverter<Agency, AgencyDto> _agencyConverter;
+
+        /// <summary>
+        ///     Used to convert <see cref="Stop" /> objects to <see cref="StopDto"/> objects and back.
+        /// </summary>
+        private readonly IConverter<Stop, StopDto> _stopConverter;
+
+        /// <summary>
+        ///     Used to convert <see cref="Route" /> objects to <see cref="RouteDto"/> objects and back.
+        /// </summary>
+        private readonly IConverter<Route, RouteDto> _routeConverter;
+
+        /// <summary>
+        ///     Used to convert <see cref="Trip" /> objects to <see cref="TripDto"/> objects and back.
+        /// </summary>
+        private readonly IConverter<Trip, TripDto> _tripConverter;
+
+        /// <summary>
+        ///     Used to convert <see cref="Calendar" /> objects to <see cref="CalendarDto"/> objects and back.
+        /// </summary>
+        private readonly IConverter<Calendar, CalendarDto> _calendarConverter;
+
+        /// <summary>
+        ///     Used to convert <see cref="StopTime" /> objects to <see cref="StopTime"/> objects and back.
+        /// </summary>
+        private readonly IConverter<StopTime, StopTimeDto> _stopTimeConverter;
+
+        /// <summary>
         ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
@@ -192,59 +93,99 @@ namespace PublicTransport.Services
         public RouteService()
         {
             _db = new PublicTransportContext();
+            #region Repositories
+
             _agencyRepository = new AgencyRepository(_db);
             _calendarRepository = new CalendarRepository(_db);
             _routeRepository = new RouteRepository(_db);
             _stopRepository = new StopRepository(_db);
             _stopTimeRepository = new StopTimeRepository(_db);
             _tripRepository = new TripRepository(_db);
+
+            #endregion
+
+            #region Converters
+
+            _agencyConverter = new AgencyConverter();
+            _calendarConverter = new CalendarConverter();
+            _routeConverter = new RouteConverter();
+            _stopConverter = new StopConverter();
+            _stopTimeConverter = new StopTimeConverter();
+            _tripConverter = new TripConverter();
+
+            #endregion
         }
 
         #region Stop time methods
 
         /// <summary>
-        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop" /> which are associated with a specific
+        ///     Returns a list of <see cref="StopTimeDto" />s for a certain <see cref="Stop" /> which are associated with a specific
         ///     <see cref="Route" />.
         /// </summary>
         /// <returns>
-        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop" /> which are associated with a specific
+        ///     Returns a list of <see cref="StopTimeDto" />s for a certain <see cref="Stop" /> which are associated with a specific
         ///     <see cref="Route" />.
         /// </returns>
-        public List<StopTime> GetRouteTimetableByStopId(IStopTimeFilter filter)
+        public List<StopTimeDto> GetRouteTimetableByStopId(StopTimeFilter filter)
         {
-            return _stopTimeRepository.GetRouteTimetableByStopId(filter);
+            return _stopTimeRepository
+                .GetRouteTimetableByStopId(filter)
+                .Select(_stopTimeConverter.GetDto)
+                .ToList();
+        }
+
+        #endregion
+
+        #region Calendar methods
+
+        /// <summary>
+        ///     Inserts a calendar record into the database.
+        /// </summary>
+        /// <param name="calendar"><see cref="CalendarDto" /> object to insert into the database.</param>
+        /// <returns>The <see cref="CalendarDto" /> object corresponding to the inserted record.</returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public CalendarDto CreateCalendar(CalendarDto calendar)
+        {
+            try
+            {
+                var result = _calendarRepository.Create(_calendarConverter.GetEntity(calendar));
+                return _calendarConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Updates all of the fields of the supplied calendar.
+        /// </summary>
+        /// <param name="calendar"><see cref="CalendarDto" /> object to update.</param>
+        /// <returns>Updated <see cref="CalendarDto" /> object.</returns>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied calendar could not be found in the database.
+        /// </exception>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public CalendarDto UpdateCalendar(CalendarDto calendar)
+        {
+            try
+            {
+                var result = _calendarRepository.Update(_calendarConverter.GetEntity(calendar));
+                return _calendarConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         #endregion
 
         #region Agency methods
-
-        #region Calendar methods
-
-        /// <summary>
-        ///     Inserts an <see cref="Calendar" /> record into the database.
-        /// </summary>
-        /// <param name="calendar"><see cref="Calendar" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Calendar" /> object corresponding to the inserted record.</returns>
-        public Calendar CreateCalendar(Calendar calendar)
-        {
-            return _calendarRepository.Create(calendar);
-        }
-
-        /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Calendar" />.
-        /// </summary>
-        /// <param name="calendar"><see cref="Calendar" /> object to update.</param>
-        /// <returns>Updated <see cref="Calendar" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Calendar" /> could not be found in the database.
-        /// </exception>
-        public Calendar UpdateCalendar(Calendar calendar)
-        {
-            return _calendarRepository.Update(calendar);
-        }
-
-        #endregion
 
         /// <summary>
         ///     Selects all the <see cref="Agency" /> objects that match all the criteria specified by the
@@ -253,9 +194,12 @@ namespace PublicTransport.Services
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Agency> FilterAgencies(AgencyFilter filter)
+        public List<AgencyDto> FilterAgencies(AgencyFilter filter)
         {
-            return _agencyRepository.FilterAgencies(filter);
+            return _agencyRepository
+                .FilterAgencies(filter)
+                .Select(_agencyConverter.GetDto)
+                .ToList();
         }
 
         #endregion
@@ -263,13 +207,24 @@ namespace PublicTransport.Services
         #region Route methods
 
         /// <summary>
-        ///     Inserts a <see cref="Route" /> record into the database.
+        ///     Inserts a route record into the database.
         /// </summary>
-        /// <param name="route"><see cref="Route" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Route" /> object corresponding to the inserted record.</returns>
-        public Route CreateRoute(Route route)
+        /// <param name="route"><see cref="RouteDto" /> object to insert into the database.</param>
+        /// <returns>The <see cref="RouteDto" /> object corresponding to the inserted record.</returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public RouteDto CreateRoute(RouteDto route)
         {
-            return _routeRepository.Create(route);
+            try
+            {
+                var result = _routeRepository.Create(_routeConverter.GetEntity(route));
+                return _routeConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
@@ -280,31 +235,45 @@ namespace PublicTransport.Services
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
         /// </exception>
-        public Route UpdateRoute(Route route)
-        {
-            return _routeRepository.Update(route);
-        }
-
-        /// <summary>
-        ///     Deletes the supplied <see cref="Route" /> from the database.
-        /// </summary>
-        /// <param name="route"><see cref="Route" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Route" /> could not be found in the database.
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
-        public void DeleteRoute(Route route)
+        public RouteDto UpdateRoute(RouteDto route)
         {
-            _routeRepository.Delete(route);
+            try
+            {
+                var result = _routeRepository.Update(_routeConverter.GetEntity(route));
+                return _routeConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Filters routes using the supplied <see cref="IRouteFilter" />.
+        ///     Deletes the supplied route from the database.
+        /// </summary>
+        /// <param name="route"><see cref="RouteDto" /> object to delete.</param>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="RouteDto" /> could not be found in the database.
+        /// </exception>
+        public void DeleteRoute(RouteDto route)
+        {
+            _routeRepository.Delete(_routeConverter.GetEntity(route));
+        }
+
+        /// <summary>
+        ///     Filters routes using the supplied <see cref="RouteFilter" />.
         /// </summary>
         /// <param name="filter">Filter to use while searching.</param>
         /// <returns>List of routes satisfying the search criteria.</returns>
-        public List<Route> FilterRoutes(IRouteFilter filter)
+        public List<RouteDto> FilterRoutes(RouteFilter filter)
         {
-            return _routeRepository.FilterRoutes(filter);
+            return _routeRepository
+                .FilterRoutes(filter)
+                .Select(_routeConverter.GetDto)
+                .ToList();
         }
 
         #endregion
@@ -313,14 +282,17 @@ namespace PublicTransport.Services
 
         /// <summary>
         ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
-        ///     <see cref="IStopFilter" /> object. The returned name strings all contain the
+        ///     <see cref="StopFilter" /> object. The returned name strings all contain the
         ///     parameters supplied in the <see cref="filter" /> parameter.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Stop> FilterStops(IStopFilter filter)
+        public List<StopDto> FilterStops(StopFilter filter)
         {
-            return _stopRepository.FilterStops(filter);
+            return _stopRepository
+                .FilterStops(filter)
+                .Select(_stopConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>
@@ -330,9 +302,12 @@ namespace PublicTransport.Services
         /// <returns>
         ///     Returns a list of <see cref="Stop" />s associated with a certain <see cref="Route" />.
         /// </returns>
-        public List<Stop> GetStopsByRouteId(int routeId)
+        public List<StopDto> GetStopsByRouteId(int routeId)
         {
-            return _stopRepository.GetStopsByRouteId(routeId);
+            return _stopRepository
+                .GetStopsByRouteId(routeId)
+                .Select(_stopConverter.GetDto)
+                .ToList();
         }
 
         #endregion
@@ -340,38 +315,60 @@ namespace PublicTransport.Services
         #region Trip methods
 
         /// <summary>
-        ///     Inserts a <see cref="Trip" /> record into the database.
+        ///     Inserts a trip record into the database.
         /// </summary>
-        /// <param name="trip"><see cref="Trip" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Trip" /> object corresponding to the inserted record.</returns>
-        public Trip CreateTrip(Trip trip)
+        /// <param name="trip"><see cref="TripDto" /> object to insert into the database.</param>
+        /// <returns>The <see cref="TripDto" /> object corresponding to the inserted record.</returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public TripDto CreateTrip(TripDto trip)
         {
-            return _tripRepository.Create(trip);
+            try
+            {
+                var result = _tripRepository.Create(_tripConverter.GetEntity(trip));
+                return _tripConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Trip" />.
+        ///     Updates all of the fields of the supplied trip.
         /// </summary>
-        /// <param name="trip"><see cref="Trip" /> object to update.</param>
-        /// <returns>Updated <see cref="Trip" /> object.</returns>
+        /// <param name="trip"><see cref="TripDto" /> object to update.</param>
+        /// <returns>Updated <see cref="TripDto" /> object.</returns>
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
         /// </exception>
-        public Trip UpdateTrip(Trip trip)
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public TripDto UpdateTrip(TripDto trip)
         {
-            return _tripRepository.Update(trip);
+            try
+            {
+                var result = _tripRepository.Update(_tripConverter.GetEntity(trip));
+                return _tripConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="Trip" /> from the database.
+        ///     Deletes the supplied trip from the database.
         /// </summary>
-        /// <param name="trip"><see cref="Trip" /> object to delete.</param>
+        /// <param name="trip"><see cref="TripDto" /> object to delete.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
+        ///     Thrown when the supplied <see cref="TripDto" /> could not be found in the database.
         /// </exception>
-        public void DeleteTrip(Trip trip)
+        public void DeleteTrip(TripDto trip)
         {
-            _tripRepository.Delete(trip);
+            _tripRepository.Delete(_tripConverter.GetEntity(trip));
         }
 
         /// <summary>
@@ -380,9 +377,17 @@ namespace PublicTransport.Services
         /// <param name="tripId">ID number of trip to update</param>
         /// <param name="stops">The stops which should be saved.</param>
         /// <returns>List of stops after saving.</returns>
-        public List<StopTime> UpdateStops(int tripId, List<StopTime> stops)
+        public List<StopTimeDto> UpdateStops(int tripId, List<StopTimeDto> stops)
         {
-            return _tripRepository.UpdateStops(tripId, stops);
+            try
+            {
+                var results = _tripRepository.UpdateStops(tripId, stops.Select(_stopTimeConverter.GetEntity).ToList());
+                return results.Select(_stopTimeConverter.GetDto).ToList();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
@@ -392,9 +397,12 @@ namespace PublicTransport.Services
         /// <returns>
         ///     Return a list of <see cref="Stop" />s that are assinged to the provided <see cref="Trip" />.
         /// </returns>
-        public List<StopTime> GetTripStops(Trip trip)
+        public List<StopTimeDto> GetTripStops(TripDto trip)
         {
-            return _tripRepository.GetTripStops(trip);
+            return _tripRepository
+                .GetTripStops(_tripConverter.GetEntity(trip))
+                .Select(_stopTimeConverter.GetDto)
+                .ToList();
         }
 
         #endregion

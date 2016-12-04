@@ -7,26 +7,26 @@ namespace PublicTransport.Services.DataTransfer.Filters
     ///     Data transfer object interface.
     ///     Used by the <see cref="StopTimeRepository" /> to perform filtering.
     /// </summary>
-    public interface IStopTimeFilter
+    public class StopTimeFilter
     {
         /// <summary>
         ///     Stop id filter.
         /// </summary>
-        int StopId { get; }
+        public int StopId { get; set; }
 
         /// <summary>
         ///     Route id filter.
         /// </summary>
-        int RouteId { get; }
+        public int RouteId { get; set; }
 
         /// <summary>
         ///     Date filter.
         /// </summary>
-        DateTime? Date { get; }
+        public DateTime? Date { get; set; }
 
         /// <summary>
         ///     Time filter.
         /// </summary>
-        TimeSpan? Time { get; }
+        public TimeSpan? Time { get; set; }
     }
 }

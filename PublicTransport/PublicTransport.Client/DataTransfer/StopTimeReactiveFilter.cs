@@ -7,7 +7,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.StopTime" /> objects.
     /// </summary>
-    public class StopTimeFilter : ReactiveObject, IStopTimeFilter, IReactiveFilter
+    public class StopTimeReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     Stop id filter.
@@ -63,6 +63,17 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _time; }
             set { this.RaiseAndSetIfChanged(ref _time, value); }
+        }
+
+        public StopTimeFilter Convert()
+        {
+            return new StopTimeFilter
+            {
+                RouteId = RouteId,
+                StopId = StopId,
+                Date = Date,
+                Time = Time
+            };
         }
 
         /// <summary>

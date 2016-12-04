@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Domain.Entities.Stop" /> objects.
         /// </summary>
-        private StopFilter _parentStationFilter;
+        private StopReactiveFilter _parentStationReactiveFilter;
 
         /// <summary>
         ///     Constructor.
@@ -74,7 +74,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             _stopService = stopService;
 
             _streetReactiveFilter = new StreetReactiveFilter();
-            _parentStationFilter = new StopFilter { OnlyStations = true };
+            _parentStationReactiveFilter = new StopReactiveFilter { OnlyStations = true };
 
             var serviceMethod = stop == null ? new Func<Stop, Stop>(_stopService.CreateStop) : _stopService.UpdateStop;
             _stop = stop ?? new Stop();
@@ -84,7 +84,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             _streetReactiveFilter.StreetNameFilter = _stop.Street?.Name ?? "";
             _zoneFilter = _stop.Zone?.Name ?? "";
-            _parentStationFilter.StopNameFilter = _stop.ParentStation?.Name ?? "";
+            _parentStationReactiveFilter.StopNameFilter = _stop.ParentStation?.Name ?? "";
 
             #endregion
 
@@ -124,7 +124,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             UpdateZoneSuggestions.ThrownExceptions.Subscribe(ex =>
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
-            UpdateParentStationSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(ParentStationFilter)));
+            UpdateParentStationSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(ParentStationReactiveFilter.Convert())));
             UpdateParentStationSuggestions.Subscribe(results =>
             {
                 ParentStationSuggestions.Clear();
@@ -147,8 +147,8 @@ namespace PublicTransport.Client.ViewModels.Edit
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.UpdateZoneSuggestions);
 
-            this.WhenAnyValue(vm => vm.ParentStationFilter.StopNameFilter)
-                .Where(ps => (ps != SelectedParentStation?.Name) && ParentStationFilter.IsValid)
+            this.WhenAnyValue(vm => vm.ParentStationReactiveFilter.StopNameFilter)
+                .Where(ps => (ps != SelectedParentStation?.Name) && ParentStationReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.UpdateParentStationSuggestions);
 
@@ -259,10 +259,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Domain.Entities.Stop" /> parent station objects.
         /// </summary>
-        public StopFilter ParentStationFilter
+        public StopReactiveFilter ParentStationReactiveFilter
         {
-            get { return _parentStationFilter; }
-            set { this.RaiseAndSetIfChanged(ref _parentStationFilter, value); }
+            get { return _parentStationReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _parentStationReactiveFilter, value); }
         }
 
         /// <summary>

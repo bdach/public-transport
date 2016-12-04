@@ -6,6 +6,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
     {
         public CityDto GetDto(City entity)
         {
+            if (entity == null) return null;
             return new CityDto
             {
                 Id = entity.Id,

@@ -7,7 +7,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.Route" /> objects.
     /// </summary>
-    public class RouteFilter : ReactiveObject, IReactiveFilter, IRouteFilter
+    public class RouteReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     Agency name filter.
@@ -63,6 +63,17 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _routeTypeFilter; }
             set { this.RaiseAndSetIfChanged(ref _routeTypeFilter, value); }
+        }
+
+        public RouteFilter Convert()
+        {
+            return new RouteFilter
+            {
+                AgencyNameFilter = AgencyNameFilter,
+                ShortNameFilter = ShortNameFilter,
+                LongNameFilter = LongNameFilter,
+                RouteTypeFilter = RouteTypeFilter
+            };
         }
 
         /// <summary>

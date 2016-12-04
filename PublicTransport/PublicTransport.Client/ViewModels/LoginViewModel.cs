@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Windows.Controls;
 using PublicTransport.Client.Services.Login;
 using PublicTransport.Services.DataTransfer;
@@ -57,11 +58,11 @@ namespace PublicTransport.Client.ViewModels
                 UserInfo = s;
             });
             SendLoginRequest.ThrownExceptions
-                .Where(ex => ex is InvalidCredentialsException)
+                .Where(ex => ex is FaultException)
                 .SelectMany(ex => UserError.Throw("Invalid username or password.", ex))
                 .Subscribe();
             SendLoginRequest.ThrownExceptions
-                .Where(ex => !(ex is InvalidCredentialsException))
+                .Where(ex => !(ex is FaultException))
                 .SelectMany(ex => UserError.Throw("Could not connect to database.", ex))
                 .Subscribe();
 

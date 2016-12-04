@@ -8,7 +8,6 @@ namespace PublicTransport.Services.Providers
         {
             Locator.CurrentMutable.Register(() => new StopService(), typeof(IStopService));
             Locator.CurrentMutable.Register(() => new FareService(), typeof(IFareService));
-            Locator.CurrentMutable.Register(() => new RouteService(), typeof(IRouteService));
         }
     }
 }

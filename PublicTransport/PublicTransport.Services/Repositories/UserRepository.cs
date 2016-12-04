@@ -98,7 +98,7 @@ namespace PublicTransport.Services.Repositories
         public User Update(User user)
         {
             user.Password = _passwordService.GenerateHash(user.Password);
-            var old = Read(user.Id);
+            var old = _db.Users.Find(user.Id);
             if (old == null)
             {
                 throw new EntryNotFoundException();

@@ -4,9 +4,10 @@ using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI.Testing;
 
@@ -31,7 +32,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             _viewModel = new EditRouteViewModel(Screen.Object, _routeService.Object);
             // then
             _viewModel.SaveRoute.CanExecute(null).Should().BeFalse();
-            _viewModel.SelectedAgency = new Agency();
+            _viewModel.SelectedAgency = new AgencyDto();
             _viewModel.SaveRoute.CanExecute(null).Should().BeTrue();
         }
 
@@ -43,19 +44,19 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.SaveRoute.ExecuteAsync().Wait();
             // then
-            _routeService.Verify(r => r.CreateRoute(It.IsAny<Route>()), Times.Once);
+            _routeService.Verify(r => r.CreateRouteAsync(It.IsAny<RouteDto>()), Times.Once);
         }
 
         [Test]
         public void SaveRoute_Update()
         {
             // given
-            var route = new Route();
+            var route = new RouteDto();
             _viewModel = new EditRouteViewModel(Screen.Object, _routeService.Object, route);
             // when
             _viewModel.SaveRoute.ExecuteAsync().Wait();
             // then
-            _routeService.Verify(r => r.UpdateRoute(route), Times.Once);
+            _routeService.Verify(r => r.UpdateRouteAsync(route), Times.Once);
         }
 
         [Test]

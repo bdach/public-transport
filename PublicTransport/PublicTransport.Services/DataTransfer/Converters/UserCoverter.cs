@@ -14,6 +14,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
 
         public UserDto GetDto(User entity)
         {
+            if (entity == null) return null;
             return new UserDto
             {
                 Id = entity.Id,

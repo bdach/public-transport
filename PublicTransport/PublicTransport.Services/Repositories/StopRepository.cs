@@ -111,12 +111,12 @@ namespace PublicTransport.Services.Repositories
 
         /// <summary>
         ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
-        ///     <see cref="IStopFilter" /> object. The returned name strings all contain the
+        ///     <see cref="StopFilter" /> object. The returned name strings all contain the
         ///     parameters supplied in the <see cref="filter" /> parameter.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Stop> FilterStops(IStopFilter filter)
+        public List<Stop> FilterStops(StopFilter filter)
         {
             return _db.Stops.Include(s => s.Street.City).Include(s => s.Zone).Include(s => s.ParentStation)
                 .Where(s => s.Name.Contains(filter.StopNameFilter))

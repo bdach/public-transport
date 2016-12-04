@@ -1,6 +1,7 @@
 ﻿using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.Services.Login;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.Services.Users;
 using PublicTransport.Client.Services.Zones;
@@ -81,9 +82,9 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new AgencyView(), typeof(IViewFor<AgencyDto>));
             Locator.CurrentMutable.Register(() => new UserView(), typeof(IViewFor<UserDto>));
 
-            Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<Route>));
-            Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<Stop>));
-            Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTime>));
+            Locator.CurrentMutable.Register(() => new RouteView(), typeof(IViewFor<RouteDto>));
+            Locator.CurrentMutable.Register(() => new StopView(), typeof(IViewFor<StopDto>));
+            Locator.CurrentMutable.Register(() => new StopTimeView(), typeof(IViewFor<StopTimeDto>));
             Locator.CurrentMutable.Register(() => new FareAttributeView(), typeof(IViewFor<FareAttribute>));
             Locator.CurrentMutable.Register(() => new RoleView(), typeof(IViewFor<RoleViewModel>));
 
@@ -94,6 +95,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new AgencyServiceClient(), typeof(IAgencyService));
             Locator.CurrentMutable.Register(() => new UserServiceClient(), typeof(IUserService));
             Locator.CurrentMutable.Register(() => new LoginServiceClient(), typeof(ILoginService));
+            Locator.CurrentMutable.Register(() => new RouteServiceClient(), typeof(IRouteService));
         }
 
         /// <summary>

@@ -16,11 +16,11 @@ namespace PublicTransport.Client.Views.Filter
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Stops, v => v.StopsListView.ItemsSource);
-            this.Bind(ViewModel, vm => vm.StopFilter.StopNameFilter, v => v.StopNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.StopFilter.CityNameFilter, v => v.CityNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.StopFilter.StreetNameFilter, v => v.StreetNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.StopFilter.ZoneNameFilter, v => v.ZoneNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.StopFilter.ParentStationNameFilter, v => v.ParentStationNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StopReactiveFilter.StopNameFilter, v => v.StopNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StopReactiveFilter.CityNameFilter, v => v.CityNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StopReactiveFilter.StreetNameFilter, v => v.StreetNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StopReactiveFilter.ZoneNameFilter, v => v.ZoneNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.StopReactiveFilter.ParentStationNameFilter, v => v.ParentStationNameFilterTextBox.Text);
             this.Bind(ViewModel, vm => vm.SelectedStop, v => v.StopsListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.AddStop, v => v.AddStopButton);
             this.BindCommand(ViewModel, vm => vm.EditStop, v => v.EditStopButton);

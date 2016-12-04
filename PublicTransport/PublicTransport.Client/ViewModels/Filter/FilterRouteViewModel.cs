@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
 using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -28,14 +30,14 @@ namespace PublicTransport.Client.ViewModels.Filter
         private readonly IRouteService _routeService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.RouteFilter" /> object used to send query data to the service layer.
+        ///     <see cref="RouteReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private RouteFilter _routeFilter;
+        private RouteReactiveFilter _routeReactiveFilter;
 
         /// <summary>
         ///     The <see cref="Route" /> currently selected by the user.
         /// </summary>
-        private Route _selectedRoute;
+        private RouteDto _selectedRoute;
 
         /// <summary>
         ///     Constructor.
@@ -48,8 +50,8 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen = screen;
             _routeService = routeService ?? Locator.Current.GetService<IRouteService>();
-            _routeFilter = new RouteFilter();
-            Routes = new ReactiveList<Route>();
+            _routeReactiveFilter = new RouteReactiveFilter();
+            Routes = new ReactiveList<RouteDto>();
             RouteTypes = new ReactiveList<RouteType>(Enum.GetValues(typeof(RouteType)).Cast<RouteType>());
 
             #endregion
@@ -58,7 +60,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Route filtering command
 
-            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterRoutes(RouteFilter)));
+            FilterRoutes = ReactiveCommand.CreateAsyncTask(async _ => await _routeService.FilterRoutesAsync(RouteReactiveFilter.Convert()));
             FilterRoutes.Subscribe(result =>
             {
                 Routes.Clear();
@@ -71,9 +73,9 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Automatically filtering routes
 
-            this.WhenAnyValue(vm => vm.RouteFilter.AgencyNameFilter, vm => vm.RouteFilter.ShortNameFilter,
-                    vm => vm.RouteFilter.LongNameFilter, vm => vm.RouteFilter.RouteTypeFilter)
-                .Where(_ => RouteFilter.IsValid)
+            this.WhenAnyValue(vm => vm.RouteReactiveFilter.AgencyNameFilter, vm => vm.RouteReactiveFilter.ShortNameFilter,
+                    vm => vm.RouteReactiveFilter.LongNameFilter, vm => vm.RouteReactiveFilter.RouteTypeFilter)
+                .Where(_ => RouteReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterRoutes);
 
@@ -83,7 +85,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteRoute = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _routeService.DeleteRoute(SelectedRoute));
+                await _routeService.DeleteRouteAsync(SelectedRoute);
                 return Unit.Default;
             });
             DeleteRoute.Subscribe(_ => SelectedRoute = null);
@@ -107,23 +109,23 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Clearing enum choice
 
             ClearRouteTypeChoice = ReactiveCommand.Create();
-            ClearRouteTypeChoice.Subscribe(_ => RouteFilter.RouteTypeFilter = null);
+            ClearRouteTypeChoice.Subscribe(_ => RouteReactiveFilter.RouteTypeFilter = null);
 
             #endregion
 
             #region Updating the list of agencies upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => (HostScreen.Router.NavigationStack.Last() == this) && RouteFilter.IsValid)
+                .Where(_ => (HostScreen.Router.NavigationStack.Last() == this) && RouteReactiveFilter.IsValid)
                 .InvokeCommand(FilterRoutes);
 
             #endregion
 
             #region Disposing of contexts
 
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _routeService.Dispose());
+            //HostScreen.Router.NavigateAndReset
+            //    .Skip(1)
+            //    .Subscribe(_ => _routeService.Dispose());
 
             #endregion
         }
@@ -131,25 +133,25 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     The <see cref="Route" /> currently selected by the user.
         /// </summary>
-        public Route SelectedRoute
+        public RouteDto SelectedRoute
         {
             get { return _selectedRoute; }
             set { this.RaiseAndSetIfChanged(ref _selectedRoute, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.RouteFilter" /> object used to send query data to the service layer.
+        ///     <see cref="RouteReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public RouteFilter RouteFilter
+        public RouteReactiveFilter RouteReactiveFilter
         {
-            get { return _routeFilter; }
-            set { this.RaiseAndSetIfChanged(ref _routeFilter, value); }
+            get { return _routeReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _routeReactiveFilter, value); }
         }
 
         /// <summary>
         ///     The list of <see cref="Agency" /> objects currently displayed to the user.
         /// </summary>
-        public ReactiveList<Route> Routes { get; protected set; }
+        public ReactiveList<RouteDto> Routes { get; protected set; }
 
         /// <summary>
         ///     The list of <see cref="RouteType" /> enumeration values.
@@ -157,10 +159,10 @@ namespace PublicTransport.Client.ViewModels.Filter
         public ReactiveList<RouteType> RouteTypes { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Route" /> objects from the database, using the <see cref="RouteFilter" /> object as a query
+        ///     Fetches <see cref="Route" /> objects from the database, using the <see cref="RouteReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<Route>> FilterRoutes { get; protected set; }
+        public ReactiveCommand<RouteDto[]> FilterRoutes { get; protected set; }
 
         /// <summary>
         ///     Opens a view responsible for adding a new <see cref="Route" /> to the database.

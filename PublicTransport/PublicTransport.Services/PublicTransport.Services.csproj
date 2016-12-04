@@ -71,24 +71,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTransfer\AgencyDto.cs" />
+    <Compile Include="DataTransfer\CalendarDto.cs" />
     <Compile Include="DataTransfer\CityDto.cs" />
     <Compile Include="DataTransfer\Converters\AgencyConverter.cs" />
+    <Compile Include="DataTransfer\Converters\CalendarConverter.cs" />
     <Compile Include="DataTransfer\Converters\CityConverter.cs" />
     <Compile Include="DataTransfer\Converters\IConverter.cs" />
+    <Compile Include="DataTransfer\Converters\RouteConverter.cs" />
+    <Compile Include="DataTransfer\Converters\StopConverter.cs" />
+    <Compile Include="DataTransfer\Converters\StopTimeConverter.cs" />
     <Compile Include="DataTransfer\Converters\StreetConverter.cs" />
+    <Compile Include="DataTransfer\Converters\TripConverter.cs" />
     <Compile Include="DataTransfer\Converters\UserCoverter.cs" />
     <Compile Include="DataTransfer\Converters\ZoneConverter.cs" />
     <Compile Include="DataTransfer\Filters\AgencyFilter.cs" />
     <Compile Include="DataTransfer\Filters\IFareFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IStopFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IRouteFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IStopTimeFilter.cs" />
+    <Compile Include="DataTransfer\Filters\StopFilter.cs" />
+    <Compile Include="DataTransfer\Filters\RouteFilter.cs" />
+    <Compile Include="DataTransfer\Filters\StopTimeFilter.cs" />
     <Compile Include="DataTransfer\Filters\StreetFilter.cs" />
     <Compile Include="DataTransfer\Filters\UserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
     <Compile Include="DataTransfer\RoleConverter.cs" />
     <Compile Include="DataTransfer\RoleDto.cs" />
+    <Compile Include="DataTransfer\RouteDto.cs" />
+    <Compile Include="DataTransfer\StopDto.cs" />
+    <Compile Include="DataTransfer\StopTimeDto.cs" />
     <Compile Include="DataTransfer\StreetDto.cs" />
+    <Compile Include="DataTransfer\TripDto.cs" />
     <Compile Include="DataTransfer\UserDto.cs" />
     <Compile Include="DataTransfer\UserInfo.cs" />
     <Compile Include="DataTransfer\ZoneDto.cs" />
@@ -105,6 +115,7 @@
     <Compile Include="Services\Contracts\IAgencyService.cs" />
     <Compile Include="Services\Contracts\ICityService.cs" />
     <Compile Include="Services\Contracts\ILoginService.cs" />
+    <Compile Include="Services\Contracts\IRouteService.cs" />
     <Compile Include="Services\Contracts\IStreetService.cs" />
     <Compile Include="Services\Contracts\IUserService.cs" />
     <Compile Include="Services\Contracts\IZoneService.cs" />

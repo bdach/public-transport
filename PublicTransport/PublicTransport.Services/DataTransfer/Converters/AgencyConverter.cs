@@ -13,6 +13,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
 
         public AgencyDto GetDto(Agency entity)
         {
+            if (entity == null) return null;
             return new AgencyDto
             {
                 Id = entity.Id,
@@ -34,7 +35,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
                 Phone = dto.Phone,
                 Url = dto.Url,
                 Regon = dto.Regon,
-                StreetId = dto.Street?.Id ?? 0,
+                StreetId = dto.Street?.Id,
                 StreetNumber = dto.StreetNumber
             };
         }

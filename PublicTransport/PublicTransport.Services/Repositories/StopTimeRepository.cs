@@ -111,7 +111,7 @@ namespace PublicTransport.Services.Repositories
         /// <returns>
         ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
         /// </returns>
-        public List<StopTime> GetRouteTimetableByStopId(IStopTimeFilter filter)
+        public List<StopTime> GetRouteTimetableByStopId(StopTimeFilter filter)
         {
             var day = filter.Date?.DayOfWeek;
             Func<StopTime, bool> isActive;

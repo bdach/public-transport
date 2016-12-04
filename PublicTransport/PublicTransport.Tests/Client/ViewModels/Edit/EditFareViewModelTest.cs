@@ -74,9 +74,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
             // when
-            _viewModel.RouteFilter.ShortNameFilter = "";
+            _viewModel.RouteReactiveFilter.ShortNameFilter = "";
             // then
-            _fareUnitOfWork.Verify(f => f.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+            _fareUnitOfWork.Verify(f => f.FilterRoutes(It.IsAny<RouteFilter>()), Times.Never);
         }
 
         //[Test]
@@ -112,7 +112,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             _viewModel.OriginZoneFilter = "";
             _viewModel.DestinationZoneFilter = "";
             // then
-            _fareUnitOfWork.Verify(f => f.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+            _fareUnitOfWork.Verify(f => f.FilterRoutes(It.IsAny<RouteFilter>()), Times.Never);
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Never);
                 s.AdvanceByMs(250);
                 _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Once);
-                _viewModel.RouteFilter.ShortNameFilter = "hi";
+                _viewModel.RouteReactiveFilter.ShortNameFilter = "hi";
                 s.AdvanceByMs(500);
                 _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Once);
             });

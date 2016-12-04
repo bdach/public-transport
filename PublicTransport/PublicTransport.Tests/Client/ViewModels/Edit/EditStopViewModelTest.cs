@@ -74,11 +74,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditStopViewModel(Screen.Object, _stopService.Object, _stop);
             // when
-            _viewModel.ParentStationFilter.StopNameFilter = "";
-            _viewModel.ParentStationFilter.CityNameFilter = "";
-            _viewModel.ParentStationFilter.StreetNameFilter = "";
-            _viewModel.ParentStationFilter.ZoneNameFilter = "";
-            _viewModel.ParentStationFilter.ParentStationNameFilter = "";
+            _viewModel.ParentStationReactiveFilter.StopNameFilter = "";
+            _viewModel.ParentStationReactiveFilter.CityNameFilter = "";
+            _viewModel.ParentStationReactiveFilter.StreetNameFilter = "";
+            _viewModel.ParentStationReactiveFilter.ZoneNameFilter = "";
+            _viewModel.ParentStationReactiveFilter.ParentStationNameFilter = "";
             // then
             _stopService.Verify(s => s.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
         }

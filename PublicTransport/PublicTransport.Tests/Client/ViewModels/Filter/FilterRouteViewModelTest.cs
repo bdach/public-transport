@@ -5,12 +5,13 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using PublicTransport.Client.DataTransfer;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI;
 
@@ -33,11 +34,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterRoutes()
         {
             // given
-            _routeService.Setup(r => r.FilterRoutes(It.IsAny<IRouteFilter>())).Returns(new List<Route> { new Route() });
+            _routeService.Setup(r => r.FilterRoutesAsync(It.IsAny<RouteFilter>())).ReturnsAsync(new[] { new RouteDto() });
             // when
             _viewModel.FilterRoutes.ExecuteAsync().Wait();
             // then
-            _routeService.Verify(r => r.FilterRoutes(_viewModel.RouteFilter), Times.Once);
+            _routeService.Verify(r => r.FilterRoutesAsync(It.IsAny<RouteFilter>()), Times.Once);
             _viewModel.Routes.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -46,24 +47,24 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             // when
-            _viewModel.RouteFilter.AgencyNameFilter = "";
-            _viewModel.RouteFilter.LongNameFilter = "";
-            _viewModel.RouteFilter.ShortNameFilter = "";
-            _viewModel.RouteFilter.RouteTypeFilter = null;
+            _viewModel.RouteReactiveFilter.AgencyNameFilter = "";
+            _viewModel.RouteReactiveFilter.LongNameFilter = "";
+            _viewModel.RouteReactiveFilter.ShortNameFilter = "";
+            _viewModel.RouteReactiveFilter.RouteTypeFilter = null;
             // then
-            _routeService.Verify(r => r.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterRoutes(It.IsAny<RouteFilter>()), Times.Never);
         }
 
         [Test]
         public void DeleteRoute()
         {
             // given
-            var route = new Route();
+            var route = new RouteDto();
             // when
             _viewModel.SelectedRoute = route;
             _viewModel.DeleteRoute.Execute(null);
             // then
-            _routeService.Verify(r => r.DeleteRoute(route), Times.Once);
+            _routeService.Verify(r => r.DeleteRouteAsync(route), Times.Once);
         }
 
         [Test]
@@ -71,7 +72,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedRoute = new Route();
+            _viewModel.SelectedRoute = new RouteDto();
             Router.Navigate
                 .Where(vm => vm is EditRouteViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -89,7 +90,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedRoute = new Route();
+            _viewModel.SelectedRoute = new RouteDto();
             Router.Navigate
                 .Where(vm => vm is EditRouteViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -118,7 +119,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToTimetable = false;
-            _viewModel.SelectedRoute = new Route();
+            _viewModel.SelectedRoute = new RouteDto();
             Router.Navigate
                 .Where(vm => vm is TimetableViewModel)
                 .Subscribe(_ => navigatedToTimetable = true);
@@ -135,11 +136,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void ClearRouteType()
         {
             // given
-            _viewModel.RouteFilter = new RouteFilter { RouteTypeFilter = RouteType.Bus };
+            _viewModel.RouteReactiveFilter = new RouteReactiveFilter { RouteTypeFilter = RouteType.Bus };
             // when
             _viewModel.ClearRouteTypeChoice.Execute(null);
             // then
-            _viewModel.RouteFilter.RouteTypeFilter.Should().BeNull();
+            _viewModel.RouteReactiveFilter.RouteTypeFilter.Should().BeNull();
         }
     }
 }

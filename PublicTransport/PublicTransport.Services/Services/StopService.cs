@@ -47,7 +47,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Stop"/> objects matching the filtering query.
         /// </returns>
-        List<Stop> FilterStops(IStopFilter filter);
+        List<Stop> FilterStops(StopFilter filter);
 
         /// <summary>
         ///     Calls <see cref="ZoneRepository"/> filtering method.
@@ -155,7 +155,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Stop"/> objects matching the filtering query.
         /// </returns>
-        public List<Stop> FilterStops(IStopFilter filter)
+        public List<Stop> FilterStops(StopFilter filter)
         {
             return _stopRepository.FilterStops(filter);
         }

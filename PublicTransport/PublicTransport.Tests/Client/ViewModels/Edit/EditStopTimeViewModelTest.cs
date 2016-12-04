@@ -2,9 +2,10 @@
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI.Testing;
 
@@ -28,9 +29,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditStopTimeViewModel(_routeService.Object);
             // when
-            _viewModel.StopFilter.StopNameFilter = "";
+            _viewModel.StopReactiveFilter.StopNameFilter = "";
             // then
-            _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterStops(It.IsAny<StopFilter>()), Times.Never);
         }
 
         //[Test]
@@ -42,12 +43,12 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 _viewModel = new EditStopTimeViewModel(_routeService.Object);
                 s.AdvanceByMs(100);
                 // when
-                _viewModel.StopFilter.StopNameFilter = "test";
+                _viewModel.StopReactiveFilter.StopNameFilter = "test";
                 // then
                 s.AdvanceByMs(250);
-                _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Never);
+                _routeService.Verify(r => r.FilterStops(It.IsAny<StopFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _routeService.Verify(r => r.FilterStops(It.IsAny<IStopFilter>()), Times.Once);
+                _routeService.Verify(r => r.FilterStops(It.IsAny<StopFilter>()), Times.Once);
             });
         }
 
@@ -57,9 +58,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             _viewModel = new EditStopTimeViewModel(_routeService.Object);
             // when
-            _viewModel.SelectedStop = new Stop {Id = 10};
+            _viewModel.SelectedStop = new StopDto {Id = 10};
             // then
-            _viewModel.StopTime.StopId.ShouldBeEquivalentTo(10);
+            _viewModel.StopTime.Stop.Id.ShouldBeEquivalentTo(10);
         }
     }
 }

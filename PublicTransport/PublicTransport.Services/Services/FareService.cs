@@ -86,7 +86,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Route"/> objects matching the filtering query.
         /// </returns>
-        List<Route> FilterRoutes(IRouteFilter filter);
+        List<Route> FilterRoutes(RouteFilter filter);
 
         /// <summary>
         ///     Calls <see cref="ZoneRepository"/> filtering method.
@@ -242,7 +242,7 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Route"/> objects matching the filtering query.
         /// </returns>
-        public List<Route> FilterRoutes(IRouteFilter filter)
+        public List<Route> FilterRoutes(RouteFilter filter)
         {
             return _routeRepository.FilterRoutes(filter);
         }

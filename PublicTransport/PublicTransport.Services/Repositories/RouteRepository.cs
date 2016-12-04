@@ -105,11 +105,11 @@ namespace PublicTransport.Services.Repositories
         }
 
         /// <summary>
-        /// Filters routes using the supplied <see cref="IRouteFilter"/>.
+        /// Filters routes using the supplied <see cref="RouteFilter"/>.
         /// </summary>
         /// <param name="filter">Filter to use while searching.</param>
         /// <returns>List of routes satisfying the search criteria.</returns>
-        public List<Route> FilterRoutes(IRouteFilter filter)
+        public List<Route> FilterRoutes(RouteFilter filter)
         {
             return _db.Routes.Include(r => r.Agency)
                 .Where(r => r.ShortName.Contains(filter.ShortNameFilter))

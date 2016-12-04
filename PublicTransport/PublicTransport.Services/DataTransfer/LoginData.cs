@@ -8,10 +8,7 @@ namespace PublicTransport.Services.DataTransfer
     [DataContract]
     public class LoginData
     {
-        public LoginData()
-        {
-                
-        }
+        public LoginData() { }
 
         /// <summary>
         ///     Constructor.
@@ -27,13 +24,13 @@ namespace PublicTransport.Services.DataTransfer
         /// <summary>
         ///     Username of the user logging in.
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string UserName { get; set; }
 
         /// <summary>
         ///     Password supplied by the user.
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string Password { get; set;  }
     }
 }

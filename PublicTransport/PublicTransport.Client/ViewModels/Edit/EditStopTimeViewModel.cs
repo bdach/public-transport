@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -22,38 +24,38 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Currently selected <see cref="Stop"/> object.
         /// </summary>
-        private Stop _selectedStop;
+        private StopDto _selectedStop;
 
         /// <summary>
-        ///     <see cref="DataTransfer.StopFilter" /> used for filtering stop suggestions.
+        ///     <see cref="StopReactiveFilter" /> used for filtering stop suggestions.
         /// </summary>
-        private StopFilter _stopFilter;
+        private StopReactiveFilter _stopReactiveFilter;
 
         /// <summary>
         ///     <see cref="Domain.Entities.StopTime" /> object storing the currently edited data.
         /// </summary>
-        private StopTime _stopTime;
+        private StopTimeDto _stopTime;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="stopTime">Stop time to edit; null if a stop time is to be added.</param>
-        public EditStopTimeViewModel(IRouteService routeService, StopTime stopTime = null)
+        public EditStopTimeViewModel(IRouteService routeService, StopTimeDto stopTime = null)
         {
             #region Property/field initialization
 
-            StopSuggestions = new ReactiveList<Stop>();
+            StopSuggestions = new ReactiveList<StopDto>();
             _routeService = routeService;
-            _stopFilter = new StopFilter { StopNameFilter = stopTime?.Stop?.Name ?? "" };
+            _stopReactiveFilter = new StopReactiveFilter { StopNameFilter = stopTime?.Stop?.Name ?? "" };
             SelectedStop = stopTime?.Stop;
-            _stopTime = stopTime ?? new StopTime();
+            _stopTime = stopTime ?? new StopTimeDto();
 
             #endregion
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _routeService.FilterStops(StopFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await _routeService.FilterStopsAsync(StopReactiveFilter.Convert()));
             UpdateSuggestions.Subscribe(results =>
             {
                 StopSuggestions.Clear();
@@ -64,48 +66,48 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #endregion
 
-            this.WhenAnyValue(vm => vm.StopFilter.StopNameFilter)
-                .Where(s => (s != SelectedStop?.Name) && StopFilter.IsValid)
+            this.WhenAnyValue(vm => vm.StopReactiveFilter.StopNameFilter)
+                .Where(s => (s != SelectedStop?.Name) && StopReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
             this.WhenAnyValue(vm => vm.SelectedStop)
                 .Where(s => s != null)
-                .Subscribe(_ => StopTime.StopId = SelectedStop.Id);
+                .Subscribe(_ => StopTime.Stop = SelectedStop);
         }
 
         /// <summary>
         ///     List containing suggestions for <see cref="Stop" /> names.
         /// </summary>
-        public ReactiveList<Stop> StopSuggestions { get; protected set; }
+        public ReactiveList<StopDto> StopSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the contents of <see cref="StopSuggestions" />.
         /// </summary>
-        public ReactiveCommand<List<Stop>> UpdateSuggestions { get; protected set; }
+        public ReactiveCommand<StopDto[]> UpdateSuggestions { get; protected set; }
 
         /// <summary>
         ///     The <see cref="Stop" /> currently selected by the user.
         /// </summary>
-        public Stop SelectedStop
+        public StopDto SelectedStop
         {
             get { return _selectedStop; }
             set { this.RaiseAndSetIfChanged(ref _selectedStop, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.StopFilter" /> used for filtering stop suggestions.
+        ///     <see cref="StopReactiveFilter" /> used for filtering stop suggestions.
         /// </summary>
-        public StopFilter StopFilter
+        public StopReactiveFilter StopReactiveFilter
         {
-            get { return _stopFilter; }
-            set { this.RaiseAndSetIfChanged(ref _stopFilter, value); }
+            get { return _stopReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _stopReactiveFilter, value); }
         }
 
         /// <summary>
         ///     Currently edited stop time.
         /// </summary>
-        public StopTime StopTime
+        public StopTimeDto StopTime
         {
             get { return _stopTime; }
             set { this.RaiseAndSetIfChanged(ref _stopTime, value); }

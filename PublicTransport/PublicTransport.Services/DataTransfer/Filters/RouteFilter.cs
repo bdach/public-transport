@@ -1,4 +1,5 @@
-﻿using PublicTransport.Domain.Enums;
+﻿using System.Runtime.Serialization;
+using PublicTransport.Domain.Enums;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.DataTransfer.Filters
@@ -7,26 +8,31 @@ namespace PublicTransport.Services.DataTransfer.Filters
     ///     Data transfer object interface.
     ///     Used by the <see cref="RouteRepository" /> to perform filtering.
     /// </summary>
-    public interface IRouteFilter
+    [DataContract]
+    public class RouteFilter
     {
         /// <summary>
         ///     Agency name filter.
         /// </summary>
-        string AgencyNameFilter { get; }
+        [DataMember]
+        public string AgencyNameFilter { get; set; }
 
         /// <summary>
         ///     Route long name filter.
         /// </summary>
-        string LongNameFilter { get; }
+        [DataMember]
+        public string LongNameFilter { get; set; }
 
         /// <summary>
         ///     Route short name filter.
         /// </summary>
-        string ShortNameFilter { get; }
+        [DataMember]
+        public string ShortNameFilter { get; set; }
 
         /// <summary>
         ///     Route type filter.
         /// </summary>
-        RouteType? RouteTypeFilter { get; }
+        [DataMember]
+        public RouteType? RouteTypeFilter { get; set; }
     }
 }

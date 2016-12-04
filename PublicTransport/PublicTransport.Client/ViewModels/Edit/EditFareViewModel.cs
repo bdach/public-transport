@@ -52,7 +52,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Route" /> objects.
         /// </summary>
-        private RouteFilter _routeFilter;
+        private RouteReactiveFilter _routeReactiveFilter;
 
         /// <summary>
         ///     Filter used to make queries about <see cref="Zone" /> objects.
@@ -76,7 +76,7 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             HostScreen = screen;
             _fareService = fareService;
-            _routeFilter = new RouteFilter();
+            _routeReactiveFilter = new RouteReactiveFilter();
             RouteSuggestions = new ReactiveList<Route>();
             OriginZoneSuggestions = new ReactiveList<Zone>();
             DestinationZoneSuggestions = new ReactiveList<Zone>();
@@ -90,7 +90,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             _selectedOriginZone = _fareRule.Origin;
             _selectedDestinationZone = _fareRule.Destination;
 
-            _routeFilter.ShortNameFilter = _fareRule.Route?.ShortName ?? "";
+            _routeReactiveFilter.ShortNameFilter = _fareRule.Route?.ShortName ?? "";
             _originZoneFilter = _fareRule.Origin?.Name ?? "";
             _destinationZoneFilter = _fareRule.Destination?.Name ?? "";
 
@@ -123,7 +123,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region UpdateSuggestions commands
 
             UpdateRouteSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareService.FilterRoutes(RouteFilter)));
+                await Task.Run(() => _fareService.FilterRoutes(RouteReactiveFilter.Convert())));
             UpdateRouteSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
@@ -156,8 +156,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region Querying DB for suggestions
 
-            this.WhenAnyValue(vm => vm.RouteFilter.ShortNameFilter)
-                .Where(s => (s != SelectedRoute?.ShortName) && RouteFilter.IsValid)
+            this.WhenAnyValue(vm => vm.RouteReactiveFilter.ShortNameFilter)
+                .Where(s => (s != SelectedRoute?.ShortName) && RouteReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateRouteSuggestions);
 
@@ -274,10 +274,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Route" /> objects.
         /// </summary>
-        public RouteFilter RouteFilter
+        public RouteReactiveFilter RouteReactiveFilter
         {
-            get { return _routeFilter; }
-            set { this.RaiseAndSetIfChanged(ref _routeFilter, value); }
+            get { return _routeReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _routeReactiveFilter, value); }
         }
 
         /// <summary>

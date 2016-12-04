@@ -10,10 +10,7 @@ namespace PublicTransport.Services.DataTransfer
     [DataContract]
     public class UserInfo
     {
-        public UserInfo()
-        {
-            
-        }
+        public UserInfo() { }
 
         /// <summary>
         ///     Constructor.
@@ -29,13 +26,13 @@ namespace PublicTransport.Services.DataTransfer
         /// <summary>
         ///     User name of the user that logged into the application.
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string UserName { get; set; }
 
         /// <summary>
         ///     Roles of the user that logged into the application.
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public IList<RoleType> UserRoles { get; set; }
     }
 }

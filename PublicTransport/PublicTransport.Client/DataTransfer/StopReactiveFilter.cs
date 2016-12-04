@@ -6,7 +6,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.Stop" /> objects.
     /// </summary>
-    public class StopFilter : ReactiveObject, IStopFilter, IReactiveFilter
+    public class StopReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     Stop name filter.
@@ -93,6 +93,19 @@ namespace PublicTransport.Client.DataTransfer
         }
 
         // TODO: allow filtering by IsStation
+
+        public StopFilter Convert()
+        {
+            return new StopFilter
+            {
+                CityNameFilter = CityNameFilter,
+                StreetNameFilter = StreetNameFilter,
+                StopNameFilter = StopNameFilter,
+                ZoneNameFilter = ZoneNameFilter,
+                OnlyStations = OnlyStations,
+                ParentStationNameFilter = ParentStationNameFilter
+            };
+        }
 
         /// <summary>
         ///     Determines whether the query is valid.

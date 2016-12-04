@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
@@ -12,13 +11,11 @@ namespace PublicTransport.Tests.Services
     public class StopRepositoryTest : RepositoryTest
     {
         private StopRepository _stopRepository;
-        private Mock<IStopFilter> _stopFilter;
 
         [SetUp]
         public void ServiceSetUp()
         {
             _stopRepository = new StopRepository(DbContext);
-            _stopFilter = new Mock<IStopFilter>();
         }
 
         [Test]
@@ -36,12 +33,15 @@ namespace PublicTransport.Tests.Services
         public void FilterStopsTest()
         {
             // given
-            _stopFilter.Setup(sf => sf.CityNameFilter).Returns("Warszawa");
-            _stopFilter.Setup(sf => sf.StreetNameFilter).Returns("Bora-Komorowskiego");
-            _stopFilter.Setup(sf => sf.StopNameFilter).Returns("kiego");
-            _stopFilter.Setup(sf => sf.ZoneNameFilter).Returns("");
+            var stopFilter = new StopFilter
+            {
+                CityNameFilter = "Warszawa",
+                StreetNameFilter = "Bora-Komorowskiego",
+                StopNameFilter = "kiego",
+                ZoneNameFilter = ""
+            };
             // when
-            var stops = _stopRepository.FilterStops(_stopFilter.Object);
+            var stops = _stopRepository.FilterStops(stopFilter);
             // then
             stops.Count.ShouldBeEquivalentTo(2);
             stops.Select(s => s.Name)

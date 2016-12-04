@@ -13,13 +13,13 @@ namespace PublicTransport.Tests.Services
     public class StopTimeRepositoryTest : RepositoryTest
     {
         private StopTimeRepository _stopTimeRepository;
-        private Mock<IStopTimeFilter> _stopTimeFilter;
+        private Mock<StopTimeFilter> _stopTimeFilter;
 
         [SetUp]
         public void ServiceSetUp()
         {
             _stopTimeRepository = new StopTimeRepository(DbContext);
-            _stopTimeFilter = new Mock<IStopTimeFilter>();
+            _stopTimeFilter = new Mock<StopTimeFilter>();
         }
 
         [Test]

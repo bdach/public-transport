@@ -26,9 +26,9 @@ namespace PublicTransport.Client.ViewModels.Filter
         private readonly IStopService _stopService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.StopFilter" /> object used to send query data to the service layer.
+        ///     <see cref="StopReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private StopFilter _stopFilter;
+        private StopReactiveFilter _stopReactiveFilter;
 
         /// <summary>
         ///     The <see cref="Stop" /> currently selected by the user.
@@ -46,7 +46,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen = screen;
             _stopService = stopService ?? Locator.Current.GetService<IStopService>();
-            _stopFilter = new StopFilter();
+            _stopReactiveFilter = new StopReactiveFilter();
             Stops = new ReactiveList<Stop>();
 
             #endregion
@@ -55,7 +55,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Stop filtering command
 
-            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopFilter)));
+            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopReactiveFilter.Convert())));
             FilterStops.Subscribe(result =>
             {
                 Stops.Clear();
@@ -69,12 +69,12 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of filtered stops upon filter change
 
             this.WhenAnyValue(
-                    vm => vm.StopFilter.StopNameFilter,
-                    vm => vm.StopFilter.CityNameFilter,
-                    vm => vm.StopFilter.StreetNameFilter,
-                    vm => vm.StopFilter.ZoneNameFilter,
-                    vm => vm.StopFilter.ParentStationNameFilter)
-                .Where(_ => StopFilter.IsValid)
+                    vm => vm.StopReactiveFilter.StopNameFilter,
+                    vm => vm.StopReactiveFilter.CityNameFilter,
+                    vm => vm.StopReactiveFilter.StreetNameFilter,
+                    vm => vm.StopReactiveFilter.ZoneNameFilter,
+                    vm => vm.StopReactiveFilter.ParentStationNameFilter)
+                .Where(_ => StopReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterStops);
 
@@ -106,7 +106,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of stops upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && StopFilter.IsValid)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && StopReactiveFilter.IsValid)
                 .InvokeCommand(FilterStops);
 
             #endregion
@@ -130,12 +130,12 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.StopFilter" /> object used to send query data to the service layer.
+        ///     <see cref="StopReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public StopFilter StopFilter
+        public StopReactiveFilter StopReactiveFilter
         {
-            get { return _stopFilter; }
-            set { this.RaiseAndSetIfChanged(ref _stopFilter, value); }
+            get { return _stopReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _stopReactiveFilter, value); }
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         public ReactiveList<Stop> Stops { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Stop" /> objects from the database, using the <see cref="StopFilter" /> object as a query
+        ///     Fetches <see cref="Stop" /> objects from the database, using the <see cref="StopReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
         public ReactiveCommand<List<Stop>> FilterStops { get; protected set; }

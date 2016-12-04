@@ -24,7 +24,7 @@ namespace PublicTransport.Client.Views.Edit
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.StopSuggestions, v => v.StopComboBox.ItemsSource);
             this.Bind(ViewModel, vm => vm.SelectedStop, v => v.StopComboBox.SelectedItem);
-            this.Bind(ViewModel, vm => vm.StopFilter.StopNameFilter, v => v.StopComboBox.Text);
+            this.Bind(ViewModel, vm => vm.StopReactiveFilter.StopNameFilter, v => v.StopComboBox.Text);
             this.Bind(ViewModel, vm => vm.StopTime.ArrivalTime, v => v.ArrivalTimeTextBox.Text);
             this.Bind(ViewModel, vm => vm.StopTime.DepartureTime, v => v.DepartureTimeTextBox.Text);
 

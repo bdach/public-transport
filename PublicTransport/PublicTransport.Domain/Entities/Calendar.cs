@@ -54,13 +54,13 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the start date for the service.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The start date is required.")]
         public DateTime StartDate { get; set; }
 
         /// <summary>
         ///     Contains the end date for the service.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The end date is required.")]
         public DateTime EndDate { get; set; }
     }
 }
