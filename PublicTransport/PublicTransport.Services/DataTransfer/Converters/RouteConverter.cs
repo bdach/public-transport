@@ -13,6 +13,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
 
         public RouteDto GetDto(Route entity)
         {
+            if (entity == null) return null;
             return new RouteDto
             {
                 Id = entity.Id,

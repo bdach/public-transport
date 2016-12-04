@@ -42,7 +42,7 @@
                      x:Name="ShortNameTextBox" />
             <TextBlock Grid.Row="2"
                        Grid.Column="0"
-                       Style="{StaticResource TextBoxLabel}">Long name</TextBlock>
+                       Style="{StaticResource RequiredTextBoxLabel}">Long name</TextBlock>
             <TextBox Grid.Row="2"
                      Grid.Column="1"
                      x:Name="LongNameTextBox" />

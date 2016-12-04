@@ -48,7 +48,10 @@ namespace PublicTransport.Services.Repositories
         /// </returns>
         public Trip Read(int id)
         {
-            return _db.Trips.FirstOrDefault(u => u.Id == id);
+            return _db.Trips
+                .Include(t => t.Route)
+                .Include(t => t.Service)
+                .FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace PublicTransport.Services.Repositories
 
             _db.Entry(old).CurrentValues.SetValues(trip);
             _db.SaveChanges();
-            return trip;
+            return old;
         }
 
         /// <summary>
@@ -100,15 +103,21 @@ namespace PublicTransport.Services.Repositories
         public List<StopTime> UpdateStops(int tripId, List<StopTime> stops)
         {
             var sequence = 0;
-            stops.ForEach(stopTime => stopTime.StopSequence = sequence++);
+            stops.ForEach(stopTime =>
+            {
+                stopTime.StopSequence = sequence++;
+                stopTime.TripId = tripId;
+            });
 
             var currentStops = _db.StopTimes.Where(st => st.TripId == tripId).ToList();
             var newStops =
                 stops.Where(st => _db.StopTimes.FirstOrDefault(existing => existing.Id == st.Id) == null)
                     .ToList();
-            newStops.ForEach(st => st.TripId = tripId);
             var updatedStops = stops.Except(newStops).ToList();
-            var deletedStops = currentStops.Except(updatedStops);
+            var deletedStops = currentStops
+                //.Except(updatedStops)
+                .Where(st => stops.Find(st2 => st.Id == st2.Id) == null)
+                .ToList();
 
             _db.StopTimes.AddRange(newStops);
             _db.StopTimes.RemoveRange(deletedStops);

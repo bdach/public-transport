@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Services.Routes;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
@@ -30,7 +27,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         ///     <see cref="StopReactiveFilter" /> used for filtering stop suggestions.
         /// </summary>
         private StopReactiveFilter _stopReactiveFilter;
-
+        
         /// <summary>
         ///     <see cref="Domain.Entities.StopTime" /> object storing the currently edited data.
         /// </summary>

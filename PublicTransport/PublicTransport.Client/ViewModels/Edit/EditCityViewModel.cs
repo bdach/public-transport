@@ -44,7 +44,7 @@ namespace PublicTransport.Client.ViewModels.Edit
             SaveCity.ThrownExceptions
                 .Where(ex => !(ex is FaultException<ValidationFault>))
                 .Subscribe(ex =>
-                    UserError.Throw("Cannot connect to the server. Please check the required fields and try again later.", ex));
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
             SaveCity.ThrownExceptions
                 .Where(ex => ex is FaultException<ValidationFault>)
                 .Select(ex => ex as FaultException<ValidationFault>)

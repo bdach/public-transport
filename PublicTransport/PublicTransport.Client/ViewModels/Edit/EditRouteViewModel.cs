@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
@@ -10,14 +10,14 @@ using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Routes;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
 {
     /// <summary>
-    ///     View model for editing <see cref="Domain.Entities.Route" /> objects.
+    ///     View model for editing route objects.
     /// </summary>
     public class EditRouteViewModel : ReactiveObject, IDetailViewModel
     {
@@ -69,8 +69,14 @@ namespace PublicTransport.Client.ViewModels.Edit
             #region SaveRoute command
 
             SaveRoute = ReactiveCommand.CreateAsyncTask(agencySelected, async _ => await serviceMethod(Route));
-            SaveRoute.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited route cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveRoute.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
+            SaveRoute.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 

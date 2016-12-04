@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
@@ -10,6 +11,7 @@ using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Routes;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -212,6 +214,9 @@ namespace PublicTransport.Client.ViewModels.Edit
         {
             #region Field/property initialization
 
+            var calendarServiceMethod = isNew
+                ? new Func<CalendarDto, Task<CalendarDto>>(_routeService.CreateCalendarAsync)
+                : _routeService.UpdateCalendarAsync;
             var tripServiceMethod = isNew ? new Func<TripDto, Task<TripDto>>(_routeService.CreateTripAsync) : _routeService.UpdateTripAsync;
             SelectedRoute = _trip.Route;
             RouteSuggestions.Add(SelectedRoute);
@@ -230,16 +235,22 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveTrip = ReactiveCommand.CreateAsyncTask(canSave, async _ =>
             {
-                Trip.Service = ServiceCalendar;
-                var result = await Task.Run(() => tripServiceMethod(Trip));
+                Trip.Service = ServiceCalendar = await calendarServiceMethod(ServiceCalendar);
+                var result = await tripServiceMethod(Trip);
                 Trip = result;
                 var stopTimes = StopTimes.Select(vm => vm.StopTime).ToList();
                 await _routeService.UpdateStopsAsync(Trip.Id, stopTimes.ToArray());
                 return result;
             });
             // On exceptions: Display error.
-            SaveTrip.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited trip cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveTrip.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
+            SaveTrip.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 
