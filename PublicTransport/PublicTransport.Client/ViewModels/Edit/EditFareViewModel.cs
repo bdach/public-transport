@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Fares;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -25,29 +27,29 @@ namespace PublicTransport.Client.ViewModels.Edit
         private readonly IFareService _fareService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.FareAttribute" /> object being edited in the window.
+        ///     The <see cref="FareAttributeDto" /> object being edited in the window.
         /// </summary>
-        private FareAttribute _fareAttribute;
+        private FareAttributeDto _fareAttribute;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.FareRule" /> object being edited in the window.
+        ///     The <see cref="FareRuleDto" /> object being edited in the window.
         /// </summary>
-        private FareRule _fareRule;
+        private FareRuleDto _fareRule;
 
         /// <summary>
-        ///     The <see cref="Route" /> currently selected by the user.
+        ///     The <see cref="RouteDto" /> currently selected by the user.
         /// </summary>
-        private Route _selectedRoute;
+        private RouteDto _selectedRoute;
 
         /// <summary>
-        ///     The <see cref="Zone" /> currently selected by the user.
+        ///     The origin <see cref="ZoneDto" /> currently selected by the user.
         /// </summary>
-        private Zone _selectedOriginZone;
+        private ZoneDto _selectedOriginZone;
 
         /// <summary>
-        ///     The <see cref="Zone" /> currently selected by the user.
+        ///     The destination <see cref="ZoneDto" /> currently selected by the user.
         /// </summary>
-        private Zone _selectedDestinationZone;
+        private ZoneDto _selectedDestinationZone;
 
         /// <summary>
         ///     Filter used to make queries about <see cref="Route" /> objects.
@@ -70,22 +72,22 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <param name="screen">The screen the view model should appear on.</param>
         /// <param name="fareService">Service exposing methods necessary to manage data.</param>
         /// <param name="fareAttribute">Fare to be edited. If a fare is to be added, this parameter should be left null.</param>
-        public EditFareViewModel(IScreen screen, IFareService fareService, FareAttribute fareAttribute = null)
+        public EditFareViewModel(IScreen screen, IFareService fareService, FareAttributeDto fareAttribute = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
             _fareService = fareService;
             _routeReactiveFilter = new RouteReactiveFilter();
-            RouteSuggestions = new ReactiveList<Route>();
-            OriginZoneSuggestions = new ReactiveList<Zone>();
-            DestinationZoneSuggestions = new ReactiveList<Zone>();
+            RouteSuggestions = new ReactiveList<RouteDto>();
+            OriginZoneSuggestions = new ReactiveList<ZoneDto>();
+            DestinationZoneSuggestions = new ReactiveList<ZoneDto>();
             TransferCounts = new ReactiveList<TransferCount>(Enum.GetValues(typeof(TransferCount)).Cast<TransferCount>());
 
-            var fareServiceMethod = fareAttribute == null ? new Func<FareAttribute, FareAttribute>(_fareService.CreateFareAttribute) : _fareService.UpdateFareAttribute;
-            var ruleServiceMethod = fareAttribute == null ? new Func<FareRule, FareRule>(_fareService.CreateFareRule) : _fareService.UpdateFareRule;
-            _fareAttribute = fareAttribute ?? new FareAttribute();
-            _fareRule = _fareAttribute.FareRule ?? new FareRule();
+            var fareServiceMethod = fareAttribute == null ? new Func<FareAttributeDto, Task<FareAttributeDto>>(_fareService.CreateFareAttributeAsync) : _fareService.UpdateFareAttributeAsync;
+            var ruleServiceMethod = fareAttribute == null ? new Func<FareRuleDto, Task<FareRuleDto>>(_fareService.CreateFareRuleAsync) : _fareService.UpdateFareRuleAsync;
+            _fareAttribute = fareAttribute ?? new FareAttributeDto();
+            _fareRule = _fareAttribute.FareRule ?? new FareRuleDto();
             _selectedRoute = _fareRule.Route;
             _selectedOriginZone = _fareRule.Origin;
             _selectedDestinationZone = _fareRule.Destination;
@@ -97,11 +99,11 @@ namespace PublicTransport.Client.ViewModels.Edit
             #endregion
 
             this.WhenAnyValue(vm => vm.SelectedRoute).Select(r => r != null)
-                .Where(b => b).Subscribe(_ => FareRule.RouteId = SelectedRoute.Id);
+                .Where(b => b).Subscribe(_ => FareRule.Route = SelectedRoute);
             this.WhenAnyValue(vm => vm.SelectedOriginZone).Select(o => o != null)
-                .Where(b => b).Subscribe(_ => FareRule.OriginId = SelectedOriginZone.Id);
+                .Where(b => b).Subscribe(_ => FareRule.Origin = SelectedOriginZone);
             this.WhenAnyValue(vm => vm.SelectedDestinationZone).Select(d => d != null)
-                .Where(b => b).Subscribe(_ => FareRule.DestinationId = SelectedDestinationZone.Id);
+                .Where(b => b).Subscribe(_ => FareRule.Destination = SelectedDestinationZone);
 
             var allSelected = this.WhenAnyValue(vm => vm.SelectedRoute, vm => vm.SelectedOriginZone,
                 vm => vm.SelectedDestinationZone, (r, o, d) => r != null && o != null && d != null);
@@ -110,20 +112,25 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             SaveFare = ReactiveCommand.CreateAsyncTask(allSelected, async _ =>
             {
-                var result = await Task.Run(() => ruleServiceMethod(FareRule));
+                var result = await ruleServiceMethod(FareRule);
                 FareAttribute.FareRule = result;
-                FareAttribute.FareRuleId = result.Id;
-                return await Task.Run(() => fareServiceMethod(FareAttribute));
+                return await fareServiceMethod(FareAttribute);
             });
-            SaveFare.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited fare cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveFare.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
+            SaveFare.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 
             #region UpdateSuggestions commands
 
             UpdateRouteSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareService.FilterRoutes(RouteReactiveFilter.Convert())));
+                await _fareService.FilterRoutesAsync(RouteReactiveFilter.Convert()));
             UpdateRouteSuggestions.Subscribe(results =>
             {
                 RouteSuggestions.Clear();
@@ -133,7 +140,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             UpdateOriginZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareService.FilterZones(OriginZoneFilter)));
+                await _fareService.FilterZonesAsync(OriginZoneFilter));
             UpdateOriginZoneSuggestions.Subscribe(results =>
             {
                 OriginZoneSuggestions.Clear();
@@ -143,7 +150,7 @@ namespace PublicTransport.Client.ViewModels.Edit
                 UserError.Throw("Cannot fetch suggestions from the database. Please contact the system administrator.", ex));
 
             UpdateDestinationZoneSuggestions = ReactiveCommand.CreateAsyncTask(async _ =>
-                await Task.Run(() => _fareService.FilterZones(DestinationZoneFilter)));
+                await _fareService.FilterZonesAsync(DestinationZoneFilter));
             UpdateDestinationZoneSuggestions.Subscribe(results =>
             {
                 DestinationZoneSuggestions.Clear();
@@ -189,37 +196,37 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     List containing the suggested <see cref="Route" />s based on user input.
         /// </summary>
-        public ReactiveList<Route> RouteSuggestions { get; protected set; }
+        public ReactiveList<RouteDto> RouteSuggestions { get; protected set; }
 
         /// <summary>
         ///     List containing the suggested <see cref="Zone" />s based on user input.
         /// </summary>
-        public ReactiveList<Zone> OriginZoneSuggestions { get; protected set; }
+        public ReactiveList<ZoneDto> OriginZoneSuggestions { get; protected set; }
 
         /// <summary>
         ///     List containing the suggested <see cref="Zone" />s based on user input.
         /// </summary>
-        public ReactiveList<Zone> DestinationZoneSuggestions { get; protected set; }
+        public ReactiveList<ZoneDto> DestinationZoneSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the route suggestions.
         /// </summary>
-        public ReactiveCommand<List<Route>> UpdateRouteSuggestions { get; protected set; }
+        public ReactiveCommand<RouteDto[]> UpdateRouteSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the origin zone suggestions.
         /// </summary>
-        public ReactiveCommand<List<Zone>> UpdateOriginZoneSuggestions { get; protected set; }
+        public ReactiveCommand<ZoneDto[]> UpdateOriginZoneSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the destination zone suggestions.
         /// </summary>
-        public ReactiveCommand<List<Zone>> UpdateDestinationZoneSuggestions { get; protected set; }
+        public ReactiveCommand<ZoneDto[]> UpdateDestinationZoneSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for saving the currently edited <see cref="Domain.Entities.FareRule"/> and <see cref="Domain.Entities.FareAttribute"/> objects.
         /// </summary>
-        public ReactiveCommand<FareAttribute> SaveFare { get; protected set; }
+        public ReactiveCommand<FareAttributeDto> SaveFare { get; protected set; }
 
         /// <summary>
         ///     Command responsible for closing the window.
@@ -227,45 +234,45 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<Unit> Close { get; protected set; }
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.FareAttribute" /> object being edited in the window.
+        ///     The <see cref="FareAttributeDto" /> object being edited in the window.
         /// </summary>
-        public FareAttribute FareAttribute
+        public FareAttributeDto FareAttribute
         {
             get { return _fareAttribute; }
             set { this.RaiseAndSetIfChanged(ref _fareAttribute, value); }
         }
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.FareRule" /> object being edited in the window.
+        ///     The <see cref="FareRuleDto" /> object being edited in the window.
         /// </summary>
-        public FareRule FareRule
+        public FareRuleDto FareRule
         {
             get { return _fareRule; }
             set { this.RaiseAndSetIfChanged(ref _fareRule, value); }
         }
 
         /// <summary>
-        ///     The <see cref="Route" /> currently selected by the user.
+        ///     The <see cref="RouteDto" /> currently selected by the user.
         /// </summary>
-        public Route SelectedRoute
+        public RouteDto SelectedRoute
         {
             get { return _selectedRoute; }
             set { this.RaiseAndSetIfChanged(ref _selectedRoute, value); }
         }
 
         /// <summary>
-        ///     The origin <see cref="Zone" /> currently selected by the user.
+        ///     The origin <see cref="ZoneDto" /> currently selected by the user.
         /// </summary>
-        public Zone SelectedOriginZone
+        public ZoneDto SelectedOriginZone
         {
             get { return _selectedOriginZone; }
             set { this.RaiseAndSetIfChanged(ref _selectedOriginZone, value); }
         }
 
         /// <summary>
-        ///     The destination <see cref="Zone" /> currently selected by the user.
+        ///     The destination <see cref="ZoneDto" /> currently selected by the user.
         /// </summary>
-        public Zone SelectedDestinationZone
+        public ZoneDto SelectedDestinationZone
         {
             get { return _selectedDestinationZone; }
             set { this.RaiseAndSetIfChanged(ref _selectedDestinationZone, value); }

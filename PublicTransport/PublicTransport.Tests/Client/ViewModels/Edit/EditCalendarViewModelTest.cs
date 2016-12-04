@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Stops;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -33,7 +32,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     The <see cref="Stop" /> currently selected by the user.
         /// </summary>
-        private Stop _selectedStop;
+        private StopDto _selectedStop;
 
         /// <summary>
         ///     Constructor.
@@ -47,7 +46,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             HostScreen = screen;
             _stopService = stopService ?? Locator.Current.GetService<IStopService>();
             _stopReactiveFilter = new StopReactiveFilter();
-            Stops = new ReactiveList<Stop>();
+            Stops = new ReactiveList<StopDto>();
 
             #endregion
 
@@ -55,7 +54,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Stop filtering command
 
-            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopService.FilterStops(StopReactiveFilter.Convert())));
+            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await _stopService.FilterStopsAsync(StopReactiveFilter.Convert()));
             FilterStops.Subscribe(result =>
             {
                 Stops.Clear();
@@ -84,7 +83,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteStop = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _stopService.DeleteStop(SelectedStop));
+                await _stopService.DeleteStopAsync(SelectedStop);
                 return Unit.Default;
             });
             DeleteStop.Subscribe(_ => SelectedStop = null);
@@ -110,20 +109,12 @@ namespace PublicTransport.Client.ViewModels.Filter
                 .InvokeCommand(FilterStops);
 
             #endregion
-
-            #region Disposing of contexts
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _stopService.Dispose());
-
-            #endregion
         }
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="StopDto" /> currently selected by the user.
         /// </summary>
-        public Stop SelectedStop
+        public StopDto SelectedStop
         {
             get { return _selectedStop; }
             set { this.RaiseAndSetIfChanged(ref _selectedStop, value); }
@@ -141,13 +132,13 @@ namespace PublicTransport.Client.ViewModels.Filter
         /// <summary>
         ///     The list of <see cref="Stop" /> objects currently displayed by the user.
         /// </summary>
-        public ReactiveList<Stop> Stops { get; protected set; }
+        public ReactiveList<StopDto> Stops { get; protected set; }
 
         /// <summary>
         ///     Fetches <see cref="Stop" /> objects from the database, using the <see cref="StopReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<Stop>> FilterStops { get; protected set; }
+        public ReactiveCommand<StopDto[]> FilterStops { get; protected set; }
 
         /// <summary>
         ///     Opens a view responsible for adding a new <see cref="Stop" /> to the database.

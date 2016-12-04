@@ -1,73 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
-    public interface IStopService : IDisposable
-    {
-        /// <summary>
-        ///     Calls <see cref="StopRepository"/> create method.
-        /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be inserted into the database.</param>
-        /// <returns>
-        ///     <see cref="Stop"/> object successfully inserted into the database.
-        /// </returns>
-        Stop CreateStop(Stop stop);
-
-        /// <summary>
-        ///     Calls <see cref="StopRepository"/> update method.
-        /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be updated in the database.</param>
-        /// <returns>
-        ///     <see cref="Stop"/> object successfully updated in the database.
-        /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
-        /// </exception>
-        Stop UpdateStop(Stop stop);
-
-        /// <summary>
-        ///     Calls <see cref="StopRepository"/> delete method.
-        /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
-        /// </exception>
-        void DeleteStop(Stop stop);
-
-        /// <summary>
-        ///     Calls <see cref="StopRepository"/> filtering method.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>
-        ///     List of <see cref="Stop"/> objects matching the filtering query.
-        /// </returns>
-        List<Stop> FilterStops(StopFilter filter);
-
-        /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> filtering method.
-        /// </summary>
-        /// <param name="name">Filtering parameter.</param>
-        /// <returns>
-        ///     List of <see cref="Zone"/> objects matching the filtering query.
-        /// </returns>
-        List<Zone> FilterZones(string name);
-
-        /// <summary>
-        ///     Calls <see cref="StreetRepository"/> filtering method.
-        /// </summary>
-        /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>
-        ///     List of <see cref="Street"/> objects matching the filtering query.
-        /// </returns>
-        List<Street> FilterStreets(StreetFilter filter);
-    }
-
     /// <summary>
     ///     Service used to manage stop data.
     /// </summary>
@@ -89,6 +33,21 @@ namespace PublicTransport.Services
         private readonly StreetRepository _streetRepository;
 
         /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.Stop" /> objects to <see cref="StopDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Stop, StopDto> _stopConverter;
+
+        /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.Zone" /> objects to <see cref="ZoneDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Zone, ZoneDto> _zoneConverter;
+
+        /// <summary>
+        ///     Used for converting <see cref="Domain.Entities.Street" /> objects to <see cref="StreetDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Street, StreetDto> _streetConverter;
+
+        /// <summary>
         ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
@@ -107,6 +66,9 @@ namespace PublicTransport.Services
             _stopRepository = new StopRepository(_db);
             _zoneRepository = new ZoneRepository(_db);
             _streetRepository = new StreetRepository(_db);
+            _stopConverter = new StopConverter();
+            _zoneConverter = new ZoneConverter();
+            _streetConverter = new StreetConverter();
         }
 
         /// <summary>
@@ -116,9 +78,17 @@ namespace PublicTransport.Services
         /// <returns>
         ///     <see cref="Stop"/> object successfully inserted into the database.
         /// </returns>
-        public Stop CreateStop(Stop stop)
+        public StopDto CreateStop(StopDto stop)
         {
-            return _stopRepository.Create(stop);
+            try
+            {
+                var result = _stopRepository.Create(_stopConverter.GetEntity(stop));
+                return _stopConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
@@ -131,9 +101,17 @@ namespace PublicTransport.Services
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
-        public Stop UpdateStop(Stop stop)
+        public StopDto UpdateStop(StopDto stop)
         {
-            return _stopRepository.Update(stop);
+            try
+            {
+                var result = _stopRepository.Update(_stopConverter.GetEntity(stop));
+                return _stopConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
@@ -143,9 +121,9 @@ namespace PublicTransport.Services
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
         /// </exception>
-        public void DeleteStop(Stop stop)
+        public void DeleteStop(StopDto stop)
         {
-            _stopRepository.Delete(stop);
+            _stopRepository.Delete(_stopConverter.GetEntity(stop));
         }
 
         /// <summary>
@@ -155,9 +133,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Stop"/> objects matching the filtering query.
         /// </returns>
-        public List<Stop> FilterStops(StopFilter filter)
+        public List<StopDto> FilterStops(StopFilter filter)
         {
-            return _stopRepository.FilterStops(filter);
+            return _stopRepository.FilterStops(filter)
+                .Select(_stopConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>
@@ -167,9 +147,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Zone"/> objects matching the filtering query.
         /// </returns>
-        public List<Zone> FilterZones(string name)
+        public List<ZoneDto> FilterZones(string name)
         {
-            return _zoneRepository.GetZonesContainingString(name);
+            return _zoneRepository.GetZonesContainingString(name)
+                .Select(_zoneConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>
@@ -179,9 +161,11 @@ namespace PublicTransport.Services
         /// <returns>
         ///     List of <see cref="Street"/> objects matching the filtering query.
         /// </returns>
-        public List<Street> FilterStreets(StreetFilter filter)
+        public List<StreetDto> FilterStreets(StreetFilter filter)
         {
-            return _streetRepository.FilterStreets(filter);
+            return _streetRepository.FilterStreets(filter)
+                .Select(_streetConverter.GetDto)
+                .ToList();
         }
 
         /// <summary>

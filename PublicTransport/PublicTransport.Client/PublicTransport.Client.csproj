@@ -125,7 +125,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataTransfer\AgencyReactiveFilter.cs" />
-    <Compile Include="DataTransfer\FareFilter.cs" />
+    <Compile Include="DataTransfer\FareReactiveFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
     <Compile Include="DataTransfer\RouteReactiveFilter.cs" />
     <Compile Include="DataTransfer\StopReactiveFilter.cs" />
@@ -146,12 +146,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Services.Fares\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Services.Login\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\Services.Routes\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Stops\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -470,6 +480,8 @@
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.AgencyDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.CalendarDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.CityDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.FareAttributeDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.FareRuleDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.RoleDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.RouteDto.datasource" />
     <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StopDto.datasource" />
@@ -519,6 +531,28 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Cities\CityService.wsdl" />
+    <None Include="Service References\Services.Fares\fares.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\FareService.wsdl" />
     <None Include="Service References\Services.Login\login.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -554,6 +588,25 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Routes\RouteService.wsdl" />
+    <None Include="Service References\Services.Stops\stops.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\StopService.wsdl" />
     <None Include="Service References\Services.Streets\streets.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -643,8 +696,10 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Services.Agencies\" />
     <WCFMetadataStorage Include="Service References\Services.Cities\" />
+    <WCFMetadataStorage Include="Service References\Services.Fares\" />
     <WCFMetadataStorage Include="Service References\Services.Login\" />
     <WCFMetadataStorage Include="Service References\Services.Routes\" />
+    <WCFMetadataStorage Include="Service References\Services.Stops\" />
     <WCFMetadataStorage Include="Service References\Services.Streets\" />
     <WCFMetadataStorage Include="Service References\Services.Users\" />
     <WCFMetadataStorage Include="Service References\Services.Zones\" />
@@ -729,6 +784,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Services.Routes\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Stops\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Stops\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Stops\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Fares\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Fares\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Fares\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

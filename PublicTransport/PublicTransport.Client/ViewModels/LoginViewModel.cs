@@ -4,7 +4,6 @@ using System.ServiceModel;
 using System.Windows.Controls;
 using PublicTransport.Client.Services.Login;
 using PublicTransport.Services.DataTransfer;
-using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 using Splat;
 

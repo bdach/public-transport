@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
@@ -10,12 +9,12 @@ namespace PublicTransport.Tests.Services
     public class FareAttributeRepositoryTest : RepositoryTest
     {
         private FareAttributeRepository _fareAttributeRepository;
-        private Mock<IFareFilter> _fareFilter;
+        private FareFilter _fareFilter;
 
         [SetUp]
         public void ServiceSetUp()
         {
-            _fareFilter = new Mock<IFareFilter>();
+            _fareFilter = new FareFilter();
             _fareAttributeRepository = new FareAttributeRepository(DbContext);
         }
 
@@ -23,11 +22,11 @@ namespace PublicTransport.Tests.Services
         public void FilterFares()
         {
             // given
-            _fareFilter.Setup(ff => ff.DestinationZoneNameFilter).Returns("");
-            _fareFilter.Setup(ff => ff.OriginZoneNameFilter).Returns("");
-            _fareFilter.Setup(ff => ff.RouteNameFilter).Returns("E-1");
+            _fareFilter.DestinationZoneNameFilter = "";
+            _fareFilter.OriginZoneNameFilter = "";
+            _fareFilter.RouteNameFilter = "E-1";
             // when
-            var fareAttributes = _fareAttributeRepository.FilterFares(_fareFilter.Object);
+            var fareAttributes = _fareAttributeRepository.FilterFares(_fareFilter);
             // then
             fareAttributes.Count.ShouldBeEquivalentTo(2);
         }

@@ -19,7 +19,7 @@ namespace PublicTransport.Services.DataTransfer
         }
 
         /// <summary>
-        /// Identification number of the city.
+        /// User ID.
         /// </summary>
         [DataMember]
         public int Id { get; set; }

@@ -76,6 +76,8 @@
     <Compile Include="DataTransfer\Converters\AgencyConverter.cs" />
     <Compile Include="DataTransfer\Converters\CalendarConverter.cs" />
     <Compile Include="DataTransfer\Converters\CityConverter.cs" />
+    <Compile Include="DataTransfer\Converters\FareAttributeConverter.cs" />
+    <Compile Include="DataTransfer\Converters\FareRuleConverter.cs" />
     <Compile Include="DataTransfer\Converters\IConverter.cs" />
     <Compile Include="DataTransfer\Converters\RouteConverter.cs" />
     <Compile Include="DataTransfer\Converters\StopConverter.cs" />
@@ -84,15 +86,17 @@
     <Compile Include="DataTransfer\Converters\TripConverter.cs" />
     <Compile Include="DataTransfer\Converters\UserCoverter.cs" />
     <Compile Include="DataTransfer\Converters\ZoneConverter.cs" />
+    <Compile Include="DataTransfer\FareAttributeDto.cs" />
+    <Compile Include="DataTransfer\FareRuleDto.cs" />
     <Compile Include="DataTransfer\Filters\AgencyFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IFareFilter.cs" />
+    <Compile Include="DataTransfer\Filters\FareFilter.cs" />
     <Compile Include="DataTransfer\Filters\StopFilter.cs" />
     <Compile Include="DataTransfer\Filters\RouteFilter.cs" />
     <Compile Include="DataTransfer\Filters\StopTimeFilter.cs" />
     <Compile Include="DataTransfer\Filters\StreetFilter.cs" />
     <Compile Include="DataTransfer\Filters\UserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
-    <Compile Include="DataTransfer\RoleConverter.cs" />
+    <Compile Include="DataTransfer\Converters\RoleConverter.cs" />
     <Compile Include="DataTransfer\RoleDto.cs" />
     <Compile Include="DataTransfer\RouteDto.cs" />
     <Compile Include="DataTransfer\StopDto.cs" />
@@ -106,7 +110,6 @@
     <Compile Include="Exceptions\InvalidCredentialsException.cs" />
     <Compile Include="Exceptions\ValidationFaultException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\ServiceBootstrapper.cs" />
     <Compile Include="Repositories\AgencyRepository.cs" />
     <Compile Include="Repositories\CalendarRepository.cs" />
     <Compile Include="Repositories\CityRepository.cs" />
@@ -114,8 +117,10 @@
     <Compile Include="Repositories\FareRuleRepository.cs" />
     <Compile Include="Services\Contracts\IAgencyService.cs" />
     <Compile Include="Services\Contracts\ICityService.cs" />
+    <Compile Include="Services\Contracts\IFareService.cs" />
     <Compile Include="Services\Contracts\ILoginService.cs" />
     <Compile Include="Services\Contracts\IRouteService.cs" />
+    <Compile Include="Services\Contracts\IStopService.cs" />
     <Compile Include="Services\Contracts\IStreetService.cs" />
     <Compile Include="Services\Contracts\IUserService.cs" />
     <Compile Include="Services\Contracts\IZoneService.cs" />

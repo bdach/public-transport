@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="RouteType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Tram" />
+      <xs:enumeration value="Subway" />
+      <xs:enumeration value="Rail" />
+      <xs:enumeration value="Bus" />
+      <xs:enumeration value="Ferry" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="RouteType" nillable="true" type="tns:RouteType" />
+  <xs:simpleType name="TransferCount">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="One" />
+      <xs:enumeration value="Two" />
+      <xs:enumeration value="Unlimited" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TransferCount" nillable="true" type="tns:TransferCount" />
+</xs:schema>

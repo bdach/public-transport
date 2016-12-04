@@ -10,7 +10,7 @@ namespace PublicTransport.Services.DataTransfer
     public class RoleDto
     {
         /// <summary>
-        /// Identification number of the city.
+        /// Role ID.
         /// </summary>
         [DataMember]
         public int Id { get; set; }

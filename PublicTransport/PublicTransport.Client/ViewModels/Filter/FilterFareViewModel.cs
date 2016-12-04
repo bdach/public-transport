@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Fares;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -26,14 +25,14 @@ namespace PublicTransport.Client.ViewModels.Filter
         private readonly IFareService _fareService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.FareReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private FareFilter _fareFilter;
+        private FareReactiveFilter _fareReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="FareAttribute" /> currently selected by the user.
+        ///     The <see cref="FareAttributeDto" /> currently selected by the user.
         /// </summary>
-        private FareAttribute _selectedFare;
+        private FareAttributeDto _selectedFare;
 
         /// <summary>
         ///     Constructor.
@@ -46,8 +45,8 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             HostScreen = screen;
             _fareService = fareService ?? Locator.Current.GetService<IFareService>();
-            _fareFilter = new FareFilter();
-            FareAttributes = new ReactiveList<FareAttribute>();
+            _fareReactiveFilter = new FareReactiveFilter();
+            FareAttributes = new ReactiveList<FareAttributeDto>();
 
             #endregion
 
@@ -55,7 +54,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Fare filtering command
 
-            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareService.FilterFares(FareFilter)));
+            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await _fareService.FilterFaresAsync(FareReactiveFilter.Convert()));
             FilterFares.Subscribe(result =>
             {
                 FareAttributes.Clear();
@@ -69,10 +68,10 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of filtered fares upon filter change
 
             this.WhenAnyValue(
-                    vm => vm.FareFilter.RouteNameFilter,
-                    vm => vm.FareFilter.OriginZoneNameFilter,
-                    vm => vm.FareFilter.DestinationZoneNameFilter)
-                .Where(_ => FareFilter.IsValid)
+                    vm => vm.FareReactiveFilter.RouteNameFilter,
+                    vm => vm.FareReactiveFilter.OriginZoneNameFilter,
+                    vm => vm.FareReactiveFilter.DestinationZoneNameFilter)
+                .Where(_ => FareReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterFares);
 
@@ -82,7 +81,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _fareService.DeleteFareRule(SelectedFare.FareRule));
+                await _fareService.DeleteFareRuleAsync(SelectedFare.FareRule);
                 //await Task.Run(() => _fareUnitOfWork.DeleteFareAttribute(SelectedFare)); // commented because of cascade delete
                 return Unit.Default;
             });
@@ -105,48 +104,40 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of fares upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && FareFilter.IsValid)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && FareReactiveFilter.IsValid)
                 .InvokeCommand(FilterFares);
-
-            #endregion
-
-            #region Disposing of context
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _fareService.Dispose());
 
             #endregion
         }
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="FareAttributeDto" /> currently selected by the user.
         /// </summary>
-        public FareAttribute SelectedFare
+        public FareAttributeDto SelectedFare
         {
             get { return _selectedFare; }
             set { this.RaiseAndSetIfChanged(ref _selectedFare, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.FareReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public FareFilter FareFilter
+        public FareReactiveFilter FareReactiveFilter
         {
-            get { return _fareFilter; }
-            set { this.RaiseAndSetIfChanged(ref _fareFilter, value); }
+            get { return _fareReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _fareReactiveFilter, value); }
         }
 
         /// <summary>
         ///     The list of <see cref="FareAttributes" /> objects currently displayed by the user.
         /// </summary>
-        public ReactiveList<FareAttribute> FareAttributes { get; protected set; }
+        public ReactiveList<FareAttributeDto> FareAttributes { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="FareAttribute" /> objects from the database, using the <see cref="FareFilter" /> object as a query
+        ///     Fetches <see cref="FareAttribute" /> objects from the database, using the <see cref="FareReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<FareAttribute>> FilterFares { get; protected set; }
+        public ReactiveCommand<FareAttributeDto[]> FilterFares { get; protected set; }
 
         /// <summary>
         ///     Opens a view responsible for adding a new <see cref="FareAttribute" /> and <see cref="FareRule"/> to the database.

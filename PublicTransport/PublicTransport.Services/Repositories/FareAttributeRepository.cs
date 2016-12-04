@@ -94,12 +94,12 @@ namespace PublicTransport.Services.Repositories
 
         /// <summary>
         ///     Selects all the <see cref="FareAttribute" /> objects that match all the criteria specified by the
-        ///     <see cref="IFareFilter" /> object. The returned name strings all contain the
+        ///     <see cref="FareFilter" /> object. The returned name strings all contain the
         ///     parameters supplied in the <see cref="filter" /> parameter.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>List of items satisfying the supplied query.</returns>
-        public List<FareAttribute> FilterFares(IFareFilter filter)
+        public List<FareAttribute> FilterFares(FareFilter filter)
         {
             return _db.FareAttributes.Include(fa => fa.FareRule.Route.Agency)
                 .Include(fa => fa.FareRule.Origin).Include(fa => fa.FareRule.Destination)

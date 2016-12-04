@@ -1,7 +1,6 @@
 ﻿using PublicTransport.Domain.Entities;
-using PublicTransport.Services.DataTransfer.Converters;
 
-namespace PublicTransport.Services.DataTransfer
+namespace PublicTransport.Services.DataTransfer.Converters
 {
     public class RoleConverter : IConverter<Role, RoleDto>
     {

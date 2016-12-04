@@ -1,7 +1,6 @@
 ﻿using System.Reactive;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 

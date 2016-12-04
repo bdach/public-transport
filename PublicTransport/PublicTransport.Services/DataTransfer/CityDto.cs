@@ -10,7 +10,7 @@ namespace PublicTransport.Services.DataTransfer
     {
         // TODO: See if this can be private (probably not)
         /// <summary>
-        /// Identification number of the city.
+        /// City ID.
         /// </summary>
         [DataMember]
         public int Id { get; set; }

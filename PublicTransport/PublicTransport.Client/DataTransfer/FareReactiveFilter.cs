@@ -6,7 +6,7 @@ namespace PublicTransport.Client.DataTransfer
     /// <summary>
     ///     Filtering object used in searching for <see cref="Domain.Entities.FareAttribute" /> objects.
     /// </summary>
-    public class FareFilter : ReactiveObject, IFareFilter, IReactiveFilter
+    public class FareReactiveFilter : ReactiveObject, IReactiveFilter
     {
         /// <summary>
         ///     Route name filter.
@@ -48,6 +48,16 @@ namespace PublicTransport.Client.DataTransfer
         {
             get { return _destinationZoneNameFilter; }
             set { this.RaiseAndSetIfChanged(ref _destinationZoneNameFilter, value); }
+        }
+
+        public FareFilter Convert()
+        {
+            return new FareFilter
+            {
+                RouteNameFilter = RouteNameFilter,
+                OriginZoneNameFilter = OriginZoneNameFilter,
+                DestinationZoneNameFilter = DestinationZoneNameFilter
+            };
         }
 
         /// <summary>

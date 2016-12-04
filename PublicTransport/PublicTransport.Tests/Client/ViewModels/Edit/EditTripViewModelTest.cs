@@ -8,7 +8,6 @@ using Moq;
 using NUnit.Framework;
 using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI.Testing;

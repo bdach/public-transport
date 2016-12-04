@@ -9,7 +9,7 @@ namespace PublicTransport.Services.DataTransfer
     public class AgencyDto
     {
         /// <summary>
-        /// Identification number of the city.
+        /// Agency ID.
         /// </summary>
         [DataMember]
         public int Id { get; set; }

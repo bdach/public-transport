@@ -1,5 +1,4 @@
-﻿using System;
-using PublicTransport.Domain.Entities;
+﻿using PublicTransport.Domain.Entities;
 
 namespace PublicTransport.Services.DataTransfer.Converters
 {

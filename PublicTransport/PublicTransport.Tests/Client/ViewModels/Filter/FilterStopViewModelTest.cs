@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Stops;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using ReactiveUI;
 
@@ -30,11 +29,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterStops()
         {
             // given
-            _stopService.Setup(s => s.FilterStops(It.IsAny<StopFilter>())).Returns(new List<Stop> { new Stop() });
+            _stopService.Setup(s => s.FilterStopsAsync(It.IsAny<StopFilter>())).ReturnsAsync(new[] { new StopDto() });
             // when
             _viewModel.FilterStops.ExecuteAsync().Wait();
             // then
-            _stopService.Verify(s => s.FilterStops(It.IsAny<StopFilter>()), Times.Once);
+            _stopService.Verify(s => s.FilterStopsAsync(It.IsAny<StopFilter>()), Times.Once);
             _viewModel.Stops.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -49,19 +48,19 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.StopReactiveFilter.ZoneNameFilter = "";
             _viewModel.StopReactiveFilter.ParentStationNameFilter = "";
             // then
-            _stopService.Verify(s => s.FilterStops(It.IsAny<StopFilter>()), Times.Never);
+            _stopService.Verify(s => s.FilterStopsAsync(It.IsAny<StopFilter>()), Times.Never);
         }
 
         [Test]
         public void DeleteStop()
         {
             // given
-            var stop = new Stop();
+            var stop = new StopDto();
             // when
             _viewModel.SelectedStop = stop;
             _viewModel.DeleteStop.ExecuteAsync().Wait();
             // then
-            _stopService.Verify(s => s.DeleteStop(stop), Times.Once);
+            _stopService.Verify(s => s.DeleteStopAsync(stop), Times.Once);
         }
 
         [Test]
@@ -69,7 +68,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedStop = new Stop();
+            _viewModel.SelectedStop = new StopDto();
             Router.Navigate
                 .Where(vm => vm is EditStopViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -87,7 +86,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedStop = new Stop();
+            _viewModel.SelectedStop = new StopDto();
             Router.Navigate
                 .Where(vm => vm is EditStopViewModel)
                 .Subscribe(_ => navigatedToEdit = true);

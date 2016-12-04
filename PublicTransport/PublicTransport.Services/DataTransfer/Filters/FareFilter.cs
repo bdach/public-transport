@@ -6,21 +6,21 @@ namespace PublicTransport.Services.DataTransfer.Filters
     ///     Data transfer object interface.
     ///     Used by the <see cref="FareAttributeRepository" /> to perform filtering.
     /// </summary>
-    public interface IFareFilter
+    public class FareFilter
     {
         /// <summary>
         ///     Contains the route name string filter parameter.
         /// </summary>
-        string RouteNameFilter { get; set; }
+        public string RouteNameFilter { get; set; }
 
         /// <summary>
         ///     Contains the origin zone name string filter parameter.
         /// </summary>
-        string OriginZoneNameFilter { get; set; }
+        public string OriginZoneNameFilter { get; set; }
 
         /// <summary>
         ///     Contains the destination zone name string filter parameter.
         /// </summary>
-        string DestinationZoneNameFilter { get; set; }
+        public string DestinationZoneNameFilter { get; set; }
     }
 }

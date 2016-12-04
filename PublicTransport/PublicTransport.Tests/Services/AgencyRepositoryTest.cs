@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;

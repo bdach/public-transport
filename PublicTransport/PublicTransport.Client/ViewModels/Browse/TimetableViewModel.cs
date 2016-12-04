@@ -26,12 +26,12 @@ namespace PublicTransport.Client.ViewModels.Browse
         private RouteDto _route;
 
         /// <summary>
-        ///     <see cref="Stop" /> object currently selected in the view.
+        ///     <see cref="StopDto" /> object currently selected in the view.
         /// </summary>
         private StopDto _selectedStop;
 
         /// <summary>
-        ///     <see cref="StopTime" /> object currently selected by the user.
+        ///     <see cref="StopTimeDto" /> object currently selected by the user.
         /// </summary>
         private StopTimeDto _selectedStopTime;
 
@@ -131,12 +131,12 @@ namespace PublicTransport.Client.ViewModels.Browse
         }
 
         /// <summary>
-        ///     Reactive list containing the filtered <see cref="Stop" /> objects.
+        ///     Reactive list containing the filtered <see cref="StopDto" /> objects.
         /// </summary>
         public ReactiveList<StopDto> Stops { get; protected set; }
 
         /// <summary>
-        ///     Reactive list containing the filtered <see cref="StopTime" /> objects.
+        ///     Reactive list containing the filtered <see cref="StopTimeDto" /> objects.
         /// </summary>
         public ReactiveList<StopTimeDto> StopTimes { get; protected set; }
 
@@ -175,7 +175,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         }
 
         /// <summary>
-        ///     Property exposing the currently selected <see cref="Stop" />.
+        ///     Property exposing the currently selected <see cref="StopDto" />.
         /// </summary>
         public StopDto SelectedStop
         {
@@ -184,7 +184,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         }
 
         /// <summary>
-        ///     Property exposing the currently selected <see cref="StopTime" />.
+        ///     Property exposing the currently selected <see cref="StopTimeDto" />.
         /// </summary>
         public StopTimeDto SelectedStopTime
         {
