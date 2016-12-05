@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.Views.Entities
@@ -7,14 +7,14 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for UserView.xaml
     /// </summary>
-    public partial class UserView : IViewFor<User>
+    public partial class UserView : IViewFor<UserDto>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(User), typeof(UserView), new PropertyMetadata(default(User)));
+            "ViewModel", typeof(UserDto), typeof(UserView), new PropertyMetadata(default(UserDto)));
 
-        public User ViewModel
+        public UserDto ViewModel
         {
-            get { return (User) GetValue(ViewModelProperty); }
+            get { return (UserDto) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
@@ -26,7 +26,7 @@ namespace PublicTransport.Client.Views.Entities
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (User) value; }
+            set { ViewModel = (UserDto) value; }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels
         private MenuItemViewModel _selectedOption;
 
         /// <summary>
-        ///     <see cref="Services.DataTransfer.UserInfo" /> object containing data about the currently logged in user.
+        ///     <see cref="UserInfo" /> object containing data about the currently logged in user.
         /// </summary>
         private UserInfo _userInfo;
 
@@ -70,7 +70,7 @@ namespace PublicTransport.Client.ViewModels
         }
 
         /// <summary>
-        ///     <see cref="Services.DataTransfer.UserInfo" /> object containing data about the currently logged in user.
+        ///     <see cref="UserInfo" /> object containing data about the currently logged in user.
         /// </summary>
         public UserInfo UserInfo
         {

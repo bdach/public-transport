@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="64d86fb3-371c-445c-b735-86ece1ae24d6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/cities" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="cities3.xsd" MetadataType="Schema" ID="66b98966-9e42-4b75-8024-fdede0b6dca9" SourceId="1" SourceUrl="http://localhost:8733/cities?xsd=xsd4" />
+    <MetadataFile FileName="CityService.wsdl" MetadataType="Wsdl" ID="269e15ea-ee22-46f4-849d-dd17725a460a" SourceId="1" SourceUrl="http://localhost:8733/cities" />
+    <MetadataFile FileName="cities.xsd" MetadataType="Schema" ID="c264a512-7726-4b0b-87be-862178711d9a" SourceId="1" SourceUrl="http://localhost:8733/cities?xsd=xsd0" />
+    <MetadataFile FileName="cities1.xsd" MetadataType="Schema" ID="ce359688-8873-4fa8-8f15-c45a397dff99" SourceId="1" SourceUrl="http://localhost:8733/cities?xsd=xsd1" />
+    <MetadataFile FileName="cities2.xsd" MetadataType="Schema" ID="4810597f-0913-42da-8dfe-56c4e664f109" SourceId="1" SourceUrl="http://localhost:8733/cities?xsd=xsd2" />
+    <MetadataFile FileName="cities31.xsd" MetadataType="Schema" ID="1d9dd36b-2aab-46db-ac20-b13dc54e3771" SourceId="1" SourceUrl="http://localhost:8733/cities?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

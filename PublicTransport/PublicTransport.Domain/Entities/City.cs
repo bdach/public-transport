@@ -10,7 +10,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the name of the city.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The city name is required.")]
         public string Name { get; set; }
     }
 }

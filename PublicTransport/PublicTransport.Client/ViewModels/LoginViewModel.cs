@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
+using System.ServiceModel;
 using System.Windows.Controls;
-using PublicTransport.Services;
+using PublicTransport.Client.Services.Login;
 using PublicTransport.Services.DataTransfer;
-using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 using Splat;
 
@@ -15,7 +14,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     Service used for logging into the application.
         /// </summary>
-        private ILoginService _loginService;
+        private readonly ILoginService _loginService;
 
         /// <summary>
         ///     Password box storing the password entered by the user.
@@ -48,8 +47,7 @@ namespace PublicTransport.Client.ViewModels
                 .Select(s => !string.IsNullOrWhiteSpace(s));
             SendLoginRequest = ReactiveCommand.CreateAsyncTask(canSendRequest, async _ =>
             {
-                var loginData =
-                    await Task.Run(() => _loginService.RequestLogin(new LoginData(Username, PasswordBox?.Password)));
+                var loginData = await _loginService.RequestLoginAsync(new LoginData(Username, PasswordBox?.Password));
                 Username = null;
                 if (PasswordBox != null) PasswordBox.Password = null;
                 return loginData;
@@ -57,15 +55,13 @@ namespace PublicTransport.Client.ViewModels
             SendLoginRequest.Subscribe(s =>
             {
                 UserInfo = s;
-                _loginService.Dispose();
-                _loginService = new LoginService();
             });
             SendLoginRequest.ThrownExceptions
-                .Where(ex => ex is InvalidCredentialsException)
+                .Where(ex => ex is FaultException)
                 .SelectMany(ex => UserError.Throw("Invalid username or password.", ex))
                 .Subscribe();
             SendLoginRequest.ThrownExceptions
-                .Where(ex => !(ex is InvalidCredentialsException))
+                .Where(ex => !(ex is FaultException))
                 .SelectMany(ex => UserError.Throw("Could not connect to database.", ex))
                 .Subscribe();
 

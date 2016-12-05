@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Stops;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -21,33 +20,33 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterStopViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
-        private readonly IStopUnitOfWork _stopUnitOfWork;
+        private readonly IStopService _stopService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.StopFilter" /> object used to send query data to the service layer.
+        ///     <see cref="StopReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private StopFilter _stopFilter;
+        private StopReactiveFilter _stopReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="StopDto" /> currently selected by the user.
         /// </summary>
-        private Stop _selectedStop;
+        private StopDto _selectedStop;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="stopUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterStopViewModel(IScreen screen, IStopUnitOfWork stopUnitOfWork = null)
+        /// <param name="stopService">Service used in the view model to access the database.</param>
+        public FilterStopViewModel(IScreen screen, IStopService stopService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _stopUnitOfWork = stopUnitOfWork ?? Locator.Current.GetService<IStopUnitOfWork>();
-            _stopFilter = new StopFilter();
-            Stops = new ReactiveList<Stop>();
+            _stopService = stopService ?? Locator.Current.GetService<IStopService>();
+            _stopReactiveFilter = new StopReactiveFilter();
+            Stops = new ReactiveList<StopDto>();
 
             #endregion
 
@@ -55,7 +54,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Stop filtering command
 
-            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _stopUnitOfWork.FilterStops(StopFilter)));
+            FilterStops = ReactiveCommand.CreateAsyncTask(async _ => await _stopService.FilterStopsAsync(StopReactiveFilter.Convert()));
             FilterStops.Subscribe(result =>
             {
                 Stops.Clear();
@@ -69,12 +68,12 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of filtered stops upon filter change
 
             this.WhenAnyValue(
-                    vm => vm.StopFilter.StopNameFilter,
-                    vm => vm.StopFilter.CityNameFilter,
-                    vm => vm.StopFilter.StreetNameFilter,
-                    vm => vm.StopFilter.ZoneNameFilter,
-                    vm => vm.StopFilter.ParentStationNameFilter)
-                .Where(_ => StopFilter.IsValid)
+                    vm => vm.StopReactiveFilter.StopNameFilter,
+                    vm => vm.StopReactiveFilter.CityNameFilter,
+                    vm => vm.StopReactiveFilter.StreetNameFilter,
+                    vm => vm.StopReactiveFilter.ZoneNameFilter,
+                    vm => vm.StopReactiveFilter.ParentStationNameFilter)
+                .Where(_ => StopReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterStops);
 
@@ -84,7 +83,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteStop = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _stopUnitOfWork.DeleteStop(SelectedStop));
+                await _stopService.DeleteStopAsync(SelectedStop);
                 return Unit.Default;
             });
             DeleteStop.Subscribe(_ => SelectedStop = null);
@@ -97,57 +96,49 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit stop command
 
             AddStop = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopService)));
             EditStop = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopUnitOfWork, SelectedStop)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditStopViewModel(HostScreen, _stopService, SelectedStop)));
 
             #endregion
 
             #region Updating the list of stops upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && StopFilter.IsValid)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && StopReactiveFilter.IsValid)
                 .InvokeCommand(FilterStops);
-
-            #endregion
-
-            #region Disposing of contexts
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _stopUnitOfWork.Dispose());
 
             #endregion
         }
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="StopDto" /> currently selected by the user.
         /// </summary>
-        public Stop SelectedStop
+        public StopDto SelectedStop
         {
             get { return _selectedStop; }
             set { this.RaiseAndSetIfChanged(ref _selectedStop, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.StopFilter" /> object used to send query data to the service layer.
+        ///     <see cref="StopReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public StopFilter StopFilter
+        public StopReactiveFilter StopReactiveFilter
         {
-            get { return _stopFilter; }
-            set { this.RaiseAndSetIfChanged(ref _stopFilter, value); }
+            get { return _stopReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _stopReactiveFilter, value); }
         }
 
         /// <summary>
-        ///     The list of <see cref="Stop" /> objects currently displayed by the user.
+        ///     The list of <see cref="StopDto" /> objects currently displayed by the user.
         /// </summary>
-        public ReactiveList<Stop> Stops { get; protected set; }
+        public ReactiveList<StopDto> Stops { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Stop" /> objects from the database, using the <see cref="StopFilter" /> object as a query
+        ///     Fetches <see cref="StopDto" /> objects from the database, using the <see cref="StopReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<Stop>> FilterStops { get; protected set; }
+        public ReactiveCommand<StopDto[]> FilterStops { get; protected set; }
 
         /// <summary>
         ///     Opens a view responsible for adding a new <see cref="Stop" /> to the database.

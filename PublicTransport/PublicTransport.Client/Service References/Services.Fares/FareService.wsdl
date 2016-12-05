@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="FareService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" />
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" />
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" />
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8733/fares?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IFareService_CreateFareAttribute_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateFareAttribute" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_CreateFareAttribute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateFareAttributeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_CreateFareAttribute_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q1:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_UpdateFareAttribute_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateFareAttribute" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_UpdateFareAttribute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateFareAttributeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_UpdateFareAttribute_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_DeleteFareAttribute_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFareAttribute" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_DeleteFareAttribute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFareAttributeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_CreateFareRule_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateFareRule" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_CreateFareRule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateFareRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_CreateFareRule_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_UpdateFareRule_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateFareRule" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_UpdateFareRule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateFareRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_UpdateFareRule_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q4:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_DeleteFareRule_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFareRule" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_DeleteFareRule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFareRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_FilterFares_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterFares" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_FilterFares_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterFaresResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_FilterRoutes_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterRoutes" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_FilterRoutes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterRoutesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_FilterZones_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterZones" />
+  </wsdl:message>
+  <wsdl:message name="IFareService_FilterZones_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterZonesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IFareService">
+    <wsdl:operation name="CreateFareAttribute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/CreateFareAttribute" message="tns:IFareService_CreateFareAttribute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/CreateFareAttributeResponse" message="tns:IFareService_CreateFareAttribute_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IFareService/CreateFareAttributeValidationFaultFault" name="ValidationFaultFault" message="tns:IFareService_CreateFareAttribute_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFareAttribute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/UpdateFareAttribute" message="tns:IFareService_UpdateFareAttribute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/UpdateFareAttributeResponse" message="tns:IFareService_UpdateFareAttribute_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IFareService/UpdateFareAttributeValidationFaultFault" name="ValidationFaultFault" message="tns:IFareService_UpdateFareAttribute_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFareAttribute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/DeleteFareAttribute" message="tns:IFareService_DeleteFareAttribute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/DeleteFareAttributeResponse" message="tns:IFareService_DeleteFareAttribute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateFareRule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/CreateFareRule" message="tns:IFareService_CreateFareRule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/CreateFareRuleResponse" message="tns:IFareService_CreateFareRule_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IFareService/CreateFareRuleValidationFaultFault" name="ValidationFaultFault" message="tns:IFareService_CreateFareRule_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFareRule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/UpdateFareRule" message="tns:IFareService_UpdateFareRule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/UpdateFareRuleResponse" message="tns:IFareService_UpdateFareRule_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IFareService/UpdateFareRuleValidationFaultFault" name="ValidationFaultFault" message="tns:IFareService_UpdateFareRule_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFareRule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/DeleteFareRule" message="tns:IFareService_DeleteFareRule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/DeleteFareRuleResponse" message="tns:IFareService_DeleteFareRule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterFares">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/FilterFares" message="tns:IFareService_FilterFares_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/FilterFaresResponse" message="tns:IFareService_FilterFares_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterRoutes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/FilterRoutes" message="tns:IFareService_FilterRoutes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/FilterRoutesResponse" message="tns:IFareService_FilterRoutes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterZones">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFareService/FilterZones" message="tns:IFareService_FilterZones_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFareService/FilterZonesResponse" message="tns:IFareService_FilterZones_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IFareService" type="tns:IFareService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateFareAttribute">
+      <soap:operation soapAction="http://tempuri.org/IFareService/CreateFareAttribute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFareAttribute">
+      <soap:operation soapAction="http://tempuri.org/IFareService/UpdateFareAttribute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFareAttribute">
+      <soap:operation soapAction="http://tempuri.org/IFareService/DeleteFareAttribute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateFareRule">
+      <soap:operation soapAction="http://tempuri.org/IFareService/CreateFareRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFareRule">
+      <soap:operation soapAction="http://tempuri.org/IFareService/UpdateFareRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFareRule">
+      <soap:operation soapAction="http://tempuri.org/IFareService/DeleteFareRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterFares">
+      <soap:operation soapAction="http://tempuri.org/IFareService/FilterFares" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterRoutes">
+      <soap:operation soapAction="http://tempuri.org/IFareService/FilterRoutes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterZones">
+      <soap:operation soapAction="http://tempuri.org/IFareService/FilterZones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FareService">
+    <wsdl:port name="BasicHttpBinding_IFareService" binding="tns:BasicHttpBinding_IFareService">
+      <soap:address location="http://localhost:8733/Fares" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

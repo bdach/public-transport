@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Client.Services.Cities;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -15,31 +18,37 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditCityViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     The <see cref="Domain.Entities.City" /> object being edited in the window.
+        ///     The <see cref="CityDto" /> object being edited in the window.
         /// </summary>
-        private City _city;
+        private CityDto _city;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="cityUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="cityService">Service exposing methods necessary to manage data.</param>
         /// <param name="city">City to be edited. If a city is to be added, this parameter is null (can be left out).</param>
-        public EditCityViewModel(IScreen screen, ICityUnitOfWork cityUnitOfWork, City city = null)
+        public EditCityViewModel(IScreen screen, ICityService cityService, CityDto city = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            var serviceMethod = city == null ? new Func<City, City>(cityUnitOfWork.CreateCity) : cityUnitOfWork.UpdateCity;
-            _city = city ?? new City();
+            var serviceMethod = city == null ? new Func<CityDto, Task<CityDto>>(cityService.CreateCityAsync) : cityService.UpdateCityAsync;
+            _city = city ?? new CityDto();
 
             #endregion
 
             #region SaveCity command
 
-            SaveCity = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(City)); });
-            SaveCity.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited city cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveCity = ReactiveCommand.CreateAsyncTask(async _ => await serviceMethod(City));
+            SaveCity.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
+            SaveCity.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 
@@ -54,16 +63,16 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Property for the <see cref="Domain.Entities.City" /> being edited in the window.
         /// </summary>
-        public City City
+        public CityDto City
         {
             get { return _city; }
             set { this.RaiseAndSetIfChanged(ref _city, value); }
         }
 
         /// <summary>
-        ///     Command adding the <see cref="Domain.Entities.City" /> to the database.
+        ///     Command adding the <see cref="CityDto" /> to the database.
         /// </summary>
-        public ReactiveCommand<City> SaveCity { get; }
+        public ReactiveCommand<CityDto> SaveCity { get; }
 
         /// <summary>
         ///     Command closing the current detail view model.

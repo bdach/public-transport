@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -18,59 +20,65 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
-        private readonly IAgencyUnitOfWork _agencyUnitOfWork;
+        private readonly IAgencyService _agencyService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
+        ///     The <see cref="AgencyDto" /> object being edited in the window.
         /// </summary>
-        private Agency _agency;
+        private AgencyDto _agency;
 
         /// <summary>
-        ///     The <see cref="Street" /> currently selected by the user.
+        ///     The <see cref="StreetDto" /> currently selected by the user.
         /// </summary>
-        private Street _selectedStreet;
+        private StreetDto _selectedStreet;
 
         /// <summary>
         ///     Filter used to make queries about <see cref="Street" /> objects.
         /// </summary>
-        private StreetFilter _streetFilter;
+        private StreetReactiveFilter _streetReactiveFilter;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="agencyService">Service exposing methods necessary to manage data.</param>
         /// <param name="agency">Agency to be edited. If an agency is to be added, this parameter should be left null.</param>
-        public EditAgencyViewModel(IScreen screen, IAgencyUnitOfWork agencyUnitOfWork, Agency agency = null)
+        public EditAgencyViewModel(IScreen screen, IAgencyService agencyService, AgencyDto agency = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            StreetSuggestions = new ReactiveList<Street>();
-            _agencyUnitOfWork = agencyUnitOfWork;
-            var serviceMethod = agency == null ? new Func<Agency, Agency>(_agencyUnitOfWork.CreateAgency) : _agencyUnitOfWork.UpdateAgency;
-            _agency = agency ?? new Agency();
+            StreetSuggestions = new ReactiveList<StreetDto>();
+            _agencyService = agencyService;
+            var serviceMethod = agency == null ? new Func<AgencyDto, Task<AgencyDto>>(_agencyService.CreateAgencyAsync) : _agencyService.UpdateAgencyAsync;
+            _agency = agency ?? new AgencyDto();
             _selectedStreet = _agency.Street;
-            _streetFilter = new StreetFilter { StreetNameFilter = _agency.Street?.Name ?? "" };
+            _streetReactiveFilter = new StreetReactiveFilter { StreetNameFilter = _agency.Street?.Name ?? "" };
 
             #endregion
 
             var streetSelected = this.WhenAnyValue(vm => vm.SelectedStreet).Select(s => s != null);
-            streetSelected.Where(b => b).Subscribe(_ => Agency.StreetId = SelectedStreet.Id);
+            streetSelected.Where(b => b).Subscribe(_ => Agency.Street = SelectedStreet);
 
             #region SaveAgency command
 
-            SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ => await Task.Run(() => serviceMethod(Agency)));
-            SaveAgency.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited agency cannot be saved to the database. Please check the required fields and try again later..", ex));
+            SaveAgency = ReactiveCommand.CreateAsyncTask(streetSelected, async _ => await serviceMethod(Agency));
+            SaveAgency.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
+            SaveAgency.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 
             #region UpdateSuggestions command
 
-            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyUnitOfWork.FilterStreets(StreetFilter)));
+            UpdateSuggestions = ReactiveCommand.CreateAsyncTask(async _ => await _agencyService.FilterStreetsAsync(StreetReactiveFilter.Convert()));
             UpdateSuggestions.Subscribe(results =>
             {
                 StreetSuggestions.Clear();
@@ -83,8 +91,8 @@ namespace PublicTransport.Client.ViewModels.Edit
 
             #region Querying DB for suggestions
 
-            this.WhenAnyValue(vm => vm.StreetFilter.StreetNameFilter)
-                .Where(s => (s != SelectedStreet?.Name) && StreetFilter.IsValid)
+            this.WhenAnyValue(vm => vm.StreetReactiveFilter.StreetNameFilter)
+                .Where(s => (s != SelectedStreet?.Name) && StreetReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.UpdateSuggestions);
 
@@ -99,19 +107,19 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Street" />s based on user input.
+        ///     List containing the suggested <see cref="StreetDto" />s based on user input.
         /// </summary>
-        public ReactiveList<Street> StreetSuggestions { get; protected set; }
+        public ReactiveList<StreetDto> StreetSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for updating the street suggestions.
         /// </summary>
-        public ReactiveCommand<List<Street>> UpdateSuggestions { get; protected set; }
+        public ReactiveCommand<StreetDto[]> UpdateSuggestions { get; protected set; }
 
         /// <summary>
         ///     Command responsible for saving the currently edited <see cref="PublicTransport.Domain.Entities.Agency" /> object.
         /// </summary>
-        public ReactiveCommand<Agency> SaveAgency { get; protected set; }
+        public ReactiveCommand<AgencyDto> SaveAgency { get; protected set; }
 
         /// <summary>
         ///     Command responsible for closing the window.
@@ -121,7 +129,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
         /// </summary>
-        public Agency Agency
+        public AgencyDto Agency
         {
             get { return _agency; }
             set { this.RaiseAndSetIfChanged(ref _agency, value); }
@@ -130,7 +138,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     The <see cref="Street" /> currently selected by the user.
         /// </summary>
-        public Street SelectedStreet
+        public StreetDto SelectedStreet
         {
             get { return _selectedStreet; }
             set { this.RaiseAndSetIfChanged(ref _selectedStreet, value); }
@@ -139,10 +147,10 @@ namespace PublicTransport.Client.ViewModels.Edit
         /// <summary>
         ///     Filter used to make queries about <see cref="Street" /> objects.
         /// </summary>
-        public StreetFilter StreetFilter
+        public StreetReactiveFilter StreetReactiveFilter
         {
-            get { return _streetFilter; }
-            set { this.RaiseAndSetIfChanged(ref _streetFilter, value); }
+            get { return _streetReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _streetReactiveFilter, value); }
         }
 
         /// <summary>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="cc2026b9-0c9e-4553-a499-a38c14c3ddde" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/fares" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="fares.xsd" MetadataType="Schema" ID="51cbe571-cd51-4543-89dc-719c40465efe" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd0" />
+    <MetadataFile FileName="fares1.xsd" MetadataType="Schema" ID="26fe671f-9346-41ff-8b2d-5604714b2b2b" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd6" />
+    <MetadataFile FileName="fares2.xsd" MetadataType="Schema" ID="e118c997-4116-4f6c-94ad-b63fbd118932" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd3" />
+    <MetadataFile FileName="FareService.wsdl" MetadataType="Wsdl" ID="ebb9d8ec-9dc6-400f-ae0f-59bbda5a1eba" SourceId="1" SourceUrl="http://localhost:8733/fares" />
+    <MetadataFile FileName="fares3.xsd" MetadataType="Schema" ID="ab24242d-5ec5-486b-a85c-624ffa8b2088" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd4" />
+    <MetadataFile FileName="fares4.xsd" MetadataType="Schema" ID="4376bb18-4fb3-400c-979c-0220c8efa015" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd1" />
+    <MetadataFile FileName="fares5.xsd" MetadataType="Schema" ID="be6f102f-bd39-4395-8b9a-3dc20496b790" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd5" />
+    <MetadataFile FileName="fares6.xsd" MetadataType="Schema" ID="433f6141-93c0-443b-a0f7-760077ab7a8b" SourceId="1" SourceUrl="http://localhost:8733/fares?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

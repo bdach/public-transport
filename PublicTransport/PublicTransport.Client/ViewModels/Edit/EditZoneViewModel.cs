@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Client.Services.Zones;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Edit
@@ -15,31 +18,37 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     The <see cref="Zone" /> object being edited in the window.
+        ///     The <see cref="ZoneDto" /> object being edited in the window.
         /// </summary>
-        private Zone _zone;
+        private ZoneDto _zone;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">The screen the view model should appear on.</param>
-        /// <param name="zoneUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
+        /// <param name="zoneService">Service exposing methods necessary to manage data.</param>
         /// <param name="zone">Zone to be edited. If a zone is to be added, this parameter is null (can be left out).</param>
-        public EditZoneViewModel(IScreen screen, IZoneUnitOfWork zoneUnitOfWork, Zone zone = null)
+        public EditZoneViewModel(IScreen screen, IZoneService zoneService, ZoneDto zone = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            var serviceMethod = zone == null ? new Func<Zone, Zone>(zoneUnitOfWork.CreateZone) : zoneUnitOfWork.UpdateZone;
-            _zone = zone ?? new Zone();
+            var serviceMethod = zone == null ? new Func<ZoneDto, Task<ZoneDto>>(zoneService.CreateZoneAsync) : zoneService.UpdateZoneAsync;
+            _zone = zone ?? new ZoneDto();
 
             #endregion
 
             #region SaveZone command
 
-            SaveZone = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => serviceMethod(Zone)); });
-            SaveZone.ThrownExceptions.Subscribe(ex =>
-                UserError.Throw("The currently edited zone cannot be saved to the database. Please check the required fields and try again later.", ex));
+            SaveZone = ReactiveCommand.CreateAsyncTask(async _ => await serviceMethod(Zone));
+            SaveZone.ThrownExceptions
+                .Where(ex => !(ex is FaultException<ValidationFault>))
+                .Subscribe(ex =>
+                    UserError.Throw("Cannot connect to the server. Please try again later.", ex));
+            SaveZone.ThrownExceptions
+                .Where(ex => ex is FaultException<ValidationFault>)
+                .Select(ex => ex as FaultException<ValidationFault>)
+                .Subscribe(ex => UserError.Throw(string.Join("\n", ex.Detail.Errors), ex));
 
             #endregion
 
@@ -52,18 +61,18 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Property for the <see cref="Domain.Entities.Zone" /> being edited in the window.
+        ///     Property for the <see cref="ZoneDto" /> being edited in the window.
         /// </summary>
-        public Zone Zone
+        public ZoneDto Zone
         {
             get { return _zone; }
             set { this.RaiseAndSetIfChanged(ref _zone, value); }
         }
 
         /// <summary>
-        ///     Command adding the <see cref="Zone" /> to the database.
+        ///     Command adding the <see cref="ZoneDto" /> to the database.
         /// </summary>
-        public ReactiveCommand<Zone> SaveZone { get; }
+        public ReactiveCommand<ZoneDto> SaveZone { get; }
 
         /// <summary>
         ///     Command closing the current detail view model.

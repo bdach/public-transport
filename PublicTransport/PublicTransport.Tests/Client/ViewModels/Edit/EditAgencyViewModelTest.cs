@@ -3,10 +3,10 @@ using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
@@ -14,48 +14,48 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     [TestFixture]
     public class EditAgencyViewModelTest : RoutableChildViewModelTest
     {
-        private Mock<IAgencyUnitOfWork> _agencyUnitOfWork;
+        private Mock<IAgencyService> _agencyService;
         private EditAgencyViewModel _viewModel;
-        private Agency _agency;
+        private AgencyDto _agency;
 
         [SetUp]
         public void SetUp()
         {
-            _agencyUnitOfWork = new Mock<IAgencyUnitOfWork>();
-            _agency = new Agency();
+            _agencyService = new Mock<IAgencyService>();
+            _agency = new AgencyDto();
         }
 
         [Test]
         public void SaveAgency_Created()
         {
             // given
-            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object);
+            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object);
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyUnitOfWork.Verify(a => a.CreateAgency(It.IsAny<Agency>()), Times.Once);
+            _agencyService.Verify(a => a.CreateAgencyAsync(It.IsAny<AgencyDto>()), Times.Once);
         }
 
         [Test]
         public void SaveAgency_Updated()
         {
             // given
-            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object, _agency);
+            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
             // when
             _viewModel.SaveAgency.ExecuteAsyncTask().Wait();
             // then
-            _agencyUnitOfWork.Verify(a => a.UpdateAgency(_agency), Times.Once);
+            _agencyService.Verify(a => a.UpdateAgencyAsync(_agency), Times.Once);
         }
 
         [Test]
         public void UpdateSuggestions_NotUpdatedIfEmpty()
         {
             // given
-            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object, _agency);
+            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
             // when
-            _viewModel.StreetFilter.StreetNameFilter = "";
+            _viewModel.StreetReactiveFilter.StreetNameFilter = "";
             // then
-            _agencyUnitOfWork.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+            _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         //[Test]
@@ -65,14 +65,14 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             {
                 // given
                 s.AdvanceByMs(100);
-                _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object, _agency);
+                _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
                 // when
-                _viewModel.StreetFilter.StreetNameFilter = "hello";
+                _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 // then
                 s.AdvanceByMs(250);
-                _agencyUnitOfWork.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+                _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _agencyUnitOfWork.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Once);
+                _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Once);
             });
         }
 
@@ -83,13 +83,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             {
                 // given
                 s.AdvanceByMs(100);
-                _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object, _agency);
-                _viewModel.SelectedStreet = new Street {Name = "hello"};
+                _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
+                _viewModel.SelectedStreet = new StreetDto { Name = "hello" };
                 // when
-                _viewModel.StreetFilter.StreetNameFilter = "hello";
+                _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 s.AdvanceByMs(500);
                 // then
-                _agencyUnitOfWork.Verify(a => a.FilterStreets(It.IsAny<IStreetFilter>()), Times.Never);
+                _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
             });
         }
 
@@ -98,7 +98,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         {
             // given
             var navigatedBack = false;
-            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyUnitOfWork.Object, _agency);
+            _viewModel = new EditAgencyViewModel(Screen.Object, _agencyService.Object, _agency);
             Router.NavigateBack.Subscribe(_ => navigatedBack = true);
             // when
             _viewModel.Close.Execute(null);

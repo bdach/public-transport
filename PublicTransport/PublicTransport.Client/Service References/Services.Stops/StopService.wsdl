@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="StopService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8733/stops?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8733/stops?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" />
+      <xsd:import schemaLocation="http://localhost:8733/stops?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8733/stops?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" />
+      <xsd:import schemaLocation="http://localhost:8733/stops?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8733/stops?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IStopService_CreateStop_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateStop" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_CreateStop_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateStopResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_CreateStop_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q1:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_UpdateStop_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateStop" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_UpdateStop_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateStopResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_UpdateStop_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_DeleteStop_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteStop" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_DeleteStop_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteStopResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_FilterStops_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterStops" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_FilterStops_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterStopsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_FilterZones_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterZones" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_FilterZones_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterZonesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_FilterStreets_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterStreets" />
+  </wsdl:message>
+  <wsdl:message name="IStopService_FilterStreets_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterStreetsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IStopService">
+    <wsdl:operation name="CreateStop">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStopService/CreateStop" message="tns:IStopService_CreateStop_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStopService/CreateStopResponse" message="tns:IStopService_CreateStop_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IStopService/CreateStopValidationFaultFault" name="ValidationFaultFault" message="tns:IStopService_CreateStop_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateStop">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStopService/UpdateStop" message="tns:IStopService_UpdateStop_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStopService/UpdateStopResponse" message="tns:IStopService_UpdateStop_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IStopService/UpdateStopValidationFaultFault" name="ValidationFaultFault" message="tns:IStopService_UpdateStop_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteStop">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStopService/DeleteStop" message="tns:IStopService_DeleteStop_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStopService/DeleteStopResponse" message="tns:IStopService_DeleteStop_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterStops">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStopService/FilterStops" message="tns:IStopService_FilterStops_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStopService/FilterStopsResponse" message="tns:IStopService_FilterStops_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterZones">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStopService/FilterZones" message="tns:IStopService_FilterZones_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStopService/FilterZonesResponse" message="tns:IStopService_FilterZones_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterStreets">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStopService/FilterStreets" message="tns:IStopService_FilterStreets_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStopService/FilterStreetsResponse" message="tns:IStopService_FilterStreets_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IStopService" type="tns:IStopService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateStop">
+      <soap:operation soapAction="http://tempuri.org/IStopService/CreateStop" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateStop">
+      <soap:operation soapAction="http://tempuri.org/IStopService/UpdateStop" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteStop">
+      <soap:operation soapAction="http://tempuri.org/IStopService/DeleteStop" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterStops">
+      <soap:operation soapAction="http://tempuri.org/IStopService/FilterStops" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterZones">
+      <soap:operation soapAction="http://tempuri.org/IStopService/FilterZones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterStreets">
+      <soap:operation soapAction="http://tempuri.org/IStopService/FilterStreets" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StopService">
+    <wsdl:port name="BasicHttpBinding_IStopService" binding="tns:BasicHttpBinding_IStopService">
+      <soap:address location="http://localhost:8733/stops" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -16,9 +16,9 @@ namespace PublicTransport.Client.Views.Filter
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.FareAttributes, v => v.FaresListView.ItemsSource);
-            this.Bind(ViewModel, vm => vm.FareFilter.RouteNameFilter, v => v.RouteNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.FareFilter.OriginZoneNameFilter, v => v.OriginZoneNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.FareFilter.DestinationZoneNameFilter, v => v.DestinationZoneNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.FareReactiveFilter.RouteNameFilter, v => v.RouteNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.FareReactiveFilter.OriginZoneNameFilter, v => v.OriginZoneNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.FareReactiveFilter.DestinationZoneNameFilter, v => v.DestinationZoneNameFilterTextBox.Text);
             this.Bind(ViewModel, vm => vm.SelectedFare, v => v.FaresListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.AddFare, v => v.AddFareButton);
             this.BindCommand(ViewModel, vm => vm.EditFare, v => v.EditFareButton);

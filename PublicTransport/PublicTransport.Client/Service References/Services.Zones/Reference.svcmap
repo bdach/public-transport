@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="685a04cc-771f-487b-810e-6a66faa86790" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/zones" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="zones.xsd" MetadataType="Schema" ID="8987d129-6f55-42b2-8c7d-11e34b462434" SourceId="1" SourceUrl="http://localhost:8733/zones?xsd=xsd0" />
+    <MetadataFile FileName="zones1.xsd" MetadataType="Schema" ID="134e851b-3d42-4425-ab64-2869c8d94bcd" SourceId="1" SourceUrl="http://localhost:8733/zones?xsd=xsd2" />
+    <MetadataFile FileName="zones2.xsd" MetadataType="Schema" ID="bc1edde5-e9d6-4337-8753-856b8d6aabcf" SourceId="1" SourceUrl="http://localhost:8733/zones?xsd=xsd4" />
+    <MetadataFile FileName="zones3.xsd" MetadataType="Schema" ID="17ea3c21-0195-4b85-8567-aa67c41acd82" SourceId="1" SourceUrl="http://localhost:8733/zones?xsd=xsd1" />
+    <MetadataFile FileName="zones4.xsd" MetadataType="Schema" ID="61035cf0-17fc-4d9e-9513-b4f2479391d0" SourceId="1" SourceUrl="http://localhost:8733/zones?xsd=xsd3" />
+    <MetadataFile FileName="ZoneService.wsdl" MetadataType="Wsdl" ID="c85c1f2e-3b13-41bd-aeee-662fbce4c962" SourceId="1" SourceUrl="http://localhost:8733/zones" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

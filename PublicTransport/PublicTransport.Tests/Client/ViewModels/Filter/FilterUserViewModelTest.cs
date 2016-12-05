@@ -1,16 +1,15 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using PublicTransport.Client.DataTransfer;
+using PublicTransport.Client.Services.Users;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Domain.Enums;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
@@ -18,25 +17,25 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterUserViewModelTest : RoutableViewModelTest
     {
-        private Mock<IUserUnitOfWork> _userUnitOfWork;
+        private Mock<IUserService> _userService;
         private FilterUserViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _userUnitOfWork = new Mock<IUserUnitOfWork>();
-            _viewModel = new FilterUserViewModel(Screen.Object, _userUnitOfWork.Object);
+            _userService = new Mock<IUserService>();
+            _viewModel = new FilterUserViewModel(Screen.Object, _userService.Object);
         }
 
         [Test]
         public void FilterUsers()
         {
             // given
-            _userUnitOfWork.Setup(u => u.FilterUsers(It.IsAny<IUserFilter>())).Returns(new List<User> { new User() });
+            _userService.Setup(u => u.FilterUsersAsync(It.IsAny<UserFilter>())).ReturnsAsync(new[] { new UserDto() });
             // when
             _viewModel.FilterUsers.ExecuteAsync().Wait();
             // then
-            _userUnitOfWork.Verify(u => u.FilterUsers(_viewModel.UserFilter), Times.Once);
+            _userService.Verify(u => u.FilterUsersAsync(It.IsAny<UserFilter>()), Times.Once);
             _viewModel.Users.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -45,22 +44,22 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             // when
-            _viewModel.UserFilter.UserNameFilter = "";
-            _viewModel.UserFilter.RoleTypeFilter = null;
+            _viewModel.UserReactiveFilter.UserNameFilter = "";
+            _viewModel.UserReactiveFilter.RoleTypeFilter = null;
             // then
-            _userUnitOfWork.Verify(u => u.FilterUsers(It.IsAny<IUserFilter>()), Times.Never);
+            _userService.Verify(u => u.FilterUsersAsync(It.IsAny<UserFilter>()), Times.Never);
         }
 
         [Test]
         public void DeleteUser()
         {
             // given
-            var user = new User();
+            var user = new UserDto();
             // when
             _viewModel.SelectedUser = user;
             _viewModel.DeleteUser.ExecuteAsync().Wait();
             // then
-            _userUnitOfWork.Verify(u => u.DeleteUser(user), Times.Once);
+            _userService.Verify(u => u.DeleteUserAsync(user), Times.Once);
         }
 
         [Test]
@@ -79,7 +78,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedUser = new User();
+            _viewModel.SelectedUser = new UserDto();
             Router.Navigate
                 .Where(vm => vm is EditUserViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -97,7 +96,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedUser = new User();
+            _viewModel.SelectedUser = new UserDto();
             Router.Navigate
                 .Where(vm => vm is EditUserViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -114,11 +113,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void ClearRoleType()
         {
             // given
-            _viewModel.UserFilter = new UserFilter { RoleTypeFilter = RoleType.Administrator };
+            _viewModel.UserReactiveFilter = new UserReactiveFilter { RoleTypeFilter = RoleType.Administrator };
             // when
             _viewModel.ClearRoleTypeChoice.Execute(null);
             // then
-            _viewModel.UserFilter.RoleTypeFilter.Should().BeNull();
+            _viewModel.UserReactiveFilter.RoleTypeFilter.Should().BeNull();
         }
     }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="StopDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsStation" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParentStation" nillable="true" type="tns:StopDto" />
+      <xs:element minOccurs="0" name="Street" nillable="true" type="tns:StreetDto" />
+      <xs:element minOccurs="0" name="Zone" nillable="true" type="tns:ZoneDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StopDto" nillable="true" type="tns:StopDto" />
+  <xs:complexType name="StreetDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="City" nillable="true" type="tns:CityDto" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StreetDto" nillable="true" type="tns:StreetDto" />
+  <xs:complexType name="CityDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CityDto" nillable="true" type="tns:CityDto" />
+  <xs:complexType name="ZoneDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ZoneDto" nillable="true" type="tns:ZoneDto" />
+  <xs:complexType name="ArrayOfStopDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StopDto" nillable="true" type="tns:StopDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStopDto" nillable="true" type="tns:ArrayOfStopDto" />
+  <xs:complexType name="ArrayOfZoneDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ZoneDto" nillable="true" type="tns:ZoneDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfZoneDto" nillable="true" type="tns:ArrayOfZoneDto" />
+  <xs:complexType name="ArrayOfStreetDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StreetDto" nillable="true" type="tns:StreetDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStreetDto" nillable="true" type="tns:ArrayOfStreetDto" />
+</xs:schema>

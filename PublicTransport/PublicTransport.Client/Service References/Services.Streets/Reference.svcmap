@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="564e6520-d0c8-40a9-9683-b4c2a4a6da33" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/streets" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="StreetService.wsdl" MetadataType="Wsdl" ID="ffc7587c-019a-480a-a54d-ffe8eaf7ba64" SourceId="1" SourceUrl="http://localhost:8733/streets" />
+    <MetadataFile FileName="streets.xsd" MetadataType="Schema" ID="c36f8452-be4b-4e5f-a235-0ca0e14456ff" SourceId="1" SourceUrl="http://localhost:8733/streets?xsd=xsd3" />
+    <MetadataFile FileName="streets1.xsd" MetadataType="Schema" ID="b1b43a37-fa83-403e-90d1-148e13be9b2d" SourceId="1" SourceUrl="http://localhost:8733/streets?xsd=xsd2" />
+    <MetadataFile FileName="streets2.xsd" MetadataType="Schema" ID="cb39565a-dd10-49d4-82b5-ce0f7ac2b088" SourceId="1" SourceUrl="http://localhost:8733/streets?xsd=xsd1" />
+    <MetadataFile FileName="streets3.xsd" MetadataType="Schema" ID="d2124577-10ab-4e39-8e16-6d3ae67ba5d3" SourceId="1" SourceUrl="http://localhost:8733/streets?xsd=xsd0" />
+    <MetadataFile FileName="streets5.xsd" MetadataType="Schema" ID="ac774b1c-9a8a-483c-9692-792c1bf4fcc3" SourceId="1" SourceUrl="http://localhost:8733/streets?xsd=xsd5" />
+    <MetadataFile FileName="streets4.xsd" MetadataType="Schema" ID="6b05c2b0-73d7-4238-b985-46ee4651d5e7" SourceId="1" SourceUrl="http://localhost:8733/streets?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

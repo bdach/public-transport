@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PublicTransport.Domain.Entities
 {
@@ -18,11 +19,13 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the username (login) of the user.
         /// </summary>
+        [Required(ErrorMessage = "The username is required.")]
         public string UserName { get; set; }
 
         /// <summary>
         ///     Contains the password of the user.
         /// </summary>
+        [Required(ErrorMessage = "The password is required.")]
         public string Password { get; set; }
 
         /// <summary>

@@ -23,10 +23,10 @@ namespace PublicTransport.Client.Views.Filter
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Routes, v => v.RoutesListView.ItemsSource);
             this.OneWayBind(ViewModel, vm => vm.RouteTypes, v => v.RouteTypesComboBox.ItemsSource);
-            this.Bind(ViewModel, vm => vm.RouteFilter.AgencyNameFilter, v => v.AgencyNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.RouteFilter.ShortNameFilter, v => v.ShortRouteNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.RouteFilter.LongNameFilter, v => v.LongRouteNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.RouteFilter.RouteTypeFilter, v => v.RouteTypesComboBox.SelectedItem);
+            this.Bind(ViewModel, vm => vm.RouteReactiveFilter.AgencyNameFilter, v => v.AgencyNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.RouteReactiveFilter.ShortNameFilter, v => v.ShortRouteNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.RouteReactiveFilter.LongNameFilter, v => v.LongRouteNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.RouteReactiveFilter.RouteTypeFilter, v => v.RouteTypesComboBox.SelectedItem);
             this.Bind(ViewModel, vm => vm.SelectedRoute, v => v.RoutesListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.AddRoute, v => v.AddRouteButton);
             this.BindCommand(ViewModel, vm => vm.EditRoute, v => v.EditRouteButton);

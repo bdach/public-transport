@@ -22,9 +22,9 @@ namespace PublicTransport.Client.Views.Filter
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Agencies, v => v.AgenciesListView.ItemsSource);
-            this.Bind(ViewModel, vm => vm.AgencyFilter.AgencyNameFilter, v => v.AgencyNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.AgencyFilter.CityNameFilter, v => v.CityNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.AgencyFilter.StreetNameFilter, v => v.StreetNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.AgencyReactiveFilter.AgencyNameFilter, v => v.AgencyNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.AgencyReactiveFilter.CityNameFilter, v => v.CityNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.AgencyReactiveFilter.StreetNameFilter, v => v.StreetNameFilterTextBox.Text);
             this.Bind(ViewModel, vm => vm.SelectedAgency, v => v.AgenciesListView.SelectedItem);
             this.BindCommand(ViewModel, vm => vm.AddAgency, v => v.AddAgencyButton);
             this.BindCommand(ViewModel, vm => vm.EditAgency, v => v.EditAgencyButton);

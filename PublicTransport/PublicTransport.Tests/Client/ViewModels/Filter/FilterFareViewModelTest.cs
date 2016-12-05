@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Fares;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
@@ -16,25 +15,25 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterFareViewModelTest : RoutableViewModelTest
     {
-        private Mock<IFareUnitOfWork> _fareUnitOfWork;
+        private Mock<IFareService> _fareService;
         private FilterFareViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _fareUnitOfWork = new Mock<IFareUnitOfWork>();
-            _viewModel = new FilterFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _fareService = new Mock<IFareService>();
+            _viewModel = new FilterFareViewModel(Screen.Object, _fareService.Object);
         }
 
         [Test]
         public void FilterFares()
         {
             // given
-            _fareUnitOfWork.Setup(f => f.FilterFares(It.IsAny<IFareFilter>())).Returns(new List<FareAttribute> { new FareAttribute() });
+            _fareService.Setup(f => f.FilterFaresAsync(It.IsAny<FareFilter>())).ReturnsAsync(new[] { new FareAttributeDto() });
             // when
             _viewModel.FilterFares.ExecuteAsync().Wait();
             // then
-            _fareUnitOfWork.Verify(f => f.FilterFares(_viewModel.FareFilter), Times.Once);
+            _fareService.Verify(f => f.FilterFaresAsync(It.IsAny<FareFilter>()), Times.Once);
             _viewModel.FareAttributes.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -43,24 +42,24 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             // when
-            _viewModel.FareFilter.RouteNameFilter = "";
-            _viewModel.FareFilter.OriginZoneNameFilter = "";
-            _viewModel.FareFilter.DestinationZoneNameFilter = "";
+            _viewModel.FareReactiveFilter.RouteNameFilter = "";
+            _viewModel.FareReactiveFilter.OriginZoneNameFilter = "";
+            _viewModel.FareReactiveFilter.DestinationZoneNameFilter = "";
             // then
-            _fareUnitOfWork.Verify(f => f.FilterFares(It.IsAny<IFareFilter>()), Times.Never);
+            _fareService.Verify(f => f.FilterFaresAsync(It.IsAny<FareFilter>()), Times.Never);
         }
 
         [Test]
         public void DeleteFare()
         {
             // given
-            var fare = new FareAttribute();
+            var fare = new FareAttributeDto();
             // when
             _viewModel.SelectedFare = fare;
             _viewModel.DeleteFare.ExecuteAsync().Wait();
             // then
-            _fareUnitOfWork.Verify(f => f.DeleteFareAttribute(fare), Times.Never);
-            _fareUnitOfWork.Verify(f => f.DeleteFareRule(fare.FareRule), Times.Once);
+            _fareService.Verify(f => f.DeleteFareAttributeAsync(fare), Times.Never);
+            _fareService.Verify(f => f.DeleteFareRuleAsync(fare.FareRule), Times.Once);
         }
 
         [Test]
@@ -68,7 +67,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedFare = new FareAttribute();
+            _viewModel.SelectedFare = new FareAttributeDto();
             Router.Navigate
                 .Where(vm => vm is EditFareViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -86,7 +85,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedFare = new FareAttribute();
+            _viewModel.SelectedFare = new FareAttributeDto();
             Router.Navigate
                 .Where(vm => vm is EditFareViewModel)
                 .Subscribe(_ => navigatedToEdit = true);

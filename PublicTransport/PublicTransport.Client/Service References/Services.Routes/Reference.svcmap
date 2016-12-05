@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="749b3c45-8dc6-4899-8d5b-a3c0b91b272a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/routes" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="routes.xsd" MetadataType="Schema" ID="4c9a7a75-c5b3-4403-82c2-c278b72db225" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd3" />
+    <MetadataFile FileName="routes1.xsd" MetadataType="Schema" ID="5d7ccb03-d056-4142-8cc9-37858fdc7a4b" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd2" />
+    <MetadataFile FileName="routes2.xsd" MetadataType="Schema" ID="50fb5b87-54f9-4b49-b2ff-df9195d6465f" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd5" />
+    <MetadataFile FileName="routes3.xsd" MetadataType="Schema" ID="f0599289-7723-47f7-bc84-d10df1e325a3" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd4" />
+    <MetadataFile FileName="routes4.xsd" MetadataType="Schema" ID="065d2a2b-b77a-45a7-aa9d-19d2df0004fd" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd6" />
+    <MetadataFile FileName="RouteService.wsdl" MetadataType="Wsdl" ID="255da4ef-4ddb-467b-b595-2ea416c2e7e3" SourceId="1" SourceUrl="http://localhost:8733/routes" />
+    <MetadataFile FileName="routes5.xsd" MetadataType="Schema" ID="1fe7429a-60ba-4755-b290-6d642c01fa5e" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd1" />
+    <MetadataFile FileName="routes6.xsd" MetadataType="Schema" ID="463356b0-4372-49f6-9c41-67e58994bc03" SourceId="1" SourceUrl="http://localhost:8733/routes?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

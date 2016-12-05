@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/routes?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:8733/routes?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" />
+  <xs:complexType name="StopTimeFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Date" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="RouteId" type="xs:int" />
+      <xs:element minOccurs="0" name="StopId" type="xs:int" />
+      <xs:element minOccurs="0" name="Time" nillable="true" type="ser:duration" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StopTimeFilter" nillable="true" type="tns:StopTimeFilter" />
+  <xs:complexType name="AgencyFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AgencyNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CityNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StreetNameFilter" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AgencyFilter" nillable="true" type="tns:AgencyFilter" />
+  <xs:complexType name="RouteFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AgencyNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LongNameFilter" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" minOccurs="0" name="RouteTypeFilter" nillable="true" type="q1:RouteType" />
+      <xs:element minOccurs="0" name="ShortNameFilter" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RouteFilter" nillable="true" type="tns:RouteFilter" />
+  <xs:complexType name="StopFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CityNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OnlyStations" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ParentStationNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StopNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StreetNameFilter" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZoneNameFilter" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StopFilter" nillable="true" type="tns:StopFilter" />
+</xs:schema>
