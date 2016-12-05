@@ -32,12 +32,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         private AgencyReactiveFilter _agencyReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Route" /> object being edited in the window.
+        ///     The <see cref="RouteDto" /> object being edited in the window.
         /// </summary>
         private RouteDto _route;
 
         /// <summary>
-        ///     The <see cref="Agency" /> currently selected by the user.
+        ///     The <see cref="AgencyDto" /> currently selected by the user.
         /// </summary>
         private AgencyDto _selectedAgency;
 
@@ -112,7 +112,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Agency" /> objects based on user input.
+        ///     List containing the suggested <see cref="AgencyDto" /> objects based on user input.
         /// </summary>
         public ReactiveList<AgencyDto> AgencySuggestions { get; protected set; }
 
@@ -137,7 +137,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<Unit> Close { get; protected set; }
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Route" /> object being edited in the window.
+        ///     The <see cref="RouteDto" /> object being edited in the window.
         /// </summary>
         public RouteDto Route
         {
@@ -146,7 +146,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     The <see cref="Agency" /> currently selected by the user.
+        ///     The <see cref="AgencyDto" /> currently selected by the user.
         /// </summary>
         public AgencyDto SelectedAgency
         {

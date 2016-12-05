@@ -25,12 +25,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         private readonly IAgencyService _agencyService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Agency" /> object being edited in the window.
+        ///     The <see cref="AgencyDto" /> object being edited in the window.
         /// </summary>
         private AgencyDto _agency;
 
         /// <summary>
-        ///     The <see cref="Street" /> currently selected by the user.
+        ///     The <see cref="StreetDto" /> currently selected by the user.
         /// </summary>
         private StreetDto _selectedStreet;
 
@@ -107,7 +107,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Street" />s based on user input.
+        ///     List containing the suggested <see cref="StreetDto" />s based on user input.
         /// </summary>
         public ReactiveList<StreetDto> StreetSuggestions { get; protected set; }
 

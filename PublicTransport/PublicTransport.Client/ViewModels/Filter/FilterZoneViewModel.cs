@@ -6,7 +6,6 @@ using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Zones;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
@@ -29,7 +28,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         private string _nameFilter;
 
         /// <summary>
-        ///     <see cref="Zone" /> object currently selected in the view.
+        ///     <see cref="ZoneDto" /> object currently selected in the view.
         /// </summary>
         private ZoneDto _selectedZone;
 
@@ -74,7 +73,6 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete zone command
 
-            // TODO: Maybe prompt for confirmation?
             DeleteZone = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
                 await _zoneService.DeleteZoneAsync(SelectedZone);
@@ -106,7 +104,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Reactive list containing the filtered <see cref="Zone" /> objects.
+        ///     Reactive list containing the filtered <see cref="ZoneDto" /> objects.
         /// </summary>
         public ReactiveList<ZoneDto> Zones { get; protected set; }
 
@@ -140,7 +138,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Property exposing the currently selected <see cref="Zone" />.
+        ///     Property exposing the currently selected <see cref="ZoneDto" />.
         /// </summary>
         public ZoneDto SelectedZone
         {

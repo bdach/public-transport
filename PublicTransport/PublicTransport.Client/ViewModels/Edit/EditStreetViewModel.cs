@@ -34,7 +34,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private CityDto _selectedCity;
 
         /// <summary>
-        ///     <see cref="Domain.Entities.Street" /> objects to be saved to the database.
+        ///     <see cref="StreetDto" /> objects to be saved to the database.
         /// </summary>
         private StreetDto _street;
 
@@ -108,7 +108,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List of suggested <see cref="City"/> objects.
+        ///     List of suggested <see cref="CityDto"/> objects.
         /// </summary>
         public ReactiveList<CityDto> Suggestions { get; set; }
 
@@ -118,7 +118,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<CityDto[]> UpdateSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for saving the <see cref="Street" /> object to the database.
+        ///     Command responsible for saving the <see cref="StreetDto" /> object to the database.
         /// </summary>
         public ReactiveCommand<StreetDto> SaveStreet { get; protected set; }
 
@@ -128,7 +128,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<Unit> Close { get; }
 
         /// <summary>
-        ///     Property for the <see cref="Domain.Entities.Street" /> being edited in the window.
+        ///     Property for the <see cref="StreetDto" /> being edited in the window.
         /// </summary>
         public StreetDto Street
         {
@@ -137,7 +137,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     <see cref="City" /> selected by the user in the drop-down menu.
+        ///     <see cref="CityDto" /> selected by the user in the drop-down menu.
         /// </summary>
         public CityDto SelectedCity
         {

@@ -92,8 +92,10 @@ namespace PublicTransport.Client.DataTransfer
             set { this.RaiseAndSetIfChanged(ref _onlyStations, value); }
         }
 
-        // TODO: allow filtering by IsStation
-
+        /// <summary>
+        ///     Converts reactive filter to filter used by the service.
+        /// </summary>
+        /// <returns>Filter used by the service.</returns>
         public StopFilter Convert()
         {
             return new StopFilter

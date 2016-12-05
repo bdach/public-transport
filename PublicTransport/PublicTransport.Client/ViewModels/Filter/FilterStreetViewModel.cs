@@ -2,13 +2,11 @@
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
@@ -26,7 +24,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         private readonly IStreetService _streetService;
 
         /// <summary>
-        ///     <see cref="Street" /> object currently selected in the view.
+        ///     <see cref="StreetDto" /> object currently selected in the view.
         /// </summary>
         private StreetDto _selectedStreet;
 
@@ -77,10 +75,9 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete street command
 
-            // TODO: Maybe prompt for confirmation?
             DeleteStreet = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _streetService.DeleteStreetAsync(SelectedStreet));
+                await _streetService.DeleteStreetAsync(SelectedStreet);
                 return Unit.Default;
             });
             DeleteStreet.Subscribe(_ => SelectedStreet = null);
@@ -109,7 +106,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Reactive list containing the filtered <see cref="Street" /> objects.
+        ///     Reactive list containing the filtered <see cref="StreetDto" /> objects.
         /// </summary>
         public ReactiveList<StreetDto> Streets { get; protected set; }
 
@@ -143,7 +140,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Property exposing the currently selected <see cref="Street" />.
+        ///     Property exposing the currently selected <see cref="StreetDto" />.
         /// </summary>
         public StreetDto SelectedStreet
         {

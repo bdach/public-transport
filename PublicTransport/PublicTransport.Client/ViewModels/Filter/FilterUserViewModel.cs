@@ -31,7 +31,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         private UserReactiveFilter _userReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="User" /> currently selected by the user.
+        ///     The <see cref="UserDto" /> currently selected by the user.
         /// </summary>
         private UserDto _selectedUser;
 
@@ -118,7 +118,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The <see cref="User" /> currently selected by the user.
+        ///     The <see cref="UserDto" /> currently selected by the user.
         /// </summary>
         public UserDto SelectedUser
         {
@@ -141,12 +141,12 @@ namespace PublicTransport.Client.ViewModels.Filter
         public ReactiveList<RoleType> Roles { get; protected set; }
 
         /// <summary>
-        ///     The list of <see cref="Users" /> objects currently displayed by the user.
+        ///     The list of <see cref="UserDto" /> objects currently displayed by the user.
         /// </summary>
         public ReactiveList<UserDto> Users { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="User" /> objects from the database, using the <see cref="DataTransfer.UserReactiveFilter" /> object as a query
+        ///     Fetches <see cref="UserDto" /> objects from the database, using the <see cref="DataTransfer.UserReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
         public ReactiveCommand<UserDto[]> FilterUsers { get; protected set; }

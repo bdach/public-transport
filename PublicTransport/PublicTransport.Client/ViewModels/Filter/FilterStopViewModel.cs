@@ -30,7 +30,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         private StopReactiveFilter _stopReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="StopDto" /> currently selected by the user.
         /// </summary>
         private StopDto _selectedStop;
 
@@ -130,12 +130,12 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The list of <see cref="Stop" /> objects currently displayed by the user.
+        ///     The list of <see cref="StopDto" /> objects currently displayed by the user.
         /// </summary>
         public ReactiveList<StopDto> Stops { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Stop" /> objects from the database, using the <see cref="StopReactiveFilter" /> object as a query
+        ///     Fetches <see cref="StopDto" /> objects from the database, using the <see cref="StopReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
         public ReactiveCommand<StopDto[]> FilterStops { get; protected set; }

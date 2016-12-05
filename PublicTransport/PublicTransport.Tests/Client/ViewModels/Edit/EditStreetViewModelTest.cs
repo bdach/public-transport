@@ -52,7 +52,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.CityName = "";
             // then
-            _streetService.Verify(s => s.FilterCities(It.IsAny<string>()), Times.Never);
+            _streetService.Verify(s => s.FilterCitiesAsync(It.IsAny<string>()), Times.Never);
         }
 
         [Test]

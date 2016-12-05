@@ -34,7 +34,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Browse
             _viewModel.SelectedStopTime = stopTime;
             _viewModel.DeleteTrip.ExecuteAsyncTask().Wait();
             // then
-            _routeService.Verify(r => r.DeleteTrip(stopTime.Trip), Times.Once);
+            _routeService.Verify(r => r.DeleteTripAsync(stopTime.Trip), Times.Once);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Browse
             // given
             _routeService.Setup(r => r.GetTripStopsAsync(It.IsAny<TripDto>())).ReturnsAsync(new[] { new StopTimeDto() });
             var navigatedToEdit = false;
-            _viewModel.SelectedStopTime = new StopTimeDto() { Trip = new TripDto() };
+            _viewModel.SelectedStopTime = new StopTimeDto { Trip = new TripDto() };
             Router.CurrentViewModel
                 .Where(vm => vm is EditTripViewModel)
                 .Subscribe(_ => navigatedToEdit = true);

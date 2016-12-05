@@ -42,7 +42,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private EditStopTimeViewModel _selectedStopTime;
 
         /// <summary>
-        ///     Currently edited <see cref="Domain.Entities.Trip" />.
+        ///     Currently edited <see cref="TripDto" />.
         /// </summary>
         private TripDto _trip;
 
@@ -102,7 +102,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List of <see cref="Route" /> suggestions.
+        ///     List of <see cref="RouteDto" /> suggestions.
         /// </summary>
         public ReactiveList<RouteDto> RouteSuggestions { get; protected set; }
 
@@ -112,12 +112,12 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveList<EditStopTimeViewModel> StopTimes { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for updating <see cref="Route" /> suggestions.
+        ///     Command responsible for updating <see cref="RouteDto" /> suggestions.
         /// </summary>
         public ReactiveCommand<RouteDto[]> UpdateSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for saving the currently edited <see cref="Trip" />.
+        ///     Command responsible for saving the currently edited <see cref="TripDto" />.
         /// </summary>
         public ReactiveCommand<TripDto> SaveTrip { get; protected set; }
 
@@ -147,7 +147,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<List<StopTime>> FetchStops { get; protected set; }
 
         /// <summary>
-        ///     Currently edited <see cref="Domain.Entities.Trip" />.
+        ///     Currently edited <see cref="TripDto" />.
         /// </summary>
         public TripDto Trip
         {
@@ -156,7 +156,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Currently selected <see cref="Domain.Entities.Route" />.
+        ///     Currently selected <see cref="RouteDto" />.
         /// </summary>
         public RouteDto SelectedRoute
         {

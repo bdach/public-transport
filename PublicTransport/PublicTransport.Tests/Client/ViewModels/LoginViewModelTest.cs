@@ -36,7 +36,7 @@ namespace PublicTransport.Tests.Client.ViewModels
         {
             // given
             var userInfo = new UserInfo("success", new List<RoleType> {RoleType.Administrator});
-            _loginService.Setup(ls => ls.RequestLogin(It.IsAny<LoginData>())).Returns(userInfo);
+            _loginService.Setup(ls => ls.RequestLoginAsync(It.IsAny<LoginData>())).ReturnsAsync(userInfo);
             var loginViewModel = new LoginViewModel(_screen.Object, _loginService.Object);
             var userInfoLoaded = false;
             // when
@@ -52,7 +52,7 @@ namespace PublicTransport.Tests.Client.ViewModels
         public void FailedLogin()
         {
             // given
-            _loginService.Setup(ls => ls.RequestLogin(It.IsAny<LoginData>())).Throws<InvalidCredentialsException>();
+            _loginService.Setup(ls => ls.RequestLoginAsync(It.IsAny<LoginData>())).Throws<InvalidCredentialsException>();
             var loginViewModel = new LoginViewModel(_screen.Object, _loginService.Object);
             var userInfoLoaded = false;
             // when

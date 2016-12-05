@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
@@ -21,7 +20,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         private readonly IRouteService _routeService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.Route" /> whose timetable is displayed in the view.
+        ///     The <see cref="RouteDto" /> whose timetable is displayed in the view.
         /// </summary>
         private RouteDto _route;
 
@@ -91,17 +90,17 @@ namespace PublicTransport.Client.ViewModels.Browse
 
             #region Delete trip command
 
-            // TODO: Maybe prompt for confirmation?
             DeleteTrip = ReactiveCommand.CreateAsyncTask(stopTimeSelected, async _ =>
             {
                 // should cascade delete all stop times
-                await Task.Run(() => _routeService.DeleteTrip(SelectedStopTime.Trip));
+                await _routeService.DeleteTripAsync(SelectedStopTime.Trip);
                 return Unit.Default;
             });
             DeleteTrip.Subscribe(_ => SelectedStopTime = null);
             DeleteTrip.InvokeCommand(GetStops);
             GetStops.InvokeCommand(UpdateStopTimes);
-            DeleteTrip.ThrownExceptions.Subscribe(e => UserError.Throw("Cannot delete the selected trip. Please contact the system administrator.", e));
+            DeleteTrip.ThrownExceptions.Subscribe(e =>
+                UserError.Throw("Cannot delete the selected trip. Please contact the system administrator.", e));
 
             #endregion
 

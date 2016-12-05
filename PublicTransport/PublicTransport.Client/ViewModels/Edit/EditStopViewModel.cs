@@ -171,17 +171,17 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Street" />s based on user input.
+        ///     List containing the suggested <see cref="StreetDto" />s based on user input.
         /// </summary>
         public ReactiveList<StreetDto> StreetSuggestions { get; protected set; }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Zone" />s based on user input.
+        ///     List containing the suggested <see cref="ZoneDto" />s based on user input.
         /// </summary>
         public ReactiveList<ZoneDto> ZoneSuggestions { get; protected set; }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Zone" />s based on user input.
+        ///     List containing the suggested <see cref="ZoneDto" />s based on user input.
         /// </summary>
         public ReactiveList<StopDto> ParentStationSuggestions { get; protected set; }
 

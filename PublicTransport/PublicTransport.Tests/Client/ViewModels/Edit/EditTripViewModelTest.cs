@@ -111,7 +111,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.RouteReactiveFilter.ShortNameFilter = "";
             // then
-            _routeService.Verify(r => r.FilterStops(It.IsAny<StopFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterStopsAsync(It.IsAny<StopFilter>()), Times.Never);
         }
 
         //[Test]
@@ -128,9 +128,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 _viewModel.RouteReactiveFilter.ShortNameFilter = "test";
                 // then
                 s.AdvanceByMs(250);
-                _routeService.Verify(r => r.FilterRoutes(It.IsAny<RouteFilter>()), Times.Never);
+                _routeService.Verify(r => r.FilterRoutesAsync(It.IsAny<RouteFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _routeService.Verify(r => r.FilterRoutes(It.IsAny<RouteFilter>()), Times.Once);
+                _routeService.Verify(r => r.FilterRoutesAsync(It.IsAny<RouteFilter>()), Times.Once);
             });
         }
 

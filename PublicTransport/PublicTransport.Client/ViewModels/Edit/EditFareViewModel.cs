@@ -194,17 +194,17 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveList<TransferCount> TransferCounts { get; protected set; }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Route" />s based on user input.
+        ///     List containing the suggested <see cref="RouteDto" />s based on user input.
         /// </summary>
         public ReactiveList<RouteDto> RouteSuggestions { get; protected set; }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Zone" />s based on user input.
+        ///     List containing the suggested <see cref="ZoneDto" />s based on user input.
         /// </summary>
         public ReactiveList<ZoneDto> OriginZoneSuggestions { get; protected set; }
 
         /// <summary>
-        ///     List containing the suggested <see cref="Zone" />s based on user input.
+        ///     List containing the suggested <see cref="ZoneDto" />s based on user input.
         /// </summary>
         public ReactiveList<ZoneDto> DestinationZoneSuggestions { get; protected set; }
 
@@ -224,7 +224,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<ZoneDto[]> UpdateDestinationZoneSuggestions { get; protected set; }
 
         /// <summary>
-        ///     Command responsible for saving the currently edited <see cref="Domain.Entities.FareRule"/> and <see cref="Domain.Entities.FareAttribute"/> objects.
+        ///     Command responsible for saving the currently edited <see cref="FareRuleDto"/> and <see cref="FareAttributeDto"/> objects.
         /// </summary>
         public ReactiveCommand<FareAttributeDto> SaveFare { get; protected set; }
 

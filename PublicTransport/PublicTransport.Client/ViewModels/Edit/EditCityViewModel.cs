@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditCityViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     The <see cref="Domain.Entities.City" /> object being edited in the window.
+        ///     The <see cref="CityDto" /> object being edited in the window.
         /// </summary>
         private CityDto _city;
 
@@ -70,7 +70,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Command adding the <see cref="Domain.Entities.City" /> to the database.
+        ///     Command adding the <see cref="CityDto" /> to the database.
         /// </summary>
         public ReactiveCommand<CityDto> SaveCity { get; }
 

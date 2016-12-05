@@ -32,7 +32,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         private RouteReactiveFilter _routeReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="Route" /> currently selected by the user.
+        ///     The <see cref="RouteDto" /> currently selected by the user.
         /// </summary>
         private RouteDto _selectedRoute;
 
@@ -128,7 +128,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The <see cref="Route" /> currently selected by the user.
+        ///     The <see cref="RouteDto" /> currently selected by the user.
         /// </summary>
         public RouteDto SelectedRoute
         {
@@ -146,7 +146,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The list of <see cref="Agency" /> objects currently displayed to the user.
+        ///     The list of <see cref="AgencyDto" /> objects currently displayed to the user.
         /// </summary>
         public ReactiveList<RouteDto> Routes { get; protected set; }
 
@@ -156,7 +156,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         public ReactiveList<RouteType> RouteTypes { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Route" /> objects from the database, using the <see cref="RouteReactiveFilter" /> object as a query
+        ///     Fetches <see cref="RouteDto" /> objects from the database, using the <see cref="RouteReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
         public ReactiveCommand<RouteDto[]> FilterRoutes { get; protected set; }

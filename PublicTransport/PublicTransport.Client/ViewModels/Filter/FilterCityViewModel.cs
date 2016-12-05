@@ -73,7 +73,6 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete city command
 
-            // TODO: Maybe prompt for confirmation?
             DeleteCity = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
                 await _cityService.DeleteCityAsync(SelectedCity);
@@ -105,7 +104,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Reactive list containing the filtered <see cref="City" /> objects.
+        ///     Reactive list containing the filtered <see cref="CityDto" /> objects.
         /// </summary>
         public ReactiveList<CityDto> Cities { get; protected set; }
 
@@ -139,7 +138,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Property exposing the currently selected <see cref="City" />.
+        ///     Property exposing the currently selected <see cref="CityDto" />.
         /// </summary>
         public CityDto SelectedCity
         {

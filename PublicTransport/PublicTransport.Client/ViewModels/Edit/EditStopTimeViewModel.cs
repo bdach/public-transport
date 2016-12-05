@@ -2,7 +2,6 @@
 using System.Reactive.Linq;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Services.Routes;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
@@ -19,19 +18,19 @@ namespace PublicTransport.Client.ViewModels.Edit
         private readonly IRouteService _routeService;
 
         /// <summary>
-        ///     Currently selected <see cref="Stop"/> object.
-        /// </summary>
-        private StopDto _selectedStop;
-
-        /// <summary>
         ///     <see cref="StopReactiveFilter" /> used for filtering stop suggestions.
         /// </summary>
         private StopReactiveFilter _stopReactiveFilter;
         
         /// <summary>
-        ///     <see cref="Domain.Entities.StopTime" /> object storing the currently edited data.
+        ///     <see cref="StopTimeDto" /> object storing the currently edited data.
         /// </summary>
         private StopTimeDto _stopTime;
+
+        /// <summary>
+        ///     Currently selected <see cref="StopDto"/> object.
+        /// </summary>
+        private StopDto _selectedStop;
 
         /// <summary>
         ///     Constructor.
@@ -74,7 +73,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     List containing suggestions for <see cref="Stop" /> names.
+        ///     List containing suggestions for <see cref="StopDto" /> names.
         /// </summary>
         public ReactiveList<StopDto> StopSuggestions { get; protected set; }
 
@@ -84,7 +83,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveCommand<StopDto[]> UpdateSuggestions { get; protected set; }
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="StopDto" /> currently selected by the user.
         /// </summary>
         public StopDto SelectedStop
         {

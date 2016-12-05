@@ -65,6 +65,10 @@ namespace PublicTransport.Client.DataTransfer
             set { this.RaiseAndSetIfChanged(ref _routeTypeFilter, value); }
         }
 
+        /// <summary>
+        ///     Converts reactive filter to filter used by the service.
+        /// </summary>
+        /// <returns>Filter used by the service.</returns>
         public RouteFilter Convert()
         {
             return new RouteFilter

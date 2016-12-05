@@ -50,7 +50,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             _viewModel.RouteReactiveFilter.ShortNameFilter = "";
             _viewModel.RouteReactiveFilter.RouteTypeFilter = null;
             // then
-            _routeService.Verify(r => r.FilterRoutes(It.IsAny<RouteFilter>()), Times.Never);
+            _routeService.Verify(r => r.FilterRoutesAsync(It.IsAny<RouteFilter>()), Times.Never);
         }
 
         [Test]

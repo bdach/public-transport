@@ -82,7 +82,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
                 await _fareService.DeleteFareRuleAsync(SelectedFare.FareRule);
-                //await Task.Run(() => _fareUnitOfWork.DeleteFareAttribute(SelectedFare)); // commented because of cascade delete
+                //await _fareService.DeleteFareAttributeAsync(SelectedFare); // commented because of cascade delete
                 return Unit.Default;
             });
             DeleteFare.Subscribe(_ => SelectedFare = null);

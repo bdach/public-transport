@@ -30,7 +30,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         private AgencyReactiveFilter _agencyReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="Agency" /> currently selected by the user.
+        ///     The <see cref="AgencyDto" /> currently selected by the user.
         /// </summary>
         private AgencyDto _selectedAgency;
 
@@ -108,7 +108,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The <see cref="Agency" /> currently selected by the user.
+        ///     The <see cref="AgencyDto" /> currently selected by the user.
         /// </summary>
         public AgencyDto SelectedAgency
         {
@@ -126,12 +126,12 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The list of <see cref="Agency" /> objects currently displayed to the user.
+        ///     The list of <see cref="AgencyDto" /> objects currently displayed to the user.
         /// </summary>
         public ReactiveList<AgencyDto> Agencies { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Agency" /> objects from the database, using the <see cref="AgencyReactiveFilter" /> object as a query
+        ///     Fetches <see cref="AgencyDto" /> objects from the database, using the <see cref="AgencyReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
         public ReactiveCommand<AgencyDto[]> FilterAgencies { get; protected set; }

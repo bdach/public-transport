@@ -50,6 +50,10 @@ namespace PublicTransport.Client.DataTransfer
             set { this.RaiseAndSetIfChanged(ref _destinationZoneNameFilter, value); }
         }
 
+        /// <summary>
+        ///     Converts reactive filter to filter used by the service.
+        /// </summary>
+        /// <returns>Filter used by the service.</returns>
         public FareFilter Convert()
         {
             return new FareFilter

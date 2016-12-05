@@ -55,7 +55,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // when
             _viewModel.StreetReactiveFilter.StreetNameFilter = "";
             // then
-            _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
+            _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
         }
 
         //[Test]
@@ -70,9 +70,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 // then
                 s.AdvanceByMs(250);
-                _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
+                _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
                 s.AdvanceByMs(250);
-                _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Once);
+                _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Once);
             });
         }
 
@@ -89,7 +89,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
                 _viewModel.StreetReactiveFilter.StreetNameFilter = "hello";
                 s.AdvanceByMs(500);
                 // then
-                _agencyService.Verify(a => a.FilterStreets(It.IsAny<StreetFilter>()), Times.Never);
+                _agencyService.Verify(a => a.FilterStreetsAsync(It.IsAny<StreetFilter>()), Times.Never);
             });
         }
 

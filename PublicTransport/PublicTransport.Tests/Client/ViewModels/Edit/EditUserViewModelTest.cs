@@ -48,7 +48,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         public void GetRoles()
         {
             // given
-            _userService.Setup(a => a.GetAllRoles()).Returns(new[] { new RoleDto() });
+            _userService.Setup(a => a.GetAllRolesAsync()).ReturnsAsync(new[] { new RoleDto() });
             _viewModel = new EditUserViewModel(Screen.Object, _userService.Object);
             // when
             _viewModel.GetRoles.ExecuteAsyncTask().Wait();

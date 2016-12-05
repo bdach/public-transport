@@ -17,15 +17,9 @@ using PublicTransport.Client.Views.Browse;
 using PublicTransport.Client.Views.Edit;
 using PublicTransport.Client.Views.Entities;
 using PublicTransport.Client.Views.Filter;
-using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
-//using IAgencyService = PublicTransport.Client.Services.Agencies.IAgencyService;
-//using ICityService = PublicTransport.Client.Services.Cities.ICityService;
-//using IStreetService = PublicTransport.Client.Services.Streets.IStreetService;
-//using IZoneService = PublicTransport.Client.Services.Zones.IZoneService;
-//using IUserService = PublicTransport.Client.Services.Users.IUserService;
 
 namespace PublicTransport.Client.Providers
 {

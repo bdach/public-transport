@@ -18,7 +18,7 @@ namespace PublicTransport.Client.ViewModels.Edit
     public class EditZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     The <see cref="Zone" /> object being edited in the window.
+        ///     The <see cref="ZoneDto" /> object being edited in the window.
         /// </summary>
         private ZoneDto _zone;
 
@@ -61,7 +61,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Property for the <see cref="Domain.Entities.Zone" /> being edited in the window.
+        ///     Property for the <see cref="ZoneDto" /> being edited in the window.
         /// </summary>
         public ZoneDto Zone
         {
@@ -70,7 +70,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         }
 
         /// <summary>
-        ///     Command adding the <see cref="Zone" /> to the database.
+        ///     Command adding the <see cref="ZoneDto" /> to the database.
         /// </summary>
         public ReactiveCommand<ZoneDto> SaveZone { get; }
 

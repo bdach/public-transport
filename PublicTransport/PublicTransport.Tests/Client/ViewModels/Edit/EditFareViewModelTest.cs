@@ -57,7 +57,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var fareRule = new FareRuleDto();
             var fareAttribute = new FareAttributeDto { FareRule = fareRule };
-            _fareService.Setup(f => f.UpdateFareRule(It.IsAny<FareRuleDto>())).Returns(fareRule);
+            _fareService.Setup(f => f.UpdateFareRuleAsync(It.IsAny<FareRuleDto>())).ReturnsAsync(fareRule);
             _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object, fareAttribute);
             // when
             _viewModel.SaveFare.ExecuteAsyncTask().Wait();

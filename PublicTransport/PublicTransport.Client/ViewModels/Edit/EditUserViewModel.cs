@@ -25,7 +25,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         private readonly IUserService _userService;
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.User" /> object being edited in the window.
+        ///     The <see cref="UserDto" /> object being edited in the window.
         /// </summary>
         private UserDto _user;
 
@@ -102,7 +102,7 @@ namespace PublicTransport.Client.ViewModels.Edit
         public ReactiveList<RoleViewModel> RoleViewModels { get; protected set; }
 
         /// <summary>
-        ///     The <see cref="Domain.Entities.User" /> object being edited in the window.
+        ///     The <see cref="UserDto" /> object being edited in the window.
         /// </summary>
         public UserDto User
         {
