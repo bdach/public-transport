@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Routes;
 using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Browse
@@ -16,26 +15,26 @@ namespace PublicTransport.Tests.Client.ViewModels.Browse
     [TestFixture]
     public class TimetableViewModelTest : RoutableViewModelTest
     {
-        private Mock<IRouteUnitOfWork> _routeUnitOfWork;
+        private Mock<IRouteService> _routeService;
         private TimetableViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _routeUnitOfWork = new Mock<IRouteUnitOfWork>();
-            _viewModel = new TimetableViewModel(Screen.Object, _routeUnitOfWork.Object, new Route());
+            _routeService = new Mock<IRouteService>();
+            _viewModel = new TimetableViewModel(Screen.Object, _routeService.Object, new RouteDto());
         }
 
         [Test]
         public void DeleteTrip()
         {
             // given
-            var stopTime = new StopTime { Trip = new Trip() };
+            var stopTime = new StopTimeDto { Trip = new TripDto() };
             // when
             _viewModel.SelectedStopTime = stopTime;
             _viewModel.DeleteTrip.ExecuteAsyncTask().Wait();
             // then
-            _routeUnitOfWork.Verify(r => r.DeleteTrip(stopTime.Trip), Times.Once);
+            _routeService.Verify(r => r.DeleteTripAsync(stopTime.Trip), Times.Once);
         }
 
         [Test]
@@ -59,9 +58,9 @@ namespace PublicTransport.Tests.Client.ViewModels.Browse
         public void EditTrip()
         {
             // given
-            _routeUnitOfWork.Setup(r => r.GetTripStops(It.IsAny<Trip>())).Returns(new List<StopTime> { new StopTime() });
+            _routeService.Setup(r => r.GetTripStopsAsync(It.IsAny<TripDto>())).ReturnsAsync(new[] { new StopTimeDto() });
             var navigatedToEdit = false;
-            _viewModel.SelectedStopTime = new StopTime { Trip = new Trip() };
+            _viewModel.SelectedStopTime = new StopTimeDto { Trip = new TripDto() };
             Router.CurrentViewModel
                 .Where(vm => vm is EditTripViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -89,22 +88,22 @@ namespace PublicTransport.Tests.Client.ViewModels.Browse
         public void GetStops()
         {
             // given
-            _routeUnitOfWork.Setup(r => r.GetStopsByRouteId(It.IsAny<int>())).Returns(new List<Stop> { new Stop() });
+            _routeService.Setup(r => r.GetStopsByRouteIdAsync(It.IsAny<int>())).ReturnsAsync(new[] { new StopDto() });
             // when
             _viewModel.GetStops.ExecuteAsyncTask().Wait();
             // then
-            _routeUnitOfWork.Verify(u => u.GetStopsByRouteId(It.IsAny<int>()), Times.Once);
+            _routeService.Verify(u => u.GetStopsByRouteIdAsync(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
         public void UpdateStopTimes()
         {
             // given
-            _routeUnitOfWork.Setup(r => r.GetRouteTimetableByStopId(It.IsAny<IStopTimeFilter>())).Returns(new List<StopTime> { new StopTime() });
+            _routeService.Setup(r => r.GetRouteTimetableByStopIdAsync(It.IsAny<StopTimeFilter>())).ReturnsAsync(new[] { new StopTimeDto() });
             // when
             _viewModel.UpdateStopTimes.ExecuteAsyncTask().Wait();
             // then
-            _routeUnitOfWork.Verify(u => u.GetRouteTimetableByStopId(It.IsAny<IStopTimeFilter>()), Times.Once);
+            _routeService.Verify(u => u.GetRouteTimetableByStopIdAsync(It.IsAny<StopTimeFilter>()), Times.Once);
         }
     }
 }

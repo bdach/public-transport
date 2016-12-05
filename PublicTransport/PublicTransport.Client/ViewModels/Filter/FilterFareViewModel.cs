@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Fares;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -21,33 +20,33 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterFareViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
-        private readonly IFareUnitOfWork _fareUnitOfWork;
+        private readonly IFareService _fareService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.FareReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private FareFilter _fareFilter;
+        private FareReactiveFilter _fareReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="FareAttribute" /> currently selected by the user.
+        ///     The <see cref="FareAttributeDto" /> currently selected by the user.
         /// </summary>
-        private FareAttribute _selectedFare;
+        private FareAttributeDto _selectedFare;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen"></param>
-        /// <param name="fareUnitOfWork">Unit of work used in the view model to access the database.</param>
-        public FilterFareViewModel(IScreen screen, IFareUnitOfWork fareUnitOfWork = null)
+        /// <param name="fareService">Service used in the view model to access the database.</param>
+        public FilterFareViewModel(IScreen screen, IFareService fareService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _fareUnitOfWork = fareUnitOfWork ?? Locator.Current.GetService<IFareUnitOfWork>();
-            _fareFilter = new FareFilter();
-            FareAttributes = new ReactiveList<FareAttribute>();
+            _fareService = fareService ?? Locator.Current.GetService<IFareService>();
+            _fareReactiveFilter = new FareReactiveFilter();
+            FareAttributes = new ReactiveList<FareAttributeDto>();
 
             #endregion
 
@@ -55,7 +54,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Fare filtering command
 
-            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _fareUnitOfWork.FilterFares(FareFilter)));
+            FilterFares = ReactiveCommand.CreateAsyncTask(async _ => await _fareService.FilterFaresAsync(FareReactiveFilter.Convert()));
             FilterFares.Subscribe(result =>
             {
                 FareAttributes.Clear();
@@ -69,10 +68,10 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Updating the list of filtered fares upon filter change
 
             this.WhenAnyValue(
-                    vm => vm.FareFilter.RouteNameFilter,
-                    vm => vm.FareFilter.OriginZoneNameFilter,
-                    vm => vm.FareFilter.DestinationZoneNameFilter)
-                .Where(_ => FareFilter.IsValid)
+                    vm => vm.FareReactiveFilter.RouteNameFilter,
+                    vm => vm.FareReactiveFilter.OriginZoneNameFilter,
+                    vm => vm.FareReactiveFilter.DestinationZoneNameFilter)
+                .Where(_ => FareReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(this, vm => vm.FilterFares);
 
@@ -82,8 +81,8 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteFare = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _fareUnitOfWork.DeleteFareRule(SelectedFare.FareRule));
-                //await Task.Run(() => _fareUnitOfWork.DeleteFareAttribute(SelectedFare)); // commented because of cascade delete
+                await _fareService.DeleteFareRuleAsync(SelectedFare.FareRule);
+                //await _fareService.DeleteFareAttributeAsync(SelectedFare); // commented because of cascade delete
                 return Unit.Default;
             });
             DeleteFare.Subscribe(_ => SelectedFare = null);
@@ -96,57 +95,49 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit fare commands
 
             AddFare = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareService)));
             EditFare = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareUnitOfWork, SelectedFare)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditFareViewModel(HostScreen, _fareService, SelectedFare)));
 
             #endregion
 
             #region Updating the list of fares upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && FareFilter.IsValid)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && FareReactiveFilter.IsValid)
                 .InvokeCommand(FilterFares);
-
-            #endregion
-
-            #region Disposing of context
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _fareUnitOfWork.Dispose());
 
             #endregion
         }
 
         /// <summary>
-        ///     The <see cref="Stop" /> currently selected by the user.
+        ///     The <see cref="FareAttributeDto" /> currently selected by the user.
         /// </summary>
-        public FareAttribute SelectedFare
+        public FareAttributeDto SelectedFare
         {
             get { return _selectedFare; }
             set { this.RaiseAndSetIfChanged(ref _selectedFare, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.FareFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.FareReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public FareFilter FareFilter
+        public FareReactiveFilter FareReactiveFilter
         {
-            get { return _fareFilter; }
-            set { this.RaiseAndSetIfChanged(ref _fareFilter, value); }
+            get { return _fareReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _fareReactiveFilter, value); }
         }
 
         /// <summary>
         ///     The list of <see cref="FareAttributes" /> objects currently displayed by the user.
         /// </summary>
-        public ReactiveList<FareAttribute> FareAttributes { get; protected set; }
+        public ReactiveList<FareAttributeDto> FareAttributes { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="FareAttribute" /> objects from the database, using the <see cref="FareFilter" /> object as a query
+        ///     Fetches <see cref="FareAttribute" /> objects from the database, using the <see cref="FareReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<FareAttribute>> FilterFares { get; protected set; }
+        public ReactiveCommand<FareAttributeDto[]> FilterFares { get; protected set; }
 
         /// <summary>
         ///     Opens a view responsible for adding a new <see cref="FareAttribute" /> and <see cref="FareRule"/> to the database.

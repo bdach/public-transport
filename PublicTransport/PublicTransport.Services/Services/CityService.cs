@@ -1,106 +1,135 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.Exceptions;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
     /// <summary>
-    ///     Service for managing cities.
+    ///     Service used to manage city data.
     /// </summary>
-    public class CityService
+    public class CityService : ICityService
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Service used to fetch <see cref="City" /> data from the database.
+        /// </summary>
+        private readonly CityRepository _cityRepository;
+
+        /// <summary>
+        ///     Used for converting <see cref="City" /> objects to <see cref="CityDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<City, CityDto> _converter;
+
+        /// <summary>
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
-        
+
+        /// <summary>
+        ///     Determines whether the database context has been disposed.
+        /// </summary>
+        private bool _disposed;
+
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public CityService(PublicTransportContext db)
+        public CityService()
         {
-            _db = db;
+            _db = new PublicTransportContext();
+            _cityRepository = new CityRepository(_db);
+            _converter = new CityConverter();
         }
 
         /// <summary>
-        ///     Inserts an <see cref="City" /> record into the database.
+        ///     Creates a <see cref="City"/> object in the database.
         /// </summary>
-        /// <param name="city"><see cref="City" /> object to insert into the database.</param>
-        /// <returns>The <see cref="City" /> object corresponding to the inserted record.</returns>
-        public City Create(City city)
-        {
-            _db.Cities.Add(city);
-            _db.SaveChanges();
-            return city;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="City" /> with the supplied <see cref="City.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="City" />.</param>
+        /// <param name="city"><see cref="CityDto" /> object containing <see cref="City"/> data.</param>
         /// <returns>
-        ///     <see cref="City" /> object with the supplied ID number, or null if the user with the supplied ID could not be found
-        ///     in the database.
+        ///     <see cref="CityDto" /> representing the inserted <see cref="City"/>.
         /// </returns>
-        public City Read(int id)
-        {
-            return _db.Cities.FirstOrDefault(u => u.Id == id);
-        }
-
-        /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="City" />.
-        /// </summary>
-        /// <param name="city"><see cref="City" /> object to update.</param>
-        /// <returns>Updated <see cref="City" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="City" /> could not be found in the database.
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
-        public City Update(City city)
+        public CityDto CreateCity(CityDto city)
         {
-            var old = Read(city.Id);
-            if (old == null)
+            try
             {
-                throw new EntryNotFoundException();
+                var result = _cityRepository.Create(_converter.GetEntity(city));
+                return _converter.GetDto(result);
             }
-
-            _db.Entry(old).CurrentValues.SetValues(city);
-            _db.SaveChanges();
-            return city;
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="City" /> from the database.
+        ///     Updates a <see cref="City"/> object in the database, using the data stored in the
+        ///     <see cref="CityDto" /> object.
         /// </summary>
-        /// <param name="city"><see cref="City" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="City" /> could not be found in the database.
-        /// </exception>
-        public void Delete(City city)
-        {
-            var old = Read(city.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
-        }
-
-        /// <summary>
-        ///     Return a list of <see cref="City" /> whose names contain provided string.
-        /// </summary>
-        /// <param name="str">String which has to be present in the name.</param>
+        /// <param name="city"><see cref="CityDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     Return a list of <see cref="City" /> whose names contain provided string.
+        ///     <see cref="CityDto" /> object containing the updated <see cref="City"/> data.
         /// </returns>
-        public List<City> GetCitiesContainingString(string str)
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="City"/> could not be found in the database.
+        /// </exception>
+        public CityDto UpdateCity(CityDto city)
         {
-            return _db.Cities.Where(c => c.Name.Contains(str)).Take(10).ToList();
+            try
+            {
+                var result = _cityRepository.Update(_converter.GetEntity(city));
+                return _converter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Deletes a <see cref="City"/> from the system.
+        /// </summary>
+        /// <param name="city"><see cref="CityDto" /> representing the <see cref="City"/> to be deleted from the database.</param>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the <see cref="City" /> could not be found in the database.
+        /// </exception>
+        public void DeleteCity(CityDto city)
+        {
+            _cityRepository.Delete(_converter.GetEntity(city));
+        }
+
+        /// <summary>
+        ///     Filters <see cref="City" /> objects using the supplied string.
+        /// </summary>
+        /// <param name="name">String to filter cities by.</param>
+        /// <returns>
+        ///     List of <see cref="CityDto" /> objects matching the filtering query.
+        /// </returns>
+        public List<CityDto> FilterCities(string name)
+        {
+            return _cityRepository.GetCitiesContainingString(name)
+                .Select(_converter.GetDto)
+                .ToList();
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

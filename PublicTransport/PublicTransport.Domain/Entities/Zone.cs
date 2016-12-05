@@ -19,7 +19,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the name of the zone.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The zone name is required.")]
         public string Name { get; set; }
 
         /// <summary>

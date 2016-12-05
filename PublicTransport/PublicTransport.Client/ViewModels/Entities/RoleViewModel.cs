@@ -1,4 +1,4 @@
-﻿using PublicTransport.Domain.Entities;
+﻿using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Entities
@@ -7,7 +7,7 @@ namespace PublicTransport.Client.ViewModels.Entities
     {
         private bool _selected;
 
-        public Role Role { get; set; }
+        public RoleDto Role { get; set; }
 
         public bool Selected
         {
@@ -15,7 +15,7 @@ namespace PublicTransport.Client.ViewModels.Entities
             set { this.RaiseAndSetIfChanged(ref _selected, value); }
         }
 
-        public RoleViewModel(Role role, bool selected)
+        public RoleViewModel(RoleDto role, bool selected)
         {
             Role = role;
             _selected = selected;

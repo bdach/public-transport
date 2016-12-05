@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Client.ViewModels.Filter;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Tests.Client.ViewModels.Filter
@@ -15,13 +14,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
     [TestFixture]
     public class FilterCityViewModelTest : RoutableViewModelTest
     {
-        private Mock<ICityUnitOfWork> _cityUnitOfWork;
+        private Mock<ICityService> _cityUnitOfWork;
         private FilterCityViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _cityUnitOfWork = new Mock<ICityUnitOfWork>();
+            _cityUnitOfWork = new Mock<ICityService>();
             _viewModel = new FilterCityViewModel(Screen.Object, _cityUnitOfWork.Object);
         }
 
@@ -29,11 +28,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         public void FilterCities()
         {
             // given
-            _cityUnitOfWork.Setup(c => c.FilterCities(It.IsAny<string>())).Returns(new List<City> { new City() });
+            _cityUnitOfWork.Setup(c => c.FilterCitiesAsync(It.IsAny<string>())).ReturnsAsync(new[] { new CityDto() });
             // when
             _viewModel.FilterCities.ExecuteAsync().Wait();
             // then
-            _cityUnitOfWork.Verify(c => c.FilterCities(_viewModel.NameFilter), Times.Once);
+            _cityUnitOfWork.Verify(c => c.FilterCitiesAsync(_viewModel.NameFilter), Times.Once);
             _viewModel.Cities.Count.ShouldBeEquivalentTo(1);
         }
 
@@ -44,19 +43,19 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             // when
             _viewModel.NameFilter = "";
             // then
-            _cityUnitOfWork.Verify(c => c.FilterCities(It.IsAny<string>()), Times.Never);
+            _cityUnitOfWork.Verify(c => c.FilterCitiesAsync(It.IsAny<string>()), Times.Never);
         }
 
         [Test]
         public void DeleteCity()
         {
             // given
-            var city = new City();
+            var city = new CityDto();
             // when
             _viewModel.SelectedCity = city;
             _viewModel.DeleteCity.ExecuteAsync().Wait();
             // then
-            _cityUnitOfWork.Verify(c => c.DeleteCity(city), Times.Once);
+            _cityUnitOfWork.Verify(c => c.DeleteCityAsync(city), Times.Once);
         }
 
         [Test]
@@ -64,7 +63,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedCity = new City();
+            _viewModel.SelectedCity = new CityDto();
             Router.Navigate
                 .Where(vm => vm is EditCityViewModel)
                 .Subscribe(_ => navigatedToEdit = true);
@@ -82,7 +81,7 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
         {
             // given
             var navigatedToEdit = false;
-            _viewModel.SelectedCity = new City();
+            _viewModel.SelectedCity = new CityDto();
             Router.Navigate
                 .Where(vm => vm is EditCityViewModel)
                 .Subscribe(_ => navigatedToEdit = true);

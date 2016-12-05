@@ -1,10 +1,15 @@
-﻿namespace PublicTransport.Services.DataTransfer
+﻿using System.Runtime.Serialization;
+
+namespace PublicTransport.Services.DataTransfer
 {
     /// <summary>
     ///     Data transfer object for client applications. Used to transfer login credentials to the database.
     /// </summary>
+    [DataContract]
     public class LoginData
     {
+        public LoginData() { }
+
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -19,11 +24,13 @@
         /// <summary>
         ///     Username of the user logging in.
         /// </summary>
-        public string UserName { get; }
+        [DataMember(IsRequired = true)]
+        public string UserName { get; set; }
 
         /// <summary>
         ///     Password supplied by the user.
         /// </summary>
-        public string Password { get; }
+        [DataMember(IsRequired = true)]
+        public string Password { get; set;  }
     }
 }

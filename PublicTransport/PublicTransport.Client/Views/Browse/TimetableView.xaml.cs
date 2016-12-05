@@ -28,8 +28,8 @@ namespace PublicTransport.Client.Views.Browse
             this.OneWayBind(ViewModel, vm => vm.StopTimes, v => v.StopTimesListView.ItemsSource);
             this.Bind(ViewModel, vm => vm.SelectedStop, v => v.StopsListView.SelectedItem);
             this.Bind(ViewModel, vm => vm.SelectedStopTime, v => v.StopTimesListView.SelectedItem);
-            this.Bind(ViewModel, vm => vm.StopTimeFilter.Date, v => v.SearchDatePicker.SelectedDate);
-            this.Bind(ViewModel, vm => vm.StopTimeFilter.Time, v => v.SearchTimePicker.Text);
+            this.Bind(ViewModel, vm => vm.StopTimeReactiveFilter.Date, v => v.SearchDatePicker.SelectedDate);
+            this.Bind(ViewModel, vm => vm.StopTimeReactiveFilter.Time, v => v.SearchTimePicker.Text);
             this.BindCommand(ViewModel, vm => vm.AddTrip, v => v.AddTripButton);
             this.BindCommand(ViewModel, vm => vm.DeleteTrip, v => v.DeleteTripButton);
             this.BindCommand(ViewModel, vm => vm.EditTrip, v => v.EditTripButton);

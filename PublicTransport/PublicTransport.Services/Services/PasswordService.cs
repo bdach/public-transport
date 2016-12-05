@@ -49,6 +49,9 @@ namespace PublicTransport.Services
         /// <returns>Hashed and salted password, returned as a base64 string.</returns>
         public string GenerateHash(string plaintext)
         {
+            // TODO: Validation error if password null
+            if (plaintext == null) return null;
+
             var salt = new byte[SaltLength];
             new RNGCryptoServiceProvider().GetBytes(salt);
             var pbkdf2 = new Rfc2898DeriveBytes(plaintext, salt, Iterations);

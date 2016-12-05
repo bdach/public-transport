@@ -120,6 +120,7 @@
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
@@ -165,9 +166,9 @@
     <Compile Include="Client\ViewModels\MenuViewModelTest.cs" />
     <Compile Include="Client\ViewModels\NotificationViewModelTest.cs" />
     <Compile Include="Client\ViewModels\ShellViewModelTest.cs" />
-    <Compile Include="Services\AgencyServiceTest.cs" />
-    <Compile Include="Services\CityServiceTest.cs" />
-    <Compile Include="Services\LoginServiceTest.cs" />
+    <Compile Include="Services\AgencyRepositoryTest.cs" />
+    <Compile Include="Services\CityRepositoryTest.cs" />
+    <Compile Include="Services\LoginRepositoryTest.cs" />
     <Compile Include="Services\PasswordServiceTest.cs" />
     <Compile Include="Services\PersistenceTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -175,13 +176,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\ServiceTest.cs" />
-    <Compile Include="Services\FareAttributeServiceTest.cs" />
-    <Compile Include="Services\StopServiceTest.cs" />
-    <Compile Include="Services\StopTimeServiceTest.cs" />
-    <Compile Include="Services\StreetServiceTest.cs" />
-    <Compile Include="Services\TripServiceTest.cs" />
-    <Compile Include="Services\UserServiceTest.cs" />
+    <Compile Include="Services\RepositoryTest.cs" />
+    <Compile Include="Services\FareAttributeRepositoryTest.cs" />
+    <Compile Include="Services\StopRepositoryTest.cs" />
+    <Compile Include="Services\StopTimeRepositoryTest.cs" />
+    <Compile Include="Services\StreetRepositoryTest.cs" />
+    <Compile Include="Services\TripRepositoryTest.cs" />
+    <Compile Include="Services\UserRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,108 +1,162 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
     /// <summary>
-    ///     Service for managing streets.
+    ///     Service used to manage street data.
     /// </summary>
-    public class StreetService
+    public class StreetService : IStreetService
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Used for converting <see cref="City" /> objects to <see cref="CityDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<City, CityDto> _cityConverter;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="City" /> data from the database.
+        /// </summary>
+        private readonly CityRepository _cityRepository;
+
+        /// <summary>
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
         /// <summary>
+        ///     Used for converting <see cref="Street" /> objects to <see cref="StreetDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Street, StreetDto> _streetConverter;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Street" /> data from the database.
+        /// </summary>
+        private readonly StreetRepository _streetRepository;
+
+        /// <summary>
+        ///     Determines whether the database context has been disposed.
+        /// </summary>
+        private bool _disposed;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public StreetService(PublicTransportContext db)
+        public StreetService()
         {
-            _db = db;   
+            _db = new PublicTransportContext();
+            _cityRepository = new CityRepository(_db);
+            _streetRepository = new StreetRepository(_db);
+            _cityConverter = new CityConverter();
+            _streetConverter = new StreetConverter();
         }
 
         /// <summary>
-        ///     Inserts a <see cref="Street" /> record into the database.
+        ///     Creates a <see cref="Street" /> object in the database.
         /// </summary>
-        /// <param name="street"><see cref="Street" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Street" /> object corresponding to the inserted record.</returns>
-        public Street Create(Street street)
-        {
-            _db.Streets.Add(street);
-            _db.SaveChanges();
-            return street;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="Street" /> with the supplied <see cref="Street.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="Street" />.</param>
+        /// <param name="street"><see cref="StreetDto" /> object containing <see cref="Street" /> data.</param>
         /// <returns>
-        ///     <see cref="Street" /> object with the supplied ID number, or null if the <see cref="Street" /> with the supplied ID
-        ///     could not be found in the database.
+        ///     <see cref="StreetDto" /> representing the inserted <see cref="Street" />.
         /// </returns>
-        public Street Read(int id)
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        public StreetDto CreateStreet(StreetDto street)
         {
-            return _db.Streets.Include(u => u.City).FirstOrDefault(u => u.Id == id);
+            try
+            {
+                var result = _streetRepository.Create(_streetConverter.GetEntity(street));
+                return _streetConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Street" />.
+        ///     Updates a <see cref="Street" /> object in the database, using the data stored in the
+        ///     <see cref="StreetDto" /> object.
         /// </summary>
-        /// <param name="street"><see cref="Street" /> object to update.</param>
-        /// <returns>Updated <see cref="Street" /> object.</returns>
+        /// <param name="street"><see cref="StreetDto" /> representing the object to be updated in the database.</param>
+        /// <returns>
+        ///     <see cref="StreetDto" /> object containing the updated <see cref="Street" /> data.
+        /// </returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
         /// </exception>
-        public Street Update(Street street)
+        public StreetDto UpdateStreet(StreetDto street)
         {
-            var old = Read(street.Id);
-            if (old == null)
+            try
             {
-                throw new EntryNotFoundException();
+                var result = _streetRepository.Update(_streetConverter.GetEntity(street));
+                return _streetConverter.GetDto(result);
             }
-
-            _db.Entry(old).CurrentValues.SetValues(street);
-            _db.SaveChanges();
-            return street;
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="Street" /> from the database.
+        ///     Deletes a <see cref="Street" /> from the system.
         /// </summary>
-        /// <param name="street"><see cref="Street" /> object to delete.</param>
+        /// <param name="street"><see cref="StreetDto" /> representing the <see cref="Street" /> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        ///     Thrown when the <see cref="Street" /> could not be found in the database.
         /// </exception>
-        public void Delete(Street street)
+        public void DeleteStreet(StreetDto street)
         {
-            var old = Read(street.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
+            _streetRepository.Delete(_streetConverter.GetEntity(street));
         }
 
         /// <summary>
-        /// Filters out <see cref="Street"/> objects, using values from the supplied <see cref="IStreetFilter"/> object to perform the query.
+        ///     Filters <see cref="City" /> objects using the supplied string.
         /// </summary>
-        /// <param name="streetFilter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Street> FilterStreets(IStreetFilter streetFilter)
+        /// <param name="name">String to filter cities by.</param>
+        /// <returns>
+        ///     List of <see cref="CityDto" /> objects matching the filtering query.
+        /// </returns>
+        public List<CityDto> FilterCities(string name)
         {
-            return _db.Streets.Include(s => s.City)
-                .Where(s => s.Name.Contains(streetFilter.StreetNameFilter))
-                .Where(s => s.City.Name.Contains(streetFilter.CityNameFilter))
-                .Take(20).ToList();
+            return _cityRepository.GetCitiesContainingString(name)
+                .Select(c => _cityConverter.GetDto(c))
+                .ToList();
+        }
+
+        /// <summary>
+        ///     Filters <see cref="Street" /> objects using the supplied <see cref="StreetFilter" />.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="StreetDto" /> objects matching the filtering query.
+        /// </returns>
+        public List<StreetDto> FilterStreets(StreetFilter filter)
+        {
+            return _streetRepository.FilterStreets(filter)
+                .Select(s => _streetConverter.GetDto(s))
+                .ToList();
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }
