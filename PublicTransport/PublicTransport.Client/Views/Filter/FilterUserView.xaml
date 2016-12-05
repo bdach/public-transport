@@ -11,11 +11,23 @@
             <TextBlock>Find Users...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="AddUserButton">Add New</Button>
-            <Button x:Name="DeleteUserButton">Delete Selected</Button>
-            <Button x:Name="EditUserButton">Edit Selected</Button>
+            <Button x:Name="AddUserButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Add New" />
+            <Button x:Name="DeleteUserButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Delete Selected" />
+            <Button x:Name="EditUserButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Edit Selected" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -36,8 +48,7 @@
             <TextBlock Style="{StaticResource TextBoxLabel}"
                        Grid.Row="1"
                        Grid.Column="0">Has role</TextBlock>
-            <ComboBox Style="{StaticResource EnumComboBox}"
-                      Grid.Row="1"
+            <ComboBox Grid.Row="1"
                       Grid.Column="1"
                       x:Name="RoleTypesComboBox">
                 <ComboBox.ItemTemplate>

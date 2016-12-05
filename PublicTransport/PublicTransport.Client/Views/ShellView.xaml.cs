@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MahApps.Metro.Controls;
 using PublicTransport.Client.ViewModels;
 using ReactiveUI;
 
@@ -7,7 +8,7 @@ namespace PublicTransport.Client.Views
     /// <summary>
     ///     Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView : IViewFor<ShellViewModel>
+    public partial class ShellView : MetroWindow, IViewFor<ShellViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(ShellViewModel), typeof(ShellView), new PropertyMetadata(default(ShellViewModel)));

@@ -10,8 +10,16 @@
             <TextBlock>Editing Agency...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="SaveButton">Save</Button>
-            <Button x:Name="CloseButton">Close</Button>
+            <Button x:Name="SaveButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Save" />
+            <Button x:Name="CloseButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Close" />
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -35,6 +43,7 @@
                        Grid.Column="0"
                        Style="{StaticResource TextBoxLabel}">Street</TextBlock>
             <ComboBox x:Name="StreetComboBox" 
+                      IsEditable="True"
                       Grid.Row="1"
                       Grid.Column="1"
                       Height="Auto"

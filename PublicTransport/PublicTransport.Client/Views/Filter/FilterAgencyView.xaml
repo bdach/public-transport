@@ -10,11 +10,23 @@
             <TextBlock>Find Agencies...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="AddAgencyButton">Add New</Button>
-            <Button x:Name="DeleteAgencyButton">Delete Selected</Button>
-            <Button x:Name="EditAgencyButton">Edit Selected</Button>
+            <Button x:Name="AddAgencyButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Add New" />
+            <Button x:Name="DeleteAgencyButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Delete Selected" />
+            <Button x:Name="EditAgencyButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Edit Selected" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
