@@ -18,22 +18,29 @@ namespace PublicTransport.Services
     public class StreetService : IStreetService
     {
         /// <summary>
-        ///     Service used to fetch <see cref="City"/> data from the database.
+        ///     Used for converting <see cref="City" /> objects to <see cref="CityDto" /> objects and back.
         /// </summary>
-        private readonly CityRepository _cityRepository;
+        private readonly IConverter<City, CityDto> _cityConverter;
 
         /// <summary>
-        ///     Service used to fetch <see cref="Street"/> data from the database.
+        ///     Service used to fetch <see cref="City" /> data from the database.
         /// </summary>
-        private readonly StreetRepository _streetRepository;
+        private readonly CityRepository _cityRepository;
 
         /// <summary>
         ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
-        private readonly IConverter<City, CityDto> _cityConverter;
+        /// <summary>
+        ///     Used for converting <see cref="Street" /> objects to <see cref="StreetDto" /> objects and back.
+        /// </summary>
         private readonly IConverter<Street, StreetDto> _streetConverter;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Street" /> data from the database.
+        /// </summary>
+        private readonly StreetRepository _streetRepository;
 
         /// <summary>
         ///     Determines whether the database context has been disposed.
@@ -53,12 +60,15 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> create method.
+        ///     Creates a <see cref="Street" /> object in the database.
         /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be inserted into the database.</param>
+        /// <param name="street"><see cref="StreetDto" /> object containing <see cref="Street" /> data.</param>
         /// <returns>
-        ///     <see cref="Street"/> object successfully inserted into the database.
+        ///     <see cref="StreetDto" /> representing the inserted <see cref="Street" />.
         /// </returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
         public StreetDto CreateStreet(StreetDto street)
         {
             try
@@ -73,12 +83,16 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> update method.
+        ///     Updates a <see cref="Street" /> object in the database, using the data stored in the
+        ///     <see cref="StreetDto" /> object.
         /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be updated in the database.</param>
+        /// <param name="street"><see cref="StreetDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Street"/> object successfully updated in the database.
+        ///     <see cref="StreetDto" /> object containing the updated <see cref="Street" /> data.
         /// </returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
         /// <exception cref="EntryNotFoundException">
         ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
         /// </exception>
@@ -96,11 +110,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> delete method.
+        ///     Deletes a <see cref="Street" /> from the system.
         /// </summary>
-        /// <param name="street"><see cref="Street"/> object to be deleted from the database.</param>
+        /// <param name="street"><see cref="StreetDto" /> representing the <see cref="Street" /> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Street" /> could not be found in the database.
+        ///     Thrown when the <see cref="Street" /> could not be found in the database.
         /// </exception>
         public void DeleteStreet(StreetDto street)
         {
@@ -108,11 +122,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="CityRepository"/> filtering method.
+        ///     Filters <see cref="City" /> objects using the supplied string.
         /// </summary>
-        /// <param name="name">Filtering parameter.</param>
+        /// <param name="name">String to filter cities by.</param>
         /// <returns>
-        ///     List of <see cref="City"/> objects matching the filtering query.
+        ///     List of <see cref="CityDto" /> objects matching the filtering query.
         /// </returns>
         public List<CityDto> FilterCities(string name)
         {
@@ -122,11 +136,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> filtering method.
+        ///     Filters <see cref="Street" /> objects using the supplied <see cref="StreetFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="Street"/> objects matching the filtering query.
+        ///     List of <see cref="StreetDto" /> objects matching the filtering query.
         /// </returns>
         public List<StreetDto> FilterStreets(StreetFilter filter)
         {

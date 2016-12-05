@@ -5,7 +5,6 @@ using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
-using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.Contracts
 {
@@ -16,101 +15,97 @@ namespace PublicTransport.Services.Contracts
     public interface IFareService : IDisposable
     {
         /// <summary>
-        ///     Calls <see cref="FareAttributeRepository"/> create method.
+        ///     Creates a <see cref="FareAttribute" /> object in the database.
         /// </summary>
-        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be inserted into the database.</param>
+        /// <param name="fareAttribute"><see cref="FareAttributeDto" /> object containing <see cref="FareAttribute" /> data.</param>
         /// <returns>
-        ///     <see cref="FareAttribute"/> object successfully inserted into the database.
+        ///     <see cref="FareAttributeDto" /> representing the inserted <see cref="FareAttribute" />.
         /// </returns>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         FareAttributeDto CreateFareAttribute(FareAttributeDto fareAttribute);
 
         /// <summary>
-        ///     Calls <see cref="FareAttributeRepository"/> update method.
+        ///     Updates a <see cref="FareAttribute" /> object in the database, using the data stored in the
+        ///     <see cref="FareAttributeDto" /> object.
         /// </summary>
-        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be updated in the database.</param>
+        /// <param name="fareAttribute"><see cref="FareAttributeDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="FareAttribute"/> object successfully updated in the database.
+        ///     <see cref="FareAttributeDto" /> object containing the updated <see cref="FareAttribute" /> data.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="FareAttribute" /> could not be found in the database.
-        /// </exception>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         FareAttributeDto UpdateFareAttribute(FareAttributeDto fareAttribute);
 
         /// <summary>
-        ///     Calls <see cref="FareAttributeRepository"/> delete method.
+        ///     Deletes a <see cref="FareAttribute" /> from the system.
         /// </summary>
-        /// <param name="fareAttribute"><see cref="FareAttribute"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="FareAttribute" /> could not be found in the database.
-        /// </exception>
+        /// <param name="fareAttribute">
+        ///     <see cref="FareAttributeDto" /> representing the <see cref="FareAttribute" /> to be deleted
+        ///     from the database.
+        /// </param>
         [OperationContract]
         void DeleteFareAttribute(FareAttributeDto fareAttribute);
 
         /// <summary>
-        ///     Calls <see cref="FareRuleRepository"/> create method.
+        ///     Creates a <see cref="FareRule" /> object in the database.
         /// </summary>
-        /// <param name="fareRule"><see cref="FareRule"/> object to be inserted into the database.</param>
+        /// <param name="fareRule"><see cref="FareRuleDto" /> object containing <see cref="FareRule" /> data.</param>
         /// <returns>
-        ///     <see cref="FareRule"/> object successfully inserted into the database.
+        ///     <see cref="FareRuleDto" /> representing the inserted <see cref="FareRule" />.
         /// </returns>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         FareRuleDto CreateFareRule(FareRuleDto fareRule);
 
         /// <summary>
-        ///     Calls <see cref="FareRuleRepository"/> update method.
+        ///     Updates a <see cref="FareRule" /> object in the database, using the data stored in the
+        ///     <see cref="FareRuleDto" /> object.
         /// </summary>
-        /// <param name="fareRule"><see cref="FareRule"/> object to be updated in the database.</param>
+        /// <param name="fareRule"><see cref="FareRuleDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="FareRule"/> object successfully updated in the database.
+        ///     <see cref="FareRuleDto" /> object containing the updated <see cref="FareRule" /> data.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="FareRule" /> could not be found in the database.
-        /// </exception>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         FareRuleDto UpdateFareRule(FareRuleDto fareRule);
 
         /// <summary>
-        ///     Calls <see cref="FareRuleRepository"/> delete method.
+        ///     Deletes a <see cref="FareRule" /> from the system.
         /// </summary>
-        /// <param name="fareRule"><see cref="FareRule"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="FareRule" /> could not be found in the database.
-        /// </exception>
+        /// <param name="fareRule">
+        ///     <see cref="FareRuleDto" /> representing the <see cref="FareRule" /> to be deleted from the
+        ///     database.
+        /// </param>
         [OperationContract]
         void DeleteFareRule(FareRuleDto fareRule);
 
         /// <summary>
-        ///     Calls <see cref="FareAttributeRepository"/> filtering method.
+        ///     Filters <see cref="FareAttribute" /> objects using the supplied <see cref="FareFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="FareAttribute"/> objects matching the filtering query.
+        ///     List of <see cref="FareAttributeDto" /> objects matching the filtering query.
         /// </returns>
         [OperationContract]
         List<FareAttributeDto> FilterFares(FareFilter filter);
 
         /// <summary>
-        ///     Calls <see cref="RouteRepository"/> filtering method.
+        ///     Filters <see cref="Route" /> objects using the supplied <see cref="RouteFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="Route"/> objects matching the filtering query.
+        ///     List of <see cref="RouteDto" /> objects matching the filtering query.
         /// </returns>
         [OperationContract]
         List<RouteDto> FilterRoutes(RouteFilter filter);
 
         /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> filtering method.
+        ///     Filters <see cref="Zone" /> objects using the supplied string.
         /// </summary>
-        /// <param name="name">Filtering parameter.</param>
+        /// <param name="name">String to filter zones by.</param>
         /// <returns>
-        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        ///     List of <see cref="ZoneDto" /> objects matching the filtering query.
         /// </returns>
         [OperationContract]
         List<ZoneDto> FilterZones(string name);

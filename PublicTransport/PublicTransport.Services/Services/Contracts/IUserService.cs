@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
-using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.Contracts
 {
@@ -15,46 +15,41 @@ namespace PublicTransport.Services.Contracts
     public interface IUserService : IDisposable
     {
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> create method.
+        ///     Creates a <see cref="User" /> object in the database.
         /// </summary>
-        /// <param name="user"><see cref="UserDto"/> object to be inserted into the database.</param>
+        /// <param name="user"><see cref="UserDto" /> object containing <see cref="User" /> data.</param>
         /// <returns>
-        ///     <see cref="UserDto"/> object successfully inserted into the database.
+        ///     <see cref="UserDto" /> representing the inserted <see cref="User" />.
         /// </returns>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         UserDto CreateUser(UserDto user);
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> update method.
+        ///     Updates a <see cref="User" /> object in the database, using the data stored in the
+        ///     <see cref="UserDto" /> object.
         /// </summary>
-        /// <param name="user"><see cref="UserDto"/> object to be updated in the database.</param>
+        /// <param name="user"><see cref="UserDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="UserDto"/> object successfully updated in the database.
+        ///     <see cref="UserDto" /> object containing the updated <see cref="User" /> data.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="UserDto" /> could not be found in the database.
-        /// </exception>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         UserDto UpdateUser(UserDto user);
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> delete method.
+        ///     Deletes a <see cref="User" /> from the system.
         /// </summary>
-        /// <param name="user"><see cref="UserDto"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="UserDto" /> could not be found in the database.
-        /// </exception>
+        /// <param name="user"><see cref="UserDto" /> representing the <see cref="User" /> to be deleted from the database.</param>
         [OperationContract]
         void DeleteUser(UserDto user);
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> filtering method.
+        ///     Filters <see cref="User" /> objects using the supplied <see cref="UserFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="UserDto"/> objects matching the filtering query.
+        ///     List of <see cref="UserDto" /> objects matching the filtering query.
         /// </returns>
         [OperationContract]
         List<UserDto> FilterUsers(UserFilter filter);

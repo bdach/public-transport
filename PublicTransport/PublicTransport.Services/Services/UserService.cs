@@ -18,29 +18,29 @@ namespace PublicTransport.Services
     public class UserService : IUserService
     {
         /// <summary>
-        ///     Service used to fetch <see cref="User"/> data from the database.
+        ///     Database context common for services in this service used to access data.
         /// </summary>
-        private readonly UserRepository _userRepository;
+        private readonly PublicTransportContext _db;
 
         /// <summary>
-        ///     Service used to fetch <see cref="Role"/> data from the database.
-        /// </summary>
-        private readonly RoleRepository _roleRepository;
-
-        /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.User" /> objects to <see cref="UserDto" /> objects and back.
-        /// </summary>
-        private readonly IConverter<User, UserDto> _userConverter;
-
-        /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.Role" /> objects to <see cref="RoleDto" /> objects and back.
+        ///     Used for converting <see cref="Role" /> objects to <see cref="RoleDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Role, RoleDto> _roleConverter;
 
         /// <summary>
-        ///     Database context common for services in this service used to access data.
+        ///     Service used to fetch <see cref="Role" /> data from the database.
         /// </summary>
-        private readonly PublicTransportContext _db;
+        private readonly RoleRepository _roleRepository;
+
+        /// <summary>
+        ///     Used for converting <see cref="User" /> objects to <see cref="UserDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<User, UserDto> _userConverter;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="User" /> data from the database.
+        /// </summary>
+        private readonly UserRepository _userRepository;
 
         /// <summary>
         ///     Determines whether the database context has been disposed.
@@ -60,11 +60,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> create method.
+        ///     Creates a <see cref="User" /> object in the database.
         /// </summary>
-        /// <param name="user"><see cref="User"/> object to be inserted into the database.</param>
+        /// <param name="user"><see cref="UserDto" /> object containing <see cref="User" /> data.</param>
         /// <returns>
-        ///     <see cref="User"/> object successfully inserted into the database.
+        ///     <see cref="UserDto" /> representing the inserted <see cref="User" />.
         /// </returns>
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
@@ -83,18 +83,18 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Updates a <see cref="Domain.Entities.User" /> object in the database, using the data stored in the
+        ///     Updates a <see cref="User" /> object in the database, using the data stored in the
         ///     <see cref="UserDto" /> object.
         /// </summary>
-        /// <param name="user"><see cref="Domain.Entities.User" /> object to be updated in the database.</param>
+        /// <param name="user"><see cref="UserDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Domain.Entities.User" /> object successfully updated in the database.
+        ///     <see cref="UserDto" /> object containing the updated <see cref="User" /> data.
         /// </returns>
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Domain.Entities.User" /> could not be found in the database.
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
         /// </exception>
         public UserDto UpdateUser(UserDto user)
         {
@@ -110,11 +110,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> delete method.
+        ///     Deletes a <see cref="User" /> from the system.
         /// </summary>
-        /// <param name="user"><see cref="User"/> object to be deleted from the database.</param>
+        /// <param name="user"><see cref="UserDto" /> representing the <see cref="User" /> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        ///     Thrown when the <see cref="User" /> could not be found in the database.
         /// </exception>
         public void DeleteUser(UserDto user)
         {
@@ -122,11 +122,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="UserRepository"/> filtering method.
+        ///     Filters <see cref="User" /> objects using the supplied <see cref="UserFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="User"/> objects matching the filtering query.
+        ///     List of <see cref="UserDto" /> objects matching the filtering query.
         /// </returns>
         public List<UserDto> FilterUsers(UserFilter filter)
         {

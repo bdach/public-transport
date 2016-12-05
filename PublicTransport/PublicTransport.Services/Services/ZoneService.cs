@@ -17,9 +17,9 @@ namespace PublicTransport.Services
     public class ZoneService : IZoneService
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Zone"/> data from the database.
+        ///     Used for converting <see cref="Zone" /> objects to <see cref="ZoneDto" /> objects and back.
         /// </summary>
-        private readonly ZoneRepository _zoneRepository;
+        private readonly IConverter<Zone, ZoneDto> _converter;
 
         /// <summary>
         ///     Database context common for services in this service used to access data.
@@ -27,9 +27,9 @@ namespace PublicTransport.Services
         private readonly PublicTransportContext _db;
 
         /// <summary>
-        ///     Used for converting <see cref="Zone" /> objects to <see cref="ZoneDto" /> objects and back.
+        ///     Service used to fetch <see cref="Zone" /> data from the database.
         /// </summary>
-        private readonly IConverter<Zone, ZoneDto> _converter;
+        private readonly ZoneRepository _zoneRepository;
 
         /// <summary>
         ///     Determines whether the database context has been disposed.
@@ -47,14 +47,14 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> create method.
+        ///     Creates a <see cref="Zone" /> object in the database.
         /// </summary>
-        /// <param name="zone"><see cref="ZoneDto"/> object to be inserted into the database.</param>
+        /// <param name="zone"><see cref="ZoneDto" /> object containing <see cref="Zone" /> data.</param>
         /// <returns>
-        ///     <see cref="ZoneDto"/> object successfully inserted into the database.
+        ///     <see cref="ZoneDto" /> representing the inserted <see cref="Zone" />.
         /// </returns>
         /// <exception cref="ValidationFaultException">
-        ///     Thrown when the entity has one or more validation errors.
+        ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
         public ZoneDto CreateZone(ZoneDto zone)
         {
@@ -70,17 +70,18 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> update method.
+        ///     Updates a <see cref="Zone" /> object in the database, using the data stored in the
+        ///     <see cref="ZoneDto" /> object.
         /// </summary>
-        /// <param name="zone"><see cref="ZoneDto"/> object to be updated in the database.</param>
+        /// <param name="zone"><see cref="ZoneDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="ZoneDto"/> object successfully updated in the database.
+        ///     <see cref="ZoneDto" /> object containing the updated <see cref="Zone" /> data.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="ZoneDto" /> could not be found in the database.
-        /// </exception>
         /// <exception cref="ValidationFaultException">
-        ///     Thrown when the entity has one or more validation errors.
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Zone" /> could not be found in the database.
         /// </exception>
         public ZoneDto UpdateZone(ZoneDto zone)
         {
@@ -96,11 +97,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> delete method.
+        ///     Deletes a <see cref="Zone" /> from the system.
         /// </summary>
-        /// <param name="zone"><see cref="ZoneDto"/> object to be deleted from the database.</param>
+        /// <param name="zone"><see cref="ZoneDto" /> representing the <see cref="Zone" /> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="ZoneDto" /> could not be found in the database.
+        ///     Thrown when the <see cref="Zone" /> could not be found in the database.
         /// </exception>
         public void DeleteZone(ZoneDto zone)
         {
@@ -108,11 +109,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> filtering method.
+        ///     Filters <see cref="Zone" /> objects using the supplied string.
         /// </summary>
-        /// <param name="name">Filtering parameter.</param>
+        /// <param name="name">String to filter zones by.</param>
         /// <returns>
-        ///     List of <see cref="ZoneDto"/> objects matching the filtering query.
+        ///     List of <see cref="ZoneDto" /> objects matching the filtering query.
         /// </returns>
         public List<ZoneDto> FilterZones(string name)
         {

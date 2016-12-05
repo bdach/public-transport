@@ -19,6 +19,7 @@ namespace PublicTransport.Domain.Entities
         ///     Contains a single voice telephone number for the specified agency.
         /// </summary>
         [Required(ErrorMessage = "The phone number is required.")]
+        [RegularExpression("[0-9+#]+", ErrorMessage = "The telephone number must be a non-empty string consisting of digits, plus signs and/or hash symbols.")]
         public string Phone { get; set; }
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains the street number of the agency.
         /// </summary>
+        [RegularExpression("[0-9]+.*", ErrorMessage = "The street number must begin with a digit.")]
         public string StreetNumber { get; set; }
     }
 }

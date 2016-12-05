@@ -33,17 +33,17 @@ namespace PublicTransport.Services
         private readonly StreetRepository _streetRepository;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.Stop" /> objects to <see cref="StopDto" /> objects and back.
+        ///     Used for converting <see cref="Stop" /> objects to <see cref="StopDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Stop, StopDto> _stopConverter;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.Zone" /> objects to <see cref="ZoneDto" /> objects and back.
+        ///     Used for converting <see cref="Zone" /> objects to <see cref="ZoneDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Zone, ZoneDto> _zoneConverter;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.Street" /> objects to <see cref="StreetDto" /> objects and back.
+        ///     Used for converting <see cref="Street" /> objects to <see cref="StreetDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Street, StreetDto> _streetConverter;
 
@@ -63,21 +63,26 @@ namespace PublicTransport.Services
         public StopService()
         {
             _db = new PublicTransportContext();
+
             _stopRepository = new StopRepository(_db);
             _zoneRepository = new ZoneRepository(_db);
             _streetRepository = new StreetRepository(_db);
+
             _stopConverter = new StopConverter();
             _zoneConverter = new ZoneConverter();
             _streetConverter = new StreetConverter();
         }
 
         /// <summary>
-        ///     Calls <see cref="StopRepository"/> create method.
+        ///     Creates a <see cref="Stop"/> object in the database.
         /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be inserted into the database.</param>
+        /// <param name="stop"><see cref="StopDto" /> object containing <see cref="Stop"/> data.</param>
         /// <returns>
-        ///     <see cref="Stop"/> object successfully inserted into the database.
+        ///     <see cref="StopDto" /> representing the inserted <see cref="Stop"/>.
         /// </returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
         public StopDto CreateStop(StopDto stop)
         {
             try
@@ -92,14 +97,18 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StopRepository"/> update method.
+        ///     Updates a <see cref="Stop"/> object in the database, using the data stored in the
+        ///     <see cref="StopDto" /> object.
         /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be updated in the database.</param>
+        /// <param name="stop"><see cref="StopDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Stop"/> object successfully updated in the database.
+        ///     <see cref="StopDto" /> object containing the updated <see cref="Stop"/> data.
         /// </returns>
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        ///     Thrown when the supplied <see cref="Stop"/> could not be found in the database.
         /// </exception>
         public StopDto UpdateStop(StopDto stop)
         {
@@ -115,11 +124,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StopRepository"/> delete method.
+        ///     Deletes a <see cref="Stop"/> from the system.
         /// </summary>
-        /// <param name="stop"><see cref="Stop"/> object to be deleted from the database.</param>
+        /// <param name="stop"><see cref="StopDto" /> representing the <see cref="Stop"/> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        ///     Thrown when the <see cref="Stop" /> could not be found in the database.
         /// </exception>
         public void DeleteStop(StopDto stop)
         {
@@ -127,11 +136,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StopRepository"/> filtering method.
+        ///     Filters <see cref="Stop"/> objects using the supplied <see cref="StopFilter"/>.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="Stop"/> objects matching the filtering query.
+        ///     List of <see cref="StopDto"/> objects matching the filtering query.
         /// </returns>
         public List<StopDto> FilterStops(StopFilter filter)
         {
@@ -141,11 +150,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="ZoneRepository"/> filtering method.
+        ///     Filters <see cref="Zone"/> objects using the supplied string.
         /// </summary>
-        /// <param name="name">Filtering parameter.</param>
+        /// <param name="name">String to filter zones by.</param>
         /// <returns>
-        ///     List of <see cref="Zone"/> objects matching the filtering query.
+        ///     List of <see cref="ZoneDto"/> objects matching the filtering query.
         /// </returns>
         public List<ZoneDto> FilterZones(string name)
         {
@@ -155,11 +164,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> filtering method.
+        ///     Filters <see cref="Street" /> objects using the supplied <see cref="StreetFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="Street"/> objects matching the filtering query.
+        ///     List of <see cref="StreetDto" /> objects matching the filtering query.
         /// </returns>
         public List<StreetDto> FilterStreets(StreetFilter filter)
         {

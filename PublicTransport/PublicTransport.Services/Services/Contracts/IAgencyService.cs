@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
-using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services.Contracts
 {
@@ -15,42 +15,37 @@ namespace PublicTransport.Services.Contracts
     public interface IAgencyService : IDisposable
     {
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> create method.
+        ///     Creates an <see cref="Agency"/> object in the database.
         /// </summary>
-        /// <param name="agency"><see cref="AgencyDto"/> object to be inserted into the database.</param>
+        /// <param name="agency"><see cref="AgencyDto" /> object containing <see cref="Agency"/> data.</param>
         /// <returns>
-        ///     <see cref="AgencyDto"/> object successfully inserted into the database.
+        ///     <see cref="AgencyDto" /> representing the inserted <see cref="Agency"/>.
         /// </returns>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         AgencyDto CreateAgency(AgencyDto agency);
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> update method.
+        ///     Updates an <see cref="Agency"/> object in the database, using the data stored in the
+        ///     <see cref="AgencyDto" /> object.
         /// </summary>
-        /// <param name="agency"><see cref="AgencyDto"/> object to be updated in the database.</param>
+        /// <param name="agency"><see cref="AgencyDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="AgencyDto"/> object successfully updated in the database.
+        ///     <see cref="AgencyDto" /> object containing the updated <see cref="Agency"/> data.
         /// </returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="AgencyDto" /> could not be found in the database.
-        /// </exception>
         [OperationContract]
         [FaultContract(typeof(ValidationFault))]
         AgencyDto UpdateAgency(AgencyDto agency);
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> delete method.
+        ///     Deletes an <see cref="Agency"/> from the system.
         /// </summary>
-        /// <param name="agency"><see cref="AgencyDto"/> object to be deleted from the database.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="AgencyDto" /> could not be found in the database.
-        /// </exception>
+        /// <param name="agency"><see cref="AgencyDto" /> representing the <see cref="Agency"/> to be deleted from the database.</param>
         [OperationContract]
         void DeleteAgency(AgencyDto agency);
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> filtering method.
+        ///     Filters <see cref="Agency"/> objects using the supplied <see cref="AgencyFilter"/>.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
@@ -60,11 +55,11 @@ namespace PublicTransport.Services.Contracts
         List<AgencyDto> FilterAgencies(AgencyFilter filter);
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> filtering method.
+        ///     Filters <see cref="Street" /> objects using the supplied <see cref="StreetFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="StreetDto"/> objects matching the filtering query.
+        ///     List of <see cref="StreetDto" /> objects matching the filtering query.
         /// </returns>
         [OperationContract]
         List<StreetDto> FilterStreets(StreetFilter filter);

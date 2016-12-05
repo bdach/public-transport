@@ -28,12 +28,12 @@ namespace PublicTransport.Services
         private readonly StreetRepository _streetRepository;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.Agency" /> objects to <see cref="AgencyDto" /> objects and back.
+        ///     Used for converting <see cref="Agency" /> objects to <see cref="AgencyDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Agency, AgencyDto> _agencyConverter;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.Street" /> objects to <see cref="StreetDto" /> objects and back.
+        ///     Used for converting <see cref="Street" /> objects to <see cref="StreetDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Street, StreetDto> _streetConverter;
 
@@ -60,11 +60,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Creates a <see cref="Domain.Entities.Agency" /> object in the database.
+        ///     Creates an <see cref="Agency"/> object in the database.
         /// </summary>
-        /// <param name="agency"><see cref="Domain.Entities.Agency" /> object to be inserted into the database.</param>
+        /// <param name="agency"><see cref="AgencyDto" /> object containing <see cref="Agency"/> data.</param>
         /// <returns>
-        ///     <see cref="Domain.Entities.Agency" /> object successfully inserted into the database.
+        ///     <see cref="AgencyDto" /> representing the inserted <see cref="Agency"/>.
         /// </returns>
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
@@ -83,18 +83,18 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Updates a <see cref="Domain.Entities.Agency" /> object in the database, using the data stored in the
+        ///     Updates an <see cref="Agency"/> object in the database, using the data stored in the
         ///     <see cref="AgencyDto" /> object.
         /// </summary>
-        /// <param name="agency"><see cref="Domain.Entities.Agency" /> object to be updated in the database.</param>
+        /// <param name="agency"><see cref="AgencyDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Domain.Entities.Agency" /> object successfully updated in the database.
+        ///     <see cref="AgencyDto" /> object containing the updated <see cref="Agency"/> data.
         /// </returns>
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Domain.Entities.Agency" /> could not be found in the database.
+        ///     Thrown when the supplied <see cref="Agency"/> could not be found in the database.
         /// </exception>
         public AgencyDto UpdateAgency(AgencyDto agency)
         {
@@ -110,11 +110,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Deletes a <see cref="Domain.Entities.Agency" /> from the system.
+        ///     Deletes an <see cref="Agency"/> from the system.
         /// </summary>
-        /// <param name="agency"><see cref="Domain.Entities.Agency" /> object to be deleted from the database.</param>
+        /// <param name="agency"><see cref="AgencyDto" /> representing the <see cref="Agency"/> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Domain.Entities.Agency" /> could not be found in the database.
+        ///     Thrown when the <see cref="Agency" /> could not be found in the database.
         /// </exception>
         public void DeleteAgency(AgencyDto agency)
         {
@@ -122,11 +122,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="AgencyRepository"/> filtering method.
+        ///     Filters <see cref="Agency"/> objects using the supplied <see cref="AgencyFilter"/>.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="Agency"/> objects matching the filtering query.
+        ///     List of <see cref="AgencyDto"/> objects matching the filtering query.
         /// </returns>
         public List<AgencyDto> FilterAgencies(AgencyFilter filter)
         {
@@ -136,11 +136,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Calls <see cref="StreetRepository"/> filtering method.
+        ///     Filters <see cref="Street" /> objects using the supplied <see cref="StreetFilter" />.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
         /// <returns>
-        ///     List of <see cref="Street"/> objects matching the filtering query.
+        ///     List of <see cref="StreetDto" /> objects matching the filtering query.
         /// </returns>
         public List<StreetDto> FilterStreets(StreetFilter filter)
         {

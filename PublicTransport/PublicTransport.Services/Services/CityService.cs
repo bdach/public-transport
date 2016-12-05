@@ -17,12 +17,12 @@ namespace PublicTransport.Services
     public class CityService : ICityService
     {
         /// <summary>
-        ///     Service used to fetch <see cref="Domain.Entities.City" /> data from the database.
+        ///     Service used to fetch <see cref="City" /> data from the database.
         /// </summary>
         private readonly CityRepository _cityRepository;
 
         /// <summary>
-        ///     Used for converting <see cref="Domain.Entities.City" /> objects to <see cref="CityDto" /> objects and back.
+        ///     Used for converting <see cref="City" /> objects to <see cref="CityDto" /> objects and back.
         /// </summary>
         private readonly IConverter<City, CityDto> _converter;
 
@@ -47,11 +47,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Creates a <see cref="Domain.Entities.City" /> object in the database.
+        ///     Creates a <see cref="City"/> object in the database.
         /// </summary>
-        /// <param name="city"><see cref="Domain.Entities.City" /> object to be inserted into the database.</param>
+        /// <param name="city"><see cref="CityDto" /> object containing <see cref="City"/> data.</param>
         /// <returns>
-        ///     <see cref="Domain.Entities.City" /> object successfully inserted into the database.
+        ///     <see cref="CityDto" /> representing the inserted <see cref="City"/>.
         /// </returns>
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
@@ -70,18 +70,18 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Updates a <see cref="Domain.Entities.City" /> object in the database, using the data stored in the
+        ///     Updates a <see cref="City"/> object in the database, using the data stored in the
         ///     <see cref="CityDto" /> object.
         /// </summary>
-        /// <param name="city"><see cref="Domain.Entities.City" /> object to be updated in the database.</param>
+        /// <param name="city"><see cref="CityDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     <see cref="Domain.Entities.City" /> object successfully updated in the database.
+        ///     <see cref="CityDto" /> object containing the updated <see cref="City"/> data.
         /// </returns>
         /// <exception cref="ValidationFaultException">
         ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Domain.Entities.City" /> could not be found in the database.
+        ///     Thrown when the supplied <see cref="City"/> could not be found in the database.
         /// </exception>
         public CityDto UpdateCity(CityDto city)
         {
@@ -97,11 +97,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Deletes a <see cref="Domain.Entities.City" /> from the system.
+        ///     Deletes a <see cref="City"/> from the system.
         /// </summary>
-        /// <param name="city"><see cref="Domain.Entities.City" /> object to be deleted from the database.</param>
+        /// <param name="city"><see cref="CityDto" /> representing the <see cref="City"/> to be deleted from the database.</param>
         /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Domain.Entities.City" /> could not be found in the database.
+        ///     Thrown when the <see cref="City" /> could not be found in the database.
         /// </exception>
         public void DeleteCity(CityDto city)
         {
@@ -109,11 +109,11 @@ namespace PublicTransport.Services
         }
 
         /// <summary>
-        ///     Filters the stored cities.
+        ///     Filters <see cref="City" /> objects using the supplied string.
         /// </summary>
-        /// <param name="name">Filtering parameter.</param>
+        /// <param name="name">String to filter cities by.</param>
         /// <returns>
-        ///     List of <see cref="Domain.Entities.City" /> objects matching the filtering query.
+        ///     List of <see cref="CityDto" /> objects matching the filtering query.
         /// </returns>
         public List<CityDto> FilterCities(string name)
         {
