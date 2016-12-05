@@ -29,6 +29,7 @@ namespace PublicTransport.Client.Views.Edit
             this.Bind(ViewModel, vm => vm.Trip.ShortName, v => v.ShortNameTextBox.Text);
             this.Bind(ViewModel, vm => vm.Trip.Headsign, v => v.HeadsignTextBox.Text);
             this.Bind(ViewModel, vm => vm.SelectedStopTime, v => v.StopsListView.SelectedItem);
+            // TODO: Saving trip without arrival/departure times causes no saving and no notification about error.
             this.BindCommand(ViewModel, vm => vm.SaveTrip, v => v.SaveButton);
             this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
             this.BindCommand(ViewModel, vm => vm.NavigateToCalendar, v => v.EditScheduleButton);
