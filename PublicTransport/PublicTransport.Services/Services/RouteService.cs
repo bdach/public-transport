@@ -101,6 +101,7 @@ namespace PublicTransport.Services
         public RouteService()
         {
             _db = new PublicTransportContext();
+
             #region Repositories
 
             _agencyRepository = new AgencyRepository(_db);

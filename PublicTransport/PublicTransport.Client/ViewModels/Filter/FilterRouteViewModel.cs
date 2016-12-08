@@ -146,7 +146,7 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     The list of <see cref="AgencyDto" /> objects currently displayed to the user.
+        ///     The list of <see cref="RouteDto" /> objects currently displayed to the user.
         /// </summary>
         public ReactiveList<RouteDto> Routes { get; protected set; }
 

@@ -90,6 +90,7 @@
     <Compile Include="DataTransfer\FareRuleDto.cs" />
     <Compile Include="DataTransfer\Filters\AgencyFilter.cs" />
     <Compile Include="DataTransfer\Filters\FareFilter.cs" />
+    <Compile Include="DataTransfer\Filters\RouteSearchFilter.cs" />
     <Compile Include="DataTransfer\Filters\StopFilter.cs" />
     <Compile Include="DataTransfer\Filters\RouteFilter.cs" />
     <Compile Include="DataTransfer\Filters\StopTimeFilter.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Services\Contracts\IFareService.cs" />
     <Compile Include="Services\Contracts\ILoginService.cs" />
     <Compile Include="Services\Contracts\IRouteService.cs" />
+    <Compile Include="Services\Contracts\ISearchService.cs" />
     <Compile Include="Services\Contracts\IStopService.cs" />
     <Compile Include="Services\Contracts\IStreetService.cs" />
     <Compile Include="Services\Contracts\IUserService.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\FareService.cs" />
     <Compile Include="Services\RouteService.cs" />
+    <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\StopService.cs" />
     <Compile Include="Services\StreetService.cs" />
     <Compile Include="Services\UserService.cs" />
