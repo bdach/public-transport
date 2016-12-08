@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignWidth="1000"
-             Background="{StaticResource AccentColorBrush2}">
+             Background="{StaticResource ControlsValidationBrush}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -18,7 +18,7 @@
                    TextWrapping="Wrap" />
         <Button x:Name="CloseButton"
                 Grid.Column="1"
-                Style="{DynamicResource AccentedSquareButtonStyle}"
+                Style="{DynamicResource SquareButtonStyle}"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Margin="10"
