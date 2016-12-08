@@ -223,6 +223,9 @@
     <Compile Include="Views\Browse\RouteTimetableView.xaml.cs">
       <DependentUpon>RouteTimetableView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Browse\SearchRouteView.xaml.cs">
+      <DependentUpon>SearchRouteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Browse\StopTimetableView.xaml.cs">
       <DependentUpon>StopTimetableView.xaml</DependentUpon>
     </Compile>
