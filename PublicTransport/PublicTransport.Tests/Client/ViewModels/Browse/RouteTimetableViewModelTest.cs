@@ -13,16 +13,16 @@ using ReactiveUI;
 namespace PublicTransport.Tests.Client.ViewModels.Browse
 {
     [TestFixture]
-    public class TimetableViewModelTest : RoutableViewModelTest
+    public class RouteTimetableViewModelTest : RoutableViewModelTest
     {
         private Mock<IRouteService> _routeService;
-        private TimetableViewModel _viewModel;
+        private RouteTimetableViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
             _routeService = new Mock<IRouteService>();
-            _viewModel = new TimetableViewModel(Screen.Object, _routeService.Object, new RouteDto());
+            _viewModel = new RouteTimetableViewModel(Screen.Object, _routeService.Object, new RouteDto());
         }
 
         [Test]

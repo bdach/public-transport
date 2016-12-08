@@ -6,6 +6,7 @@ using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
 using PublicTransport.Client.Services.Stops;
+using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
@@ -102,6 +103,13 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #endregion
 
+            #region View the timetable
+
+            ViewTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem,
+                _ => HostScreen.Router.Navigate.ExecuteAsync(new StopTimetableViewModel(HostScreen, _stopService, _selectedStop)));
+
+            #endregion
+
             #region Updating the list of stops upon navigating back
 
             HostScreen.Router.NavigateBack
@@ -154,6 +162,11 @@ namespace PublicTransport.Client.ViewModels.Filter
         ///     Deletes the currently selected <see cref="Stop" />.
         /// </summary>
         public ReactiveCommand<Unit> DeleteStop { get; protected set; }
+
+        /// <summary>
+        ///     Shows the timetable for the currently selected stop.
+        /// </summary>
+        public ReactiveCommand<object> ViewTimetable { get; protected set; }
 
         /// <summary>
         ///     String uniquely identifying the current view model.

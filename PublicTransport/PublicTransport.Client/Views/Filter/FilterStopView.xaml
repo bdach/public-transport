@@ -25,6 +25,11 @@
                     Margin="10"
                     Padding="10"
                     Content="Edit Selected" />
+            <Button x:Name="ViewTimetableButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="View Timetable" />
         </StackPanel>
         <Grid Style="{StaticResource Content}">
             <Grid.RowDefinitions>

@@ -32,6 +32,8 @@ namespace PublicTransport.Services
         /// </summary>
         private readonly StreetRepository _streetRepository;
 
+        private readonly StopTimeRepository _stopTimeRepository;
+
         /// <summary>
         ///     Used for converting <see cref="Stop" /> objects to <see cref="StopDto" /> objects and back.
         /// </summary>
@@ -46,6 +48,9 @@ namespace PublicTransport.Services
         ///     Used for converting <see cref="Street" /> objects to <see cref="StreetDto" /> objects and back.
         /// </summary>
         private readonly IConverter<Street, StreetDto> _streetConverter;
+
+        private readonly IConverter<Route, RouteDto> _routeConverter;
+        private readonly IConverter<StopTime, StopTimeDto> _stopTimeConverter;
 
         /// <summary>
         ///     Database context common for services in this service used to access data.
@@ -67,10 +72,13 @@ namespace PublicTransport.Services
             _stopRepository = new StopRepository(_db);
             _zoneRepository = new ZoneRepository(_db);
             _streetRepository = new StreetRepository(_db);
+            _stopTimeRepository = new StopTimeRepository(_db);
 
             _stopConverter = new StopConverter();
             _zoneConverter = new ZoneConverter();
             _streetConverter = new StreetConverter();
+            _stopTimeConverter = new StopTimeConverter();
+            _routeConverter = new RouteConverter();
         }
 
         /// <summary>
@@ -175,6 +183,21 @@ namespace PublicTransport.Services
             return _streetRepository.FilterStreets(filter)
                 .Select(_streetConverter.GetDto)
                 .ToList();
+        }
+
+        /// <summary>
+        ///     Fetches a timetable for the <see cref="Stop"/> with the given ID.
+        /// </summary>
+        /// <param name="stopId">ID of the <see cref="Stop"/> the timetable should be displayed for.</param>
+        /// <returns>
+        ///     A dictionary indexed by <see cref="RouteDto"/> objects, whose values are lists of <see cref="StopTimeDto"/>s.
+        ///     The values represent the times of arrival/departure of the given route for the selected stop.
+        /// </returns>
+        public Dictionary<RouteDto, List<StopTimeDto>> GetStopTimetable(int stopId)
+        {
+            return _stopTimeRepository.GetFullTimetableByStopId(stopId)
+                .ToDictionary(kv => _routeConverter.GetDto(kv.Key),
+                    kv => kv.Value.Select(st => _stopTimeConverter.GetDto(st)).ToList());
         }
 
         /// <summary>

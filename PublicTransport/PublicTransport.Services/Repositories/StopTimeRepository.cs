@@ -100,9 +100,14 @@ namespace PublicTransport.Services.Repositories
         /// <returns>
         ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/>.
         /// </returns>
-        public List<StopTime> GetFullTimetableByStopId(int stopId)
+        public Dictionary<Route, List<StopTime>> GetFullTimetableByStopId(int stopId)
         {
-            return _db.StopTimes.Where(st => st.StopId == stopId).ToList();
+            return _db.StopTimes
+                .Include(st => st.Trip.Route.Agency)
+                .Where(st => st.StopId == stopId)
+                .ToList()   // this enumerates, calling this for side effects (skipping this line ignores Agency include)
+                .GroupBy(st => st.Trip.Route)
+                .ToDictionary(g => g.Key, g => g.ToList());
         }
 
         /// <summary>

@@ -26,6 +26,7 @@
     <MetadataFile FileName="stops1.xsd" MetadataType="Schema" ID="f355ebec-e81d-46df-98c1-863cbab8b1e6" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd5" />
     <MetadataFile FileName="stops2.xsd" MetadataType="Schema" ID="39787753-1f31-476e-b224-e4c32e7f34cc" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd3" />
     <MetadataFile FileName="stops3.xsd" MetadataType="Schema" ID="1a641880-9c27-40b6-8bb2-760a347448ee" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd1" />
+    <MetadataFile FileName="stops6.xsd" MetadataType="Schema" ID="f0c865be-beae-46ac-8a0b-bacad3f0c781" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd6" />
     <MetadataFile FileName="stops4.xsd" MetadataType="Schema" ID="28abafcc-832f-4550-aba4-88c7a6d44cff" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd4" />
     <MetadataFile FileName="StopService.wsdl" MetadataType="Wsdl" ID="f8468f2e-ab12-47ef-9605-2d14bbff4046" SourceId="1" SourceUrl="http://localhost:8733/stops" />
     <MetadataFile FileName="stops5.xsd" MetadataType="Schema" ID="34b3f946-6378-4311-acc6-38b5a8cafa48" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd2" />

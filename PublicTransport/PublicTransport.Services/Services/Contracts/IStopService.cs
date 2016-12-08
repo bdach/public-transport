@@ -73,6 +73,17 @@ namespace PublicTransport.Services.Contracts
         /// </returns>
         [OperationContract]
         List<StreetDto> FilterStreets(StreetFilter filter);
+
+        /// <summary>
+        ///     Fetches a timetable for the <see cref="Stop"/> with the given ID.
+        /// </summary>
+        /// <param name="stopId">ID of the <see cref="Stop"/> the timetable should be displayed for.</param>
+        /// <returns>
+        ///     A dictionary indexed by <see cref="RouteDto"/> objects, whose values are lists of <see cref="StopTimeDto"/>s.
+        ///     The values represent the times of arrival/departure of the given route for the selected stop.
+        /// </returns>
+        [OperationContract]
+        Dictionary<RouteDto, List<StopTimeDto>> GetStopTimetable(int stopId);
     }
 
 }
