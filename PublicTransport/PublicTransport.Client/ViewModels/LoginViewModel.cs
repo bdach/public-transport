@@ -32,6 +32,11 @@ namespace PublicTransport.Client.ViewModels
         private string _username = "";
 
         /// <summary>
+        ///     Indicates whether a login request is in progress.
+        /// </summary>
+        private bool _inProgress;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
@@ -47,7 +52,9 @@ namespace PublicTransport.Client.ViewModels
                 .Select(s => !string.IsNullOrWhiteSpace(s));
             SendLoginRequest = ReactiveCommand.CreateAsyncTask(canSendRequest, async _ =>
             {
+                InProgress = true;
                 var loginData = await _loginService.RequestLoginAsync(new LoginData(Username, PasswordBox?.Password));
+                InProgress = false;
                 Username = null;
                 if (PasswordBox != null) PasswordBox.Password = null;
                 return loginData;
@@ -59,11 +66,11 @@ namespace PublicTransport.Client.ViewModels
             SendLoginRequest.ThrownExceptions
                 .Where(ex => ex is FaultException)
                 .SelectMany(ex => UserError.Throw("Invalid username or password.", ex))
-                .Subscribe();
+                .Subscribe(_ => InProgress = false);
             SendLoginRequest.ThrownExceptions
                 .Where(ex => !(ex is FaultException))
                 .SelectMany(ex => UserError.Throw("Could not connect to database.", ex))
-                .Subscribe();
+                .Subscribe(_ => InProgress = false);
 
             #endregion
         }
@@ -72,6 +79,15 @@ namespace PublicTransport.Client.ViewModels
         ///     Command responsible for sending the login request.
         /// </summary>
         public ReactiveCommand<UserInfo> SendLoginRequest { get; }
+
+        /// <summary>
+        ///     Indicates whether a login request is in progress.
+        /// </summary>
+        public bool InProgress
+        {
+            get { return _inProgress; }
+            set { this.RaiseAndSetIfChanged(ref _inProgress, value); }
+        }
 
         /// <summary>
         ///     Stores the username entered by the user.

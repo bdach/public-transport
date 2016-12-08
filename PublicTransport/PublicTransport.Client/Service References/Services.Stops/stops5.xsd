@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/stops?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" />
+  <xs:import schemaLocation="http://localhost:8733/stops?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="StopDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="Id" type="xs:int" />
@@ -51,4 +53,69 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfStreetDto" nillable="true" type="tns:ArrayOfStreetDto" />
+  <xs:complexType name="RouteDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Agency" nillable="true" type="tns:AgencyDto" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="LongName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" minOccurs="0" name="RouteType" type="q1:RouteType" />
+      <xs:element minOccurs="0" name="ShortName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RouteDto" nillable="true" type="tns:RouteDto" />
+  <xs:complexType name="AgencyDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Regon" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Street" nillable="true" type="tns:StreetDto" />
+      <xs:element minOccurs="0" name="StreetNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Url" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AgencyDto" nillable="true" type="tns:AgencyDto" />
+  <xs:complexType name="ArrayOfStopTimeDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StopTimeDto" nillable="true" type="tns:StopTimeDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStopTimeDto" nillable="true" type="tns:ArrayOfStopTimeDto" />
+  <xs:complexType name="StopTimeDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ArrivalTime" type="ser:duration" />
+      <xs:element minOccurs="0" name="DepartureTime" type="ser:duration" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Stop" nillable="true" type="tns:StopDto" />
+      <xs:element minOccurs="0" name="StopSequence" type="xs:int" />
+      <xs:element minOccurs="0" name="Trip" nillable="true" type="tns:TripDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StopTimeDto" nillable="true" type="tns:StopTimeDto" />
+  <xs:complexType name="TripDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Direction" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Headsign" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Route" nillable="true" type="tns:RouteDto" />
+      <xs:element minOccurs="0" name="Service" nillable="true" type="tns:CalendarDto" />
+      <xs:element minOccurs="0" name="ShortName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TripDto" nillable="true" type="tns:TripDto" />
+  <xs:complexType name="CalendarDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EndDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Friday" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Monday" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Saturday" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StartDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Sunday" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Thursday" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Tuesday" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Wednesday" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CalendarDto" nillable="true" type="tns:CalendarDto" />
 </xs:schema>

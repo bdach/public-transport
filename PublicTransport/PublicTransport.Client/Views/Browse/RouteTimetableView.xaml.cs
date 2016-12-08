@@ -7,20 +7,20 @@ using ReactiveUI;
 namespace PublicTransport.Client.Views.Browse
 {
     /// <summary>
-    /// Interaction logic for TimetableView.xaml
+    /// Interaction logic for RouteTimetableView.xaml
     /// </summary>
-    public partial class TimetableView : IViewFor<TimetableViewModel>
+    public partial class RouteTimetableView : IViewFor<RouteTimetableViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(TimetableViewModel), typeof(TimetableView), new PropertyMetadata(default(TimetableViewModel)));
+            "ViewModel", typeof(RouteTimetableViewModel), typeof(RouteTimetableView), new PropertyMetadata(default(RouteTimetableViewModel)));
 
-        public TimetableViewModel ViewModel
+        public RouteTimetableViewModel ViewModel
         {
-            get { return (TimetableViewModel) GetValue(ViewModelProperty); }
+            get { return (RouteTimetableViewModel) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
-        public TimetableView()
+        public RouteTimetableView()
         {
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Route, v => v.RouteName.ViewModel);
@@ -33,6 +33,7 @@ namespace PublicTransport.Client.Views.Browse
             this.BindCommand(ViewModel, vm => vm.AddTrip, v => v.AddTripButton);
             this.BindCommand(ViewModel, vm => vm.DeleteTrip, v => v.DeleteTripButton);
             this.BindCommand(ViewModel, vm => vm.EditTrip, v => v.EditTripButton);
+            this.BindCommand(ViewModel, vm => vm.Close, v => v.CloseButton);
             this.WhenAnyValue(x => x.ViewModel.GetStops)
                 .SelectMany(x => x.ExecuteAsync())
                 .Subscribe();
@@ -43,7 +44,7 @@ namespace PublicTransport.Client.Views.Browse
             get { return ViewModel; }
             set
             {
-                ViewModel = (TimetableViewModel) value;
+                ViewModel = (RouteTimetableViewModel) value;
             }
         }
     }

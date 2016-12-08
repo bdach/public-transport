@@ -9,15 +9,19 @@
         Title="Public Transport" Height="720" Width="1280"
         MinHeight="500" MinWidth="750"
         WindowStartupLocation="CenterScreen">
-    <DockPanel>
-        <rui:ViewModelViewHost x:Name="NotificationPanel"
-                               DockPanel.Dock="Top"
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch" />
-        <rui:ViewModelViewHost x:Name="Menu"
-                               DockPanel.Dock="Left"
-                               VerticalContentAlignment="Stretch" />
-        <rui:RoutedViewHost x:Name="ContentView" Width="Auto" />
-    </DockPanel>
+    <Grid>
+        <DockPanel>
+            <rui:ViewModelViewHost x:Name="Menu"
+                                   DockPanel.Dock="Left"
+                                   VerticalContentAlignment="Stretch" />
+            <rui:RoutedViewHost x:Name="ContentView" Width="Auto" />
+        </DockPanel>
+        <DockPanel>
+            <rui:ViewModelViewHost x:Name="NotificationPanel"
+                                   DockPanel.Dock="Top"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch" />
+        </DockPanel>
+    </Grid>
 </controls:MetroWindow>
 

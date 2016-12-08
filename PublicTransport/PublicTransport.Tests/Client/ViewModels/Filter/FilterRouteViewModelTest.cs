@@ -119,13 +119,13 @@ namespace PublicTransport.Tests.Client.ViewModels.Filter
             var navigatedToTimetable = false;
             _viewModel.SelectedRoute = new RouteDto();
             Router.Navigate
-                .Where(vm => vm is TimetableViewModel)
+                .Where(vm => vm is RouteTimetableViewModel)
                 .Subscribe(_ => navigatedToTimetable = true);
             // when
             _viewModel.ShowTimetable.Execute(null);
             // then
             navigatedToTimetable.Should().BeTrue();
-            var timetableViewModel = Router.GetCurrentViewModel() as TimetableViewModel;
+            var timetableViewModel = Router.GetCurrentViewModel() as RouteTimetableViewModel;
             timetableViewModel.Should().NotBeNull();
             timetableViewModel.Route.ShouldBeEquivalentTo(_viewModel.SelectedRoute);
         }

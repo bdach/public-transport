@@ -21,6 +21,9 @@ namespace PublicTransport.Client.Views.Entities
         public StopView()
         {
             InitializeComponent();
+            this.Bind(ViewModel, vm => vm.Name, v => v.StopNameTextBlock.Text);
+            this.Bind(ViewModel, vm => vm.Street.Name, v => v.StreetNameTextBlock.Text);
+            this.Bind(ViewModel, vm => vm.Street.City.Name, v => v.CityNameTextBlock.Text);
         }
 
         object IViewFor.ViewModel

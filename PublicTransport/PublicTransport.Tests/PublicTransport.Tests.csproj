@@ -141,7 +141,7 @@
   <ItemGroup>
     <Compile Include="Client\RoutableChildViewModelTest.cs" />
     <Compile Include="Client\RoutableViewModelTest.cs" />
-    <Compile Include="Client\ViewModels\Browse\TimetableViewModelTest.cs" />
+    <Compile Include="Client\ViewModels\Browse\RouteTimetableViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditAgencyViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditCalendarViewModelTest.cs" />
     <Compile Include="Client\ViewModels\Edit\EditCityViewModelTest.cs" />

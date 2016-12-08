@@ -99,7 +99,7 @@ namespace PublicTransport.Client.ViewModels.Filter
             EditRoute = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
                 HostScreen.Router.Navigate.ExecuteAsync(new EditRouteViewModel(HostScreen, _routeService, SelectedRoute)));
             ShowTimetable = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new TimetableViewModel(HostScreen, _routeService, SelectedRoute)));
+                HostScreen.Router.Navigate.ExecuteAsync(new RouteTimetableViewModel(HostScreen, _routeService, SelectedRoute)));
 
             #endregion
 

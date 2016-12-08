@@ -191,8 +191,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Browse\RouteTimetableViewModel.cs" />
+    <Compile Include="ViewModels\Browse\StopTimetableViewModel.cs" />
     <Compile Include="ViewModels\Browse\SearchRouteViewModel.cs" />
-    <Compile Include="ViewModels\Browse\TimetableViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCalendarViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
@@ -219,11 +220,11 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
-    <Compile Include="Views\Browse\SearchRouteView.xaml.cs">
-      <DependentUpon>SearchRouteView.xaml</DependentUpon>
+    <Compile Include="Views\Browse\RouteTimetableView.xaml.cs">
+      <DependentUpon>RouteTimetableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Browse\TimetableView.xaml.cs">
-      <DependentUpon>TimetableView.xaml</DependentUpon>
+    <Compile Include="Views\Browse\StopTimetableView.xaml.cs">
+      <DependentUpon>StopTimetableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Edit\EditFareView.xaml.cs">
       <DependentUpon>EditFareView.xaml</DependentUpon>
@@ -331,11 +332,15 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\Browse\SearchRouteView.xaml">
+    <Page Include="Views\Browse\RouteTimetableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Browse\TimetableView.xaml">
+    <Page Include="Views\Browse\StopTimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Browse\SearchRouteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -638,6 +643,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Stops\stops5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops6.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Stops\StopService.wsdl" />

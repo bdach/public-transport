@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.DataTransfer;
@@ -8,7 +9,7 @@ using PublicTransport.Services.Exceptions;
 namespace PublicTransport.Services.Contracts
 {
     [ServiceContract]
-    public interface IRouteService
+    public interface IRouteService : IDisposable
     {
         /// <summary>
         ///     Returns a list of <see cref="StopTimeDto" />s for a certain <see cref="Stop" /> which are associated with a specific

@@ -52,6 +52,12 @@ namespace PublicTransport.Client.Services.Stops {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStopService/FilterStreets", ReplyAction="http://tempuri.org/IStopService/FilterStreetsResponse")]
         System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.StreetDto[]> FilterStreetsAsync(PublicTransport.Services.DataTransfer.Filters.StreetFilter filter);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStopService/GetStopTimetable", ReplyAction="http://tempuri.org/IStopService/GetStopTimetableResponse")]
+        System.Collections.Generic.Dictionary<PublicTransport.Services.DataTransfer.RouteDto, PublicTransport.Services.DataTransfer.StopTimeDto[]> GetStopTimetable(int stopId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStopService/GetStopTimetable", ReplyAction="http://tempuri.org/IStopService/GetStopTimetableResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<PublicTransport.Services.DataTransfer.RouteDto, PublicTransport.Services.DataTransfer.StopTimeDto[]>> GetStopTimetableAsync(int stopId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -127,6 +133,14 @@ namespace PublicTransport.Client.Services.Stops {
         
         public System.Threading.Tasks.Task<PublicTransport.Services.DataTransfer.StreetDto[]> FilterStreetsAsync(PublicTransport.Services.DataTransfer.Filters.StreetFilter filter) {
             return base.Channel.FilterStreetsAsync(filter);
+        }
+        
+        public System.Collections.Generic.Dictionary<PublicTransport.Services.DataTransfer.RouteDto, PublicTransport.Services.DataTransfer.StopTimeDto[]> GetStopTimetable(int stopId) {
+            return base.Channel.GetStopTimetable(stopId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<PublicTransport.Services.DataTransfer.RouteDto, PublicTransport.Services.DataTransfer.StopTimeDto[]>> GetStopTimetableAsync(int stopId) {
+            return base.Channel.GetStopTimetableAsync(stopId);
         }
     }
 }

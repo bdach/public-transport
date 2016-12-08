@@ -12,7 +12,7 @@ using ReactiveUI;
 
 namespace PublicTransport.Client.ViewModels.Browse
 {
-    public class TimetableViewModel : ReactiveObject, IDetailViewModel
+    public class RouteTimetableViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
         ///     Service used in the view model to access the database.
@@ -45,7 +45,7 @@ namespace PublicTransport.Client.ViewModels.Browse
         /// <param name="screen">Screen to display view model on.</param>
         /// <param name="routeService">Service used in the view model to access the database.</param>
         /// <param name="route">The <see cref="Domain.Entities.Route" /> whose timetable is displayed on the view.</param>
-        public TimetableViewModel(IScreen screen, IRouteService routeService, RouteDto route)
+        public RouteTimetableViewModel(IScreen screen, IRouteService routeService, RouteDto route)
         {
             #region Field/property initialization
 
@@ -127,6 +127,12 @@ namespace PublicTransport.Client.ViewModels.Browse
                 .Select(s => StopTimeReactiveFilter.StopId = s.Value)
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .InvokeCommand(UpdateStopTimes);
+
+            #region Closing the view
+
+            Close = ReactiveCommand.CreateAsyncObservable(_ => HostScreen.Router.NavigateBack.ExecuteAsync());
+
+            #endregion
         }
 
         /// <summary>
@@ -163,6 +169,11 @@ namespace PublicTransport.Client.ViewModels.Browse
         ///     Command responsible for deleting the trip.
         /// </summary>
         public ReactiveCommand<Unit> DeleteTrip { get; protected set; }
+
+        /// <summary>
+        ///     Command responsible for closing the view.
+        /// </summary>
+        public ReactiveCommand<Unit> Close { get; set; }
 
         /// <summary>
         ///     The <see cref="Domain.Entities.Route"/> whose timetable is displayed in the view.

@@ -25,6 +25,7 @@ namespace PublicTransport.Client.Views.Filter
             this.BindCommand(ViewModel, vm => vm.AddStop, v => v.AddStopButton);
             this.BindCommand(ViewModel, vm => vm.EditStop, v => v.EditStopButton);
             this.BindCommand(ViewModel, vm => vm.DeleteStop, v => v.DeleteStopButton);
+            this.BindCommand(ViewModel, vm => vm.ViewTimetable, v => v.ViewTimetableButton);
         }
 
         public FilterStopViewModel ViewModel
