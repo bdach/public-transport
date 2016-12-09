@@ -408,7 +408,7 @@ Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące 
 	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
 \end{enumerate}
 
-\subsection{Instrukcja użycia} %TODO
+\subsection{Instrukcja użycia}
 
 \subsubsection{Logowanie do systemu}
 Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predefiniowane są następujące konta użytkowników:
@@ -477,7 +477,7 @@ Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający z
 \end{figure}
 
 \subsubsection{Wyświetlanie rozkładu jazdy wybranej linii}
-Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{Show Timetable}.
+Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{View Timetable}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{screenshots/09_filter_route.png}
@@ -490,6 +490,19 @@ Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują si�
 	\caption{Widok rozkładu jazdy}
 \end{figure}
 Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \textbf{Time}. Dodatkowo, dostępne są opcje dodawania (\textbf{Add Trip}), edycji (\textbf{Edit Trip}) oraz usuwania (\textbf{Delete Trip}) wybranego przejazdu.
+
+\subsubsection{Wyświetlanie rozkładu jazdy dla wybranego przystanku}
+W podobny sposób można wyświetlić rozkład jazdy wszystkich linii dla jednego z przystanków, wybierając zakładkę \textbf{Stops}, wyszukując i wybierając jeden z przystanków, i wciskając przycisk \textbf{View Timetable}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/13_filter_stops.png}
+	\caption{Widok przystanków z przyciskiem wyświetlania rozkładu}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/22_stop_timetable.PNG}
+	\caption{Rozkład jazdy dla wybranego przystanku}
+\end{figure}
 
 \subsubsection{Edycja przejazdu}
 Poniżej widoczny jest ekran edycji pojedynczego kursu.
@@ -506,6 +519,15 @@ Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edy
 	\includegraphics[width=15cm]{screenshots/12_edit_schedule.png}
 	\caption{Widok edycji harmonogramu}
 \end{figure}
+
+\subsubsection{Wyszukiwanie tras między wybranymi przystankami}
+Aplikacja umożliwia wyszukiwanie tras przejeżdżających przez wybrane przystanki. Funkcjonalność ta dostępna jest z poziomu opcji \textbf{Search Routes} po lewej stronie okna.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/23_search_routes.PNG}
+	\caption{Widok wyszukiwania tras}
+\end{figure}
+Aby dokonać wyszukiwania, należy wpisać nazwy przystanków: startowego oraz docelowego w pola \textbf{Origin stop name} oraz \textbf{Destination stop name} odpowiednio, wybrać jeden z sugerowanych elementów, a następnie wcisnąć przycisk \textbf{Find Routes}.
 
 \subsubsection{Edycja użytkowników}
 Konta administratorów mają dostęp również do widoku edycji użytkowników.
@@ -558,11 +580,12 @@ Brak.
 
 \subsection{Diagramy sekwencji}
 Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjny jest przedstawiony na poniższych diagramach sekwencji.
+
+\subsubsection{Aplikacja kliencka}
 \begin{figure}[H]
-	\includegraphics[width=16cm]{sequence.pdf} %TODO
-	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z bazą danych}
+	\includegraphics[width=16cm]{sequence-client.pdf}
+	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z serwerem aplikacyjnym}
 \end{figure}
-Przepływ po stronie klienckiej:
 \begin{table}[H]
 	\begin{tabularx}{\textwidth}{|l|l|X|}
 		\hline
@@ -584,7 +607,12 @@ Przepływ po stronie klienckiej:
 		\hline
 	\end{tabularx}
 \end{table}
-Przepływ po stronie serwerowej:
+
+\subsubsection{Serwer aplikacyjny}
+\begin{figure}[H]
+	\includegraphics[width=16cm]{sequence-server.pdf}
+	\caption{Diagram sekwencji -- przepływ danych w obrębie serwera aplikacyjnego}
+\end{figure}
 \begin{table}[H]
 	\begin{tabularx}{\textwidth}{|l|l|X|}
 		\hline
@@ -594,7 +622,7 @@ Przepływ po stronie serwerowej:
 		Serwer aplikacyjny &
 		\textbf{Działanie biznesowe:} \\
 		& & Serwer aplikacyjny otrzymuje żądanie od jednej z aplikacji klienckich za pośrednictwem protokołu HTTP. \\
-		& & \textbf{Wejście:} Żadanie XML SOAP do wykonania. \\
+		& & \textbf{Wejście:} Żądanie XML SOAP do wykonania. \\
 		& & \textbf{Wyjście:} Odpowiedź na żądanie aplikacji klienckiej. \\
 		\hline
 		Wywołanie funkcji repozytorium &
