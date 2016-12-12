@@ -179,6 +179,7 @@
     </Compile>
     <Compile Include="Services\RepositoryTest.cs" />
     <Compile Include="Services\FareAttributeRepositoryTest.cs" />
+    <Compile Include="Services\RouteRepositoryTest.cs" />
     <Compile Include="Services\StopRepositoryTest.cs" />
     <Compile Include="Services\StopTimeRepositoryTest.cs" />
     <Compile Include="Services\StreetRepositoryTest.cs" />
