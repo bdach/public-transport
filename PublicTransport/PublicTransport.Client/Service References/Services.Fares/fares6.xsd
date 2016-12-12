@@ -4,6 +4,7 @@
   <xs:complexType name="FareAttributeDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="FareRule" nillable="true" type="tns:FareRuleDto" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="Price" type="xs:decimal" />
       <xs:element minOccurs="0" name="TransferDuration" nillable="true" type="xs:int" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" minOccurs="0" name="Transfers" type="q1:TransferCount" />
@@ -13,6 +14,7 @@
   <xs:complexType name="FareRuleDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="Destination" nillable="true" type="tns:ZoneDto" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="Origin" nillable="true" type="tns:ZoneDto" />
       <xs:element minOccurs="0" name="Route" nillable="true" type="tns:RouteDto" />
     </xs:sequence>

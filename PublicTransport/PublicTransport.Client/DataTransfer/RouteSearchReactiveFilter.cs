@@ -53,6 +53,6 @@ namespace PublicTransport.Client.DataTransfer
         /// <summary>
         ///     Determines whether the query is valid.
         /// </summary>
-        public bool IsValid => OriginStopIdFilter != 0 && DestinationStopIdFilter != 0;
+        public bool IsValid => OriginStopIdFilter > 0 && DestinationStopIdFilter > 0;
     }
 }
