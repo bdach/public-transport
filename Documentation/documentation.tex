@@ -383,17 +383,15 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 	\caption{Lista użytych bibliotek i komponentów}
 \end{table}
 
-\subsection{Instrukcja instalacji} %TODO
-Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące kroki:
-
+\subsection{Instrukcja instalacji}
+Aby zainstalować aplikację na serwerze aplikacyjnym, należy wykonać następujące kroki:
 \begin{enumerate}
-	\item \textbf{Instalacja Microsoft SQL Server w wersji 2014 lub późniejszej} \\
-	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}.
-	\item \textbf{Instalacja aplikacji} \\
-	Po zainstalowaniu serwera, należy uruchomić instalator aplikacji dostarczony przez autorów i postępować zgodnie z instrukcjami. Instalator w razie potrzeby zainstaluje również .NET Framework w wersji 4.5.2 lub wyższej. Po zakończeniu instalacji aplikacja powinna ukazać się w menu Start.
-	\item \textbf{Edycja ustawień połączenia} \\
-	Jeżeli baza, do której ma być podłączona aplikacja, jest bazą umieszczoną na serwerze lokalnym używającą autoryzacji Windows (\textbf{Windows Authentication}), poniższy krok można pominąć. \\
-	Po instalacji, należy przejść do katalogu, w którym znajduje się zainstalowana aplikacja i zmienić zawartość pliku \textbf{PublicTransport.Client.exe.config}. W pliku tym należy zmienić wartość właściwości \textbf{connectionString} o nazwie \textbf{PublicTransport} tak, aby odpowiadała konfiguracji zainstalowanej instancji \textbf{SQL Server}.
+	\item Zainstalowanie \textbf{.NET Framework w wersji 4.0 lub późniejszej}, usług \textbf{Internet Information Service w wersji 8 lub późniejszej}, \textbf{Microsoft SQL Server w wersji 2014 lub późniejszej} oraz \textbf{ASP.NET} na serwerze aplikacyjnym. \\
+	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}. Instalacja usługi IIS można znaleźć w pozycji \cite{iis}. Konfiguracja usługi ASP.NET można znaleźć w pozycji \cite{aspnet}.
+	\item \textbf{Instalacja serwisów WCF na serwerze aplikacyjnym} \\
+	Po skopiowaniu plików serwisowych dostarczonych jako część aplikacji do wybranej lokalizacji na serwerze, należy otworzyć aplikację \textbf{IIS Manager}. Tworzymy nową stronę w zakładce \textbf{Sites} po lewej, po czym klikamy \textbf{View Applications} po prawej stronie. Następnie z prawej strony wybieramy \textbf{Add Application}. W okienku wpisujemy \textbf{Alias}, który będzie służyć jako prefiks endpointów oraz podajemy ścieżkę do plików serwisowych aplikacji.
+	\item \textbf{Konfiguracja connection stringów} \\
+	Po dodaniu aplikacji należy kliknąć na nią po lewej stronie w okienku \textbf{Connections}, następnie na \textbf{Connection strings} i wyedytować connection string, aby wskazywał on na zainstalowaną instancję bazy.
 	\item \textbf{Uruchomienie serwera} \\
 	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \textbf{SQL Server Configuration Manager} i sprawdzając, czy status usługi \textbf{MSSQLSERVER} to \textbf{Running}.
 	\item \textbf{Pierwsze uruchomienie} \\
@@ -402,9 +400,16 @@ Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące 
 	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \textbf{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
 \end{enumerate}
 
-\subsection{Instrukcja uruchomienia} %TODO
+\subsection{Instrukcja uruchomienia}
+Na serwerze aplikacyjnym należy upenić się, że usługa IIS dla naszej strony oraz instancja serwera MS SQL jest uruchomiona. 
 \begin{enumerate}
-	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instancja serwera MS SQL jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i sprawdzamy, czy status usługi (\textbf{MSSQLSERVER}) to \textbf{Running}. Jeżeli nie, uruchamiamy usługę za pomocą przycisku \textbf{Start Service} na pasku pod menu.
+	\item Otwórz \textbf{SQL Server Configuration Manager} i spradź, czy status usługi (\textbf{MSSQLSERVER}) to \textbf{Running}. Jeżeli nie, uruchom usługę za pomocą przycisku \textbf{Start Service} na pasku pod menu.
+	\item Otwórz konsolę \textbf{IIS}.
+	\item Wybierz swoją stronę po lewej stronie okna.
+	\item Po prawej stronie okna wybierz opcję \textbf{Start}, jeżeli usługa nie jest uruchomiona.
+\end{enumerate}
+Na stacji roboczej możemy wówczas uruchomić aplikację, aby połączyć się z serwerem aplikacyjnym.
+\begin{enumerate}
 	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
 \end{enumerate}
 
@@ -539,6 +544,12 @@ Konta administratorów mają dostęp również do widoku edycji użytkowników.
 W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
 
 \subsection{Instrukcja utrzymania}
+Uruchamianie, restartowanie lub zatrzymywanie serwera aplikacyjnego.
+\begin{enumerate}
+	\item Otwórz konsolę \textbf{IIS}.
+	\item Wybierz swoją stronę (\textbf{Web Site}) po lewej stronie okna.
+	\item Po prawej stronie okna wybierz jedną z opcji \textbf{Start, Stop} lub \textbf{Restart}.
+\end{enumerate}
 Uruchamianie, restartowanie lub zatrzymywanie serwera bazodanowego.
 \begin{enumerate}
 	\item Uruchom \textbf{SQL Server Configuration Manager}.
@@ -553,10 +564,6 @@ Tworzenie kopii zapasowej bazy danych.
 	\item W polu listy \textbf{Backup type} wybierz opcję \textbf{Full}.
 	\item W obszarze \textbf{Backup component} kliknij opcję \textbf{Database}.
 	\item Wybierz lokalizację docelową kopii zapasowej i wciśnij przycisk \textbf{OK}.
-\end{enumerate}
-Restartowanie serwisów WCF.
-\begin{enumerate} %TODO
-	\item Zrestartuj serwisy WCF.
 \end{enumerate}
 
 \subsection{Raport odstępstw od specyfikacji wymagań}
@@ -842,6 +849,16 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	Installing SQL Server 2014 Step By Step Tutorial,
 	Microsoft TechNet,
 	\url{http://social.technet.microsoft.com/wiki/contents/articles/23878.installing-sql-server-2014-step-by-step-tutorial.aspx}.
+
+\bibitem{iis}
+	Installing IIS 8 on Windows Server 2012,
+	Microsoft,
+	\url{https://www.iis.net/learn/get-started/whats-new-in-iis-8/installing-iis-8-on-windows-server-2012}.
+
+\bibitem{aspnet}
+	IIS 8.0 ASP.NET Configuration Management,
+	Microsoft,
+	\url{https://www.iis.net/learn/get-started/whats-new-in-iis-8/iis-80-aspnet-configuration-management}.
 
 \end{thebibliography}
 \end{document}
