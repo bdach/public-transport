@@ -94,5 +94,16 @@ namespace PublicTransport.Tests.Services
             // then
             times.Select(s => s.ArrivalTime).Should().BeEmpty();
         }
+
+        [Test]
+        public void GetFullTimetableByStopId()
+        {
+            // given
+            // when
+            var timetable = _stopTimeRepository.GetFullTimetableByStopId(1);
+            // thenm
+            timetable.Count.ShouldBeEquivalentTo(1);
+            timetable.First().Value.Count.ShouldBeEquivalentTo(2);
+        }
     }
 }

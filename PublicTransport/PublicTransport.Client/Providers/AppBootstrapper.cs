@@ -3,6 +3,7 @@ using PublicTransport.Client.Services.Cities;
 using PublicTransport.Client.Services.Fares;
 using PublicTransport.Client.Services.Login;
 using PublicTransport.Client.Services.Routes;
+using PublicTransport.Client.Services.Search;
 using PublicTransport.Client.Services.Stops;
 using PublicTransport.Client.Services.Streets;
 using PublicTransport.Client.Services.Users;
@@ -68,6 +69,7 @@ namespace PublicTransport.Client.Providers
             Locator.CurrentMutable.Register(() => new RouteServiceClient(), typeof(IRouteService));
             Locator.CurrentMutable.Register(() => new StopServiceClient(), typeof(IStopService));
             Locator.CurrentMutable.Register(() => new FareServiceClient(), typeof(IFareService));
+            Locator.CurrentMutable.Register(() => new SearchServiceClient(), typeof(ISearchService));
         }
 
         /// <summary>
@@ -94,6 +96,7 @@ namespace PublicTransport.Client.Providers
         {
             Locator.CurrentMutable.Register(() => new RouteTimetableView(), typeof(IViewFor<RouteTimetableViewModel>));
             Locator.CurrentMutable.Register(() => new StopTimetableView(), typeof(IViewFor<StopTimetableViewModel>));
+            Locator.CurrentMutable.Register(() => new SearchRouteView(), typeof(IViewFor<SearchRouteViewModel>));
         }
 
         /// <summary>

@@ -132,6 +132,7 @@
     <Compile Include="DataTransfer\FareReactiveFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
     <Compile Include="DataTransfer\RouteReactiveFilter.cs" />
+    <Compile Include="DataTransfer\RouteSearchReactiveFilter.cs" />
     <Compile Include="DataTransfer\StopReactiveFilter.cs" />
     <Compile Include="DataTransfer\StopTimeReactiveFilter.cs" />
     <Compile Include="DataTransfer\StreetReactiveFilter.cs" />
@@ -165,6 +166,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Services.Search\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Services.Stops\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,6 +193,7 @@
     </Compile>
     <Compile Include="ViewModels\Browse\RouteTimetableViewModel.cs" />
     <Compile Include="ViewModels\Browse\StopTimetableViewModel.cs" />
+    <Compile Include="ViewModels\Browse\SearchRouteViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCalendarViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
@@ -215,6 +222,9 @@
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
     <Compile Include="Views\Browse\RouteTimetableView.xaml.cs">
       <DependentUpon>RouteTimetableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Browse\SearchRouteView.xaml.cs">
+      <DependentUpon>SearchRouteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Browse\StopTimetableView.xaml.cs">
       <DependentUpon>StopTimetableView.xaml</DependentUpon>
@@ -330,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Browse\StopTimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Browse\SearchRouteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -600,6 +614,22 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Services.Routes\RouteService.wsdl" />
+    <None Include="Service References\Services.Search\search.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\SearchService.wsdl" />
     <None Include="Service References\Services.Stops\stops.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -714,6 +744,7 @@
     <WCFMetadataStorage Include="Service References\Services.Fares\" />
     <WCFMetadataStorage Include="Service References\Services.Login\" />
     <WCFMetadataStorage Include="Service References\Services.Routes\" />
+    <WCFMetadataStorage Include="Service References\Services.Search\" />
     <WCFMetadataStorage Include="Service References\Services.Stops\" />
     <WCFMetadataStorage Include="Service References\Services.Streets\" />
     <WCFMetadataStorage Include="Service References\Services.Users\" />
@@ -823,6 +854,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Services.Fares\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Search\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Search\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Search\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

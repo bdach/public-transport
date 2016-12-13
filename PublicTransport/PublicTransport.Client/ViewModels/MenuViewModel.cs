@@ -100,6 +100,7 @@ namespace PublicTransport.Client.ViewModels
                 new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Stops", MenuOption.Stop),
                 new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Zones", MenuOption.Zone),
                 new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Fares", MenuOption.Fare),
+                new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Search Routes", MenuOption.Search),
                 new Tuple<RoleType, string, MenuOption>(RoleType.Administrator, "Users", MenuOption.User)
             };
             return userMenuItems.Where(s => userInfo.UserRoles.Any(ui => ui == s.Item1))

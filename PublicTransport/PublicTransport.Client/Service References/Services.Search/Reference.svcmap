@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f615bf0b-6e34-4b79-a898-d16cf830c348" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/search" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SearchService.wsdl" MetadataType="Wsdl" ID="c2d6b9e0-81e5-43e1-acb1-49ce02c4b42b" SourceId="1" SourceUrl="http://localhost:8733/search" />
+    <MetadataFile FileName="search.xsd" MetadataType="Schema" ID="8836ab0e-f887-4c82-9e1b-eb4c7f673bf4" SourceId="1" SourceUrl="http://localhost:8733/search?xsd=xsd0" />
+    <MetadataFile FileName="search1.xsd" MetadataType="Schema" ID="ff52ed30-e364-46e3-9047-2a5cfa62b570" SourceId="1" SourceUrl="http://localhost:8733/search?xsd=xsd1" />
+    <MetadataFile FileName="search2.xsd" MetadataType="Schema" ID="77fc72cf-24ce-4151-bf8f-a691ce817dfa" SourceId="1" SourceUrl="http://localhost:8733/search?xsd=xsd2" />
+    <MetadataFile FileName="search3.xsd" MetadataType="Schema" ID="b07183b3-f347-4e1f-a625-a0e82e8e5d85" SourceId="1" SourceUrl="http://localhost:8733/search?xsd=xsd3" />
+    <MetadataFile FileName="search4.xsd" MetadataType="Schema" ID="29468768-4cf3-40d2-b3f3-2f074f7f268a" SourceId="1" SourceUrl="http://localhost:8733/search?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -101,7 +101,7 @@ namespace PublicTransport.Services.Repositories
         /// </returns>
         public List<Route> GetRoutesByAgencyId(int agencyId)
         {
-                return _db.Routes.Where(a => a.AgencyId == agencyId).ToList();
+            return _db.Routes.Where(a => a.AgencyId == agencyId).ToList();
         }
 
         /// <summary>
@@ -117,6 +117,28 @@ namespace PublicTransport.Services.Repositories
                 .Where(r => r.Agency.Name.Contains(filter.AgencyNameFilter))
                 .Where(r => !filter.RouteTypeFilter.HasValue || r.RouteType == filter.RouteTypeFilter.Value)
                 .Take(20).ToList();
+        }
+
+        /// <summary>
+        /// Finds routes using the supplied <see cref="RouteSearchFilter"/>.
+        /// </summary>
+        /// <param name="filter">Filter to use while searching.</param>
+        /// <returns>List of routes satisfying the search criteria.</returns>
+        public List<Route> FindRoutes(RouteSearchFilter filter)
+        {
+            var originRoutes = _db.StopTimes
+                .Include(st => st.Stop).Include(st => st.Trip.Route)
+                .Where(st => st.Stop.Id == filter.OriginStopIdFilter)
+                .Select(st => st.Trip.Route).Distinct()
+                .Include(r => r.Agency).ToList();
+
+            var destinationRoutes = _db.StopTimes
+                .Include(st => st.Stop).Include(st => st.Trip.Route)
+                .Where(st => st.Stop.Id == filter.DestinationStopIdFilter)
+                .Select(st => st.Trip.Route).Distinct()
+                .Include(r => r.Agency).ToList();
+
+            return originRoutes.Where(route => destinationRoutes.Contains(route)).ToList();
         }
     }
 }

@@ -26,7 +26,7 @@
 	\vspace{0.5cm}
 	{\Large Bartłomiej Dach, Tymon Felski \par}
 	\vspace{1.5cm}
-	{\Large Wersja 2.0 \par}
+	{\Large Wersja 2.2 \par}
 	\vspace{1.5cm}
 	{\Large \today \par}
 \end{titlepage}
@@ -54,6 +54,10 @@ Lista zmian w dokumencie:
 	11.11.2016 & Tymon Felski & Dodanie opisu modelu danych, scenariuszy i raportu z testów akceptacyjnych & 1.7 \\
 	\hline
 	19.11.2016 & Bartłomiej Dach, Tymon Felski & Rozszerzenie specyfikacji o nowe przypadki użycia, wymagania niefunkcjonalne oraz aktualizacja harmonogramu prac i architektury rozwiązania & 2.0 \\
+	\hline
+	09.12.2016 & Bartłomiej Dach, Tymon Felski & Aktualizacja tabeli bibliotek i ich licencji, wymagań systemowych, diagramu sekwencji oraz scenariuszy i raportu z testów akceptacyjnych & 2.1 \\
+	\hline
+	10.12.2016 & Bartłomiej Dach, Tymon Felski & Aktualizacja instrukcji instalacji, uruchomienia, utrzymania oraz użycia & 2.2 \\
 	\hline
 \end{tabularx}
 \end{table}
@@ -287,7 +291,7 @@ Planowana architektura rozwiązania ma charakter warstwowy. Wyróżnione został
 Ze względu na małą liczbę użytkowników niska skalowalność oraz wydajność rozwiązań warstwowych zostały uznane za ryzyko drugorzędne.
 
 \subsubsection{Serwer aplikacyjny}
-Serwer aplikacyjny to pojedyncza stacja robocza w sieci wewnętrznej, odpowiadająca za obsługę i odpowiedź na zapytania kierowane do niego przez aplikacje klienckie różnej postaci. Serwer udostępnia wszystkim klientom usługi, w których określone są typy danych wyjściowych i wejściowych. Komunikacja z klientami odbywa się za pomocą protokołu TCP.
+Serwer aplikacyjny to pojedyncza stacja robocza w sieci wewnętrznej, odpowiadająca za obsługę i odpowiedź na zapytania kierowane do niego przez aplikacje klienckie różnej postaci. Serwer udostępnia wszystkim klientom usługi, w których określone są typy danych wyjściowych i wejściowych. Komunikacja z klientami odbywa się za pomocą protokołu HTTP.
 
 \subsubsection{Aplikacja kliencka}
 \begin{figure}[H]
@@ -301,11 +305,16 @@ Aplikacje klienckie mają postać ,,grubego klienta'', instalowanego na stacjach
 \section{Dokumentacja końcowa (powykonawcza)}
 
 \subsection{Wymagania systemowe}
-Aby zapewnić poprawne działanie systemu, wymagane są następujące komponenty:
+Aby zapewnić poprawne działanie aplikacji klienckiej, wymagane są następujące komponenty:
 \begin{enumerate}
 	\item System operacyjny Windows 7 lub nowszy.
-	\item MS SQL Server 2014 lub nowszy.
 	\item .NET Framework 4.5.2 lub nowszy.
+\end{enumerate}
+Aby zapewnić poprawne działanie serwera aplikacyjnego, wymagane są następujące komponenty:
+\begin{enumerate}
+	\item System operacyjny Windows Server 2008 lub nowszy.
+	\item .NET Framework 4.5.2 lub nowszy.
+	\item MS SQL Server 2014 lub nowszy.
 \end{enumerate}
 
 \subsection{Biblioteki wraz z określeniem licencji}
@@ -364,11 +373,17 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 		\mbox{\hyperref[abbr:mit]{MIT}} &
 		\cite{splat} \\
 		\hline
+		9 &
+		MahApps.Metro, 1.3.0 &
+		Biblioteka zawierająca kontrolki interfejsu użytkownika. &
+		\mbox{\hyperref[abbr:mspl]{MS-PL}} &
+		\cite{mahapps} \\
+		\hline
 	\end{tabularx}
 	\caption{Lista użytych bibliotek i komponentów}
 \end{table}
 
-\subsection{Instrukcja instalacji}
+\subsection{Instrukcja instalacji} %TODO
 Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące kroki:
 
 \begin{enumerate}
@@ -387,7 +402,7 @@ Aby zainstalować aplikację na stacji roboczej, należy wykonać następujące 
 	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \textbf{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
 \end{enumerate}
 
-\subsection{Instrukcja uruchomienia}
+\subsection{Instrukcja uruchomienia} %TODO
 \begin{enumerate}
 	\item W celu zapewnienia poprawnego uruchomienia aplikacji należy upewnić się, że instancja serwera MS SQL jest uruchomiona. Otwieramy \textbf{SQL Server Configuration Manager} i sprawdzamy, czy status usługi (\textbf{MSSQLSERVER}) to \textbf{Running}. Jeżeli nie, uruchamiamy usługę za pomocą przycisku \textbf{Start Service} na pasku pod menu.
 	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
@@ -462,7 +477,7 @@ Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający z
 \end{figure}
 
 \subsubsection{Wyświetlanie rozkładu jazdy wybranej linii}
-Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{Show Timetable}.
+Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{View Timetable}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{screenshots/09_filter_route.png}
@@ -475,6 +490,19 @@ Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują si�
 	\caption{Widok rozkładu jazdy}
 \end{figure}
 Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \textbf{Time}. Dodatkowo, dostępne są opcje dodawania (\textbf{Add Trip}), edycji (\textbf{Edit Trip}) oraz usuwania (\textbf{Delete Trip}) wybranego przejazdu.
+
+\subsubsection{Wyświetlanie rozkładu jazdy dla wybranego przystanku}
+W podobny sposób można wyświetlić rozkład jazdy wszystkich linii dla jednego z przystanków, wybierając zakładkę \textbf{Stops}, wyszukując i wybierając jeden z przystanków, i wciskając przycisk \textbf{View Timetable}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/13_filter_stops.png}
+	\caption{Widok przystanków z przyciskiem wyświetlania rozkładu}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/22_stop_timetable.PNG}
+	\caption{Rozkład jazdy dla wybranego przystanku}
+\end{figure}
 
 \subsubsection{Edycja przejazdu}
 Poniżej widoczny jest ekran edycji pojedynczego kursu.
@@ -492,6 +520,15 @@ Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edy
 	\caption{Widok edycji harmonogramu}
 \end{figure}
 
+\subsubsection{Wyszukiwanie tras między wybranymi przystankami}
+Aplikacja umożliwia wyszukiwanie tras przejeżdżających przez wybrane przystanki. Funkcjonalność ta dostępna jest z poziomu opcji \textbf{Search Routes} po lewej stronie okna.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{screenshots/23_search_routes.PNG}
+	\caption{Widok wyszukiwania tras}
+\end{figure}
+Aby dokonać wyszukiwania, należy wpisać nazwy przystanków: startowego oraz docelowego w pola \textbf{Origin stop name} oraz \textbf{Destination stop name} odpowiednio, wybrać jeden z sugerowanych elementów, a następnie wcisnąć przycisk \textbf{Find Routes}.
+
 \subsubsection{Edycja użytkowników}
 Konta administratorów mają dostęp również do widoku edycji użytkowników.
 \begin{figure}[H]
@@ -502,7 +539,7 @@ Konta administratorów mają dostęp również do widoku edycji użytkowników.
 W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
 
 \subsection{Instrukcja utrzymania}
-Uruchamianie, restartowanie lub zatrzymywanie serwera bazodanowego.\\
+Uruchamianie, restartowanie lub zatrzymywanie serwera bazodanowego.
 \begin{enumerate}
 	\item Uruchom \textbf{SQL Server Configuration Manager}.
 	\item Jeśli pojawi się okno dialogowe \textbf{Kontrola konta użytkownika}, kliknij przycisk \textbf{Tak}.
@@ -517,13 +554,13 @@ Tworzenie kopii zapasowej bazy danych.
 	\item W obszarze \textbf{Backup component} kliknij opcję \textbf{Database}.
 	\item Wybierz lokalizację docelową kopii zapasowej i wciśnij przycisk \textbf{OK}.
 \end{enumerate}
+Restartowanie serwisów WCF.
+\begin{enumerate} %TODO
+	\item Zrestartuj serwisy WCF.
+\end{enumerate}
 
 \subsection{Raport odstępstw od specyfikacji wymagań}
-
-\paragraph{Przesunięcie wyszukiwania połączeń między wybranymi miastami na kolejny etap prac}
-\subparagraph{Dotyczy:} Przypadek użycia ,,Wyszukiwanie połączeń''
-\subparagraph{Zmiana:} Przesunięcie wykonania wymagania na następny etap prac
-\subparagraph{Uzasadnienie:} Z uwagi na niskie zapotrzebowanie na funkcjonalność wyszukiwania połączeń na tym etapie prac postanowiono przełożyć prace w tym kierunku na następny etap rozwoju.
+Brak.
 
 \begin{comment}
 \subsection{Dokumentacja usług Web Services}
@@ -542,10 +579,12 @@ Tworzenie kopii zapasowej bazy danych.
 \end{comment}
 
 \subsection{Diagramy sekwencji}
-Przebieg komunikacji klienta z relacyjną bazą danych jest przedstawiony na poniższym diagramie sekwencji.
+Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjny jest przedstawiony na poniższych diagramach sekwencji.
+
+\subsubsection{Aplikacja kliencka}
 \begin{figure}[H]
-	\includegraphics[width=16cm]{sequence.pdf}
-	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z bazą danych}
+	\includegraphics[width=16cm]{sequence-client.pdf}
+	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z serwerem aplikacyjnym}
 \end{figure}
 \begin{table}[H]
 	\begin{tabularx}{\textwidth}{|l|l|X|}
@@ -565,6 +604,33 @@ Przebieg komunikacji klienta z relacyjną bazą danych jest przedstawiony na pon
 		& & Aplikacja kliencka przesyła dane dotyczące akcji podjętej przez użytkownika do warstwy serwisowej za pomocą jej interfejsu publicznego. \\
 		& & \textbf{Wejście:} Dane dotyczące podjętej akcji. \\
 		& & \textbf{Wyjście:} Obiekty transferu danych zawierające informacje o rezultacie danej akcji. \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+\subsubsection{Serwer aplikacyjny}
+\begin{figure}[H]
+	\includegraphics[width=16cm]{sequence-server.pdf}
+	\caption{Diagram sekwencji -- przepływ danych w obrębie serwera aplikacyjnego}
+\end{figure}
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|l|l|X|}
+		\hline
+		\textbf{Funkcjonalność} & \textbf{System} & \textbf{Opis} \\
+		\hline
+		Otrzymanie żądania od aplikacji klienckiej &
+		Serwer aplikacyjny &
+		\textbf{Działanie biznesowe:} \\
+		& & Serwer aplikacyjny otrzymuje żądanie od jednej z aplikacji klienckich za pośrednictwem protokołu HTTP. \\
+		& & \textbf{Wejście:} Żądanie XML SOAP do wykonania. \\
+		& & \textbf{Wyjście:} Odpowiedź na żądanie aplikacji klienckiej. \\
+		\hline
+		Wywołanie funkcji repozytorium &
+		Obiekty serwisowe &
+		\textbf{Działanie biznesowe:} \\
+		& & Serwer aplikacyjny przetwarza otrzymane wcześniej żądanie i buduje z niego zapytanie SQL. \\
+		& & \textbf{Wejście:} Wejściowy obiekt DTO. \\
+		& & \textbf{Wyjście:} Wynikowy obiekt DTO lub informacja o błędzie (wyjątek). \\
 		\hline
 		Zapytanie SQL &
 		Silnik bazy danych &
@@ -651,13 +717,13 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	\hline
 	Pracownik &
 	Usunięcie istniejącego przewoźnika &
-	Wybranie zakładki \textbf{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przyciskutextbfph{Delete Selected} po wybraniu jednego z listy. &
+	Wybranie zakładki \textbf{Agencies} na bocznym pasku aplikacji, wyszukanie istniejącego przewoźnika i wciśnięcie przycisku \textbf{Delete Selected} po wybraniu jednego z listy. &
 	Dane wybranego przewoźnika zostaną usunięte. &
 	Pozytywny \\
 	\hline
 	Pracownik &
 	Dodanie nowej linii połączeń &
-	Wybranie zakładki \textbf{Routes} w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przyciskutextbfph{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
+	Wybranie zakładki \textbf{Routes} w bocznym pasku aplikacji, przejście do widoku dodania połączenia po wciśnięciu przycisku \textbf{Add New} oraz zapisanie zmian przyciskiem \textbf{Save}. &
 	Nowe połączenie zostanie dodane do bazy danych. &
 	Pozytywny \\
 	\hline
@@ -669,7 +735,7 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	\hline
 	Pracownik &
 	Usunięcie istniejącej linii połączeń &
-	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przyciskutextbfph{Delete Selected} po wybraniu jednego z listy. &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku \textbf{Delete Selected} po wybraniu jednego z listy. &
 	Dane dotyczące wybranego połączenia zostaną usunięte. &
 	Pozytywny \\
 	\hline
@@ -680,9 +746,21 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	Pozytywny \\
 	\hline
 	Pracownik &
-	Wyświetlanie rozkładu jazdy &
-	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przyciskutextbfph{Show Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
+	Wyświetlanie rozkładu jazdy dla linii połączeń &
+	Wybranie zakładki \textbf{Routes} na bocznym pasku aplikacji, wyszukanie istniejącego połączenia i wciśnięcie przycisku \textbf{View Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście przystanków po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
 	Informacje o godzinach przyjazdu i odjazdu danej linii na konkretne przystanki. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Wyświetlanie rozkładu jazdy dla przystanku &
+	Wybranie zakładki \textbf{Stops} na bocznym pasku aplikacji, wyszukanie istniejącego przystanku i wciśnięcie przycisku \textbf{View Timetable} po zaznaczeniu jednego z listy. Następnie przełączając się w liście połączeń po lewej możemy przeglądać godziny przyjazdu i odjazdu na ten przystanek dla danej linii. &
+	Informacje o godzinach przyjazdu i odjazdu poszczególnych linii połączeń na danym przystanku. &
+	Pozytywny \\
+	\hline
+	Pracownik &
+	Wyszukiwanie połączeń pomiędzy dwoma przystankami &
+	Wybranie zakładki \textbf{Search Routes} na bocznym pasku aplikacji, wybranie dwóch przystanków i wciśnięcie przycisku \textbf{Find Routes}. &
+	Linie połączeń, którymi można przejechać pomiędzy podanymi przystankami. &
 	Pozytywny \\
 	\hline
 \end{tabularx}
@@ -754,6 +832,11 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	Paul Betts,
 	\emph{Splat},
 	\url{https://github.com/paulcbetts/splat}
+
+\bibitem{mahapps}
+	MahApps,
+	\emph{Metro},
+	\url{https://mahapps.com}
 
 \bibitem{sqlserver}
 	Installing SQL Server 2014 Step By Step Tutorial,

@@ -30,7 +30,7 @@
                     Style="{DynamicResource SquareButtonStyle}"
                     Margin="10"
                     Padding="10"
-                    Content="Show Timetable" />
+                    Content="View Timetable" />
         </StackPanel>
         <Grid Style="{StaticResource Content}">
             <Grid.RowDefinitions>
