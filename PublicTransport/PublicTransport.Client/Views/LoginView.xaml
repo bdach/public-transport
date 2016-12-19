@@ -3,27 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        mc:Ignorable="d" 
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
         d:DesignHeight="300" d:DesignWidth="500"
-        Background="DodgerBlue">
+        Background="{StaticResource AccentColorBrush}"
+        Foreground="{StaticResource IdealForegroundColorBrush}">
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground"
-                    Value="White" />
-            <Setter Property="TextAlignment"
-                    Value="Center" />
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
+        <Style x:Key="TitleBar"
+               TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="50" />
+            <Setter Property="TextAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -32,29 +33,38 @@
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <TextBlock Grid.Row="1"
-                   FontSize="20"
-                   FontWeight="Bold"
-                   Margin="50"
-                   Grid.ColumnSpan="4">Welcome to the Public Transport System</TextBlock>
+                   Grid.ColumnSpan="4"
+                   Style="{StaticResource TitleBar}"
+                   Text="welcome to the public transport system" />
         <TextBlock Grid.Row="2"
-                   Grid.Column="1">Username</TextBlock>
+                   Grid.Column="1"
+                   Style="{StaticResource TextBoxLabel}"
+                   Text="username" />
         <TextBox Grid.Row="2"
                  Grid.Column="2"
                  x:Name="UserNameTextBox" />
         <TextBlock Grid.Row="3"
-                   Grid.Column="1">Password</TextBlock>
+                   Style="{StaticResource TextBoxLabel}"
+                   Grid.Column="1"
+                   Text="password" />
         <PasswordBox Grid.Row="3"
                      Grid.Column="2"
-                     Margin="10"
                      x:Name="PasswordBox" />
-        <Button Grid.Row="4"
+        <Button Grid.Row="5"
                 Grid.Column="1"
-                Width="100"
                 Grid.ColumnSpan="2"
-                Content="Log in"
+                Style="{DynamicResource AccentedSquareButtonStyle}"
+                Width="100"
                 IsDefault="True"
+                Content="Log in"
                 x:Name="LoginButton" />
+        <controls:ProgressRing Grid.Row="6"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="2"
+                               Foreground="{StaticResource IdealForegroundColorBrush}"
+                               Margin="10"
+                               x:Name="ProgressRing" />
     </Grid>
 </UserControl>

@@ -23,8 +23,8 @@ namespace PublicTransport.Client.Views.Filter
             InitializeComponent();
             this.OneWayBind(ViewModel, vm => vm.Users, v => v.UsersListView.ItemsSource);
             this.OneWayBind(ViewModel, vm => vm.Roles, v => v.RoleTypesComboBox.ItemsSource);
-            this.Bind(ViewModel, vm => vm.UserFilter.UserNameFilter, v => v.UserNameFilterTextBox.Text);
-            this.Bind(ViewModel, vm => vm.UserFilter.RoleTypeFilter, v => v.RoleTypesComboBox.SelectedItem);
+            this.Bind(ViewModel, vm => vm.UserReactiveFilter.UserNameFilter, v => v.UserNameFilterTextBox.Text);
+            this.Bind(ViewModel, vm => vm.UserReactiveFilter.RoleTypeFilter, v => v.RoleTypesComboBox.SelectedItem);
             this.Bind(ViewModel, vm => vm.SelectedUser, v => v.UsersListView.SelectedItem);
 
             this.BindCommand(ViewModel, vm => vm.AddUser, v => v.AddUserButton);

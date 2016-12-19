@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/streets?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" />
+  <xs:import schemaLocation="http://localhost:8733/streets?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" />
+  <xs:element name="CreateStreet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="street" nillable="true" type="q1:StreetDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateStreetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="CreateStreetResult" nillable="true" type="q2:StreetDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateStreet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="street" nillable="true" type="q3:StreetDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateStreetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="UpdateStreetResult" nillable="true" type="q4:StreetDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteStreet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="street" nillable="true" type="q5:StreetDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteStreetResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterCities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterCitiesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="FilterCitiesResult" nillable="true" type="q6:ArrayOfCityDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterStreets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" minOccurs="0" name="filter" nillable="true" type="q7:StreetFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterStreetsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="FilterStreetsResult" nillable="true" type="q8:ArrayOfStreetDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

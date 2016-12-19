@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="729b5d85-c70f-4af2-b600-97958abfef41" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/agencies" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AgencyService.wsdl" MetadataType="Wsdl" ID="47f2fa05-12de-4f94-834f-5ab225ace20b" SourceId="1" SourceUrl="http://localhost:8733/agencies" />
+    <MetadataFile FileName="agencies.xsd" MetadataType="Schema" ID="f3b4ad54-8b80-47da-845f-643ee649dc78" SourceId="1" SourceUrl="http://localhost:8733/agencies?xsd=xsd1" />
+    <MetadataFile FileName="agencies1.xsd" MetadataType="Schema" ID="d5e6f68d-f9fd-40dc-8722-9c87fbad8715" SourceId="1" SourceUrl="http://localhost:8733/agencies?xsd=xsd0" />
+    <MetadataFile FileName="agencies2.xsd" MetadataType="Schema" ID="9dde073e-fb44-4021-bf14-a62d67651b40" SourceId="1" SourceUrl="http://localhost:8733/agencies?xsd=xsd2" />
+    <MetadataFile FileName="agencies3.xsd" MetadataType="Schema" ID="fee09810-d010-457f-b2d8-6c1edc368e8e" SourceId="1" SourceUrl="http://localhost:8733/agencies?xsd=xsd3" />
+    <MetadataFile FileName="agencies4.xsd" MetadataType="Schema" ID="0bdfb4d8-a18f-4d15-9e93-a850322c0784" SourceId="1" SourceUrl="http://localhost:8733/agencies?xsd=xsd5" />
+    <MetadataFile FileName="agencies5.xsd" MetadataType="Schema" ID="ecced76f-ffe3-4259-8f83-92a9d8b3d652" SourceId="1" SourceUrl="http://localhost:8733/agencies?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

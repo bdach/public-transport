@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.DataTransfer;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Agencies;
 using PublicTransport.Client.ViewModels.Edit;
 using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -21,33 +20,33 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterAgencyViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
-        private readonly IAgencyUnitOfWork _agencyUnitOfWork;
+        private readonly IAgencyService _agencyService;
 
         /// <summary>
-        ///     <see cref="DataTransfer.AgencyFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.AgencyReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        private AgencyFilter _agencyFilter;
+        private AgencyReactiveFilter _agencyReactiveFilter;
 
         /// <summary>
-        ///     The <see cref="Agency" /> currently selected by the user.
+        ///     The <see cref="AgencyDto" /> currently selected by the user.
         /// </summary>
-        private Agency _selectedAgency;
+        private AgencyDto _selectedAgency;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
-        /// <param name="agencyUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
-        public FilterAgencyViewModel(IScreen screen, IAgencyUnitOfWork agencyUnitOfWork = null)
+        /// <param name="agencyService">Service exposing methods necessary to manage data.</param>
+        public FilterAgencyViewModel(IScreen screen, IAgencyService agencyService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _agencyUnitOfWork = agencyUnitOfWork ?? Locator.Current.GetService<IAgencyUnitOfWork>();
-            _agencyFilter = new AgencyFilter();
-            Agencies = new ReactiveList<Agency>();
+            _agencyService = agencyService ?? Locator.Current.GetService<IAgencyService>();
+            _agencyReactiveFilter = new AgencyReactiveFilter();
+            Agencies = new ReactiveList<AgencyDto>();
 
             #endregion
 
@@ -55,7 +54,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Agency filtering command
 
-            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await Task.Run(() => _agencyUnitOfWork.FilterAgencies(AgencyFilter)));
+            FilterAgencies = ReactiveCommand.CreateAsyncTask(async _ => await _agencyService.FilterAgenciesAsync(AgencyReactiveFilter.Convert()));
             FilterAgencies.Subscribe(result =>
             {
                 Agencies.Clear();
@@ -68,9 +67,9 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Updating the list of filtered agencies upon filter change
 
-            this.WhenAnyValue(vm => vm.AgencyFilter.AgencyNameFilter, vm => vm.AgencyFilter.CityNameFilter,
-                    vm => vm.AgencyFilter.StreetNameFilter)
-                .Where(_ => AgencyFilter.IsValid)
+            this.WhenAnyValue(vm => vm.AgencyReactiveFilter.AgencyNameFilter, vm => vm.AgencyReactiveFilter.CityNameFilter,
+                    vm => vm.AgencyReactiveFilter.StreetNameFilter)
+                .Where(_ => AgencyReactiveFilter.IsValid)
                 .Throttle(TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler)
                 .InvokeCommand(this, vm => vm.FilterAgencies);
 
@@ -80,7 +79,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             DeleteAgency = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _agencyUnitOfWork.DeleteAgency(SelectedAgency));
+                await _agencyService.DeleteAgencyAsync(SelectedAgency);
                 return Unit.Default;
             });
             DeleteAgency.Subscribe(_ => SelectedAgency = null);
@@ -93,57 +92,49 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit agency commands
 
             AddAgency = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyService)));
             EditAgency = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyUnitOfWork, SelectedAgency)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditAgencyViewModel(HostScreen, _agencyService, SelectedAgency)));
 
             #endregion
 
             #region Updating the list of agencies upon navigating back
 
             HostScreen.Router.NavigateBack
-                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && AgencyFilter.IsValid)
+                .Where(_ => HostScreen.Router.NavigationStack.Last() == this && AgencyReactiveFilter.IsValid)
                 .InvokeCommand(FilterAgencies);
-
-            #endregion
-
-            #region Disposing of context
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _agencyUnitOfWork.Dispose());
 
             #endregion
         }
 
         /// <summary>
-        ///     The <see cref="Agency" /> currently selected by the user.
+        ///     The <see cref="AgencyDto" /> currently selected by the user.
         /// </summary>
-        public Agency SelectedAgency
+        public AgencyDto SelectedAgency
         {
             get { return _selectedAgency; }
             set { this.RaiseAndSetIfChanged(ref _selectedAgency, value); }
         }
 
         /// <summary>
-        ///     <see cref="DataTransfer.AgencyFilter" /> object used to send query data to the service layer.
+        ///     <see cref="DataTransfer.AgencyReactiveFilter" /> object used to send query data to the service layer.
         /// </summary>
-        public AgencyFilter AgencyFilter
+        public AgencyReactiveFilter AgencyReactiveFilter
         {
-            get { return _agencyFilter; }
-            set { this.RaiseAndSetIfChanged(ref _agencyFilter, value); }
+            get { return _agencyReactiveFilter; }
+            set { this.RaiseAndSetIfChanged(ref _agencyReactiveFilter, value); }
         }
 
         /// <summary>
-        ///     The list of <see cref="Agency" /> objects currently displayed to the user.
+        ///     The list of <see cref="AgencyDto" /> objects currently displayed to the user.
         /// </summary>
-        public ReactiveList<Agency> Agencies { get; protected set; }
+        public ReactiveList<AgencyDto> Agencies { get; protected set; }
 
         /// <summary>
-        ///     Fetches <see cref="Agency" /> objects from the database, using the <see cref="AgencyFilter" /> object as a query
+        ///     Fetches <see cref="AgencyDto" /> objects from the database, using the <see cref="AgencyReactiveFilter" /> object as a query
         ///     parameter.
         /// </summary>
-        public ReactiveCommand<List<Agency>> FilterAgencies { get; protected set; }
+        public ReactiveCommand<AgencyDto[]> FilterAgencies { get; protected set; }
 
         /// <summary>
         ///     Opens a view responsible for adding a new <see cref="Agency" /> to the database.

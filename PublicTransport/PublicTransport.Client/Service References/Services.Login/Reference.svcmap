@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="59478776-17d8-426c-a8ad-50fe72c4b7bc" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/login" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="login.xsd" MetadataType="Schema" ID="c491fa10-2800-4d05-a557-dc1b88415f7a" SourceId="1" SourceUrl="http://localhost:8733/login?xsd=xsd2" />
+    <MetadataFile FileName="login1.xsd" MetadataType="Schema" ID="c107e9e4-a389-4aba-8aa2-aaeca2deb0f5" SourceId="1" SourceUrl="http://localhost:8733/login?xsd=xsd1" />
+    <MetadataFile FileName="login2.xsd" MetadataType="Schema" ID="2bd64d0d-c4b1-4173-b4b7-57b5ff2c8a77" SourceId="1" SourceUrl="http://localhost:8733/login?xsd=xsd3" />
+    <MetadataFile FileName="login3.xsd" MetadataType="Schema" ID="d00755af-acd2-4c93-b85c-c11dcc364d85" SourceId="1" SourceUrl="http://localhost:8733/login?xsd=xsd0" />
+    <MetadataFile FileName="LoginService.wsdl" MetadataType="Wsdl" ID="4133c5a7-77e4-4855-8f08-511ff96650af" SourceId="1" SourceUrl="http://localhost:8733/login" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

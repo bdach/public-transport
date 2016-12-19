@@ -7,14 +7,13 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <TextBlock Style="{StaticResource PrimaryText}"
-                   Text="{Binding Name}" />
-        <TextBlock Style="{StaticResource DetailText}">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0}, {1}">
-                    <Binding Path="Street.Name" />
-                    <Binding Path="Street.City.Name" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+                   x:Name="StopNameTextBlock" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Style="{StaticResource DetailText}"
+                       x:Name="StreetNameTextBlock"
+                       Margin="0,0,10,0" />
+            <TextBlock Style="{StaticResource DetailText}"
+                       x:Name="CityNameTextBlock" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

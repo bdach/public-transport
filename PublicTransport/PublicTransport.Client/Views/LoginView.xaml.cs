@@ -22,6 +22,7 @@ namespace PublicTransport.Client.Views
         {
             InitializeComponent();
             this.Bind(ViewModel, vm => vm.Username, v => v.UserNameTextBox.Text);
+            this.Bind(ViewModel, vm => vm.InProgress, v => v.ProgressRing.IsActive);
             this.BindCommand(ViewModel, vm => vm.SendLoginRequest, v => v.LoginButton);
         }
 

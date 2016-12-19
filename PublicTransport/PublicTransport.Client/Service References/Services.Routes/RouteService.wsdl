@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RouteService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" />
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" />
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" />
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" />
+      <xsd:import schemaLocation="http://localhost:8733/routes?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IRouteService_GetRouteTimetableByStopId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRouteTimetableByStopId" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_GetRouteTimetableByStopId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRouteTimetableByStopIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateCalendar_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateCalendar" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateCalendar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateCalendarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateCalendar_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q1:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateCalendar_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCalendar" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateCalendar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCalendarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateCalendar_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_FilterAgencies_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterAgencies" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_FilterAgencies_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterAgenciesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateRoute_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateRoute" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateRoute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateRoute_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateRoute_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRoute" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateRoute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateRoute_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q4:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_DeleteRoute_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteRoute" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_DeleteRoute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_FilterRoutes_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterRoutes" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_FilterRoutes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterRoutesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_FilterStops_InputMessage">
+    <wsdl:part name="parameters" element="tns:FilterStops" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_FilterStops_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FilterStopsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_GetStopsByRouteId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStopsByRouteId" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_GetStopsByRouteId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStopsByRouteIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateTrip_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateTrip" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateTrip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateTripResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_CreateTrip_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q5:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateTrip_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateTrip" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateTrip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateTripResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateTrip_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q6:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_DeleteTrip_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteTrip" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_DeleteTrip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteTripResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateStops_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateStops" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateStops_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateStopsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_UpdateStops_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/PublicTransport.Services.Exceptions" name="detail" element="q7:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_GetTripStops_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTripStops" />
+  </wsdl:message>
+  <wsdl:message name="IRouteService_GetTripStops_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTripStopsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IRouteService">
+    <wsdl:operation name="GetRouteTimetableByStopId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/GetRouteTimetableByStopId" message="tns:IRouteService_GetRouteTimetableByStopId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/GetRouteTimetableByStopIdResponse" message="tns:IRouteService_GetRouteTimetableByStopId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateCalendar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/CreateCalendar" message="tns:IRouteService_CreateCalendar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/CreateCalendarResponse" message="tns:IRouteService_CreateCalendar_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/CreateCalendarValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_CreateCalendar_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCalendar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/UpdateCalendar" message="tns:IRouteService_UpdateCalendar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/UpdateCalendarResponse" message="tns:IRouteService_UpdateCalendar_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/UpdateCalendarValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_UpdateCalendar_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterAgencies">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/FilterAgencies" message="tns:IRouteService_FilterAgencies_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/FilterAgenciesResponse" message="tns:IRouteService_FilterAgencies_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateRoute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/CreateRoute" message="tns:IRouteService_CreateRoute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/CreateRouteResponse" message="tns:IRouteService_CreateRoute_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/CreateRouteValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_CreateRoute_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRoute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/UpdateRoute" message="tns:IRouteService_UpdateRoute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/UpdateRouteResponse" message="tns:IRouteService_UpdateRoute_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/UpdateRouteValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_UpdateRoute_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRoute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/DeleteRoute" message="tns:IRouteService_DeleteRoute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/DeleteRouteResponse" message="tns:IRouteService_DeleteRoute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterRoutes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/FilterRoutes" message="tns:IRouteService_FilterRoutes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/FilterRoutesResponse" message="tns:IRouteService_FilterRoutes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FilterStops">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/FilterStops" message="tns:IRouteService_FilterStops_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/FilterStopsResponse" message="tns:IRouteService_FilterStops_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStopsByRouteId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/GetStopsByRouteId" message="tns:IRouteService_GetStopsByRouteId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/GetStopsByRouteIdResponse" message="tns:IRouteService_GetStopsByRouteId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateTrip">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/CreateTrip" message="tns:IRouteService_CreateTrip_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/CreateTripResponse" message="tns:IRouteService_CreateTrip_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/CreateTripValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_CreateTrip_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrip">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/UpdateTrip" message="tns:IRouteService_UpdateTrip_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/UpdateTripResponse" message="tns:IRouteService_UpdateTrip_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/UpdateTripValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_UpdateTrip_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteTrip">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/DeleteTrip" message="tns:IRouteService_DeleteTrip_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/DeleteTripResponse" message="tns:IRouteService_DeleteTrip_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateStops">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/UpdateStops" message="tns:IRouteService_UpdateStops_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/UpdateStopsResponse" message="tns:IRouteService_UpdateStops_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IRouteService/UpdateStopsValidationFaultFault" name="ValidationFaultFault" message="tns:IRouteService_UpdateStops_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTripStops">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouteService/GetTripStops" message="tns:IRouteService_GetTripStops_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouteService/GetTripStopsResponse" message="tns:IRouteService_GetTripStops_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IRouteService" type="tns:IRouteService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetRouteTimetableByStopId">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/GetRouteTimetableByStopId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateCalendar">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/CreateCalendar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCalendar">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/UpdateCalendar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FilterAgencies">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/FilterAgencies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateRoute">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/CreateRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRoute">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/UpdateRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRoute">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/DeleteRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterRoutes">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/FilterRoutes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FilterStops">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/FilterStops" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStopsByRouteId">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/GetStopsByRouteId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateTrip">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/CreateTrip" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrip">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/UpdateTrip" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteTrip">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/DeleteTrip" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateStops">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/UpdateStops" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetTripStops">
+      <soap:operation soapAction="http://tempuri.org/IRouteService/GetTripStops" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RouteService">
+    <wsdl:port name="BasicHttpBinding_IRouteService" binding="tns:BasicHttpBinding_IRouteService">
+      <soap:address location="http://localhost:8733/routes" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,131 +1,213 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.Contracts;
+using PublicTransport.Services.DataTransfer;
+using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Exceptions;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
     /// <summary>
-    ///     Service for managing stops.
+    ///     Service used to manage stop data.
     /// </summary>
-    public class StopService
+    public class StopService : IStopService
     {
         /// <summary>
-        ///     An instance of database context.
+        ///     Service used to fetch <see cref="Stop" /> data from the database.
+        /// </summary>
+        private readonly StopRepository _stopRepository;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Zone" /> data from the database.
+        /// </summary>
+        private readonly ZoneRepository _zoneRepository;
+
+        /// <summary>
+        ///     Service used to fetch <see cref="Street" /> data from the database.
+        /// </summary>
+        private readonly StreetRepository _streetRepository;
+
+        private readonly StopTimeRepository _stopTimeRepository;
+
+        /// <summary>
+        ///     Used for converting <see cref="Stop" /> objects to <see cref="StopDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Stop, StopDto> _stopConverter;
+
+        /// <summary>
+        ///     Used for converting <see cref="Zone" /> objects to <see cref="ZoneDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Zone, ZoneDto> _zoneConverter;
+
+        /// <summary>
+        ///     Used for converting <see cref="Street" /> objects to <see cref="StreetDto" /> objects and back.
+        /// </summary>
+        private readonly IConverter<Street, StreetDto> _streetConverter;
+
+        private readonly IConverter<Route, RouteDto> _routeConverter;
+        private readonly IConverter<StopTime, StopTimeDto> _stopTimeConverter;
+
+        /// <summary>
+        ///     Database context common for services in this service used to access data.
         /// </summary>
         private readonly PublicTransportContext _db;
 
         /// <summary>
+        ///     Determines whether the database context has been disposed.
+        /// </summary>
+        private bool _disposed;
+        
+        /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db"><see cref="PublicTransportContext" /> to use during service operations.</param>
-        public StopService(PublicTransportContext db)
+        public StopService()
         {
-            _db = db;
+            _db = new PublicTransportContext();
+
+            _stopRepository = new StopRepository(_db);
+            _zoneRepository = new ZoneRepository(_db);
+            _streetRepository = new StreetRepository(_db);
+            _stopTimeRepository = new StopTimeRepository(_db);
+
+            _stopConverter = new StopConverter();
+            _zoneConverter = new ZoneConverter();
+            _streetConverter = new StreetConverter();
+            _stopTimeConverter = new StopTimeConverter();
+            _routeConverter = new RouteConverter();
         }
 
         /// <summary>
-        ///     Inserts a <see cref="Stop" /> record into the database.
+        ///     Creates a <see cref="Stop"/> object in the database.
         /// </summary>
-        /// <param name="stop"><see cref="Stop" /> object to insert into the database.</param>
-        /// <returns>The <see cref="Stop" /> object corresponding to the inserted record.</returns>
-        public Stop Create(Stop stop)
-        {
-            _db.Stops.Add(stop);
-            _db.SaveChanges();
-            return stop;
-        }
-
-        /// <summary>
-        ///     Returns the <see cref="Stop" /> with the supplied <see cref="Stop.Id" />.
-        /// </summary>
-        /// <param name="id">Identification number of the desired <see cref="Stop" />.</param>
+        /// <param name="stop"><see cref="StopDto" /> object containing <see cref="Stop"/> data.</param>
         /// <returns>
-        ///     <see cref="Stop" /> object with the supplied ID number, or null if the <see cref="Stop" /> with the supplied ID
-        ///     could not be found in the database.
+        ///     <see cref="StopDto" /> representing the inserted <see cref="Stop"/>.
         /// </returns>
-        public Stop Read(int id)
-        {
-            return _db.Stops.FirstOrDefault(u => u.Id == id);
-        }
-
-        /// <summary>
-        ///     Updates all of the fields of the supplied <see cref="Stop" />.
-        /// </summary>
-        /// <param name="stop"><see cref="Stop" /> object to update.</param>
-        /// <returns>Updated <see cref="Stop" /> object.</returns>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
         /// </exception>
-        public Stop Update(Stop stop)
+        public StopDto CreateStop(StopDto stop)
         {
-            var old = Read(stop.Id);
-            if (old == null)
+            try
             {
-                throw new EntryNotFoundException();
+                var result = _stopRepository.Create(_stopConverter.GetEntity(stop));
+                return _stopConverter.GetDto(result);
             }
-
-            _db.Entry(old).CurrentValues.SetValues(stop);
-            _db.SaveChanges();
-            return stop;
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Deletes the supplied <see cref="Stop" /> from the database.
+        ///     Updates a <see cref="Stop"/> object in the database, using the data stored in the
+        ///     <see cref="StopDto" /> object.
         /// </summary>
-        /// <param name="stop"><see cref="Stop" /> object to delete.</param>
-        /// <exception cref="EntryNotFoundException">
-        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
-        /// </exception>
-        public void Delete(Stop stop)
-        {
-            var old = Read(stop.Id);
-            if (old == null)
-            {
-                throw new EntryNotFoundException();
-            }
-
-            _db.Entry(old).State = EntityState.Deleted;
-            _db.SaveChanges();
-        }
-
-        /// <summary>
-        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
-        /// </summary>
-        /// <param name="routeId">Id of the <see cref="Route"/>.</param>
+        /// <param name="stop"><see cref="StopDto" /> representing the object to be updated in the database.</param>
         /// <returns>
-        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
+        ///     <see cref="StopDto" /> object containing the updated <see cref="Stop"/> data.
         /// </returns>
-        public List<Stop> GetStopsByRouteId(int routeId)
+        /// <exception cref="ValidationFaultException">
+        ///     Thrown when the data contained in the received DTO contains validation errors.
+        /// </exception>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop"/> could not be found in the database.
+        /// </exception>
+        public StopDto UpdateStop(StopDto stop)
         {
-            return _db.StopTimes.Include(st => st.Trip)
-                .Where(st => st.Trip.RouteId == routeId)
-                .OrderBy(st => st.StopSequence)
-                .Select(st => st.Stop)
-                .Include(s => s.Street.City)
-                .Distinct().ToList();
+            try
+            {
+                var result = _stopRepository.Update(_stopConverter.GetEntity(stop));
+                return _stopConverter.GetDto(result);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw new ValidationFaultException(ex);
+            }
         }
 
         /// <summary>
-        ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
-        ///     <see cref="IStopFilter" /> object. The returned name strings all contain the
-        ///     parameters supplied in the <see cref="filter" /> parameter.
+        ///     Deletes a <see cref="Stop"/> from the system.
+        /// </summary>
+        /// <param name="stop"><see cref="StopDto" /> representing the <see cref="Stop"/> to be deleted from the database.</param>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        public void DeleteStop(StopDto stop)
+        {
+            _stopRepository.Delete(_stopConverter.GetEntity(stop));
+        }
+
+        /// <summary>
+        ///     Filters <see cref="Stop"/> objects using the supplied <see cref="StopFilter"/>.
         /// </summary>
         /// <param name="filter">Object containing the query parameters.</param>
-        /// <returns>List of items satisfying the supplied query.</returns>
-        public List<Stop> FilterStops(IStopFilter filter)
+        /// <returns>
+        ///     List of <see cref="StopDto"/> objects matching the filtering query.
+        /// </returns>
+        public List<StopDto> FilterStops(StopFilter filter)
         {
-            return _db.Stops.Include(s => s.Street.City).Include(s => s.Zone).Include(s => s.ParentStation)
-                .Where(s => s.Name.Contains(filter.StopNameFilter))
-                .Where(s => s.Street.Name.Contains(filter.StreetNameFilter))
-                .Where(s => s.Street.City.Name.Contains(filter.CityNameFilter))
-                .Where(s => s.Zone == null || s.Zone.Name.Contains(filter.ZoneNameFilter))
-                .Where(s => s.ParentStation == null || s.ParentStation.Name.Contains(filter.ParentStationNameFilter))
-                .Where(s => !filter.OnlyStations || s.IsStation)
-                .Take(20).ToList();
+            return _stopRepository.FilterStops(filter)
+                .Select(_stopConverter.GetDto)
+                .ToList();
+        }
+
+        /// <summary>
+        ///     Filters <see cref="Zone"/> objects using the supplied string.
+        /// </summary>
+        /// <param name="name">String to filter zones by.</param>
+        /// <returns>
+        ///     List of <see cref="ZoneDto"/> objects matching the filtering query.
+        /// </returns>
+        public List<ZoneDto> FilterZones(string name)
+        {
+            return _zoneRepository.GetZonesContainingString(name)
+                .Select(_zoneConverter.GetDto)
+                .ToList();
+        }
+
+        /// <summary>
+        ///     Filters <see cref="Street" /> objects using the supplied <see cref="StreetFilter" />.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>
+        ///     List of <see cref="StreetDto" /> objects matching the filtering query.
+        /// </returns>
+        public List<StreetDto> FilterStreets(StreetFilter filter)
+        {
+            return _streetRepository.FilterStreets(filter)
+                .Select(_streetConverter.GetDto)
+                .ToList();
+        }
+
+        /// <summary>
+        ///     Fetches a timetable for the <see cref="Stop"/> with the given ID.
+        /// </summary>
+        /// <param name="stopId">ID of the <see cref="Stop"/> the timetable should be displayed for.</param>
+        /// <returns>
+        ///     A dictionary indexed by <see cref="RouteDto"/> objects, whose values are lists of <see cref="StopTimeDto"/>s.
+        ///     The values represent the times of arrival/departure of the given route for the selected stop.
+        /// </returns>
+        public Dictionary<RouteDto, List<StopTimeDto>> GetStopTimetable(int stopId)
+        {
+            return _stopTimeRepository.GetFullTimetableByStopId(stopId)
+                .ToDictionary(kv => _routeConverter.GetDto(kv.Key),
+                    kv => kv.Value.Select(st => _stopTimeConverter.GetDto(st)).ToList());
+        }
+
+        /// <summary>
+        ///     Disposes the database context if not disposed already.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _db.Dispose();
+            _disposed = true;
         }
     }
 }

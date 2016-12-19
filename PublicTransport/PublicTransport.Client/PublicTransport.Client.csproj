@@ -29,7 +29,7 @@
     <ProductName>Public Transportation System</ProductName>
     <PublisherName>Bartłomiej Dach, Tymon Felski</PublisherName>
     <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -66,13 +66,13 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\EntityFramework.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="MahApps.Metro.IconPacks, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.1.6.0\lib\net45\MahApps.Metro.IconPacks.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ReactiveUI, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\reactiveui-core.6.5.2\lib\Net45\ReactiveUI.dll</HintPath>
@@ -104,6 +104,12 @@
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -122,19 +128,72 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataTransfer\AgencyFilter.cs" />
-    <Compile Include="DataTransfer\FareFilter.cs" />
+    <Compile Include="DataTransfer\AgencyReactiveFilter.cs" />
+    <Compile Include="DataTransfer\FareReactiveFilter.cs" />
     <Compile Include="DataTransfer\IReactiveFilter.cs" />
-    <Compile Include="DataTransfer\RouteFilter.cs" />
-    <Compile Include="DataTransfer\StopFilter.cs" />
-    <Compile Include="DataTransfer\StopTimeFilter.cs" />
-    <Compile Include="DataTransfer\StreetFilter.cs" />
-    <Compile Include="DataTransfer\UserFilter.cs" />
+    <Compile Include="DataTransfer\RouteReactiveFilter.cs" />
+    <Compile Include="DataTransfer\RouteSearchReactiveFilter.cs" />
+    <Compile Include="DataTransfer\StopReactiveFilter.cs" />
+    <Compile Include="DataTransfer\StopTimeReactiveFilter.cs" />
+    <Compile Include="DataTransfer\StreetReactiveFilter.cs" />
+    <Compile Include="DataTransfer\UserReactiveFilter.cs" />
     <Compile Include="Interfaces\IDetailViewModel.cs" />
     <Compile Include="Providers\AppBootstrapper.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Providers\DetailViewModelFactory.cs" />
-    <Compile Include="ViewModels\Browse\TimetableViewModel.cs" />
+    <Compile Include="Service References\Services.Agencies\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Cities\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Fares\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Login\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Routes\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Search\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Stops\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Streets\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Users\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Services.Zones\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Browse\RouteTimetableViewModel.cs" />
+    <Compile Include="ViewModels\Browse\StopTimetableViewModel.cs" />
+    <Compile Include="ViewModels\Browse\SearchRouteViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditAgencyViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCalendarViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditCityViewModel.cs" />
@@ -161,8 +220,14 @@
     <Compile Include="ViewModels\PlaceholderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditStreetViewModel.cs" />
-    <Compile Include="Views\Browse\TimetableView.xaml.cs">
-      <DependentUpon>TimetableView.xaml</DependentUpon>
+    <Compile Include="Views\Browse\RouteTimetableView.xaml.cs">
+      <DependentUpon>RouteTimetableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Browse\SearchRouteView.xaml.cs">
+      <DependentUpon>SearchRouteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Browse\StopTimetableView.xaml.cs">
+      <DependentUpon>StopTimetableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Edit\EditFareView.xaml.cs">
       <DependentUpon>EditFareView.xaml</DependentUpon>
@@ -270,7 +335,15 @@
     <Compile Include="Views\Entities\StreetView.xaml.cs">
       <DependentUpon>StreetView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\Browse\TimetableView.xaml">
+    <Page Include="Views\Browse\RouteTimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Browse\StopTimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Browse\SearchRouteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -430,11 +503,212 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.AgencyDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.CalendarDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.CityDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.FareAttributeDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.FareRuleDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.RoleDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.RouteDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StopDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StopTimeDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.StreetDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.TripDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.UserDto.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.UserInfo.datasource" />
+    <None Include="Properties\DataSources\PublicTransport.Services.DataTransfer.ZoneDto.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\Services.Agencies\agencies.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Agencies\agencies1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Agencies\agencies2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Agencies\agencies3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Agencies\agencies4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Agencies\agencies5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Agencies\AgencyService.wsdl" />
+    <None Include="Service References\Services.Cities\cities.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Cities\cities1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Cities\cities2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Cities\cities3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Cities\cities31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Cities\CityService.wsdl" />
+    <None Include="Service References\Services.Fares\fares.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\fares6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Fares\FareService.wsdl" />
+    <None Include="Service References\Services.Login\login.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\login1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\login2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\login3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Login\LoginService.wsdl" />
+    <None Include="Service References\Services.Routes\routes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\routes1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\routes2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\routes3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\routes4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\routes5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\routes6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Routes\RouteService.wsdl" />
+    <None Include="Service References\Services.Search\search.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\search4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Search\SearchService.wsdl" />
+    <None Include="Service References\Services.Stops\stops.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\stops6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Stops\StopService.wsdl" />
+    <None Include="Service References\Services.Streets\streets.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\streets5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Streets\StreetService.wsdl" />
+    <None Include="Service References\Services.Users\users.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\users6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Users\UserService.wsdl" />
+    <None Include="Service References\Services.Zones\zones.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Zones\zones1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Zones\zones2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Zones\zones3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Zones\zones4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Services.Zones\ZoneService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -460,6 +734,141 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Services.Agencies\" />
+    <WCFMetadataStorage Include="Service References\Services.Cities\" />
+    <WCFMetadataStorage Include="Service References\Services.Fares\" />
+    <WCFMetadataStorage Include="Service References\Services.Login\" />
+    <WCFMetadataStorage Include="Service References\Services.Routes\" />
+    <WCFMetadataStorage Include="Service References\Services.Search\" />
+    <WCFMetadataStorage Include="Service References\Services.Stops\" />
+    <WCFMetadataStorage Include="Service References\Services.Streets\" />
+    <WCFMetadataStorage Include="Service References\Services.Users\" />
+    <WCFMetadataStorage Include="Service References\Services.Zones\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Cities\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Cities\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Cities\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Streets\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Streets\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Streets\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Zones\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Zones\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Zones\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Agencies\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Agencies\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Agencies\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Users\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Users\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Users\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Login\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Login\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Login\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Routes\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Routes\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Routes\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Stops\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Stops\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Stops\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Fares\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Fares\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Fares\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Search\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Search\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.Search\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

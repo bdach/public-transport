@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.Views.Entities
@@ -7,26 +7,26 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for FareAttributeView.xaml
     /// </summary>
-    public partial class FareAttributeView : IViewFor<FareAttribute>
+    public partial class FareAttributeView : IViewFor<FareAttributeDto>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(FareAttribute), typeof(FareAttributeView), new PropertyMetadata(default(FareAttribute)));
+            "ViewModel", typeof(FareAttributeDto), typeof(FareAttributeView), new PropertyMetadata(default(FareAttributeDto)));
 
         public FareAttributeView()
         {
             InitializeComponent();
         }
 
-        public FareAttribute ViewModel
+        public FareAttributeDto ViewModel
         {
-            get { return (FareAttribute)GetValue(ViewModelProperty); }
+            get { return (FareAttributeDto)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (FareAttribute)value; }
+            set { ViewModel = (FareAttributeDto)value; }
         }
     }
 }

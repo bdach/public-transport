@@ -11,7 +11,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Associates the fare with a <see cref="Entities.Route" />.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The fare rule must be associated with a route.")]
         public int RouteId { get; set; }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Associates the fare with a origin zone ID.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The fare rule must have an origin zone.")]
         public int OriginId { get; set; }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Associates the fare with a destination zone ID.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The fare rule must have an destination zone.")]
         public int DestinationId { get; set; }
 
         /// <summary>

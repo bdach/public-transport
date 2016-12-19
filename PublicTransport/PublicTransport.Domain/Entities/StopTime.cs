@@ -13,7 +13,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains an ID that identifies a <see cref="Entities.Trip" />.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The stop time must be associated with a trip.")]
         public int TripId { get; set; }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains an ID that uniquely identifies a <see cref="Entities.Stop" />.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The stop time must be associated with a stop.")]
         public int StopId { get; set; }
 
         /// <summary>
@@ -38,21 +38,21 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Specifies the arrival time at a specific stop for a specific trip on a route.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The arrival time is required.")]
         public TimeSpan ArrivalTime { get; set; }
 
         /// <summary>
         ///     Specifies the departure time at a specific stop for a specific trip on a route.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The departure time is required.")]
         public TimeSpan DepartureTime { get; set; }
 
         /// <summary>
         ///     Identifies the order of the stops for a particular trip. The values must be non-negative integers, and they must
         ///     increase along the trip.
         /// </summary>
-        [Required]
-        [Range(0, int.MaxValue)]
+        [Required(ErrorMessage = "The stop sequence number is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "The stop sequence number must be non-negative.")]
         public int StopSequence { get; set; }
     }
 }

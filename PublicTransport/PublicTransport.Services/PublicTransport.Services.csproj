@@ -5,12 +5,27 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0CF2EC6C-0ABC-42E3-847C-655B9FFC6593}</ProjectGuid>
+    <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PublicTransport.Services</RootNamespace>
     <AssemblyName>PublicTransport.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <XsdCodeGenEnabled>False</XsdCodeGenEnabled>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <XsdCodeGenSerializerMode>XmlSerializer</XsdCodeGenSerializerMode>
+    <XsdCodeGenReuseTypesFlag>True</XsdCodeGenReuseTypesFlag>
+    <XsdCodeGenReuseTypesMode>All</XsdCodeGenReuseTypesMode>
+    <XsdCodeGenReferences />
+    <XsdCodeGenNamespaceMappings>%2a, PublicTransport.Services.ContractTypes</XsdCodeGenNamespaceMappings>
+    <XsdCodeGenCollectionTypes>System.Array%3bSystem.Collections.Generic.Dictionary`2</XsdCodeGenCollectionTypes>
+    <XsdCodeGenExcludedTypes />
+    <XsdCodeGenImportXmlTypes>True</XsdCodeGenImportXmlTypes>
+    <XsdCodeGenGenerateSerializableTypes>True</XsdCodeGenGenerateSerializableTypes>
+    <XsdCodeGenGenerateInternalTypes>False</XsdCodeGenGenerateInternalTypes>
+    <XsdCodeGenEnableDataBinding>False</XsdCodeGenEnableDataBinding>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,13 +53,17 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Splat, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Splat">
       <HintPath>..\packages\Splat.1.4.0\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,42 +72,81 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTransfer\Filters\IAgencyFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IFareFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IStopFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IRouteFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IStopTimeFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IStreetFilter.cs" />
-    <Compile Include="DataTransfer\Filters\IUserFilter.cs" />
+    <Compile Include="DataTransfer\AgencyDto.cs" />
+    <Compile Include="DataTransfer\CalendarDto.cs" />
+    <Compile Include="DataTransfer\CityDto.cs" />
+    <Compile Include="DataTransfer\Converters\AgencyConverter.cs" />
+    <Compile Include="DataTransfer\Converters\CalendarConverter.cs" />
+    <Compile Include="DataTransfer\Converters\CityConverter.cs" />
+    <Compile Include="DataTransfer\Converters\FareAttributeConverter.cs" />
+    <Compile Include="DataTransfer\Converters\FareRuleConverter.cs" />
+    <Compile Include="DataTransfer\Converters\IConverter.cs" />
+    <Compile Include="DataTransfer\Converters\RouteConverter.cs" />
+    <Compile Include="DataTransfer\Converters\StopConverter.cs" />
+    <Compile Include="DataTransfer\Converters\StopTimeConverter.cs" />
+    <Compile Include="DataTransfer\Converters\StreetConverter.cs" />
+    <Compile Include="DataTransfer\Converters\TripConverter.cs" />
+    <Compile Include="DataTransfer\Converters\UserCoverter.cs" />
+    <Compile Include="DataTransfer\Converters\ZoneConverter.cs" />
+    <Compile Include="DataTransfer\FareAttributeDto.cs" />
+    <Compile Include="DataTransfer\FareRuleDto.cs" />
+    <Compile Include="DataTransfer\Filters\AgencyFilter.cs" />
+    <Compile Include="DataTransfer\Filters\FareFilter.cs" />
+    <Compile Include="DataTransfer\Filters\RouteSearchFilter.cs" />
+    <Compile Include="DataTransfer\Filters\StopFilter.cs" />
+    <Compile Include="DataTransfer\Filters\RouteFilter.cs" />
+    <Compile Include="DataTransfer\Filters\StopTimeFilter.cs" />
+    <Compile Include="DataTransfer\Filters\StreetFilter.cs" />
+    <Compile Include="DataTransfer\Filters\UserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
+    <Compile Include="DataTransfer\Converters\RoleConverter.cs" />
+    <Compile Include="DataTransfer\RoleDto.cs" />
+    <Compile Include="DataTransfer\RouteDto.cs" />
+    <Compile Include="DataTransfer\StopDto.cs" />
+    <Compile Include="DataTransfer\StopTimeDto.cs" />
+    <Compile Include="DataTransfer\StreetDto.cs" />
+    <Compile Include="DataTransfer\TripDto.cs" />
+    <Compile Include="DataTransfer\UserDto.cs" />
     <Compile Include="DataTransfer\UserInfo.cs" />
+    <Compile Include="DataTransfer\ZoneDto.cs" />
     <Compile Include="Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Exceptions\InvalidCredentialsException.cs" />
+    <Compile Include="Exceptions\ValidationFaultException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\ServiceBootstrapper.cs" />
-    <Compile Include="Services\AgencyService.cs" />
-    <Compile Include="Services\CalendarService.cs" />
-    <Compile Include="Services\CityService.cs" />
-    <Compile Include="Services\FareAttributeService.cs" />
-    <Compile Include="Services\FareRuleService.cs" />
+    <Compile Include="Repositories\AgencyRepository.cs" />
+    <Compile Include="Repositories\CalendarRepository.cs" />
+    <Compile Include="Repositories\CityRepository.cs" />
+    <Compile Include="Repositories\FareAttributeRepository.cs" />
+    <Compile Include="Repositories\FareRuleRepository.cs" />
+    <Compile Include="Services\Contracts\IAgencyService.cs" />
+    <Compile Include="Services\Contracts\ICityService.cs" />
+    <Compile Include="Services\Contracts\IFareService.cs" />
+    <Compile Include="Services\Contracts\ILoginService.cs" />
+    <Compile Include="Services\Contracts\IRouteService.cs" />
+    <Compile Include="Services\Contracts\ISearchService.cs" />
+    <Compile Include="Services\Contracts\IStopService.cs" />
+    <Compile Include="Services\Contracts\IStreetService.cs" />
+    <Compile Include="Services\Contracts\IUserService.cs" />
+    <Compile Include="Services\Contracts\IZoneService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\PasswordService.cs" />
-    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
+    <Compile Include="Repositories\RouteRepository.cs" />
+    <Compile Include="Repositories\StopRepository.cs" />
+    <Compile Include="Repositories\StopTimeRepository.cs" />
+    <Compile Include="Repositories\StreetRepository.cs" />
+    <Compile Include="Repositories\TripRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Repositories\ZoneRepository.cs" />
+    <Compile Include="Services\AgencyService.cs" />
+    <Compile Include="Services\CityService.cs" />
+    <Compile Include="Services\FareService.cs" />
     <Compile Include="Services\RouteService.cs" />
+    <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\StopService.cs" />
-    <Compile Include="Services\StopTimeService.cs" />
     <Compile Include="Services\StreetService.cs" />
-    <Compile Include="Services\TripService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\ZoneService.cs" />
-    <Compile Include="UnitsOfWork\AgencyUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\CityUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\FareUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\RouteUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\StopUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\StreetUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\UserUnitOfWork.cs" />
-    <Compile Include="UnitsOfWork\ZoneUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PublicTransport.Domain\PublicTransport.Domain.csproj">
@@ -97,11 +155,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{3D9AD99F-2412-4246-B90B-4EAA41C64699}">
+        <WcfProjectProperties>
+          <AutoStart>True</AutoStart>
+        </WcfProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

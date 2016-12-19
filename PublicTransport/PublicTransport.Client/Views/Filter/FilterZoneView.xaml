@@ -9,11 +9,23 @@
             <TextBlock>Find Zones...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="AddZoneButton">Add New</Button>
-            <Button x:Name="DeleteZoneButton">Delete Selected</Button>
-            <Button x:Name="EditZoneButton">Edit Selected</Button>
+            <Button x:Name="AddZoneButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Add New" />
+            <Button x:Name="DeleteZoneButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Delete Selected" />
+            <Button x:Name="EditZoneButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Edit Selected" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />

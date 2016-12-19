@@ -1,6 +1,7 @@
 ﻿using System;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.ViewModels.Browse;
 using PublicTransport.Client.ViewModels.Filter;
 using ReactiveUI;
 
@@ -46,6 +47,8 @@ namespace PublicTransport.Client.Providers
                     return new FilterFareViewModel(screen);
                 case MenuOption.Route:
                     return new FilterRouteViewModel(screen);
+                case MenuOption.Search:
+                    return new SearchRouteViewModel(screen);
                 case MenuOption.User:
                     return new FilterUserViewModel(screen);
                 default:

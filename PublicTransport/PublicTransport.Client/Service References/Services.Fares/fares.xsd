@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/fares?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" />
+  <xs:import schemaLocation="http://localhost:8733/fares?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" />
+  <xs:element name="CreateFareAttribute">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="fareAttribute" nillable="true" type="q1:FareAttributeDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateFareAttributeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="CreateFareAttributeResult" nillable="true" type="q2:FareAttributeDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateFareAttribute">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="fareAttribute" nillable="true" type="q3:FareAttributeDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateFareAttributeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="UpdateFareAttributeResult" nillable="true" type="q4:FareAttributeDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteFareAttribute">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="fareAttribute" nillable="true" type="q5:FareAttributeDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteFareAttributeResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateFareRule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="fareRule" nillable="true" type="q6:FareRuleDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateFareRuleResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="CreateFareRuleResult" nillable="true" type="q7:FareRuleDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateFareRule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="fareRule" nillable="true" type="q8:FareRuleDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateFareRuleResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="UpdateFareRuleResult" nillable="true" type="q9:FareRuleDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteFareRule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="fareRule" nillable="true" type="q10:FareRuleDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteFareRuleResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterFares">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" minOccurs="0" name="filter" nillable="true" type="q11:FareFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterFaresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="FilterFaresResult" nillable="true" type="q12:ArrayOfFareAttributeDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterRoutes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer.Filters" minOccurs="0" name="filter" nillable="true" type="q13:RouteFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterRoutesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="FilterRoutesResult" nillable="true" type="q14:ArrayOfRouteDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterZones">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterZonesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/PublicTransport.Services.DataTransfer" minOccurs="0" name="FilterZonesResult" nillable="true" type="q15:ArrayOfZoneDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

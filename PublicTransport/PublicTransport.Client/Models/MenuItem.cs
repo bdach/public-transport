@@ -82,6 +82,11 @@
         Trip,
 
         /// <summary>
+        ///     Represents the <see cref="ViewModels.Browse.SearchRouteViewModel" /> view model.
+        /// </summary>
+        Search,
+
+        /// <summary>
         ///     Represents the <see cref="ViewModels.Edit.EditUserViewModel" /> view model.
         /// </summary>
         User

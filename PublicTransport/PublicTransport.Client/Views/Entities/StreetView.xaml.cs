@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.Views.Entities
@@ -7,14 +7,14 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for StreetView.xaml
     /// </summary>
-    public partial class StreetView : IViewFor<Street>
+    public partial class StreetView : IViewFor<StreetDto>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(Street), typeof(StreetView), new PropertyMetadata(default(Street)));
+            "ViewModel", typeof(StreetDto), typeof(StreetView), new PropertyMetadata(default(StreetDto)));
 
-        public Street ViewModel
+        public StreetDto ViewModel
         {
-            get { return (Street) GetValue(ViewModelProperty); }
+            get { return (StreetDto) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
@@ -26,7 +26,7 @@ namespace PublicTransport.Client.Views.Entities
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (Street) value; }
+            set { ViewModel = (StreetDto) value; }
         }
     }
 }

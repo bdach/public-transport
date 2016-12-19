@@ -21,7 +21,7 @@ namespace PublicTransport.Client.Views.Edit
             this.OneWayBind(ViewModel, vm => vm.DestinationZoneSuggestions, v => v.DestinationZoneComboBox.ItemsSource);
             this.OneWayBind(ViewModel, vm => vm.TransferCounts, v => v.TransferCountComboBox.ItemsSource);
 
-            this.Bind(ViewModel, vm => vm.RouteFilter.ShortNameFilter, v => v.RouteComboBox.Text);
+            this.Bind(ViewModel, vm => vm.RouteReactiveFilter.ShortNameFilter, v => v.RouteComboBox.Text);
             this.Bind(ViewModel, vm => vm.OriginZoneFilter, v => v.OriginZoneComboBox.Text);
             this.Bind(ViewModel, vm => vm.DestinationZoneFilter, v => v.DestinationZoneComboBox.Text);
 

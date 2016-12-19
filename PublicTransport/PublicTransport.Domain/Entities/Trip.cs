@@ -13,7 +13,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains an ID that uniquely identifies a route.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The trip must be associated with a city.")]
         public int RouteId { get; set; }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Contains an ID that uniquely identifies a set of dates when service is available for one or more routes.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The trip must have a defined service pattern.")]
         public int ServiceId { get; set; }
 
         /// <summary>

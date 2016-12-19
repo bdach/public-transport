@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 
 namespace PublicTransport.Client.Views.Entities
@@ -7,14 +7,14 @@ namespace PublicTransport.Client.Views.Entities
     /// <summary>
     /// Interaction logic for StopTimeView.xaml
     /// </summary>
-    public partial class StopTimeView : IViewFor<StopTime>
+    public partial class StopTimeView : IViewFor<StopTimeDto>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(StopTime), typeof(StopTimeView), new PropertyMetadata(default(StopTime)));
+            "ViewModel", typeof(StopTimeDto), typeof(StopTimeView), new PropertyMetadata(default(StopTimeDto)));
 
-        public StopTime ViewModel
+        public StopTimeDto ViewModel
         {
-            get { return (StopTime) GetValue(ViewModelProperty); }
+            get { return (StopTimeDto) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
@@ -29,7 +29,7 @@ namespace PublicTransport.Client.Views.Entities
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (StopTime) value; }
+            set { ViewModel = (StopTimeDto) value; }
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
+using System.ServiceModel;
 using System.Windows.Controls;
-using PublicTransport.Services;
+using PublicTransport.Client.Services.Login;
 using PublicTransport.Services.DataTransfer;
-using PublicTransport.Services.Exceptions;
 using ReactiveUI;
 using Splat;
 
@@ -15,7 +14,7 @@ namespace PublicTransport.Client.ViewModels
         /// <summary>
         ///     Service used for logging into the application.
         /// </summary>
-        private ILoginService _loginService;
+        private readonly ILoginService _loginService;
 
         /// <summary>
         ///     Password box storing the password entered by the user.
@@ -33,6 +32,11 @@ namespace PublicTransport.Client.ViewModels
         private string _username = "";
 
         /// <summary>
+        ///     Indicates whether a login request is in progress.
+        /// </summary>
+        private bool _inProgress;
+
+        /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display the view model on.</param>
@@ -48,8 +52,9 @@ namespace PublicTransport.Client.ViewModels
                 .Select(s => !string.IsNullOrWhiteSpace(s));
             SendLoginRequest = ReactiveCommand.CreateAsyncTask(canSendRequest, async _ =>
             {
-                var loginData =
-                    await Task.Run(() => _loginService.RequestLogin(new LoginData(Username, PasswordBox?.Password)));
+                InProgress = true;
+                var loginData = await _loginService.RequestLoginAsync(new LoginData(Username, PasswordBox?.Password));
+                InProgress = false;
                 Username = null;
                 if (PasswordBox != null) PasswordBox.Password = null;
                 return loginData;
@@ -57,17 +62,15 @@ namespace PublicTransport.Client.ViewModels
             SendLoginRequest.Subscribe(s =>
             {
                 UserInfo = s;
-                _loginService.Dispose();
-                _loginService = new LoginService();
             });
             SendLoginRequest.ThrownExceptions
-                .Where(ex => ex is InvalidCredentialsException)
+                .Where(ex => ex is FaultException)
                 .SelectMany(ex => UserError.Throw("Invalid username or password.", ex))
-                .Subscribe();
+                .Subscribe(_ => InProgress = false);
             SendLoginRequest.ThrownExceptions
-                .Where(ex => !(ex is InvalidCredentialsException))
+                .Where(ex => !(ex is FaultException))
                 .SelectMany(ex => UserError.Throw("Could not connect to database.", ex))
-                .Subscribe();
+                .Subscribe(_ => InProgress = false);
 
             #endregion
         }
@@ -76,6 +79,15 @@ namespace PublicTransport.Client.ViewModels
         ///     Command responsible for sending the login request.
         /// </summary>
         public ReactiveCommand<UserInfo> SendLoginRequest { get; }
+
+        /// <summary>
+        ///     Indicates whether a login request is in progress.
+        /// </summary>
+        public bool InProgress
+        {
+            get { return _inProgress; }
+            set { this.RaiseAndSetIfChanged(ref _inProgress, value); }
+        }
 
         /// <summary>
         ///     Stores the username entered by the user.

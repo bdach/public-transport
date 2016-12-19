@@ -3,10 +3,10 @@ using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
+using PublicTransport.Client.Services.Fares;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Filters;
-using PublicTransport.Services.UnitsOfWork;
 using ReactiveUI.Testing;
 
 namespace PublicTransport.Tests.Client.ViewModels.Edit
@@ -14,27 +14,27 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
     [TestFixture]
     public class EditFareViewModelTest : RoutableChildViewModelTest
     {
-        private Mock<IFareUnitOfWork> _fareUnitOfWork;
+        private Mock<IFareService> _fareService;
         private EditFareViewModel _viewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _fareUnitOfWork = new Mock<IFareUnitOfWork>();
+            _fareService = new Mock<IFareService>();
         }
 
         [Test]
         public void SaveFare_CanSave()
         {
             // given
-            _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
             // then
             _viewModel.SaveFare.CanExecute(null).Should().BeFalse();
-            _viewModel.SelectedRoute = new Route();
+            _viewModel.SelectedRoute = new RouteDto();
             _viewModel.SaveFare.CanExecute(null).Should().BeFalse();
-            _viewModel.SelectedDestinationZone = new Zone();
+            _viewModel.SelectedDestinationZone = new ZoneDto();
             _viewModel.SaveFare.CanExecute(null).Should().BeFalse();
-            _viewModel.SelectedOriginZone = new Zone();
+            _viewModel.SelectedOriginZone = new ZoneDto();
             _viewModel.SaveFare.CanExecute(null).Should().BeTrue();
         }
 
@@ -42,41 +42,39 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         public void SaveFare_Created()
         {
             // given
-            _fareUnitOfWork.Setup(f => f.CreateFareRule(It.IsAny<FareRule>()))
-                .Returns(new FareRule {Id = 4});
-            _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _fareService.Setup(f => f.CreateFareRuleAsync(It.IsAny<FareRuleDto>())).ReturnsAsync(new FareRuleDto());
+            _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
             // when
             _viewModel.SaveFare.ExecuteAsyncTask().Wait();
             // then
-            _fareUnitOfWork.Verify(f => f.CreateFareAttribute(It.IsAny<FareAttribute>()), Times.Once);
-            _fareUnitOfWork.Verify(f => f.CreateFareRule(It.IsAny<FareRule>()), Times.Once);
-            _viewModel.FareAttribute.FareRuleId.ShouldBeEquivalentTo(4);
+            _fareService.Verify(f => f.CreateFareAttributeAsync(It.IsAny<FareAttributeDto>()), Times.Once);
+            _fareService.Verify(f => f.CreateFareRuleAsync(It.IsAny<FareRuleDto>()), Times.Once);
         }
 
         [Test]
         public void SaveFare_Updated()
         {
             // given
-            var fareRule = new FareRule {Id = 10};
-            var fareAttribute = new FareAttribute {FareRuleId = 10, FareRule = fareRule};
-            _fareUnitOfWork.Setup(f => f.UpdateFareRule(It.IsAny<FareRule>())).Returns(fareRule);
-            _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object, fareAttribute);
+            var fareRule = new FareRuleDto();
+            var fareAttribute = new FareAttributeDto { FareRule = fareRule };
+            _fareService.Setup(f => f.UpdateFareRuleAsync(It.IsAny<FareRuleDto>())).ReturnsAsync(fareRule);
+            _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object, fareAttribute);
             // when
             _viewModel.SaveFare.ExecuteAsyncTask().Wait();
             // then
-            _fareUnitOfWork.Verify(f => f.UpdateFareAttribute(fareAttribute), Times.Once);
-            _fareUnitOfWork.Verify(f => f.UpdateFareRule(fareRule), Times.Once);
+            _fareService.Verify(f => f.UpdateFareAttributeAsync(fareAttribute), Times.Once);
+            _fareService.Verify(f => f.UpdateFareRuleAsync(fareRule), Times.Once);
         }
 
         [Test]
         public void UpdateRouteSuggestions_NotUpdatedIfEmpty()
         {
             // given
-            _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
             // when
-            _viewModel.RouteFilter.ShortNameFilter = "";
+            _viewModel.RouteReactiveFilter.ShortNameFilter = "";
             // then
-            _fareUnitOfWork.Verify(f => f.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+            _fareService.Verify(f => f.FilterRoutesAsync(It.IsAny<RouteFilter>()), Times.Never);
         }
 
         //[Test]
@@ -85,21 +83,21 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             new TestScheduler().With(s =>
             {
                 // given
-                _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+                _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
                 s.AdvanceByMs(100);
                 // when
                 _viewModel.OriginZoneFilter = "hi";
                 // then
                 s.AdvanceByMs(250);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Never);
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Never);
                 s.AdvanceByMs(250);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Once);
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Once);
                 // when
                 _viewModel.DestinationZoneFilter = "hi";
                 s.AdvanceByMs(250);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Once);
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Once);
                 s.AdvanceByMs(250);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Exactly(2));
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Exactly(2));
             });
         }
 
@@ -107,12 +105,12 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
         public void UpdateZoneSuggestions_NotUpdatedIfEmpty()
         {
             // given
-            _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
             // when
             _viewModel.OriginZoneFilter = "";
             _viewModel.DestinationZoneFilter = "";
             // then
-            _fareUnitOfWork.Verify(f => f.FilterRoutes(It.IsAny<IRouteFilter>()), Times.Never);
+            _fareService.Verify(f => f.FilterRoutesAsync(It.IsAny<RouteFilter>()), Times.Never);
         }
 
         [Test]
@@ -121,18 +119,18 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             new TestScheduler().With(s =>
             {
                 // given
-                _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+                _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
                 s.AdvanceByMs(100);
                 // when
                 _viewModel.DestinationZoneFilter = "hi";
                 // then
                 s.AdvanceByMs(250);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Never);
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Never);
                 s.AdvanceByMs(250);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Once);
-                _viewModel.RouteFilter.ShortNameFilter = "hi";
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Once);
+                _viewModel.RouteReactiveFilter.ShortNameFilter = "hi";
                 s.AdvanceByMs(500);
-                _fareUnitOfWork.Verify(f => f.FilterZones(It.IsAny<string>()), Times.Once);
+                _fareService.Verify(f => f.FilterZonesAsync(It.IsAny<string>()), Times.Once);
             });
         }
 
@@ -142,11 +140,11 @@ namespace PublicTransport.Tests.Client.ViewModels.Edit
             // given
             var navigatedBack = false;
             Router.NavigateBack.Subscribe(_ => navigatedBack = true);
-            _viewModel = new EditFareViewModel(Screen.Object, _fareUnitOfWork.Object);
+            _viewModel = new EditFareViewModel(Screen.Object, _fareService.Object);
             // when
             _viewModel.Close.ExecuteAsyncTask().Wait();
             // then
-            navigatedBack.Should().BeTrue();;
+            navigatedBack.Should().BeTrue();
         }
     }
 }

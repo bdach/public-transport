@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using PublicTransport.Client.Interfaces;
 using PublicTransport.Client.Models;
+using PublicTransport.Client.Services.Zones;
 using PublicTransport.Client.ViewModels.Edit;
-using PublicTransport.Domain.Entities;
-using PublicTransport.Services.UnitsOfWork;
+using PublicTransport.Services.DataTransfer;
 using ReactiveUI;
 using Splat;
 
@@ -20,9 +18,9 @@ namespace PublicTransport.Client.ViewModels.Filter
     public class FilterZoneViewModel : ReactiveObject, IDetailViewModel
     {
         /// <summary>
-        ///     Unit of work used in the view model to access the database.
+        ///     Service used in the view model to access the database.
         /// </summary>
-        private readonly IZoneUnitOfWork _zoneUnitOfWork;
+        private readonly IZoneService _zoneService;
 
         /// <summary>
         ///     String containing the zone name filter.
@@ -30,22 +28,22 @@ namespace PublicTransport.Client.ViewModels.Filter
         private string _nameFilter;
 
         /// <summary>
-        ///     <see cref="Zone" /> object currently selected in the view.
+        ///     <see cref="ZoneDto" /> object currently selected in the view.
         /// </summary>
-        private Zone _selectedZone;
+        private ZoneDto _selectedZone;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="screen">Screen to display view model on.</param>
-        /// <param name="zoneUnitOfWork">Unit of work exposing methods necessary to manage data.</param>
-        public FilterZoneViewModel(IScreen screen, IZoneUnitOfWork zoneUnitOfWork = null)
+        /// <param name="zoneService">Service exposing methods necessary to manage data.</param>
+        public FilterZoneViewModel(IScreen screen, IZoneService zoneService = null)
         {
             #region Field/property initialization
 
             HostScreen = screen;
-            _zoneUnitOfWork = zoneUnitOfWork ?? Locator.Current.GetService<IZoneUnitOfWork>();
-            Zones = new ReactiveList<Zone>();
+            _zoneService = zoneService ?? Locator.Current.GetService<IZoneService>();
+            Zones = new ReactiveList<ZoneDto>();
 
             #endregion
 
@@ -53,7 +51,7 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Zone filtering command
 
-            FilterZones = ReactiveCommand.CreateAsyncTask(async _ => { return await Task.Run(() => _zoneUnitOfWork.FilterZones(NameFilter)); });
+            FilterZones = ReactiveCommand.CreateAsyncTask(async _ => await _zoneService.FilterZonesAsync(NameFilter));
             FilterZones.Subscribe(result =>
             {
                 Zones.Clear();
@@ -75,10 +73,9 @@ namespace PublicTransport.Client.ViewModels.Filter
 
             #region Delete zone command
 
-            // TODO: Maybe prompt for confirmation?
             DeleteZone = ReactiveCommand.CreateAsyncTask(canExecuteOnSelectedItem, async _ =>
             {
-                await Task.Run(() => _zoneUnitOfWork.DeleteZone(SelectedZone));
+                await _zoneService.DeleteZoneAsync(SelectedZone);
                 return Unit.Default;
             });
             DeleteZone.Subscribe(_ => SelectedZone = null);
@@ -91,9 +88,9 @@ namespace PublicTransport.Client.ViewModels.Filter
             #region Add/edit zone commands
 
             AddZone = ReactiveCommand.CreateAsyncObservable(_ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneUnitOfWork)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneService)));
             EditZone = ReactiveCommand.CreateAsyncObservable(canExecuteOnSelectedItem, _ =>
-                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneUnitOfWork, SelectedZone)));
+                HostScreen.Router.Navigate.ExecuteAsync(new EditZoneViewModel(screen, _zoneService, SelectedZone)));
 
             #endregion
 
@@ -104,25 +101,17 @@ namespace PublicTransport.Client.ViewModels.Filter
                 .InvokeCommand(FilterZones);
 
             #endregion
-
-            #region Disposing of contexts
-
-            HostScreen.Router.NavigateAndReset
-                .Skip(1)
-                .Subscribe(_ => _zoneUnitOfWork.Dispose());
-
-            #endregion
         }
 
         /// <summary>
-        ///     Reactive list containing the filtered <see cref="Zone" /> objects.
+        ///     Reactive list containing the filtered <see cref="ZoneDto" /> objects.
         /// </summary>
-        public ReactiveList<Zone> Zones { get; protected set; }
+        public ReactiveList<ZoneDto> Zones { get; protected set; }
 
         /// <summary>
         ///     Command responsible for filtering out zones in accordance with the <see cref="NameFilter" />.
         /// </summary>
-        public ReactiveCommand<List<Zone>> FilterZones { get; protected set; }
+        public ReactiveCommand<ZoneDto[]> FilterZones { get; protected set; }
 
         /// <summary>
         ///     Command responsible for launching the zone editing view.
@@ -149,9 +138,9 @@ namespace PublicTransport.Client.ViewModels.Filter
         }
 
         /// <summary>
-        ///     Property exposing the currently selected <see cref="Zone" />.
+        ///     Property exposing the currently selected <see cref="ZoneDto" />.
         /// </summary>
-        public Zone SelectedZone
+        public ZoneDto SelectedZone
         {
             get { return _selectedZone; }
             set { this.RaiseAndSetIfChanged(ref _selectedZone, value); }

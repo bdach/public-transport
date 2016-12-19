@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="36c20b5c-604b-4d02-b990-dc95b4bc5c4e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/stops" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="stops.xsd" MetadataType="Schema" ID="e177e236-f91a-4066-834c-9d0d798af552" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd0" />
+    <MetadataFile FileName="stops1.xsd" MetadataType="Schema" ID="f355ebec-e81d-46df-98c1-863cbab8b1e6" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd5" />
+    <MetadataFile FileName="stops2.xsd" MetadataType="Schema" ID="39787753-1f31-476e-b224-e4c32e7f34cc" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd3" />
+    <MetadataFile FileName="stops3.xsd" MetadataType="Schema" ID="1a641880-9c27-40b6-8bb2-760a347448ee" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd1" />
+    <MetadataFile FileName="stops6.xsd" MetadataType="Schema" ID="f0c865be-beae-46ac-8a0b-bacad3f0c781" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd6" />
+    <MetadataFile FileName="stops4.xsd" MetadataType="Schema" ID="28abafcc-832f-4550-aba4-88c7a6d44cff" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd4" />
+    <MetadataFile FileName="StopService.wsdl" MetadataType="Wsdl" ID="f8468f2e-ab12-47ef-9605-2d14bbff4046" SourceId="1" SourceUrl="http://localhost:8733/stops" />
+    <MetadataFile FileName="stops5.xsd" MetadataType="Schema" ID="34b3f946-6378-4311-acc6-38b5a8cafa48" SourceId="1" SourceUrl="http://localhost:8733/stops?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

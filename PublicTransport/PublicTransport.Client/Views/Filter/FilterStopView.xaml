@@ -10,11 +10,28 @@
             <TextBlock>Find Stops...</TextBlock>
         </StackPanel>
         <StackPanel Style="{StaticResource Footer}">
-            <Button x:Name="AddStopButton">Add New</Button>
-            <Button x:Name="DeleteStopButton">Delete Selected</Button>
-            <Button x:Name="EditStopButton">Edit Selected</Button>
+            <Button x:Name="AddStopButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Add New" />
+            <Button x:Name="DeleteStopButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Delete Selected" />
+            <Button x:Name="EditStopButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="Edit Selected" />
+            <Button x:Name="ViewTimetableButton"
+                    Style="{DynamicResource SquareButtonStyle}"
+                    Margin="10"
+                    Padding="10"
+                    Content="View Timetable" />
         </StackPanel>
-        <Grid>
+        <Grid Style="{StaticResource Content}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />

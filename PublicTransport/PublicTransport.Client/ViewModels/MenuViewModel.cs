@@ -20,7 +20,7 @@ namespace PublicTransport.Client.ViewModels
         private MenuItemViewModel _selectedOption;
 
         /// <summary>
-        ///     <see cref="Services.DataTransfer.UserInfo" /> object containing data about the currently logged in user.
+        ///     <see cref="UserInfo" /> object containing data about the currently logged in user.
         /// </summary>
         private UserInfo _userInfo;
 
@@ -70,7 +70,7 @@ namespace PublicTransport.Client.ViewModels
         }
 
         /// <summary>
-        ///     <see cref="Services.DataTransfer.UserInfo" /> object containing data about the currently logged in user.
+        ///     <see cref="UserInfo" /> object containing data about the currently logged in user.
         /// </summary>
         public UserInfo UserInfo
         {
@@ -100,6 +100,7 @@ namespace PublicTransport.Client.ViewModels
                 new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Stops", MenuOption.Stop),
                 new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Zones", MenuOption.Zone),
                 new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Fares", MenuOption.Fare),
+                new Tuple<RoleType, string, MenuOption>(RoleType.Employee, "Search Routes", MenuOption.Search),
                 new Tuple<RoleType, string, MenuOption>(RoleType.Administrator, "Users", MenuOption.User)
             };
             return userMenuItems.Where(s => userInfo.UserRoles.Any(ui => ui == s.Item1))
