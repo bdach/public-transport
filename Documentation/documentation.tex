@@ -20,7 +20,7 @@
 	\centering
 	{\Large Wydział Matematyki i Nauk Informacyjnych Politechniki Warszawskiej \par}
 	\vspace{1cm}
-	\includegraphics[width=0.2\textwidth]{logo.png} \par
+	\includegraphics[width=0.2\textwidth]{Resources/Images/logo.png} \par
 	\vspace{5cm}
 	{\LARGE System informacji oraz sprzedaży biletów\\komunikacji miejskiej i międzymiastowej \par}
 	\vspace{0.5cm}
@@ -75,8 +75,7 @@ Lista zmian w dokumencie:
 \section{Specyfikacja}
 
 \subsection{Opis biznesowy}
-Niniejszy system służy do przechowywania danych o przewoźnikach i połączeniach komunikacji miejskiej oraz międzymiastowej. Dane wykorzystywane są do wyszukiwania konkretnych połączeń oraz sprzedaży biletów.
-
+Niniejszy system służy do przechowywania danych o przewoźnikach i połączeniach komunikacji miejskiej oraz międzymiastowej. Dane wykorzystywane są do wyszukiwania konkretnych połączeń oraz sprzedaży biletów.\\[\baselineskip]
 System składa się z następujących dwóch komponentów:
 \begin{itemize}
 	\item komponent dla pracowników -- przeznaczony dla pracowników firmy zajmującej się udostępnianiem danych, którzy za jego pośrednictwem są w stanie edytować lub dodawać nowe połączenia. Komponent ten ma charakter czysto wewnętrzny.
@@ -85,13 +84,11 @@ System składa się z następujących dwóch komponentów:
 
 \subsection{Wymagania funkcjonalne}
 
-\subsubsection*{Przypadki użycia}
-
-\paragraph{Interfejs administracyjny dla pracowników}
+\subsubsection{Przypadki użycia (interfejs administracyjny dla pracowników)}
 Poniższy diagram UML przedstawia zbiór przypadków użycia aplikacji dla aktora -- pracownika firmy pośredniczącej w sprzedaży biletów wielu przewoźników.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm]{use-case.pdf}
+	\includegraphics[width=10.5cm]{Resources/PDF/use-case.pdf}
 	\caption{Diagram przypadków użycia dla aplikacji}
 \end{figure}
 
@@ -174,14 +171,17 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 \end{table}
 
 \newpage
-\paragraph{Aplikacja webowa}
+\subsubsection{Przypadki użycia (interfejs webowy dla klientów)}
 Poniższy diagram UML przedstawia przypadki użycia dla internauty korzystającego z aplikacji webowej w celu wyszukiwania połączeń.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm]{use-case-web.pdf}
+	\includegraphics[width=12cm]{Resources/PDF/use-case-web.pdf}
 	\caption{Diagram przypadków użycia dla użytkownika aplikacji webowej}
 \end{figure}
+
+\newpage
+\noindent
 Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 \begin{table}[H]
 	\begin{tabularx}{\textwidth}{|c|X|X|X|}
@@ -243,7 +243,8 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 	\caption{Opisy przypadków użycia dla użytkownika}
 \end{table}
 
-\subsubsection*{User stories}
+\newpage
+\subsubsection{User stories}
 \begin{enumerate}
 	\bfseries
 	\item Etap 1
@@ -358,14 +359,16 @@ Poniższa tabela zawiera rozpisane wymagania niefunkcjonalne narzucone dla syste
 	\caption{Tabela wymagań niefunkcjonalnych}
 \end{table}
 
+\newpage
 \subsection{Harmonogram projektu}
 Prace przy projekcie będą realizowane według następującego harmonogramu:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15.5cm]{gantt.pdf}
+	\includegraphics[width=15.5cm]{Resources/PDF/gantt.pdf}
 	\caption{Diagram Gantta z planowanym harmonogramem projektu}
 \end{figure}
 
+\newpage
 \noindent
 Kamienie milowe:
 \begin{enumerate}
@@ -415,7 +418,7 @@ Kamienie milowe:
 Docelowym środowiskiem aplikacji są małe lub średnie firmy pośredniczące w sprzedaży biletów komunikacyjnych, tzn. przedsiębiorstwa zatrudniające do 250 pracowników, z czego dostęp do systemu miałby dość niski procent tej liczby (w założeniach ok. 20-30\%). Dane, których przechowywanie jest niezbędne do spełnienia wymagań funkcjonalnych mają dość małą zmienność - stosunkowo rzadko ulegają zmianom lub przedawnieniom. Dodatkowo, ze względu na wewnętrzny charakter przechowywanych danych, system powinien być scentralizowany i znajdować się w jednym fizycznym położeniu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15.5cm]{architecture-global.pdf}
+	\includegraphics[width=15.5cm]{Resources/PDF/architecture-global.pdf}
 	\caption{Schemat architektury systemu}
 \end{figure}
 
@@ -447,7 +450,7 @@ Serwer aplikacyjny to pojedyncza stacja robocza w sieci wewnętrznej, odpowiadaj
 \subsubsection{Aplikacja kliencka (dla pracowników)}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{architecture-fat-client.pdf}
+	\includegraphics[width=10cm]{Resources/PDF/architecture-fat-client.pdf}
 	\caption{Schemat wykonywania czynności pracownika}
 \end{figure}
 Aplikacje klienckie mają postać ,,grubego klienta'', instalowanego na stacjach roboczych konkretnych użytkowników. Wykonywanie wszystkich żądań użytkownika delegowane jest do serwera aplikacyjnego za pośrednictwem udostępnionych usług; odpowiedzią jest informacja o powodzeniu, lub błąd wykonania. W aplikacji klienckiej nie znajdują się elementy związane z logiką biznesową.
@@ -455,7 +458,7 @@ Aplikacje klienckie mają postać ,,grubego klienta'', instalowanego na stacjach
 \subsubsection{Interfejs webowy}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{architecture-web-client.pdf}
+	\includegraphics[width=10cm]{Resources/PDF/architecture-web-client.pdf}
 	\caption{Schemat wykonywania czynności klienta}
 \end{figure}
 Interfejs webowy umożliwia użytkownikom wysyłanie zapytań do serwera aplikacyjnego z poziomu przeglądarki internetowej. Podobnie jak w przypadku aplikacji klienckiej, nie ma tutaj logiki biznesowej.
@@ -583,7 +586,7 @@ Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predef
 \end{itemize}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/01_login_screen.png}
+	\includegraphics[width=15cm]{Resources/Images/01_login_screen.png}
 	\caption{Okno logowania do systemu}
 \end{figure}
 
@@ -591,7 +594,7 @@ Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predef
 Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zostaje główne okno aplikacji. Po lewej stronie znajduje się menu nawigacyjne, które umożliwia dostęp do poszczególnych części systemu, zaś pod menu znajduje się zaś przycisk odpowiadający za wylogowanie użytkownika z systemu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/02_main_window.png}
+	\includegraphics[width=15cm]{Resources/Images/02_main_window.png}
 	\caption{Główny widok aplikacji}
 \end{figure}
 Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się formularz wyszukiwania odpowiadający wybranej opcji. Dostępne opcje to:
@@ -609,7 +612,7 @@ Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się 
 W przypadku wszystkich wyżej wymienionych opcji, po wybraniu po prawej stronie pokazuje się widok pozwalający na przeszukiwanie danych zawartych w bazie dotyczących wybranej zakładki.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/13_filter_stops.png}
+	\includegraphics[width=15cm]{Resources/Images/13_filter_stops.png}
 	\caption{Przykładowy widok wyszukiwania}
 \end{figure}
 Po wybraniu opcji lista znalezionych rekordów w bazie będzie pusta. Aby rozpocząć wyszukiwanie, należy zacząć wprowadzanie kryteriów wyszukiwania w polach znajdujących się nad listą. Zawartość listy zaktualizuje się automatycznie w ciągu pół sekundy od zakończenia wprowadzania danych.
@@ -620,7 +623,7 @@ Poniżej listy umieszczony jest pasek narzędziowy, umożliwiający dodanie nowe
 Po wybraniu opcji dodania lub edycji rekordu, po prawej stronie wyświetli się formularz umożliwiający na wprowadzenie danych nowego rekordu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/08_edit_agency.png}
+	\includegraphics[width=15cm]{Resources/Images/08_edit_agency.png}
 	\caption{Przykładowy widok edycji dla przewoźników}
 \end{figure}
 Etykiety pól obowiązkowych oznaczone są pogrubioną czcionką. Można wyróżnić dwa rodzaje pól:
@@ -630,13 +633,13 @@ Etykiety pól obowiązkowych oznaczone są pogrubioną czcionką. Można wyróż
 \end{itemize}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/06_edit_street.png}
+	\includegraphics[width=15cm]{Resources/Images/06_edit_street.png}
 	\caption{Przykład podpowiedzi}
 \end{figure}
 Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający zatwierdzenie zmian oraz zamknięcia (\textbf{Close}), który pozwala na cofnięcie się do widoku wyszukiwania i odrzucenie ostatnich zmian. W przypadku próby zapisu obiektu, który nie ma wypełnionych wszystkich pól, pojawia się poniżej przedstawiony pasek z wiadomością o błędzie:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/21_not_all_fields.png}
+	\includegraphics[width=15cm]{Resources/Images/21_not_all_fields.png}
 	\caption{Błąd zapisu}
 \end{figure}
 
@@ -644,13 +647,13 @@ Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający z
 Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{View Timetable}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/09_filter_route.png}
+	\includegraphics[width=15cm]{Resources/Images/09_filter_route.png}
 	\caption{Widok tras z przyciskiem wyświetlania rozkładu}
 \end{figure}
 Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują się poszczególne przystanki, między którymi kursuje wybrana trasa. Po wybraniu konkretnego przystanku, po prawej stronie pojawiają się czasy przyjazdu i odjazdu wszystkich kursów tej linii dotyczące wybranej opcji.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/10_timetable.png}
+	\includegraphics[width=15cm]{Resources/Images/10_timetable.png}
 	\caption{Widok rozkładu jazdy}
 \end{figure}
 Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \textbf{Time}. Dodatkowo, dostępne są opcje dodawania (\textbf{Add Trip}), edycji (\textbf{Edit Trip}) oraz usuwania (\textbf{Delete Trip}) wybranego przejazdu.
@@ -659,12 +662,12 @@ Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliw
 W podobny sposób można wyświetlić rozkład jazdy wszystkich linii dla jednego z przystanków, wybierając zakładkę \textbf{Stops}, wyszukując i wybierając jeden z przystanków, i wciskając przycisk \textbf{View Timetable}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/13_filter_stops.png}
+	\includegraphics[width=15cm]{Resources/Images/13_filter_stops.png}
 	\caption{Widok przystanków z przyciskiem wyświetlania rozkładu}
 \end{figure}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/22_stop_timetable.PNG}
+	\includegraphics[width=15cm]{Resources/Images/22_stop_timetable.PNG}
 	\caption{Rozkład jazdy dla wybranego przystanku}
 \end{figure}
 
@@ -672,7 +675,7 @@ W podobny sposób można wyświetlić rozkład jazdy wszystkich linii dla jedneg
 Poniżej widoczny jest ekran edycji pojedynczego kursu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/11_edit_trip.png}
+	\includegraphics[width=15cm]{Resources/Images/11_edit_trip.png}
 	\caption{Widok edycji przejazdu}
 \end{figure}
 Przewijana lista w dolnej części ekranu zawiera informacje o kolejnych przystankach edytowanego przejazdu oraz czasach przyjazdu i odjazdu. Można dodawać oraz usuwać przystanki za pomocą opcji \textbf{Add stop...} i \textbf{Remove stop...} 
@@ -680,7 +683,7 @@ Przewijana lista w dolnej części ekranu zawiera informacje o kolejnych przysta
 Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edycję informacji o harmonogramie danego kursu, takich, jak: pierwszy i ostatni dzień funkcjonowania kursu oraz dni tygodnia, w które odbywa się dany przejazd.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/12_edit_schedule.png}
+	\includegraphics[width=15cm]{Resources/Images/12_edit_schedule.png}
 	\caption{Widok edycji harmonogramu}
 \end{figure}
 
@@ -688,7 +691,7 @@ Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edy
 Aplikacja umożliwia wyszukiwanie tras przejeżdżających przez wybrane przystanki. Funkcjonalność ta dostępna jest z poziomu opcji \textbf{Search Routes} po lewej stronie okna.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/23_search_routes.PNG}
+	\includegraphics[width=15cm]{Resources/Images/23_search_routes.PNG}
 	\caption{Widok wyszukiwania tras}
 \end{figure}
 Aby dokonać wyszukiwania, należy wpisać nazwy przystanków: startowego oraz docelowego w pola \textbf{Origin stop name} oraz \textbf{Destination stop name} odpowiednio, wybrać jeden z sugerowanych elementów, a następnie wcisnąć przycisk \textbf{Find Routes}.
@@ -697,7 +700,7 @@ Aby dokonać wyszukiwania, należy wpisać nazwy przystanków: startowego oraz d
 Konta administratorów mają dostęp również do widoku edycji użytkowników.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{screenshots/19_edit_user.png}
+	\includegraphics[width=15cm]{Resources/Images/19_edit_user.png}
 	\caption{Widok edycji użytkowników}
 \end{figure}
 W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
@@ -749,7 +752,7 @@ Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjn
 
 \subsubsection{Aplikacja kliencka}
 \begin{figure}[H]
-	\includegraphics[width=16cm]{sequence-client.pdf}
+	\includegraphics[width=16cm]{Resources/PDF/sequence-client.pdf}
 	\caption{Diagram sekwencji -- komunikacja aplikacji klienckiej z serwerem aplikacyjnym}
 \end{figure}
 \begin{table}[H]
@@ -776,7 +779,7 @@ Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjn
 
 \subsubsection{Serwer aplikacyjny}
 \begin{figure}[H]
-	\includegraphics[width=16cm]{sequence-server.pdf}
+	\includegraphics[width=16cm]{Resources/PDF/sequence-server.pdf}
 	\caption{Diagram sekwencji -- przepływ danych w obrębie serwera aplikacyjnego}
 \end{figure}
 \begin{table}[H]
@@ -813,7 +816,7 @@ Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjn
 Model danych użyty w systemie został przedstawiony w formie diagramu relacji na poniższej grafice:
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale = 0.33]{data-model.jpg}
+	\includegraphics[scale = 0.33]{Resources/Images/data-model.jpg}
 	\caption{Diagram relacji}
 \end{figure}
 Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w systemie.
