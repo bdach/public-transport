@@ -75,11 +75,19 @@ Lista zmian w dokumencie:
 \section{Specyfikacja}
 
 \subsection{Opis biznesowy}
-Niniejszy system służy do przechowywania danych o przewoźnikach i połączeniach komunikacji miejskiej oraz międzymiastowej. Składowane dane wykorzystywane są do wyszukiwania konkretnych połączeń oraz sprzedaży biletów.
+Niniejszy system służy do przechowywania danych o przewoźnikach i połączeniach komunikacji miejskiej oraz międzymiastowej. Dane wykorzystywane są do wyszukiwania konkretnych połączeń oraz sprzedaży biletów.
+
+System składa się z następujących dwóch komponentów:
+\begin{itemize}
+	\item komponent dla pracowników -- przeznaczony dla pracowników firmy zajmującej się udostępnianiem danych, którzy za jego pośrednictwem są w stanie edytować lub dodawać nowe połączenia. Komponent ten ma charakter czysto wewnętrzny.
+	\item komponent dla użytkowników -- przeznaczony dla internautów, umożliwiający przeszukiwanie składowanych danych z poziomu przeglądarki internetowej. Za jego pośrednictwem można mieć dostęp tylko do danych publicznych.
+\end{itemize}
 
 \subsection{Wymagania funkcjonalne}
 
 \subsubsection*{Przypadki użycia}
+
+\paragraph{Interfejs administracyjny dla pracowników}
 Poniższy diagram UML przedstawia zbiór przypadków użycia aplikacji dla aktora -- pracownika firmy pośredniczącej w sprzedaży biletów wielu przewoźników.
 \begin{figure}[H]
 	\centering
@@ -165,6 +173,76 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 	\caption{Opisy przypadków użycia dla użytkownika}
 \end{table}
 
+\newpage
+\paragraph{Aplikacja webowa}
+Poniższy diagram UML przedstawia przypadki użycia dla internauty korzystającego z aplikacji webowej w celu wyszukiwania połączeń.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{use-case-web.pdf}
+	\caption{Diagram przypadków użycia dla użytkownika aplikacji webowej}
+\end{figure}
+Poszczególne przypadki są opisane szerzej w poniższej tabeli:
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|c|X|X|X|}
+		\hline
+		\textbf{Aktor} & \textbf{Nazwa} & \textbf{Opis} & \textbf{Odpowiedź systemu} \\
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Etap 3}} \\
+		\hline
+		\multirow{30}{*}{\rotatebox[origin=c]{90}{Użytkownik}}
+		& Rejestracja
+		& Utworzenie konta użytkownika w systemie
+		& Potwierdzenie utworzenia konta lub komunikat o błędzie \\
+		\cline{2-4}
+		& Zalogowanie się 
+		& Zalogowanie się użytkownika do systemu
+		& Potwierdzenie zalogowania się lub komunikat o błędzie \\
+		\cline{2-4}
+		& Wylogowanie się
+		& Wylogowanie się pracownika z systemu
+		& Potwierdzenie zakończenia pracy z systemem \\
+		\cline{2-4}
+		& Wyszukiwanie połączeń
+		& Wyszukiwanie połączeń między wybranymi punktami
+		& Widok z listą znalezionych połączeń \\
+		\cline{2-4}
+		& Wyświetlanie rozkładu linii
+		& Wyświetlanie rozkładu jazdy wybranej linii
+		& Widok zawierający informacje o przejazdach na wybranej linii \\
+		\cline{2-4}
+		& Wyświetlanie połączeń przewoźnika
+		& Wyświetlanie połączeń obsługiwanych przez danego przewoźnika
+		& Widok zawierający informacje o liniach danej firmy \\
+		\cline{2-4}
+		& Wyświetlanie rozkładu przystanku
+		& Wyświetlanie rozkładu jazdy dla wybranego przystanku
+		& Widok zawierający informacje o liniach dla wybranego przystanku \\
+		\cline{2-4}
+		& Wyświetlanie mapy trasy
+		& Wyświetlanie mapy dla wybranej trasy
+		& Widok mapy przedstawiające kolejne przystanki na trasie \\
+		\cline{2-4}
+		& Dodanie linii do ulubionych
+		& Dodanie wybranej linii komunikacyjnej do listy ulubionych
+		& Potwierdzenie dodania linii do ulubionych \\
+		\cline{2-4}
+		& Usunięcie linii z ulubionych
+		& Usunięcie wybranej linii z listy ulubionych
+		& Potwierdzenie usunięcia linii z ulubionych \\
+		\cline{2-4}
+		& Dodanie przystanku do ulubionych
+		& Dodanie wybranego przystanku do listy ulubionych
+		& Potwierdzenie dodania przystanku do ulubionych \\
+		\cline{2-4}
+		& Usunięcie przystanku z ulubionych
+		& Usunięcie wybranego przystanku z listy ulubionych
+		& Potwierdzenie usunięcia przystanku z ulubionych \\
+		\hline
+	\end{tabularx}
+	\caption{Opisy przypadków użycia dla użytkownika}
+\end{table}
+
 \subsubsection*{User stories}
 \begin{enumerate}
 	\bfseries
@@ -202,7 +280,29 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		 	\item Jako zalogowany pracownik wyświetlam rozkład jazdy dla danego przystanku. \\
 			    Dowolny zalogowany pracownik może wyświetlić rozkład jazdy dla danego przystanku.
 		 	\item Jako zalogowany pracownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
-			    Dowolny zalogowany pracownik może wyszukać dostępne bezpośrednie połączenia pomiędzy wybranymi punktami. \\
+			    Dowolny zalogowany pracownik może wyszukać dostępne bezpośrednie połączenia pomiędzy wybranymi punktami. 
+		\end{enumerate}
+	\end{enumerate}
+	\item Etap 3
+	\begin{enumerate}[label*=\arabic*.]
+		\item Interfejs webowy
+		\begin{enumerate}[label*=\arabic*.]
+			\mdseries
+		 	\item Jako dowolny użytkownik wyświetlam rozkład jazdy danej linii. \\
+			    Dowolny użytkownik (zalogowany lub nie) może wyszukać rozkład jazdy danej linii
+			    komunikacyjnej i go wyświetlić.
+	    	\item Jako dowolny użytkownik wyświetlam połączenia dla danego przewoźnika. \\
+			    Dowolny użytkownik (zalogowany lub nie) może wyświetlić połączenia od danego przewoźnika.
+		 	\item Jako dowolny użytkownik wyświetlam rozkład jazdy dla danego przystanku. \\
+			    Dowolny użytkownik (zalogowany lub nie) może wyświetlić rozkład jazdy dla danego przystanku.
+		 	\item Jako dowolny użytkownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
+			    Dowolny użytkownik (zalogowany lub nie) może wyszukać dostępne bezpośrednie połączenia pomiędzy wybranymi punktami.
+		 	\item Jako niezalogowany użytkownik zakładam konto na witrynie. \\
+			    Dowolny niezalogowany użytkownik może utworzyć własne konto w aplikacji, specyfikując nazwę swojego konta oraz hasło.
+		 	\item Jako zalogowany użytkownik dodaję linię połączeń do ulubionych/usuwam linię z ulubionych. \\
+			    Dowolny zalogowany użytkownik może oznaczać dowolną linię połączeń jako ulubioną oraz usuwać ją z listy ulubionych.
+		 	\item Jako zalogowany użytkownik dodaję przystanek do ulubionych/usuwam linię z ulubionych. \\
+			    Dowolny zalogowany użytkownik może oznaczać dowolny przystanek jako ulubiony oraz usuwać ją z listy ulubionych.
 		\end{enumerate}
 	\end{enumerate}
 \end{enumerate}
