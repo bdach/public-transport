@@ -1,0 +1,60 @@
+﻿<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapsible" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" ui-sref=".home">
+                <img src="/img/logo-white.png" alt="logo">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapsible">
+            <ul class="nav navbar-nav navbar-left">
+                <li ui-sref-active="active">
+                    <a ui-sref=".home"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
+                </li>
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false"><i class="fa fa-table" aria-hidden="true"></i>Timetable <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref=".timetable.route"><i class="fa fa-bus" aria-hidden="true"></i>Search by route</a></li>
+                        <li><a ui-sref=".timetable.stop"><i class="fa fa-location-arrow" aria-hidden="true"></i>Search by stop</a></li>
+                    </ul>
+                </li>
+                <li role="separator" class="divider"></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li ui-sref-active="active">
+                    <a ui-sref=".favourites"><i class="fa fa-star" aria-hidden="true"></i>Favourites</a>
+                </li>
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{appCtrl.session().UserName}} ({{appCtrl.session().Login}}) <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref=".settings"><i class="fa fa-gear" aria-hidden="true"></i>Settings</a></li>
+                        <li><a ng-click="appCtrl.logout()" href=""><i class="fa fa-power-off" aria-hidden="true"></i>Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+    $(document).on('click', function (event) {
+        var $clickedOn = $(event.target),
+            $collapsableItems = $('.collapse'),
+            isToggleButton = ($clickedOn.closest('.navbar-toggle').length == 1),
+            isLink = ($clickedOn.closest('a').length == 1),
+            isOutsideNavbar = ($clickedOn.parents('.navbar').length == 0);
+
+        if ((!isToggleButton && isLink) || isOutsideNavbar) {
+            $collapsableItems.each(function () {
+                $(this).collapse('hide');
+            });
+        }
+    });
+</script>
