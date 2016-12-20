@@ -27,10 +27,13 @@
                 <li role="separator" class="divider"></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ui-sref-active="active">
+                <li ui-sref-active="active" ng-if="!appCtrl.session().isLoggedIn">
+                    <a ui-sref="login"><i class="fa fa-sign-in" aria-hidden="true"></i>Login</a>
+                </li>
+                <li ui-sref-active="active" ng-if="appCtrl.session().isLoggedIn">
                     <a ui-sref=".favourites"><i class="fa fa-star" aria-hidden="true"></i>Favourites</a>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown" ng-if="appCtrl.session().isLoggedIn">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{appCtrl.session().UserName}} ({{appCtrl.session().Login}}) <span class="caret"></span></a>
                     <ul class="dropdown-menu">

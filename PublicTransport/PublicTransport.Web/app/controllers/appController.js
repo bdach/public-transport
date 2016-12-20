@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("appController", ["$state", "spinner", function ($state, spinner) {
+    app.controller("appController", ["$state", "session", "spinner", "utils", function ($state, session, spinner, utils) {
         var ctrl = this;
 
         this.isBusy = function () {
@@ -10,13 +10,17 @@
 
         this.session = function () {
             return {
-                UserName: "Jan Kowalski",
-                Login: "jkow"
+                UserName: session.getUserName(),
+                Login: session.getLogin(),
+                isLoggedIn: session.isLoggedIn()
             };
         };
 
         this.logout = function () {
-            $state.go("login");
+            session.clear();
+            if ($state.is("index.favourites") || $state.is("index.settings")) {
+                $state.go("index.home");
+            }
         };
     }]);
 })();

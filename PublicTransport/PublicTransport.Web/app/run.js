@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.run(function ($rootScope, $state, eventAggregator, spinner) {
+    app.run(function ($rootScope, $state, access, eventAggregator, notify, spinner, utils) {
         eventAggregator.on("event:showLoadingSpinner", function () {
             spinner.visible = true;
             spinner.show();
@@ -14,11 +14,25 @@
         $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
             spinner.visible = false;
             spinner.hide();
+
+            if (error === access.UNAUTHORIZED) {
+                notify.error("You need to be logged in to view this page", "Access denied");
+                $state.go("login");
+            }
+            else if (error === access.FORBIDDEN) {
+                if (fromState.name !== "login" && fromState.name !== "") {
+                    utils.setToState(fromState.name);
+                }
+            }
         });
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams, options) {
             spinner.visible = true;
             spinner.show();
+
+            if (toState.name !== "login") {
+                utils.setToState(toState.name);
+            }
         });
 
         $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams, options) {

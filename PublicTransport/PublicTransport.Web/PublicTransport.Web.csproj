@@ -68,6 +68,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\services\access.js" />
+    <Content Include="app\services\httpInterceptor.js" />
+    <Content Include="app\services\notify.js" />
+    <Content Include="app\services\session.js" />
+    <Content Include="app\services\stringBuilder.js" />
+    <Content Include="app\services\utils.js" />
+    <Content Include="css\angular-toastr.css" />
+    <Content Include="css\angular-toastr.min.css" />
     <Content Include="packages.config" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
@@ -125,6 +133,10 @@
     <Content Include="scripts\angular-mocks.js" />
     <Content Include="scripts\angular-spinner.js" />
     <Content Include="scripts\angular-spinner.min.js" />
+    <Content Include="scripts\angular-toastr.js" />
+    <Content Include="scripts\angular-toastr.min.js" />
+    <Content Include="scripts\angular-toastr.tpls.js" />
+    <Content Include="scripts\angular-toastr.tpls.min.js" />
     <Content Include="scripts\angular-ui-router.js" />
     <Content Include="scripts\angular-ui-router.min.js" />
     <Content Include="scripts\angular.js" />
