@@ -1,1 +1,8 @@
 ﻿<h2 class="page-header">Stop timetable</h2>
+<input class="form-control" type="text"
+       placeholder="Enter stop name"
+       ng-model="timetableCtrl.stopFilter.StopNameFilter"
+       name="stop" id="stop" required />
+<button class="btn btn-lg btn-primary btn-block"
+        ng-click="timetableCtrl.filterStops()">Filter</button>
+<div ng-repeat="stop in timetableCtrl.filteredStops">{{stop.Name}}<br/></div>
