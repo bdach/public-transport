@@ -70,6 +70,7 @@
     overflow: hidden;
 }
 
+.login-container .register-control,
 .login-container .input-group {
     margin: 5px 0;
     width: 100%;

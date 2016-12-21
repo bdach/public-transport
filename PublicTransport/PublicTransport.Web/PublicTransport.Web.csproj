@@ -68,6 +68,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\controllers\registerController.js" />
     <Content Include="app\services\access.js" />
     <Content Include="app\services\httpInterceptor.js" />
     <Content Include="app\services\notify.js" />
@@ -120,11 +121,12 @@
     <Content Include="js\underscore.min.js" />
     <Content Include="pages\contents\favourites-content.html" />
     <Content Include="pages\contents\home-content.html" />
-    <Content Include="pages\contents\route-timetable-content.html" />
+    <Content Include="pages\contents\timetable-route-content.html" />
     <Content Include="pages\contents\settings-content.html" />
-    <Content Include="pages\contents\stop-timetable-content.html" />
+    <Content Include="pages\contents\timetable-stop-content.html" />
     <Content Include="pages\index-page.html" />
     <Content Include="pages\login-page.html" />
+    <Content Include="pages\register-page.html" />
     <Content Include="pages\sections\navbar-section.html" />
     <Content Include="scripts\angular-animate.js" />
     <Content Include="scripts\angular-animate.min.js" />

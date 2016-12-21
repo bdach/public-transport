@@ -24,6 +24,15 @@
                     access: ["access", function (access) { return access.isAnonymous(); }]
                 }
             })
+            .state("register", {
+                url: "/register",
+                templateUrl: "pages/register-page.html",
+                controller: "registerController",
+                controllerAs: "registerCtrl",
+                resolve: {
+                    access: ["access", function (access) { return access.isAnonymous(); }]
+                }
+            })
             .state("error", {
                 url: "/error",
                 template: "<h1 style='margin-left: 20px;'>Oops... Something went wrong :(</h1>",
@@ -52,7 +61,7 @@
             })
             .state("index.timetable.route", {
                 url: "/route",
-                templateUrl: "pages/contents/route-timetable-content.html",
+                templateUrl: "pages/contents/timetable-route-content.html",
                 controller: "timetableController",
                 controllerAs: "timetableCtrl",
                 resolve: {
@@ -61,7 +70,7 @@
             })
             .state("index.timetable.stop", {
                 url: "/stop",
-                templateUrl: "pages/contents/stop-timetable-content.html",
+                templateUrl: "pages/contents/timetable-stop-content.html",
                 controller: "timetableController",
                 controllerAs: "timetableCtrl",
                 resolve: {

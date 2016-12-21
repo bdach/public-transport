@@ -20,7 +20,7 @@
                 $state.go("login");
             }
             else if (error === access.FORBIDDEN) {
-                if (fromState.name !== "login" && fromState.name !== "") {
+                if (fromState.name !== "login" && fromState.name !== "register" && fromState.name !== "") {
                     utils.setToState(fromState.name);
                 }
             }
@@ -30,7 +30,7 @@
             spinner.visible = true;
             spinner.show();
 
-            if (toState.name !== "login") {
+            if (toState.name !== "login" && toState.name !== "register") {
                 utils.setToState(toState.name);
             }
         });

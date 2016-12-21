@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("appController", ["$state", "session", "spinner", "utils", function ($state, session, spinner, utils) {
+    app.controller("appController", ["$state", "session", "spinner", function ($state, session, spinner) {
         var ctrl = this;
 
         this.isBusy = function () {

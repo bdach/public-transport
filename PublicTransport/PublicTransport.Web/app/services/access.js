@@ -17,14 +17,11 @@
             },
             
             isAnonymous: function () {
-                if (utils.getError()) {
+                if (utils.getError() || session.isLoggedIn()) {
                     return $q.reject(access.FORBIDDEN);
-                }
-                else if (!session.isLoggedIn()) {
-                    return access.OK;
                 }
                 else {
-                    return $q.reject(access.FORBIDDEN);
+                    return access.OK;
                 }
             },
 
