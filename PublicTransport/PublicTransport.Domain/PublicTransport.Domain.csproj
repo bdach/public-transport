@@ -91,6 +91,10 @@
     <Compile Include="Migrations\201612031613347_RequiredUserNamePassword.Designer.cs">
       <DependentUpon>201612031613347_RequiredUserNamePassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612222222330_UserFullNameAndToken.cs" />
+    <Compile Include="Migrations\201612222222330_UserFullNameAndToken.Designer.cs">
+      <DependentUpon>201612222222330_UserFullNameAndToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -117,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612031613347_RequiredUserNamePassword.resx">
       <DependentUpon>201612031613347_RequiredUserNamePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612222222330_UserFullNameAndToken.resx">
+      <DependentUpon>201612222222330_UserFullNameAndToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
