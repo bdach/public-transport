@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("registerController", ["$scope", "$state", "notify", "session", "utils", function ($scope, $state, notify, session, utils) {
+    app.controller("registerController", ["$http", "$scope", "$state", "notify", "session", "utils", function ($http, $scope, $state, notify, session, utils) {
         var ctrl = this;
 
         this.user = {
@@ -29,8 +29,26 @@
                 return;
             }
 
-            notify.success("You can now log in to your account", "Account created");
-            $state.go(utils.getToState());
+            var userDto = {
+                FullName: ctrl.user.Name + " " + ctrl.user.Surname,
+                UserName: ctrl.user.UserName,
+                Password: ctrl.user.Password
+            };
+
+            $http({
+                method: "POST",
+                url: utils.getApiBaseUrl() + "/user/create",
+                data: userDto
+            }).then(function () {
+                notify.success("You can now log in to your account", "Account created");
+                $state.go(utils.getToState());
+            }, function (response) {
+                notify.error(response.data.Message, "Request failed");
+                if (response.data.Message === "Provided username is already taken") {
+                    $scope.registerForm.username.$invalid = true;
+                }
+            });
+
         };
     }]);
 })();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -51,6 +52,12 @@ namespace PublicTransport.Services.Repositories
         /// <returns>The <see cref="User" /> object corresponding to the inserted record.</returns>
         public User Create(User user)
         {
+            var existingUser = _db.Users.FirstOrDefault(u => u.UserName == user.UserName);
+            if (existingUser != null)
+            {
+                throw new UserAlreadyExistsException();
+            }
+
             user.Password = _passwordService.GenerateHash(user.Password);
             var roles = new List<Role>();
             foreach (var role in user.Roles)

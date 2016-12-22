@@ -25,6 +25,12 @@ namespace PublicTransport.Services.DataTransfer
         public int Id { get; set; }
 
         /// <summary>
+        ///     Contains the full name of the user.
+        /// </summary>
+        [DataMember]
+        public string FullName { get; set; }
+
+        /// <summary>
         ///     Contains the username (login) of the user.
         /// </summary>
         [DataMember]
