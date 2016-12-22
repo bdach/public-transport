@@ -38,7 +38,7 @@
                 </li>
                 <li class="dropdown" ng-if="appCtrl.session().isLoggedIn">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                       aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{appCtrl.session().UserName}} ({{appCtrl.session().Login}}) <span class="caret"></span></a>
+                       aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{appCtrl.session().FullName}} ({{appCtrl.session().UserName}}) <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a ui-sref=".settings"><i class="fa fa-gear" aria-hidden="true"></i>Settings</a></li>
                         <li><a ng-click="appCtrl.logout()" href=""><i class="fa fa-power-off" aria-hidden="true"></i>Logout</a></li>

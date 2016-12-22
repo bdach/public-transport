@@ -7,16 +7,16 @@
             </div>
             <div class="input-group">
                 <div class="input-group-addon" aria-hidden="true"
-                     ng-class="{'input-error': loginForm.login.$invalid &&
-                                              (loginForm.login.$dirty || loginForm.attempted)}">
+                     ng-class="{'input-error': loginForm.username.$invalid &&
+                                              (loginForm.username.$dirty || loginForm.attempted)}">
                     <i class="fa fa-user"></i>
                 </div>
                 <input class="form-control" type="text"
                        placeholder="Username"
-                       ng-model="loginCtrl.user.login"
-                       ng-class="{'input-error': loginForm.login.$invalid &&
-                                                (loginForm.login.$dirty || loginForm.attempted)}"
-                       name="login" id="login" required autofocus />
+                       ng-model="loginCtrl.user.UserName"
+                       ng-class="{'input-error': loginForm.username.$invalid &&
+                                                (loginForm.username.$dirty || loginForm.attempted)}"
+                       name="username" id="username" required autofocus />
             </div>
             <div class="input-group">
                 <div class="input-group-addon" aria-hidden="true"
@@ -26,7 +26,7 @@
                 </div>
                 <input class="form-control" type="password"
                        placeholder="Password"
-                       ng-model="loginCtrl.user.password"
+                       ng-model="loginCtrl.user.Password"
                        ng-class="{'input-error': loginForm.password.$invalid &&
                                                 (loginForm.password.$dirty || loginForm.attempted)}"
                        name="password" id="password" required />

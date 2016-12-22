@@ -5,8 +5,8 @@
         var ctrl = this;
 
         this.user = {
-            login: "",
-            password: ""
+            UserName: "",
+            Password: ""
         };
 
         this.processLogin = function () {
@@ -19,7 +19,7 @@
                 $scope.loginForm.attempted = false;
             }
 
-            session.setUserData({ UserName: "Sample Name", Login: ctrl.user.login, Roles: [] });
+            session.setUserData({ FullName: "Sample Name", UserName: ctrl.user.UserName, Roles: [] });
             $state.go(utils.getToState());
         };
     }]);

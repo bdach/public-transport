@@ -3,28 +3,28 @@
 
     app.factory("session", function () {
         var user = {
+            FullName: "",
             UserName: "",
-            Login: "",
-            LoggedIn: false,
-            Roles: {}
+            Roles: [],
+            LoggedIn: false
         };
 
         var clear = function () {
+            user.FullName = "";
             user.UserName = "";
-            user.Login = "";
+            user.Roles = [];
             user.LoggedIn = false;
-            user.Roles = {};
         };
 
         var setUserData = function (data) {
+            user.FullName = data.FullName;
             user.UserName = data.UserName;
-            user.Login = data.Login;
-            user.LoggedIn = true;
             user.Roles = data.Roles;
+            user.LoggedIn = true;
         };
 
-        var getLogin = function () {
-            return user.Login;
+        var getFullName = function () {
+            return user.FullName;
         };
 
         var getUserName = function () {
@@ -38,7 +38,7 @@
         return {
             clear: clear,
             setUserData: setUserData,
-            getLogin: getLogin,
+            getFullName: getFullName,
             getUserName: getUserName,
             isLoggedIn: isLoggedIn
         };

@@ -5,11 +5,11 @@
         var ctrl = this;
 
         this.user = {
-            name: "",
-            surname: "",
-            login: "",
-            password: "",
-            passwordRepeat: ""
+            Name: "",
+            Surname: "",
+            UserName: "",
+            Password: "",
+            PasswordRepeat: ""
         };
 
         this.processRegister = function () {
@@ -22,7 +22,7 @@
                 $scope.registerForm.attempted = false;
             }
 
-            if (ctrl.user.password !== ctrl.user.passwordRepeat) {
+            if (ctrl.user.Password !== ctrl.user.PasswordRepeat) {
                 $scope.registerForm.password.$invalid = true;
                 $scope.registerForm.passwordRepeat.$invalid = true;
                 notify.error("Provided passwords don't match", "Validation error");

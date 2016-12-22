@@ -10,8 +10,8 @@
 
         this.session = function () {
             return {
+                FullName: session.getFullName(),
                 UserName: session.getUserName(),
-                Login: session.getLogin(),
                 isLoggedIn: session.isLoggedIn()
             };
         };
