@@ -14,7 +14,7 @@ namespace PublicTransport.WebAPI.Controllers
         private static readonly UserConverter UserConverter = new UserConverter();
 
         [HttpPost]
-        public IHttpActionResult Create(HttpRequestMessage request, [FromBody]UserDto user)
+        public IHttpActionResult Register(HttpRequestMessage request, [FromBody]UserDto user)
         {
             if (user != null)
             {

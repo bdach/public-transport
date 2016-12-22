@@ -37,7 +37,7 @@
 
             $http({
                 method: "POST",
-                url: utils.getApiBaseUrl() + "/user/create",
+                url: utils.getApiBaseUrl() + "/User/Register",
                 data: userDto
             }).then(function () {
                 notify.success("You can now log in to your account", "Account created");

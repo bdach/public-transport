@@ -18,7 +18,7 @@
         this.filterStops = function() {
             $http({
                 method: "POST",
-                url: utils.getApiBaseUrl() + "/stop/filter",
+                url: utils.getApiBaseUrl() + "/Stop/Filter",
                 data: ctrl.stopFilter
             }).then(function (response) {
                 console.log(response.data);
