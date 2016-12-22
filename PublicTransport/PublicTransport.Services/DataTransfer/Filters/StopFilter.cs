@@ -45,5 +45,15 @@ namespace PublicTransport.Services.DataTransfer.Filters
         /// </summary>
         [DataMember]
         public bool OnlyStations { get; set; }
+
+        /// <summary>
+        ///     Determines whether the query is valid.
+        /// </summary>
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(StopNameFilter) ||
+            !string.IsNullOrWhiteSpace(StreetNameFilter) ||
+            !string.IsNullOrWhiteSpace(CityNameFilter) ||
+            !string.IsNullOrWhiteSpace(ZoneNameFilter) ||
+            !string.IsNullOrWhiteSpace(ParentStationNameFilter);
     }
 }

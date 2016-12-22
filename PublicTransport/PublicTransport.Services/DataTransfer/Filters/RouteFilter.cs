@@ -34,5 +34,14 @@ namespace PublicTransport.Services.DataTransfer.Filters
         /// </summary>
         [DataMember]
         public RouteType? RouteTypeFilter { get; set; }
+
+        /// <summary>
+        ///     Determines whether the query is valid.
+        /// </summary>
+        public bool IsValid =>
+            !string.IsNullOrWhiteSpace(AgencyNameFilter) ||
+            !string.IsNullOrWhiteSpace(LongNameFilter) ||
+            !string.IsNullOrWhiteSpace(ShortNameFilter) ||
+            RouteTypeFilter.HasValue;
     }
 }

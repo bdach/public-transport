@@ -14,15 +14,15 @@ namespace PublicTransport.WebAPI.Controllers
         private static readonly StopConverter StopConverter = new StopConverter();
 
         [HttpPost]
-        public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]StopFilter stopFilter)
+        public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]StopFilter filter)
         {
-            if (stopFilter != null)
+            if (filter != null && filter.IsValid)
             {
-                var stops = StopRepository.FilterStops(stopFilter);
+                var stops = StopRepository.FilterStops(filter);
                 var stopsDto = stops.Select(s => StopConverter.GetDto(s));
                 return Ok(stopsDto);
             }
-            return BadRequest();
+            return BadRequest("The supplied filter is invalid");
         }
     }
 }
