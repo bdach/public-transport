@@ -1,1 +1,31 @@
-﻿<h2 class="page-header">Settings</h2>
+﻿<div class="outer-reset outer">
+    <div class="middle">
+        <form class="login-container" role="form" name="settingsForm"
+              ng-submit="settingsCtrl.processPasswordChange()" novalidate>
+            <div class="text-center" style="margin: 10px 0 25px;">Change password</div>
+            <input class="form-control settings-control" type="password"
+                   placeholder="Old password"
+                   ng-model="settingsCtrl.user.OldPassword"
+                   ng-class="{'input-error': settingsForm.oldPassword.$invalid &&
+                                            (settingsForm.oldPassword.$dirty || settingsForm.attempted)}"
+                   name="oldPassword" id="oldPassword" required />
+            <input class="form-control settings-control" type="password"
+                   placeholder="New password"
+                   ng-model="settingsCtrl.user.NewPassword"
+                   ng-class="{'input-error': settingsForm.newPassword.$invalid &&
+                                            (settingsForm.newPassword.$dirty || settingsForm.attempted)}"
+                   name="newPassword" id="newPassword" required />
+            <input class="form-control settings-control" type="password"
+                   placeholder="Repeat new password"
+                   ng-model="settingsCtrl.user.NewPasswordRepeat"
+                   ng-class="{'input-error': settingsForm.newPasswordRepeat.$invalid &&
+                                            (settingsForm.newPasswordRepeat.$dirty || settingsForm.attempted)}"
+                   name="newPasswordRepeat" id="newPasswordRepeat" required /><br />
+            <div class="input-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Save changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

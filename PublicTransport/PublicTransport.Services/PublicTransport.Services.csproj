@@ -100,6 +100,7 @@
     <Compile Include="DataTransfer\Filters\UserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
     <Compile Include="DataTransfer\Converters\RoleConverter.cs" />
+    <Compile Include="DataTransfer\PasswordChangeData.cs" />
     <Compile Include="DataTransfer\RoleDto.cs" />
     <Compile Include="DataTransfer\RouteDto.cs" />
     <Compile Include="DataTransfer\StopDto.cs" />

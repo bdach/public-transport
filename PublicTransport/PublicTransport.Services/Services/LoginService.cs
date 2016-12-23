@@ -4,6 +4,7 @@ using PublicTransport.Domain.Context;
 using PublicTransport.Services.Contracts;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
+using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Services
 {
@@ -55,12 +56,33 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public UserInfo RequestLogin(LoginData loginData)
         {
-            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == loginData.UserName);
-            if (user == null || !_passwordService.CompareWithHash(loginData.Password, user.Password))
+            using (var db = new PublicTransportContext()) // new context is needed each time to avoid password caching
+            {
+                var user = db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == loginData.UserName);
+                if (user == null || !_passwordService.CompareWithHash(loginData.Password, user.Password))
+                {
+                    throw new InvalidCredentialsException();
+                }
+                return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
+            }
+        }
+
+        /// <summary>
+        ///     Handles a password change request.
+        /// </summary>
+        /// <param name="data">Object containing the credentials: username, old password, new password.</param>
+        /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
+        public void RequestPasswordChange(PasswordChangeData data)
+        {
+            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == data.UserName);
+            if (user == null || !_passwordService.CompareWithHash(data.OldPassword, user.Password))
             {
                 throw new InvalidCredentialsException();
             }
-            return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
+
+            var userRepository = new UserRepository(_db);
+            user.Password = data.NewPassword;
+            userRepository.Update(user);
         }
 
         /// <summary>

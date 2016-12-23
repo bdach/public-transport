@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using PublicTransport.Domain.Context;
+using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.Exceptions;
@@ -12,8 +13,9 @@ namespace PublicTransport.WebAPI.Controllers
     {
         private static readonly UserRepository UserRepository = new UserRepository(new PublicTransportContext());
         private static readonly UserConverter UserConverter = new UserConverter();
+        private static readonly LoginService LoginService = new LoginService();
 
-        [HttpPost]
+        [HttpPost, Route("user/register")]
         public IHttpActionResult Register(HttpRequestMessage request, [FromBody]UserDto user)
         {
             if (user != null)
@@ -29,6 +31,24 @@ namespace PublicTransport.WebAPI.Controllers
                 }
             }
             return BadRequest("Provided user model is not valid");
+        }
+
+        [HttpPost, Route("user/changepassword")]
+        public IHttpActionResult ChangePassword(HttpRequestMessage request, [FromBody]PasswordChangeData data)
+        {
+            if (data != null)
+            {
+                try
+                {
+                    LoginService.RequestPasswordChange(data);
+                    return Ok();
+                }
+                catch (InvalidCredentialsException)
+                {
+                    return BadRequest("Provided old password is invalid");
+                }
+            }
+            return BadRequest("Provided data model is not valid");
         }
     }
 }

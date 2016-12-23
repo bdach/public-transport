@@ -16,7 +16,7 @@
                     $injector.get("session").clear();
                     state.go("login");
                 }
-                else if (rejection.status === 400 && !state.is("register")) {
+                else if (rejection.status === 400 && !state.is("register") && !state.is("settings")) {
                     eventAggregator.trigger("event:hideLoadingSpinner");
                     var message = rejection.data.Message;
                     if (rejection.data.Message === "The request is invalid.") {
