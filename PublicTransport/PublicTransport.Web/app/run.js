@@ -20,8 +20,11 @@
                 $state.go("login");
             }
             else if (error === access.FORBIDDEN) {
-                if (fromState.name !== "login" && fromState.name !== "register" && fromState.name !== "") {
+                if (fromState.name !== "login" && fromState.name !== "register" && fromState.name !== "error" && fromState.name !== "") {
                     utils.setToState(fromState.name);
+                }
+                if (fromState.name === "" && toState.name === "error") {
+                    $state.go("index.home");
                 }
             }
         });
@@ -30,7 +33,7 @@
             spinner.visible = true;
             spinner.show();
 
-            if (toState.name !== "login" && toState.name !== "register") {
+            if (toState.name !== "login" && toState.name !== "register" && toState.name !== "error") {
                 utils.setToState(toState.name);
             }
         });

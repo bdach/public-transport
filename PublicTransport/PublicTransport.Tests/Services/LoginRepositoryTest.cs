@@ -31,8 +31,8 @@ namespace PublicTransport.Tests.Services
             var requestLogin = _loginService.RequestLogin(loginData);
             // then
             requestLogin.UserName.Should().BeEquivalentTo("root");
-            requestLogin.UserRoles.Should().Contain(RoleType.Administrator);
-            requestLogin.UserRoles.Should().Contain(RoleType.Employee);
+            requestLogin.Roles.Should().Contain(RoleType.Administrator);
+            requestLogin.Roles.Should().Contain(RoleType.Employee);
         }
 
         [Test]

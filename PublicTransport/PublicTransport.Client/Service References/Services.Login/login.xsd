@@ -10,8 +10,10 @@
   <xs:element name="LoginData" nillable="true" type="tns:LoginData" />
   <xs:complexType name="UserInfo">
     <xs:sequence>
+      <xs:element minOccurs="0" name="FullName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" name="Roles" nillable="true" type="q1:ArrayOfRoleType" />
+      <xs:element minOccurs="0" name="Token" nillable="true" type="xs:string" />
       <xs:element name="UserName" nillable="true" type="xs:string" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PublicTransport.Domain.Enums" name="UserRoles" nillable="true" type="q1:ArrayOfRoleType" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserInfo" nillable="true" type="tns:UserInfo" />

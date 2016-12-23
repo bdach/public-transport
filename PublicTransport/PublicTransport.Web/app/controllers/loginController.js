@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("loginController", ["$scope", "$state", "notify", "session", "utils", function ($scope, $state, notify, session, utils) {
+    app.controller("loginController", ["$http", "$scope", "$state", "eventAggregator", "notify", "session", "utils", function ($http, $scope, $state, eventAggregator, notify, session, utils) {
         var ctrl = this;
 
         this.user = {
@@ -19,8 +19,19 @@
                 $scope.loginForm.attempted = false;
             }
 
-            session.setUserData({ FullName: "Sample Name", UserName: ctrl.user.UserName, Roles: [] });
-            $state.go(utils.getToState());
+            eventAggregator.trigger("event:showLoadingSpinner");
+            $http({
+                method: "POST",
+                url: utils.getApiBaseUrl() + "/Token",
+                data: ctrl.user
+            }).then(function (response) {
+                session.setUserData(response.data);
+                notify.success("You have logged in to your account", "Login successful");
+                $state.go(utils.getToState());
+            }, function () {
+                eventAggregator.trigger("event:hideLoadingSpinner");
+                notify.error("Invalid username or password", "Login failed");
+            });
         };
     }]);
 })();

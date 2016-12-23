@@ -60,7 +60,7 @@ namespace PublicTransport.Services
             {
                 throw new InvalidCredentialsException();
             }
-            return new UserInfo(user.UserName, user.Roles.Select(r => r.Name).ToList());
+            return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
         }
 
         /// <summary>

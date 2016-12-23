@@ -37,6 +37,7 @@ namespace PublicTransport.WebAPI.Controllers
         //}
 
         [HttpPost]
+        //[HttpGet, Route("timetable/route/{id}")] // zamienić na taki i wykorzystać GetFullTimetableByRouteId(id)
         public IHttpActionResult Route(HttpRequestMessage request, [FromBody]StopTimeFilter filter)
         {
             var stopTimes = StopTimeRepository

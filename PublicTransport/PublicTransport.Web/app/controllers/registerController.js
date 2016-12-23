@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("registerController", ["$http", "$scope", "$state", "notify", "session", "utils", function ($http, $scope, $state, notify, session, utils) {
+    app.controller("registerController", ["$http", "$scope", "$state", "eventAggregator", "notify", "session", "utils", function ($http, $scope, $state, eventAggregator, notify, session, utils) {
         var ctrl = this;
 
         this.user = {
@@ -35,6 +35,7 @@
                 Password: ctrl.user.Password
             };
 
+            eventAggregator.trigger("event:showLoadingSpinner");
             $http({
                 method: "POST",
                 url: utils.getApiBaseUrl() + "/User/Register",
@@ -43,6 +44,7 @@
                 notify.success("You can now log in to your account", "Account created");
                 $state.go(utils.getToState());
             }, function (response) {
+                eventAggregator.trigger("event:hideLoadingSpinner");
                 notify.error(response.data.Message, "Request failed");
                 if (response.data.Message === "Provided username is already taken") {
                     $scope.registerForm.username.$invalid = true;
