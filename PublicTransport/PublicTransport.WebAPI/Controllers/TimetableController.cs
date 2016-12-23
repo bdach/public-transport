@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Web.Http;
 using PublicTransport.Domain.Context;
 using PublicTransport.Services.DataTransfer.Converters;
-using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.WebAPI.Controllers
@@ -13,36 +12,26 @@ namespace PublicTransport.WebAPI.Controllers
         private static readonly StopTimeRepository StopTimeRepository = new StopTimeRepository(new PublicTransportContext());
         private static readonly StopTimeConverter StopTimeConverter = new StopTimeConverter();
         private static readonly RouteConverter RouteConverter = new RouteConverter();
+        private static readonly StopConverter StopConverter = new StopConverter();
 
         [HttpGet, Route("timetable/stop/{id}")]
         public IHttpActionResult Stop(HttpRequestMessage request, int id)
         {
             var stopTimes = StopTimeRepository.GetFullTimetableByStopId(id)
                 .ToDictionary(kv => RouteConverter.GetDto(kv.Key),
-                              kv => kv.Value.Select(st => StopTimeConverter.GetDto(st)).ToList());
+                              kv => kv.Value.Select(st => StopTimeConverter.GetDto(st)).ToList())
+                .ToList();
             return Ok(stopTimes);
         }
-
-        //[HttpGet]
-        //public IHttpActionResult Stop(HttpRequestMessage request, int id = 0)
-        //{
-        //    if (id > 0)
-        //    {
-        //        var stopTimes = StopTimeRepository.GetFullTimetableByStopId(id)
-        //            .ToDictionary(kv => RouteConverter.GetDto(kv.Key),
-        //                          kv => kv.Value.Select(st => StopTimeConverter.GetDto(st)).ToList());
-        //        return Ok(stopTimes);
-        //    }
-        //    return BadRequest("The supplied id is invalid");
-        //}
-
-        [HttpPost]
-        //[HttpGet, Route("timetable/route/{id}")] // zamienić na taki i wykorzystać GetFullTimetableByRouteId(id)
-        public IHttpActionResult Route(HttpRequestMessage request, [FromBody]StopTimeFilter filter)
+        
+        [HttpGet, Route("timetable/route/{id}")]
+        public IHttpActionResult Route(HttpRequestMessage request, int id)
         {
             var stopTimes = StopTimeRepository
-                .GetRouteTimetableByStopId(filter)
-                .Select(StopTimeConverter.GetDto).ToList();
+                .GetFullTimetableByRouteId(id)
+                .ToDictionary(kv => StopConverter.GetDto(kv.Key),
+                              kv => kv.Value.Select(st => StopTimeConverter.GetDto(st)).ToList())
+                .ToList();
             return Ok(stopTimes);
         }
     }

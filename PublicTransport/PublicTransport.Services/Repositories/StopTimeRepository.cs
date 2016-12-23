@@ -160,5 +160,25 @@ namespace PublicTransport.Services.Repositories
                 .Where(st => !filter.Time.HasValue || st.ArrivalTime >= filter.Time.Value)
                 .Where(isActive).ToList();
         }
+
+        /// <summary>
+        ///     Fetches the full timetable for the <see cref="Route"/> with the supplied ID.
+        /// </summary>
+        /// <param name="routeId">ID of the route for which the timetable should be fetched.</param>
+        /// <returns>
+        ///     Returns all <see cref="StopTime"/>s associated with a certain <see cref="Route"/>, grouped by 
+        ///     <see cref="Stop"/>s.
+        /// </returns>
+        public Dictionary<Stop, List<StopTime>> GetFullTimetableByRouteId(int routeId)
+        {
+            return _db.StopTimes
+                .Include(st => st.Trip.Route)
+                .Include(st => st.Stop.ParentStation)
+                .Include(st => st.Stop.Street.City)
+                .Where(st => st.Trip.RouteId == routeId)
+                .ToList() // side-effects
+                .GroupBy(st => st.Stop)
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
     }
 }

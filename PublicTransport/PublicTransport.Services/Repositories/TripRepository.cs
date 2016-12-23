@@ -4,6 +4,7 @@ using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
 using PublicTransport.Services.Exceptions;
+using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.Repositories
 {
@@ -144,6 +145,29 @@ namespace PublicTransport.Services.Repositories
                 .Where(t => t.TripId == trip.Id)
                 .OrderBy(t => t.StopSequence)
                 .ToList();
+        }
+
+        /// <summary>
+        ///     Finds <see cref="Trip"/>s passing through the two <see cref="Stop"/>s supplied inside the 
+        ///     <see cref="RouteSearchFilter"/>.
+        /// </summary>
+        /// <param name="filter">Search filter for the trips.</param>
+        /// <returns>List of <see cref="Trip"/>s passing through the specified stops.</returns>
+        public List<Trip> FindTrips(RouteSearchFilter filter)
+        {
+            var originTrips = _db.StopTimes
+                .Include(st => st.Stop).Include(st => st.Trip.Route)
+                .Where(st => st.Stop.Id == filter.OriginStopIdFilter)
+                .Select(st => st.Trip).Distinct()
+                .Include(t => t.Route.Agency).ToList();
+
+            var destinationTrips = _db.StopTimes
+                .Include(st => st.Stop).Include(st => st.Trip.Route)
+                .Where(st => st.Stop.Id == filter.DestinationStopIdFilter)
+                .Select(st => st.Trip).Distinct()
+                .Include(t => t.Route.Agency).ToList();
+
+            return originTrips.Intersect(destinationTrips).ToList();
         }
     }
 }
