@@ -17,5 +17,10 @@ namespace PublicTransport.Services.DataTransfer.Filters
         ///     Destination stop name filter.
         /// </summary>
         public int DestinationStopIdFilter { get; set; }
+
+        /// <summary>
+        ///     Determines whether the query is valid.
+        /// </summary>
+        public bool IsValid => OriginStopIdFilter > 0 && DestinationStopIdFilter > 0;
     }
 }
