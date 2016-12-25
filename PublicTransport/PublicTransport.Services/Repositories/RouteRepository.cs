@@ -111,7 +111,7 @@ namespace PublicTransport.Services.Repositories
         /// <returns>List of routes satisfying the search criteria.</returns>
         public List<Route> FilterRoutes(RouteFilter filter)
         {
-            return _db.Routes.Include(r => r.Agency)
+            return _db.Routes.Include(r => r.Agency.Street.City)
                 .Where(r => r.ShortName.Contains(filter.ShortNameFilter))
                 .Where(r => r.LongName.Contains(filter.LongNameFilter))
                 .Where(r => r.Agency.Name.Contains(filter.AgencyNameFilter))

@@ -103,7 +103,7 @@ namespace PublicTransport.Services.Repositories
         public Dictionary<Route, List<StopTime>> GetFullTimetableByStopId(int stopId)
         {
             return _db.StopTimes
-                .Include(st => st.Trip.Route.Agency)
+                .Include(st => st.Trip.Route.Agency.Street.City)
                 .Where(st => st.StopId == stopId)
                 .ToList()   // this enumerates, calling this for side effects (skipping this line ignores Agency include)
                 .GroupBy(st => st.Trip.Route)
