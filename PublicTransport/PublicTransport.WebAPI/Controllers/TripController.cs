@@ -13,16 +13,16 @@ namespace PublicTransport.WebAPI.Controllers
         private static readonly TripRepository TripRepository = new TripRepository(new PublicTransportContext());
         private static readonly TripConverter TripConverter = new TripConverter();
 
-        [HttpPost, Route("trip/search")]
-        public IHttpActionResult Filter(HttpRequestMessage request, [FromBody] RouteSearchFilter filter)
+        [HttpPost]
+        public IHttpActionResult Search(HttpRequestMessage request, [FromBody]RouteSearchFilter filter)
         {
-            if (filter != null)
+            if (filter != null && filter.IsValid)
             {
                 var trips = TripRepository.FindTrips(filter);
-                var dtos = trips.Select(TripConverter.GetDto).ToList();
-                return Ok(dtos);
+                var tripsDto = trips.Select(TripConverter.GetDto).ToList();
+                return Ok(tripsDto);
             }
-            return BadRequest("No filter was supplied");
+            return BadRequest("The supplied filter is invalid");
         }
     }
 }

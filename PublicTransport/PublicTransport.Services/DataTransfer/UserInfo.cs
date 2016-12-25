@@ -15,6 +15,17 @@ namespace PublicTransport.Services.DataTransfer
         /// <summary>
         ///     Constructor.
         /// </summary>
+        /// <param name="userName">User name of the user that logged into the application.</param>
+        /// <param name="roles">Roles of the user that logged into the application.</param>
+        public UserInfo(string userName, IList<RoleType> roles)
+        {
+            UserName = userName;
+            Roles = roles;
+        }
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
         /// <param name="fullName">Full name of the user that logged into the web application.</param>
         /// <param name="userName">User name of the user that logged into the application.</param>
         /// <param name="token">Latest token of the user that logged into the web application granted by OAuth.</param>
