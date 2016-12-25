@@ -5,9 +5,9 @@ using System.Runtime.Serialization;
 namespace PublicTransport.WebAPI.Models
 {
     [DataContract]
-    public class StopTImeInfo
+    public class StopTimeInfo
     {
-        public StopTImeInfo(StopTime stopTime)
+        public StopTimeInfo(StopTime stopTime)
         {
             ArrivalTime = stopTime.ArrivalTime;
             DepartureTime = stopTime.DepartureTime;
