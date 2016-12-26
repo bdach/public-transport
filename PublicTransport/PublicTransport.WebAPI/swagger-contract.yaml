@@ -268,7 +268,7 @@ definitions:
         description: Specifies the departure time at a specific stop for a specific trip on a route.
 paths:
   # leaving login for now
-  /route:
+  /route/filter:
     post:
       description: Searches for routes in the database, using the supplied filtering criteria; at least one of the fields must be non-empty
       consumes:
@@ -293,7 +293,7 @@ paths:
           description: The supplied filter is invalid.
           schema:
             $ref: "#/definitions/ErrorMessage"
-  /stop:
+  /stop/filter:
     post:
       description: Searches for stops in the database, using the supplied filtering criteria; at least one of the fields must be non-empty
       consumes:
@@ -350,7 +350,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RouteTimetableEntry'
-  /trip:
+  /trip/search:
     post:
       description: Returns a list of trips that run between the two specified stops, along with their arrival/destination times and service availability information
       consumes:

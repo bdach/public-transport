@@ -12,7 +12,7 @@ namespace PublicTransport.WebAPI.Controllers
     {
         private static readonly RouteRepository RouteRepository = new RouteRepository(new PublicTransportContext());
 
-        [HttpPost, Route("route")]
+        [HttpPost]
         public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]RouteFilter filter)
         {
             if (filter != null && filter.IsValid)

@@ -1,8 +1,80 @@
-﻿<h2 class="page-header">Stop timetable</h2>
-<input class="form-control" type="text"
-       placeholder="Enter stop name"
-       ng-model="timetableCtrl.stopFilter.StopNameFilter"
-       name="stop" id="stop" required />
-<button class="btn btn-lg btn-primary btn-block"
-        ng-click="timetableCtrl.filterStops()">Filter</button>
-<div ng-repeat="stop in timetableCtrl.filteredStops">{{stop.Name}}<br/></div>
+﻿<div class="container-fluid">
+    <h2 class="page-header">Stop timetable</h2>
+    
+    <div class="row">
+        <div class="col-sm-6 col-md-4">
+            <div class="row form-group">
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter stop name..."
+                               ng-model="timetableCtrl.stopFilter.StopNameFilter" name="stop" id="stop" required />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary"
+                                    ng-click="timetableCtrl.filterStops()">
+                                Filter
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-lg-12">
+                    <div class="list-group">
+                        <a class="list-group-item"
+                           ng-click="timetableCtrl.fetchStopTimetable(stop.Id)"
+                           ng-repeat="stop in timetableCtrl.filteredStops">
+                            <h4>{{stop.Name}}</h4>
+                            <p>{{stop.StreetName}}, {{stop.CityName}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-8"
+             ng-if="timetableCtrl.selectedStop">
+            <h3>Timetable for {{timetableCtrl.selectedStop.Name}}</h3>
+            <div class="row form-group">
+                <div class="col-lg-12">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span ng-if="timetableCtrl.selectedRoute !== null">
+                                <strong>{{timetableCtrl.selectedRoute.Key.ShortName}}</strong> {{timetableCtrl.selectedRoute.Key.LongName}}
+                            </span>
+                            <span ng-if="timetableCtrl.selectedRoute === null">
+                                Select a route...
+                            </span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="pair in timetableCtrl.stopTimetable">
+                                <a ng-click="timetableCtrl.selectRoute(pair.Key)">
+                                    <strong>{{pair.Key.ShortName}}</strong> {{pair.Key.LongName}} <br/>
+                                    <small>{{pair.Key.Agency.Name}}</small>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-12" ng-if="timetableCtrl.selectedRoute">
+                    <table class="table">
+                        <tr>
+                            <th>Short name</th>
+                            <th>Headsign</th>
+                            <th>Arrival</th>
+                            <th>Departure</th>
+                        </tr>
+                        <tr ng-repeat="entry in timetableCtrl.selectedRoute.Value">
+                            <td>{{entry.ShortName}}</td>
+                            <td>{{entry.Headsign}}</td>
+                            <td>{{entry.ArrivalTime}}</td>
+                            <td>{{entry.DepartureTime}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

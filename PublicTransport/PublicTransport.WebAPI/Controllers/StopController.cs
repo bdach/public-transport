@@ -12,7 +12,7 @@ namespace PublicTransport.WebAPI.Controllers
     {
         private static readonly StopRepository StopRepository = new StopRepository(new PublicTransportContext());
 
-        [HttpPost, Route("stop")]
+        [HttpPost]
         public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]StopFilter filter)
         {
             if (filter != null && filter.IsValid)
