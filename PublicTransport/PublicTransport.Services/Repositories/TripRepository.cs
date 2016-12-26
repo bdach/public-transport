@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using PublicTransport.Domain.Context;
@@ -149,25 +150,28 @@ namespace PublicTransport.Services.Repositories
 
         /// <summary>
         ///     Finds <see cref="Trip"/>s passing through the two <see cref="Stop"/>s supplied inside the 
-        ///     <see cref="RouteSearchFilter"/>.
+        ///     <see cref="RouteSearchFilter"/>, along with their origin and destination <see cref="StopTime"/>s.
         /// </summary>
         /// <param name="filter">Search filter for the trips.</param>
         /// <returns>List of <see cref="Trip"/>s passing through the specified stops.</returns>
-        public List<Trip> FindTrips(RouteSearchFilter filter)
+        public List<Tuple<Trip, StopTime, StopTime>> FindTrips(RouteSearchFilter filter)
         {
-            var originTrips = _db.StopTimes
-                .Include(st => st.Stop).Include(st => st.Trip.Route)
-                .Where(st => st.Stop.Id == filter.OriginStopIdFilter)
-                .Select(st => st.Trip).Distinct()
-                .Include(t => t.Route.Agency).ToList();
-
-            var destinationTrips = _db.StopTimes
-                .Include(st => st.Stop).Include(st => st.Trip.Route)
-                .Where(st => st.Stop.Id == filter.DestinationStopIdFilter)
-                .Select(st => st.Trip).Distinct()
-                .Include(t => t.Route.Agency).ToList();
-
-            return originTrips.Intersect(destinationTrips).ToList();
+            var originTimes = _db.StopTimes
+                .Include(st => st.Stop.Street.City)
+                .Include(st => st.Stop.ParentStation)
+                .Where(st => st.StopId == filter.OriginStopIdFilter)
+                .ToList();
+            var destinationTimes = _db.StopTimes
+                .Include(st => st.Stop.Street.City)
+                .Include(st => st.Stop.ParentStation)
+                .Where(st => st.StopId == filter.DestinationStopIdFilter)
+                .ToList();
+            return originTimes.Join(destinationTimes, st => st.TripId, st => st.TripId,
+                    (t1, t2) => new Tuple<StopTime, StopTime>(t1, t2))
+                .Where(tuple => tuple.Item1.StopSequence < tuple.Item2.StopSequence)
+                .Take(20)
+                .Select(tuple => new Tuple<Trip, StopTime, StopTime>(_db.Trips.Include(t => t.Service).Include(t => t.Route.Agency.Street.City).First(t => t.Id == tuple.Item1.TripId), tuple.Item1, tuple.Item2))
+                .ToList();
         }
     }
 }

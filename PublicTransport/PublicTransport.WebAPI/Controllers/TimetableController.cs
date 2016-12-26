@@ -16,7 +16,7 @@ namespace PublicTransport.WebAPI.Controllers
         {
             var stopTimes = StopTimeRepository.GetFullTimetableByStopId(id)
                 .ToDictionary(kv => new RouteInfo(kv.Key),
-                              kv => kv.Value.Select(st => new StopTimeInfo(st)).ToList())
+                              kv => kv.Value.Select(st => new TimetableEntry(st)).ToList())
                 .ToList();
             return Ok(stopTimes);
         }
@@ -27,7 +27,7 @@ namespace PublicTransport.WebAPI.Controllers
             var stopTimes = StopTimeRepository
                 .GetFullTimetableByRouteId(id)
                 .ToDictionary(kv => new StopInfo(kv.Key),
-                              kv => kv.Value.Select(st => new StopTimeInfo(st)).ToList())
+                              kv => kv.Value.Select(st => new TimetableEntry(st)).ToList())
                 .ToList();
             return Ok(stopTimes);
         }

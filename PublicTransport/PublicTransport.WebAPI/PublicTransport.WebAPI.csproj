@@ -111,8 +111,11 @@
     </Compile>
     <Compile Include="Models\AgencyInfo.cs" />
     <Compile Include="Models\RouteInfo.cs" />
+    <Compile Include="Models\ServiceInfo.cs" />
     <Compile Include="Models\StopInfo.cs" />
-    <Compile Include="Models\StopTimeInfo.cs" />
+    <Compile Include="Models\TimetableEntry.cs" />
+    <Compile Include="Models\TripInfo.cs" />
+    <Compile Include="Models\TripStop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

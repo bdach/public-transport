@@ -34,6 +34,42 @@ definitions:
       CityName:
         type: string
         description: Contains the name of the city the agency is located in.
+  ErrorMessage:
+    type: object
+    properties:
+      Message:
+        type: string
+        description: Message detailing the error cause.
+  PasswordChangeRequest:
+    type: object
+    properties:
+      UserName:
+        type: string
+        description: The username of the user requesting a password change.
+        required: true
+      OldPassword:
+        type: string
+        description: The user's old password.
+        required: true
+      NewPassword:
+        type: string
+        description: The user's new password
+        required: true
+  RegistrationInfo:
+    type: object
+    properties:
+      FullName:
+        type: string
+        description: The user's full name to be stored by the app.
+        required: true
+      UserName:
+        type: string
+        description: Username to be used by the user to log in to the app.
+        required: true
+      Password:
+        type: string
+        description: The user's desired password, to be used when logging in.
+        required: true
   Route:
     type: object
     properties:
@@ -88,7 +124,39 @@ definitions:
       Value:
         type: array
         items:
-          $ref: '#/definitions/StopTime'
+          $ref: '#/definitions/TimetableEntry'
+  ServiceDetails:
+    type: object
+    properties:
+      Monday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Mondays in the date range.
+      Tuesday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Tuesdays in the date range.
+      Wednesday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Wednesdays in the date range.
+      Thursday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Thursdays in the date range.
+      Friday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Fridays in the date range.
+      Saturday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Saturdays in the date range.
+      Sunday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid for all Sundays in the date range.
+      StartDate:
+        type: string
+        format: date-time
+        description: Contains the start date for the service.
+      EndDate:
+        type: string
+        format: date-time
+        description: Contains the end date for the service.
   Stop:
     type: object
     properties:
@@ -132,7 +200,16 @@ definitions:
       OnlyStations:
         type: boolean
         description: Limits the search query only to stops which are stations.
-  StopTime:
+  StopTimetableEntry:
+    type: object
+    properties:
+      Key:
+        $ref: '#/definitions/Route'
+      Value:
+        type: array
+        items:
+          $ref: '#/definitions/TimetableEntry'
+  TimetableEntry:
     type: object
     properties:
       ArrivalTime:
@@ -152,15 +229,43 @@ definitions:
       Direction:
         type: boolean
         description: Contains a binary value that indicates the direction of travel for a trip. Use this field to distinguish between bi-directional trips on the same route. This field is not used for routing; it provides a way to separate trips by direction when publishing time tables.
-  StopTimetableEntry:
+  TripInfo:
     type: object
     properties:
-      Key:
+      OriginStop:
+        $ref: '#/definitions/TripStop'
+      DestinationStop:
+        $ref: '#/definitions/TripStop'
+      Route:
         $ref: '#/definitions/Route'
-      Value:
-        type: array
-        items:
-          $ref: '#/definitions/StopTime'
+      ServiceDetails:
+        $ref: '#/definitions/ServiceDetails'
+  TripSearchFilter:
+    type: object
+    properties:
+      OriginStopIdFilter:
+        type: integer
+        format: int64
+        required: true
+        description: The ID of the origin stop.
+      DestinationStopIdFilter:
+        type: integer
+        format: int64
+        required: true
+        description: The ID of the destination stop.
+  TripStop:
+    type: object
+    properties:
+      Stop:
+        $ref: '#/definitions/Stop'
+      ArrivalTime:
+        type: string
+        format: date-time
+        description: Specifies the arrival time at a specific stop for a specific trip on a route.
+      DepartureTime:
+        type: string
+        format: date-time
+        description: Specifies the departure time at a specific stop for a specific trip on a route.
 paths:
   # leaving login for now
   /route:
@@ -187,7 +292,7 @@ paths:
         '400':
           description: The supplied filter is invalid.
           schema:
-            type: string
+            $ref: "#/definitions/ErrorMessage"
   /stop:
     post:
       description: Searches for stops in the database, using the supplied filtering criteria; at least one of the fields must be non-empty
@@ -245,6 +350,31 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RouteTimetableEntry'
+  /trip:
+    post:
+      description: Returns a list of trips that run between the two specified stops, along with their arrival/destination times and service availability information
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: tripSearchFilter
+          in: body
+          required: true
+          description: The object containing the query parameters.
+          schema:
+            $ref: '#/definitions/TripSearchFilter'
+      responses:
+        '200':
+          description: A list of trips running through the desired stops.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TripInfo'
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: "#/definitions/ErrorMessage"
   /user/register:
     post:
       description: Registers a user for the application
@@ -253,31 +383,19 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: fullName
+        - name: registrationInfo
           in: body
           required: true
-          description: The user's full name to be stored by the app.
+          description: Object storing the registration request data
           schema:
-            type: string
-        - name: userName
-          in: body
-          required: true
-          description: Username to be used by the user to log in to the app.
-          schema:
-            type: string
-        - name: password
-          in: body
-          required: true
-          description: The user's desired password, to be used when logging in.
-          schema:
-            type: string
+            $ref: '#/definitions/RegistrationInfo'
       responses:
         '200':
           description: The user was registered successfully.
         '400':
           description: The request sent by the user was invalid.
           schema:
-            type: string
+            $ref: "#/definitions/ErrorMessage"
   /user/changepassword:
     post:
       description: Allows a user to change their account password
@@ -286,28 +404,16 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: userName
+        - name: passwordChangeRequest
           in: body
           required: true
-          description: The username of the user requesting a password change
+          description: Object containing request data.
           schema:
-            type: string
-        - name: oldPassword
-          in: body
-          required: true
-          description: The user's old password
-          schema:
-            type: string
-        - name: newPassword
-          in: body
-          required: true
-          description: The user's new password
-          schema:
-            type: string
+            $ref: '#/definitions/PasswordChangeRequest'
       responses:
         '200':
           description: The user's password was successfully changed.
         '400':
           description: The request sent by the user was invalid.
           schema:
-            type: string
+            $ref: "#/definitions/ErrorMessage"

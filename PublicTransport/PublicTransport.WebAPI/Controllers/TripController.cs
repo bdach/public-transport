@@ -5,6 +5,7 @@ using PublicTransport.Services.Repositories;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using PublicTransport.WebAPI.Models;
 
 namespace PublicTransport.WebAPI.Controllers
 {
@@ -19,7 +20,7 @@ namespace PublicTransport.WebAPI.Controllers
             if (filter != null && filter.IsValid)
             {
                 var trips = TripRepository.FindTrips(filter);
-                var tripsDto = trips.Select(TripConverter.GetDto).ToList();
+                var tripsDto = trips.Select(t => new TripInfo(t)).ToList();
                 return Ok(tripsDto);
             }
             return BadRequest("The supplied filter is invalid");
