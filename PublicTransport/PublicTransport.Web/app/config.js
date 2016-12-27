@@ -62,8 +62,8 @@
             .state("index.timetable.route", {
                 url: "/route",
                 templateUrl: "pages/contents/timetable-route-content.html",
-                controller: "routeTimetableController",
-                controllerAs: "routeTimetableCtrl",
+                controller: "timetableRouteController",
+                controllerAs: "timetableRouteCtrl",
                 resolve: {
                     access: ["access", function (access) { return access.error(false); }]
                 }
@@ -71,8 +71,8 @@
             .state("index.timetable.stop", {
                 url: "/stop",
                 templateUrl: "pages/contents/timetable-stop-content.html",
-                controller: "stopTimetableController",
-                controllerAs: "stopTimetableCtrl",
+                controller: "timetableStopController",
+                controllerAs: "timetableStopCtrl",
                 resolve: {
                     access: ["access", function (access) { return access.error(false); }]
                 }

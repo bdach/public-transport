@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("stopTimetableController", ["$http", "notify", "utils", function ($http, notify, utils) {
+    app.controller("timetableStopController", ["$http", "notify", "utils", function($http, notify, utils) {
         var ctrl = this;
 
         this.stopFilter = {
@@ -25,7 +25,7 @@
                 data: ctrl.stopFilter
             }).then(function (response) {
                 ctrl.filteredStops = response.data;
-                notify.success("Stops filtered successfully", "Response received");
+                notify.success("Successfully filtered stops", "Response received");
             });
         };
 
@@ -35,10 +35,9 @@
             ctrl.selectedStop = ctrl.filteredStops.find(function(stop) { return stop.Id === id });
             $http({
                 method: "GET",
-                url: utils.getApiBaseUrl() + "/timetable/stop/" + id,
+                url: utils.getApiBaseUrl() + "/Timetable/Stop/" + id
             }).then(function(response) {
                 ctrl.stopTimetable = response.data;
-                notify.success("Successfully fetched timetable", "Response received");
             });
         };
 

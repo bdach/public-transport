@@ -6,11 +6,11 @@
             <div class="row form-group">
                 <div class="col-lg-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter route name..."
-                               ng-model="routeTimetableCtrl.routeFilter.ShortNameFilter" name="route" id="route" required />
+                        <input type="text" class="form-control" placeholder="Enter route name"
+                               ng-model="timetableRouteCtrl.routeFilter.ShortNameFilter" name="route" id="route" required />
                         <span class="input-group-btn">
                             <button class="btn btn-primary"
-                                    ng-click="routeTimetableCtrl.filterRoutes()">
+                                    ng-click="timetableRouteCtrl.filterRoutes()">
                                 Filter
                             </button>
                         </span>
@@ -22,8 +22,8 @@
                 <div class="col-lg-12">
                     <div class="list-group">
                         <a class="list-group-item"
-                           ng-repeat="route in routeTimetableCtrl.filteredRoutes"
-                           ng-click="routeTimetableCtrl.fetchRouteTimetable(route.Id)">
+                           ng-repeat="route in timetableRouteCtrl.filteredRoutes"
+                           ng-click="timetableRouteCtrl.fetchRouteTimetable(route.Id)">
                             <h4>
                                 <span class="label label-default">{{route.ShortName}}</span> {{route.LongName}}
                             </h4>
@@ -35,23 +35,23 @@
         </div>
         
         <div class="col-sm-6"
-             ng-if="routeTimetableCtrl.selectedRoute">
-            <h3>Timetable for <span class="label label-default">{{routeTimetableCtrl.selectedRoute.ShortName}}</span> {{routeTimetableCtrl.selectedRoute.LongName}}</h3>
+             ng-if="timetableRouteCtrl.selectedRoute">
+            <h3>Timetable for <span class="label label-default">{{timetableRouteCtrl.selectedRoute.ShortName}}</span> {{timetableRouteCtrl.selectedRoute.LongName}}</h3>
             <div class="row form-group">
                 <div class="col-lg-12">
                     <div class="btn-group">
                         <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span ng-if="routeTimetableCtrl.selectedStop !== null">
-                                {{routeTimetableCtrl.selectedStop.Key.Name}}
+                            <span ng-if="timetableRouteCtrl.selectedStop !== null">
+                                {{timetableRouteCtrl.selectedStop.Key.Name}}
                             </span>
-                            <span ng-if="routeTimetableCtrl.selectedStop === null">
-                                Select a stop...
+                            <span ng-if="timetableRouteCtrl.selectedStop === null">
+                                Select a stop
                             </span>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li ng-repeat="pair in routeTimetableCtrl.routeTimetable"
-                                ng-click="routeTimetableCtrl.selectStop(pair.Key)">
+                            <li ng-repeat="pair in timetableRouteCtrl.routeTimetable"
+                                ng-click="timetableRouteCtrl.selectStop(pair.Key)">
                                 <a>
                                     {{pair.Key.Name}}<br/>
                                     <small>{{pair.Key.StreetName}}, {{pair.Key.CityName}}</small>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="row form-group">
-                <div class="col-lg-12" ng-if="routeTimetableCtrl.selectedStop">
+                <div class="col-lg-12" ng-if="timetableRouteCtrl.selectedStop">
                     <table class="table">
                         <tr>
                             <th>Short name</th>
@@ -70,7 +70,7 @@
                             <th>Arrival</th>
                             <th>Departure</th>
                         </tr>
-                        <tr ng-repeat="entry in routeTimetableCtrl.selectedStop.Value">
+                        <tr ng-repeat="entry in timetableRouteCtrl.selectedStop.Value">
                             <td>{{entry.ShortName}}</td>
                             <td>{{entry.Headsign}}</td>
                             <td>{{entry.ArrivalTime}}</td>

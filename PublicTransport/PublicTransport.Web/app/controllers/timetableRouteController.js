@@ -1,14 +1,14 @@
-﻿(function() {
+﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("routeTimetableController", ["$http", "notify", "utils", function($http, notify, utils) {
+    app.controller("timetableRouteController", ["$http", "notify", "utils", function($http, notify, utils) {
         var ctrl = this;
 
         this.routeFilter = {
-            "AgencyNameFilter": "",
-            "LongNameFilter": "",
-            "ShortNameFilter": "",
-            "RouteTypeFilter": null
+            AgencyNameFilter: "",
+            LongNameFilter: "",
+            ShortNameFilter: "",
+            RouteTypeFilter: null
         }
 
         this.filteredRoutes = [];
@@ -23,21 +23,19 @@
                 data: ctrl.routeFilter
             }).then(function (response) {
                 ctrl.filteredRoutes = response.data;
-                notify.success("Routes filtered successfully", "Response received");
+                notify.success("Successfully filtered routes", "Response received");
             });
         };
 
         this.fetchRouteTimetable = function (id) {
             ctrl.selectedStop = null;
-            ctrl.routeTimetable = null;
+            ctrl.routeTimetable = [];
             ctrl.selectedRoute = ctrl.filteredRoutes.find(function (route) { return route.Id === id });
             $http({
                 method: "GET",
-                url: utils.getApiBaseUrl() + "/timetable/route/" + id
+                url: utils.getApiBaseUrl() + "/Timetable/Route/" + id
             }).then(function(response) {
-                console.log(response.data);
                 ctrl.routeTimetable = response.data;
-                notify.success("Successfully fetched timetable", "Response received");
             });
         };
 
