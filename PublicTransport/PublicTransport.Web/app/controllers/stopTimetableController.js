@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("timetableController", ["$http", "notify", "utils", function ($http, notify, utils) {
+    app.controller("stopTimetableController", ["$http", "notify", "utils", function ($http, notify, utils) {
         var ctrl = this;
 
         this.stopFilter = {
@@ -37,7 +37,6 @@
                 method: "GET",
                 url: utils.getApiBaseUrl() + "/timetable/stop/" + id,
             }).then(function(response) {
-                console.log(response.data);
                 ctrl.stopTimetable = response.data;
                 notify.success("Successfully fetched timetable", "Response received");
             });

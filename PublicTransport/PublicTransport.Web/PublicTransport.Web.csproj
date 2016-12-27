@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\controllers\registerController.js" />
+    <Content Include="app\controllers\routeTimetableController.js" />
     <Content Include="app\services\access.js" />
     <Content Include="app\services\httpInterceptor.js" />
     <Content Include="app\services\notify.js" />
@@ -98,7 +99,7 @@
     <Content Include="app\controllers\homeController.js" />
     <Content Include="app\controllers\loginController.js" />
     <Content Include="app\controllers\settingsController.js" />
-    <Content Include="app\controllers\timetableController.js" />
+    <Content Include="app\controllers\stopTimetableController.js" />
     <Content Include="app\directives\navbarSection.js" />
     <Content Include="app\run.js" />
     <Content Include="app\services\spinner.js" />
