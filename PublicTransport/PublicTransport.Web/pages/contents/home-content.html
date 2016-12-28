@@ -1,1 +1,65 @@
-﻿<h2 class="page-header">Home</h2>
+﻿<div class="container-fluid">
+    <h2 class="page-header">Home</h2>
+
+    <h3>Find a trip</h3>
+    <div class="row form-group">
+        <div class="col-lg-12">
+            <form role="form" name="searchForm"
+                  ng-submit="homeCtrl.searchTrips()" novalidate>
+                <div class="input-group">
+                    <span class="input-group-addon" id="from">From</span>
+                    <input type="text" class="form-control" placeholder="Origin stop" aria-describedby="from"
+                           name="origin" id="origin"
+                           ng-model="homeCtrl.originStop" ng-class="{'input-error': searchForm.origin.$invalid && searchForm.attempted}"
+                           uib-typeahead="stop as stop.Name for stop in homeCtrl.filterStops($viewValue)" typeahead-wait-ms="500" typeahead-show-hint="true" typeahead-editable="false" required />
+                    <span class="input-group-addon" id="to">to</span>
+                    <input type="text" class="form-control" placeholder="Destination stop" aria-describedby="to"
+                           name="destination" id="destination"
+                           ng-model="homeCtrl.destinationStop" ng-class="{'input-error': searchForm.destination.$invalid && searchForm.attempted}"
+                           uib-typeahead="stop as stop.Name for stop in homeCtrl.filterStops($viewValue)" typeahead-wait-ms="500" typeahead-show-hint="true" typeahead-editable="false" required />
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row form-group" ng-if="homeCtrl.searchResults.length">
+        <div class="col-lg-12">
+            <div class="panel panel-default"
+                 ng-repeat="trip in homeCtrl.searchResults">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="label label-default">{{trip.Route.ShortName}}</span> {{trip.Route.LongName}}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6 text-right">Departs from <strong>{{trip.OriginStop.Stop.Name}}</strong> on</div>
+                        <div class="col-xs-6 text-left"><strong>{{trip.OriginStop.DepartureTime}}</strong></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 text-right">Arrives at <strong>{{trip.DestinationStop.Stop.Name}}</strong> on</div>
+                        <div class="col-xs-6 text-left"><strong>{{trip.DestinationStop.ArrivalTime}}</strong></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 text-right">Trip ran by</div>
+                        <div class="col-xs-6 text-left"><strong>{{trip.Route.Agency.Name}}</strong></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 text-right">Schedule</div>
+                        <div class="col-xs-6 text-left">
+                            <div class="btn-group" role="group">
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Monday, 'label-danger': !trip.ServiceDetails.Monday}">Mon</span>
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Tuesday, 'label-danger': !trip.ServiceDetails.Tuesday}">Tue</span>
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Wednesday, 'label-danger': !trip.ServiceDetails.Wednesday}">Wed</span>
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Thursday, 'label-danger': !trip.ServiceDetails.Thursday}">Thu</span>
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Friday, 'label-danger': !trip.ServiceDetails.Friday}">Fri</span>
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Saturday, 'label-danger': !trip.ServiceDetails.Saturday}">Sat</span>
+                                <span class="label" ng-class="{'label-success': trip.ServiceDetails.Sunday, 'label-danger': !trip.ServiceDetails.Sunday}">Sun</span>
+                            </div>
+                        </div>
+                    </div></div>
+            </div>
+        </div>
+    </div>
+</div>
