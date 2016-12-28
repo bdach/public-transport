@@ -63,7 +63,8 @@ namespace PublicTransport.Services
                 {
                     throw new InvalidCredentialsException();
                 }
-                return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
+
+                return new UserInfo(user.UserName, user.Roles.Select(r => r.Name).ToList());
             }
         }
 
@@ -74,7 +75,7 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public void RequestPasswordChange(PasswordChangeData data)
         {
-            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == data.UserName);
+            var user = _db.Users.FirstOrDefault(u => u.UserName == data.UserName);
             if (user == null || !_passwordService.CompareWithHash(data.OldPassword, user.Password))
             {
                 throw new InvalidCredentialsException();
@@ -83,6 +84,44 @@ namespace PublicTransport.Services
             var userRepository = new UserRepository(_db);
             user.Password = data.NewPassword;
             userRepository.Update(user);
+        }
+
+        /// <summary>
+        ///     Validates user credentials.
+        /// </summary>
+        /// <param name="loginData">Object containing the credentials: username and hashed password.</param>
+        /// <returns>A boolean value representing the validity of credentials.</returns>
+        public bool ValidateCredentials(LoginData loginData)
+        {
+            using (var db = new PublicTransportContext()) // new context is needed each time to avoid password caching
+            {
+                var user = db.Users.FirstOrDefault(u => u.UserName == loginData.UserName);
+                return user != null && _passwordService.CompareWithHash(loginData.Password, user.Password);
+            }
+        }
+
+        /// <summary>
+        ///     Updates latest token granted to user by OAuth.
+        /// </summary>
+        /// <param name="userName">Username (login) of the user to have token updated.</param>
+        /// <param name="token">New token granted to user.</param>
+        public void UpdateUserToken(string userName, string token)
+        {
+            var user = _db.Users.First(u => u.UserName == userName);
+            var userRepository = new UserRepository(_db);
+            user.LatestToken = token;
+            userRepository.SimpleUpdate(user);
+        }
+
+        /// <summary>
+        ///     Retrieves user info.
+        /// </summary>
+        /// <param name="userName">Username of the user to find.</param>
+        /// <returns><see cref="UserInfo"/> object containing user information.</returns>
+        public UserInfo GetUserInfoByUserName(string userName)
+        {
+            var user = _db.Users.Include(u => u.Roles).First(u => u.UserName == userName);
+            return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
         }
 
         /// <summary>

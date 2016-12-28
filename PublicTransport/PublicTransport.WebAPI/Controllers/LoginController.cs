@@ -1,32 +1,31 @@
 ﻿using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
-using PublicTransport.Services;
 using PublicTransport.Services.DataTransfer;
-using PublicTransport.Services.Exceptions;
+using PublicTransport.WebAPI.Identity;
 
 namespace PublicTransport.WebAPI.Controllers
 {
     public class LoginController : ApiController
     {
-        private static readonly LoginService LoginService = new LoginService();
+        private static readonly LoginProvider LoginProvider = new LoginProvider();
 
         [HttpPost, Route("token")]
         public IHttpActionResult Login(HttpRequestMessage request, [FromBody]LoginData loginData)
         {
-            if (loginData != null)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var userInfo = LoginService.RequestLogin(loginData);
-                    // wygenerowanie tokenu dla usera
-                    return Ok(userInfo);
-                }
-                catch (InvalidCredentialsException)
-                {
-                    return Unauthorized();
-                }
+                return BadRequest(ModelState);
             }
-            return BadRequest("Provided login data model is not valid");
+
+            ClaimsIdentity identity;
+            if (!LoginProvider.ValidateCredentials(loginData, out identity))
+            {
+                return Unauthorized();
+            }
+
+            var userInfo = LoginProvider.CreateUserInfo(loginData, identity);
+            return Ok(userInfo);
         }
     }
 }
