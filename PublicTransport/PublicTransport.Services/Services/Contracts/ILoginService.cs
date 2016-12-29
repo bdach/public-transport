@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.Exceptions;
 
@@ -9,7 +8,7 @@ namespace PublicTransport.Services.Contracts
     ///     Service interface specifying contract for managing login data.
     /// </summary>
     [ServiceContract]
-    public interface ILoginService : IDisposable
+    public interface ILoginService
     {
         /// <summary>
         ///     Handles a user login request.

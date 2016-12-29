@@ -13,10 +13,6 @@ namespace PublicTransport.Services
     /// </summary>
     public class LoginService : ILoginService
     {
-        /// <summary>
-        ///     Context to use when logging in.
-        /// </summary>
-        private readonly PublicTransportContext _db;
 
         /// <summary>
         ///     Service providing password hashing capabilities.
@@ -24,27 +20,19 @@ namespace PublicTransport.Services
         private readonly IPasswordService _passwordService;
 
         /// <summary>
-        ///     Indicates whether the <see cref="Dispose" /> method has been called.
-        /// </summary>
-        private bool _disposed;
-
-        /// <summary>
         ///     Default constructor.
         /// </summary>
         public LoginService()
         {
-            _db = new PublicTransportContext();
             _passwordService = new PasswordService();
         }
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="db">Database context to be injected to the service.</param>
         /// <param name="passwordService">Password service to use for hashing.</param>
-        public LoginService(PublicTransportContext db, IPasswordService passwordService)
+        public LoginService(IPasswordService passwordService)
         {
-            _db = db;
             _passwordService = passwordService;
         }
 
@@ -56,7 +44,7 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public UserInfo RequestLogin(LoginData loginData)
         {
-            using (var db = new PublicTransportContext()) // new context is needed each time to avoid password caching
+            using (var db = new PublicTransportContext())
             {
                 var user = db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == loginData.UserName);
                 if (user == null || !_passwordService.CompareWithHash(loginData.Password, user.Password))
@@ -75,15 +63,18 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public void RequestPasswordChange(PasswordChangeData data)
         {
-            var user = _db.Users.FirstOrDefault(u => u.UserName == data.UserName);
-            if (user == null || !_passwordService.CompareWithHash(data.OldPassword, user.Password))
+            using (var db = new PublicTransportContext())
             {
-                throw new InvalidCredentialsException();
-            }
+                var user = db.Users.FirstOrDefault(u => u.UserName == data.UserName);
+                if (user == null || !_passwordService.CompareWithHash(data.OldPassword, user.Password))
+                {
+                    throw new InvalidCredentialsException();
+                }
 
-            var userRepository = new UserRepository(_db);
-            user.Password = data.NewPassword;
-            userRepository.Update(user);
+                var userRepository = new UserRepository(db);
+                user.Password = data.NewPassword;
+                userRepository.Update(user);
+            }
         }
 
         /// <summary>
@@ -93,7 +84,7 @@ namespace PublicTransport.Services
         /// <returns>A boolean value representing the validity of credentials.</returns>
         public bool ValidateCredentials(LoginData loginData)
         {
-            using (var db = new PublicTransportContext()) // new context is needed each time to avoid password caching
+            using (var db = new PublicTransportContext())
             {
                 var user = db.Users.FirstOrDefault(u => u.UserName == loginData.UserName);
                 return user != null && _passwordService.CompareWithHash(loginData.Password, user.Password);
@@ -107,10 +98,13 @@ namespace PublicTransport.Services
         /// <param name="token">New token granted to user.</param>
         public void UpdateUserToken(string userName, string token)
         {
-            var user = _db.Users.First(u => u.UserName == userName);
-            var userRepository = new UserRepository(_db);
-            user.LatestToken = token;
-            userRepository.SimpleUpdate(user);
+            using (var db = new PublicTransportContext())
+            {
+                var user = db.Users.First(u => u.UserName == userName);
+                var userRepository = new UserRepository(db);
+                user.LatestToken = token;
+                userRepository.SimpleUpdate(user);
+            }
         }
 
         /// <summary>
@@ -120,18 +114,11 @@ namespace PublicTransport.Services
         /// <returns><see cref="UserInfo"/> object containing user information.</returns>
         public UserInfo GetUserInfoByUserName(string userName)
         {
-            var user = _db.Users.Include(u => u.Roles).First(u => u.UserName == userName);
-            return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
-        }
-
-        /// <summary>
-        ///     Disposes the database context if not disposed already.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _db.Dispose();
-            _disposed = true;
+            using (var db = new PublicTransportContext())
+            {
+                var user = db.Users.Include(u => u.Roles).First(u => u.UserName == userName);
+                return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
+            }
         }
     }
 }

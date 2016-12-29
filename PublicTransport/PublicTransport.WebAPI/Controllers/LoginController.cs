@@ -13,19 +13,24 @@ namespace PublicTransport.WebAPI.Controllers
         [HttpPost, Route("token")]
         public IHttpActionResult Login(HttpRequestMessage request, [FromBody]LoginData loginData)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // to jest prawidłowy sposób sprawdzania poprawności dostanych danych, ale działa chyba tylko dla Entity (?)
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            ClaimsIdentity identity;
-            if (!LoginProvider.ValidateCredentials(loginData, out identity))
+            if (loginData != null)
             {
-                return Unauthorized();
-            }
+                ClaimsIdentity identity;
+                if (!LoginProvider.ValidateCredentials(loginData, out identity))
+                {
+                    return Unauthorized();
+                }
 
-            var userInfo = LoginProvider.CreateUserInfo(loginData, identity);
-            return Ok(userInfo);
+                var userInfo = LoginProvider.CreateUserInfo(loginData, identity);
+                return Ok(userInfo);
+            }
+            return BadRequest("Provided login data model is not valid");
         }
     }
 }

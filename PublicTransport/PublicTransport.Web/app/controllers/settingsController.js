@@ -37,7 +37,10 @@
             $http({
                 method: "POST",
                 url: utils.getApiBaseUrl() + "/User/ChangePassword",
-                data: userDto
+                data: userDto,
+                headers: {
+                    "Authorization" : "Bearer " + session.getToken()
+                }
             }).then(function () {
                 eventAggregator.trigger("event:hideLoadingSpinner");
                 notify.success("Password changed successfully", "Changes saved");

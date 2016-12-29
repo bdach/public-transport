@@ -9,7 +9,7 @@ namespace PublicTransport.WebAPI.Helpers
         public static string GetTokenFromHeader(HttpRequestMessage request)
         {
             var headerValues = request.Headers.GetValues("Authorization");
-            return headerValues.FirstOrDefault().Substring(7);
+            return headerValues.First().Substring(7);
         }
 
         public static bool IsUserAuthorized(string userName, string token)

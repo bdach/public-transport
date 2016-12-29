@@ -6,6 +6,7 @@ using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.Exceptions;
 using PublicTransport.Services.Repositories;
+using PublicTransport.WebAPI.Helpers;
 
 namespace PublicTransport.WebAPI.Controllers
 {
@@ -33,11 +34,18 @@ namespace PublicTransport.WebAPI.Controllers
             return BadRequest("Provided user model is not valid");
         }
 
+        [Authorize]
         [HttpPost, Route("user/changepassword")]
         public IHttpActionResult ChangePassword(HttpRequestMessage request, [FromBody]PasswordChangeData data)
         {
             if (data != null)
             {
+                var token = TokenHandler.GetTokenFromHeader(request);
+                if (!TokenHandler.IsUserAuthorized(data.UserName, token))
+                {
+                    return Unauthorized();
+                }
+
                 try
                 {
                     LoginService.RequestPasswordChange(data);
@@ -45,7 +53,7 @@ namespace PublicTransport.WebAPI.Controllers
                 }
                 catch (InvalidCredentialsException)
                 {
-                    return BadRequest("Provided old password is invalid");
+                    return BadRequest("Provided username or old password is invalid");
                 }
             }
             return BadRequest("Provided data model is not valid");
