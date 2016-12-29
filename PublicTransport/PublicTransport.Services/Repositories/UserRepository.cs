@@ -143,6 +143,27 @@ namespace PublicTransport.Services.Repositories
         }
 
         /// <summary>
+        ///     Updates all of the fields of the supplied <see cref="User" /> skipping password hashing and roles.
+        /// </summary>
+        /// <param name="user"><see cref="User" /> object to update.</param>
+        /// <returns>Updated <see cref="User" /> object.</returns>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="User" /> could not be found in the database.
+        /// </exception>
+        public User SimpleUpdate(User user)
+        {
+            var old = _db.Users.Find(user.Id);
+            if (old == null)
+            {
+                throw new EntryNotFoundException();
+            }
+
+            _db.Entry(old).CurrentValues.SetValues(user);
+            _db.SaveChanges();
+            return user;
+        }
+
+        /// <summary>
         ///     Deletes the supplied <see cref="User" /> from the database.
         /// </summary>
         /// <param name="user"><see cref="User" /> object to delete.</param>
