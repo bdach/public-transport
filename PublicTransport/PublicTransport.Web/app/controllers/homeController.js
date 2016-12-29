@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("homeController", ["$http", "$scope", "notify", "utils", function ($http, $scope, notify, utils) {
+    app.controller("homeController", ["$http", "$scope", "notify", "utils", "$uibModal", function ($http, $scope, notify, utils, $uibModal) {
         var ctrl = this;
 
         this.originStop = null;
@@ -45,6 +45,23 @@
                 } else {
                     notify.success("Found " + ctrl.searchResults.length + " trips matching the search criteria");
                 }
+            });
+        };
+
+        this.showMap = function(trip) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: "pages/contents/map-modal-content.html",
+                controller: "mapController",
+                controllerAs: "mapCtrl",
+                resolve: {
+                    tripInfo: {
+                        "TripId": trip.Id,
+                        "OriginSequenceNumber": trip.OriginStop.SequenceNumber,
+                        "DestinationSequenceNumber": trip.DestinationStop.SequenceNumber
+                    }
+                },
+                size: "lg"
             });
         };
     }]);

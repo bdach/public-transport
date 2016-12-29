@@ -256,6 +256,10 @@ definitions:
   TripInfo:
     type: object
     properties:
+      Id:
+        type: integer
+        format: int64
+        description: The ID of the trip.
       OriginStop:
         $ref: '#/definitions/TripStop'
       DestinationStop:
