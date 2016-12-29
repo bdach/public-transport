@@ -97,6 +97,7 @@
     <Compile Include="DataTransfer\Filters\RouteFilter.cs" />
     <Compile Include="DataTransfer\Filters\StopTimeFilter.cs" />
     <Compile Include="DataTransfer\Filters\StreetFilter.cs" />
+    <Compile Include="DataTransfer\Filters\TripSegmentFilter.cs" />
     <Compile Include="DataTransfer\Filters\UserFilter.cs" />
     <Compile Include="DataTransfer\LoginData.cs" />
     <Compile Include="DataTransfer\Converters\RoleConverter.cs" />

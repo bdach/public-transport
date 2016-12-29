@@ -5,23 +5,26 @@ using PublicTransport.Domain.Entities;
 namespace PublicTransport.WebAPI.Models
 {
     [DataContract]
-    public class TripStop
+    public class MapMarker
     {
-        public TripStop(StopTime stopTime)
+        public MapMarker(StopTime stopTime)
         {
-            Stop = new StopInfo(stopTime.Stop);
+            Latitude = stopTime.Shape.Latitude;
+            Longtitude = stopTime.Shape.Longtitude;
+            DescriptionText = stopTime.Shape.Identifier ?? stopTime.Stop.Name;
             ArrivalTime = stopTime.ArrivalTime;
             DepartureTime = stopTime.DepartureTime;
-            SequenceNumber = stopTime.StopSequence;
         }
 
         [DataMember]
-        public StopInfo Stop { get; set; }
+        public decimal Latitude { get; set; }
+        [DataMember]
+        public decimal Longtitude { get; set; }
+        [DataMember]
+        public string DescriptionText { get; set; }
         [DataMember]
         public TimeSpan ArrivalTime { get; set; }
         [DataMember]
         public TimeSpan DepartureTime { get; set; }
-        [DataMember]
-        public int SequenceNumber { get; set; }
     }
 }

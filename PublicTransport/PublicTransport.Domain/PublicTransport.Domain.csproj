@@ -58,6 +58,7 @@
     <Compile Include="Entities\FareAttribute.cs" />
     <Compile Include="Entities\FareRule.cs" />
     <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Shape.cs" />
     <Compile Include="Entities\Stop.cs" />
     <Compile Include="Entities\StopTime.cs" />
     <Compile Include="Entities\Street.cs" />
@@ -95,6 +96,10 @@
     <Compile Include="Migrations\201612222222330_UserFullNameAndToken.Designer.cs">
       <DependentUpon>201612222222330_UserFullNameAndToken.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612291430509_ShapeEntityAdded.cs" />
+    <Compile Include="Migrations\201612291430509_ShapeEntityAdded.Designer.cs">
+      <DependentUpon>201612291430509_ShapeEntityAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -124,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612222222330_UserFullNameAndToken.resx">
       <DependentUpon>201612222222330_UserFullNameAndToken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612291430509_ShapeEntityAdded.resx">
+      <DependentUpon>201612291430509_ShapeEntityAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

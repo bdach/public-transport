@@ -110,6 +110,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AgencyInfo.cs" />
+    <Compile Include="Models\MapMarker.cs" />
     <Compile Include="Models\RouteInfo.cs" />
     <Compile Include="Models\ServiceInfo.cs" />
     <Compile Include="Models\StopInfo.cs" />

@@ -173,5 +173,22 @@ namespace PublicTransport.Services.Repositories
                 .Select(tuple => new Tuple<Trip, StopTime, StopTime>(_db.Trips.Include(t => t.Service).Include(t => t.Route.Agency.Street.City).First(t => t.Id == tuple.Item1.TripId), tuple.Item1, tuple.Item2))
                 .ToList();
         }
+
+        /// <summary>
+        ///     Returns a list of <see cref="StopTime"/>s from a <see cref="Trip"/> with the supplied IDs, whose sequence numbers begin with <see cref="originSequenceNumber"/> and end with <see cref="destinationSequenceNumber"/>.
+        /// </summary>
+        /// <param name="filter">Object containing filtering parameters.</param>
+        /// <returns>List of <see cref="StopTime"/> representing the desired segment of the trip.</returns>
+        public List<StopTime> GetTripSegment(TripSegmentFilter filter)
+        {
+            return _db.StopTimes
+                .Include(st => st.Stop.Street.City)
+                .Include(st => st.Shape)
+                .Where(st => st.TripId == filter.TripId && 
+                       st.StopSequence >= filter.OriginSequenceNumber && 
+                       st.StopSequence <= filter.DestinationSequenceNumber)
+                .OrderBy(st => st.StopSequence)
+                .ToList();
+        }
     }
 }

@@ -40,6 +40,30 @@ definitions:
       Message:
         type: string
         description: Message detailing the error cause.
+  MapMarker:
+    type: object
+    properties:
+      Latitude:
+        type: number
+        minimum: 0
+        maximum: 90
+        exclusiveMaximum: false
+        description: The latitude of the point represented by the marker.
+      Longtitude:
+        type: number
+        minimum: -180
+        maximum: 180
+        exclusiveMaximum: false
+        description: The longtitude of the point represented by the marker.
+      DescriptionText:
+        type: string
+        description: String to be used as a description for the marker.
+      ArrivalTime:
+        type: string
+        description: The time of arrival at the marker's location.
+      DepartureTime:
+        type: string
+        description: The time of departure at the marker's location.
   PasswordChangeRequest:
     type: object
     properties:
@@ -253,6 +277,25 @@ definitions:
         format: int64
         required: true
         description: The ID of the destination stop.
+  TripSegmentFilter:
+    type: object
+    properties:
+      TripId:
+        type: integer
+        format: int64
+        required: true
+        min: 1
+        description: The ID of the trip for which to display the segment.
+      OriginSequenceNumber:
+        type: integer
+        format: int64
+        required: true
+        description: The lower bound of the sequence numbers in the trip.
+      DestinationSequenceNumber:
+        type: integer
+        format: int64
+        required: true
+        description: The upper bound of the sequence numbers in the trip.
   TripStop:
     type: object
     properties:
@@ -266,6 +309,10 @@ definitions:
         type: string
         format: date-time
         description: Specifies the departure time at a specific stop for a specific trip on a route.
+      SequenceNumber:
+        type: integer
+        format: int64
+        description: Identifies the order of the stops for a particular trip. The values must be non-negative integers, and they must increase along the trip.
 paths:
   # leaving login for now
   /route/filter:
@@ -350,6 +397,31 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RouteTimetableEntry'
+  /trip/mapData:
+    post:
+      description: Returns a list of map markers representing a part of the desired trip
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: tripSegmentFilter
+          in: body
+          required: true
+          description: The object containing the query parameters.
+          schema:
+            $ref: '#/definitions/TripSegmentFilter'
+      responses:
+        '200':
+          description: A list of map markers representing the requested part of the trip.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MapMarker'
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
   /trip/search:
     post:
       description: Returns a list of trips that run between the two specified stops, along with their arrival/destination times and service availability information
