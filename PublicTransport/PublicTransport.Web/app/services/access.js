@@ -8,33 +8,39 @@
             FORBIDDEN: 403,
 
             error: function (error) {
-                if (utils.getError() === error) {
-                    return access.OK;
-                }
-                else {
-                    return $q.reject(access.FORBIDDEN);
-                }
+                return session.promise().then(function() {
+                    if (utils.getError() === error) {
+                        return access.OK;
+                    }
+                    else {
+                        return $q.reject(access.FORBIDDEN);
+                    }
+                });
             },
             
             isAnonymous: function () {
-                if (utils.getError() || session.isLoggedIn()) {
-                    return $q.reject(access.FORBIDDEN);
-                }
-                else {
-                    return access.OK;
-                }
+                return session.promise().then(function() {
+                    if (utils.getError() || session.isLoggedIn()) {
+                        return $q.reject(access.FORBIDDEN);
+                    }
+                    else {
+                        return access.OK;
+                    }
+                });
             },
 
             isAuthenticated: function () {
-                if (utils.getError()) {
-                    return $q.reject(access.FORBIDDEN);
-                }
-                else if (session.isLoggedIn()) {
-                    return access.OK;
-                }
-                else {
-                    return $q.reject(access.UNAUTHORIZED);
-                }
+                return session.promise().then(function() {
+                    if (utils.getError()) {
+                        return $q.reject(access.FORBIDDEN);
+                    }
+                    else if (session.isLoggedIn()) {
+                        return access.OK;
+                    }
+                    else {
+                        return $q.reject(access.UNAUTHORIZED);
+                    }
+                });
             }
         };
 

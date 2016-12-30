@@ -25,6 +25,7 @@
                 url: utils.getApiBaseUrl() + "/Token",
                 data: ctrl.user
             }).then(function (response) {
+                session.setup(response.data.Token);
                 session.setUserData(response.data);
                 notify.success("You have logged in to your account", "Login successful");
                 $state.go(utils.getToState());

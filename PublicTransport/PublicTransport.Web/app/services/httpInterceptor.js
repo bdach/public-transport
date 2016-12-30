@@ -10,9 +10,9 @@
                 if (rejection.status === 401 && !state.is("login")) {
                     var message = rejection.data.Message;
                     if (rejection.data.Message === "Authorization has been denied for this request.") {
-                        message = "You are not authorized to perform this action";
+                        message = "Please log in again";
                     }
-                    notify.error(message, "Access denied");
+                    notify.error(message, "Session expired");
                     $injector.get("session").clear();
                     state.go("login");
                 }

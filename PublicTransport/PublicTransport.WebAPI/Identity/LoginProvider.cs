@@ -44,5 +44,10 @@ namespace PublicTransport.WebAPI.Identity
             ticketExpirationDate = currentUtc.AddHours(12);
             ticket.Properties.ExpiresUtc = ticketExpirationDate;
         }
+
+        public static UserInfo RestoreSession(string token)
+        {
+            return LoginService.GetUserInfoByToken(token);
+        }
     }
 }
