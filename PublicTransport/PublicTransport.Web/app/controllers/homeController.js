@@ -9,12 +9,12 @@
         this.searchResults = null;
 
         this.stopFilter = {
-            "StopNameFilter": "",
-            "StreetNameFilter": "",
-            "CityNameFilter": "",
-            "ZoneNameFilter": "",
-            "ParentStationNameFilter": "",
-            "OnlyStations": false
+            StopNameFilter: "",
+            StreetNameFilter: "",
+            CityNameFilter: "",
+            ZoneNameFilter: "",
+            ParentStationNameFilter: "",
+            OnlyStations: false
         };
 
         this.filterStops = function (name) {
@@ -35,8 +35,8 @@
                 method: "POST",
                 url: utils.getApiBaseUrl() + "/Trip/Search",
                 data: {
-                    "OriginStopIdFilter": ctrl.originStop.Id,
-                    "DestinationStopIdFilter": ctrl.destinationStop.Id
+                    OriginStopIdFilter: ctrl.originStop.Id,
+                    DestinationStopIdFilter: ctrl.destinationStop.Id
                 }
             }).then(function (response) {
                 ctrl.searchResults = response.data;
@@ -48,7 +48,7 @@
             });
         };
 
-        this.showMap = function(trip) {
+        this.showMap = function (trip) {
             $uibModal.open({
                 animation: true,
                 templateUrl: "pages/contents/map-modal-content.html",
@@ -56,9 +56,9 @@
                 controllerAs: "mapCtrl",
                 resolve: {
                     tripInfo: {
-                        "TripId": trip.Id,
-                        "OriginSequenceNumber": trip.OriginStop.SequenceNumber,
-                        "DestinationSequenceNumber": trip.DestinationStop.SequenceNumber
+                        TripId: trip.Id,
+                        OriginSequenceNumber: trip.OriginStop.SequenceNumber,
+                        DestinationSequenceNumber: trip.DestinationStop.SequenceNumber
                     }
                 },
                 size: "lg"

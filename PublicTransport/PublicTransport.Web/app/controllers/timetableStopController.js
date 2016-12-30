@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.controller("timetableStopController", ["$http", "notify", "utils", function($http, notify, utils) {
+    app.controller("timetableStopController", ["$http", "notify", "utils", function ($http, notify, utils) {
         var ctrl = this;
 
         this.stopFilter = {
@@ -18,7 +18,7 @@
         this.selectedRoute = null;
         this.stopTimetable = [];
 
-        this.filterStops = function() {
+        this.filterStops = function () {
             $http({
                 method: "POST",
                 url: utils.getApiBaseUrl() + "/Stop/Filter",
@@ -32,17 +32,30 @@
         this.fetchStopTimetable = function (id) {
             ctrl.selectedRoute = null;
             ctrl.stopTimetable = [];
-            ctrl.selectedStop = ctrl.filteredStops.find(function(stop) { return stop.Id === id });
+            ctrl.selectedStop = ctrl.filteredStops.find(function (stop) { return stop.Id === id });
             $http({
                 method: "GET",
                 url: utils.getApiBaseUrl() + "/Timetable/Stop/" + id
-            }).then(function(response) {
+            }).then(function (response) {
                 ctrl.stopTimetable = response.data;
             });
         };
 
-        this.selectRoute = function(key) {
-            ctrl.selectedRoute = ctrl.stopTimetable.find(function(pair) { return pair.Key === key });
-        }
+        this.selectRoute = function (key) {
+            ctrl.selectedRoute = ctrl.stopTimetable.find(function (pair) { return pair.Key === key });
+        };
+
+        (function () {
+            var stop = utils.getStop();
+            if (stop === null) {
+                return;
+            }
+            else {
+                utils.setStop(null);
+            }
+
+            ctrl.filteredStops.push(stop);
+            ctrl.fetchStopTimetable(stop.Id);
+        })();
     }]);
 })();

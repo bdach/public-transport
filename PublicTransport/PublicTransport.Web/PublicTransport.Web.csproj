@@ -77,11 +77,6 @@
     <Content Include="app\services\session.js" />
     <Content Include="app\services\stringBuilder.js" />
     <Content Include="app\services\utils.js" />
-    <Content Include="Content\angular-toastr.css" />
-    <Content Include="Content\angular-toastr.min.css" />
-    <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="css\angular-toastr.css" />
     <Content Include="css\angular-toastr.min.css" />
     <Content Include="packages.config" />

@@ -5,6 +5,8 @@
         var apiBaseUrl = "http://localhost:49878/api";
         var error = false;
         var toState = "index.home";
+        var route = null;
+        var stop = null;
 
         var getApiBaseUrl = function () {
             return apiBaseUrl;
@@ -26,12 +28,32 @@
             toState = value;
         };
 
+        var setRoute = function (value) {
+            route = value;
+        };
+
+        var getRoute = function () {
+            return route;
+        };
+
+        var setStop = function (value) {
+            stop = value;
+        };
+
+        var getStop = function () {
+            return stop;
+        };
+
         return {
             getApiBaseUrl: getApiBaseUrl,
             getError: getError,
             setError: setError,
             getToState: getToState,
-            setToState: setToState
+            setToState: setToState,
+            setRoute: setRoute,
+            getRoute: getRoute,
+            setStop: setStop,
+            getStop: getStop
         };
     });
 })();

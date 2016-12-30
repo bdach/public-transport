@@ -1,54 +1,50 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.filter("containsId", function() {
+    app.filter("containsId", function () {
         return function (array, id) {
-            return array.filter(function(elem) { return elem.Id === id }).length !== 0;
+            return array.filter(function (elem) { return elem.Id === id }).length !== 0;
         };
     });
 
-    app.controller("favouritesController", ["$http", "notify", "session", "utils", function ($http, notify, session, utils) {
+    app.controller("favouritesController", ["$http", "$state", "notify", "session", "utils", function ($http, $state, notify, session, utils) {
         var ctrl = this;
 
-        // this can be split into 2 controllers once thread safety is ensured
-
-        // ROUTES ---------------------
-
-        this.storedRoutes = [];
         this.displayedRoutes = [];
+        this.filteredRoutes = [];
+        this.storedRoutes = [];
         this.routeFilter = {
             AgencyNameFilter: "",
             LongNameFilter: "",
             ShortNameFilter: "",
             RouteTypeFilter: null
-        }
-        this.filteredRoutes = [];
+        };
 
         var updateRoutes = function (response) {
             ctrl.routeChanges = {};
             ctrl.displayedRoutes = response.data;
-            ctrl.storedRoutes = response.data.slice(); // keep a copy
+            ctrl.storedRoutes = response.data.slice();
         };
 
         var updateStops = function (response) {
             ctrl.stopChanges = {};
             ctrl.displayedStops = response.data;
-            ctrl.storedStops = response.data.slice(); // keep a copy
+            ctrl.storedStops = response.data.slice();
         };
 
-
-        // THIS IS VERY UGLY
-        // FIX THIS
-        $http({
-            method: "GET",
-            url: utils.getApiBaseUrl() + "/user/favouriteroutes/"
-        }).then(updateRoutes)
-        .then(function() {
+        var init = function () {
             $http({
                 method: "GET",
-                url: utils.getApiBaseUrl() + "/user/favouritestops/"
-            }).then(updateStops);
-        })
+                url: utils.getApiBaseUrl() + "/User/FavouriteRoutes"
+            }).then(updateRoutes).then(function () {
+                $http({
+                    method: "GET",
+                    url: utils.getApiBaseUrl() + "/User/FavouriteStops"
+                }).then(updateStops);
+            });
+        };
+
+        init();
 
         this.removeRoute = function (routeId) {
             ctrl.displayedRoutes = ctrl.displayedRoutes.filter(function (route) { return route.Id !== routeId });
@@ -58,7 +54,7 @@
         this.addRoute = function (route) {
             ctrl.displayedRoutes.push(route);
             ctrl.routeChanges[route.Id] = true;
-        }
+        };
 
         this.filterRoutes = function () {
             $http({
@@ -67,7 +63,7 @@
                 data: ctrl.routeFilter
             }).then(function (response) {
                 ctrl.filteredRoutes = response.data;
-                notify.success("Successfully filtered routes", "Response received");
+                notify.success("Routes filtered successfully", "Response received");
             });
         };
 
@@ -78,10 +74,10 @@
         this.saveRoutes = function () {
             $http({
                 method: "POST",
-                url: utils.getApiBaseUrl() + "/user/favouriteroutes",
+                url: utils.getApiBaseUrl() + "/User/FavouriteRoutes",
                 data: {
-                    "UserName": session.getUserName(),
-                    "Changes": ctrl.routeChanges
+                    UserName: session.getUserName(),
+                    Changes: ctrl.routeChanges
                 }
             }).then(function (response) {
                 updateRoutes(response);
@@ -89,10 +85,14 @@
             });
         };
 
-        // STOPS ----------------------
+        this.showRouteTimetable = function (route) {
+            utils.setRoute(route);
+            $state.go("index.timetable.route");
+        };
 
-        this.storedStops = [];
         this.displayedStops = [];
+        this.filteredStops = [];
+        this.storedStops = [];
         this.stopFilter = {
             StopNameFilter: "",
             StreetNameFilter: "",
@@ -101,7 +101,6 @@
             ParentStationNameFilter: "",
             OnlyStations: false
         };
-        this.filteredStops = [];
 
         this.removeStop = function (stopId) {
             ctrl.displayedStops = ctrl.displayedStops.filter(function (stop) { return stop.Id !== stopId });
@@ -120,7 +119,7 @@
                 data: ctrl.stopFilter
             }).then(function (response) {
                 ctrl.filteredStops = response.data;
-                notify.success("Successfully filtered stops", "Response received");
+                notify.success("Stops filtered successfully", "Response received");
             });
         };
 
@@ -131,15 +130,20 @@
         this.saveStops = function () {
             $http({
                 method: "POST",
-                url: utils.getApiBaseUrl() + "/user/favouritestops",
+                url: utils.getApiBaseUrl() + "/User/FavouriteStops",
                 data: {
-                    "UserName": session.getUserName(),
-                    "Changes": ctrl.stopChanges
+                    UserName: session.getUserName(),
+                    Changes: ctrl.stopChanges
                 }
             }).then(function (response) {
                 updateStops(response);
                 notify.success("Changes saved successfully");
             });
+        };
+
+        this.showStopTimetable = function (stop) {
+            utils.setStop(stop);
+            $state.go("index.timetable.stop");
         };
     }]);
 })();

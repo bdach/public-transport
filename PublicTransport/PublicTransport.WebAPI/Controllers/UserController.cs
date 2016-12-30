@@ -17,8 +17,6 @@ namespace PublicTransport.WebAPI.Controllers
         private static readonly UserRepository UserRepository = new UserRepository(new PublicTransportContext());
         private static readonly UserConverter UserConverter = new UserConverter();
         private static readonly LoginService LoginService = new LoginService();
-        private static readonly StopConverter StopConverter = new StopConverter();
-        private static readonly RouteConverter RouteConverter = new RouteConverter();
 
         [HttpPost, Route("user/register")]
         public IHttpActionResult Register(HttpRequestMessage request, [FromBody]UserDto user)

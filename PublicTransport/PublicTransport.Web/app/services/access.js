@@ -8,7 +8,7 @@
             FORBIDDEN: 403,
 
             error: function (error) {
-                return session.promise().then(function() {
+                return session.promise().then(function () {
                     if (utils.getError() === error) {
                         return access.OK;
                     }
@@ -17,9 +17,9 @@
                     }
                 });
             },
-            
+
             isAnonymous: function () {
-                return session.promise().then(function() {
+                return session.promise().then(function () {
                     if (utils.getError() || session.isLoggedIn()) {
                         return $q.reject(access.FORBIDDEN);
                     }
@@ -30,7 +30,7 @@
             },
 
             isAuthenticated: function () {
-                return session.promise().then(function() {
+                return session.promise().then(function () {
                     if (utils.getError()) {
                         return $q.reject(access.FORBIDDEN);
                     }

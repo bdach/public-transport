@@ -11,7 +11,7 @@
             spinner.hide();
         });
 
-        $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
             spinner.visible = false;
             spinner.hide();
 
