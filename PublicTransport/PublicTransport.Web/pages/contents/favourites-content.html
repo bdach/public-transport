@@ -1,1 +1,146 @@
-﻿<h2 class="page-header">Favourites</h2>
+﻿<div class="container-fluid">
+    <h2 class="page-header">Favourites</h2>
+    
+    <uib-tabset type="pills">
+        <uib-tab index="0" heading="Routes">
+            <div class="row form-group">
+                <div class="col-sm-6">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="route in favouritesCtrl.displayedRoutes">
+                            <h4 class="list-group-item-heading">
+                                <span class="label label-default">{{route.ShortName}}</span> {{route.LongName}}
+                                <button type="button" class="btn btn-danger pull-right"
+                                        ng-click="favouritesCtrl.removeRoute(route.Id)">
+                                    <i class="fa fa-remove"></i> Remove
+                                </button>
+                            </h4>
+                            <p class="list-group-item-text">{{route.Agency.Name}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Find a route to favourite</h4>
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter route name"
+                                       ng-model="favouritesCtrl.routeFilter.ShortNameFilter" name="route" id="route" required />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary"
+                                            ng-click="favouritesCtrl.filterRoutes()">
+                                        Filter
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <ul class="list-group">
+                                <li class="list-group-item"
+                                    ng-repeat="route in favouritesCtrl.filteredRoutes">
+                                    <h4>
+                                        <span class="label label-default">{{route.ShortName}}</span> {{route.LongName}}
+                                        <button type="button" class="btn btn-danger pull-right"
+                                                ng-if="(favouritesCtrl.displayedRoutes | containsId:route.Id) === true"
+                                                ng-click="favouritesCtrl.removeRoute(route.Id)">
+                                            <i class="fa fa-remove"></i> Remove
+                                        </button>
+                                        <button type="button" class="btn btn-success pull-right"
+                                                ng-if="(favouritesCtrl.displayedRoutes | containsId:route.Id) === false"
+                                                ng-click="favouritesCtrl.addRoute(route)">
+                                            <i class="fa fa-plus"></i> Add
+                                        </button>
+                                    </h4>
+                                    <p>{{route.Agency.Name}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default"
+                                ng-click="favouritesCtrl.undoRoutes()">
+                            <i class="fa fa-undo"></i> Undo changes
+                        </button>
+                        <button type="button" class="btn btn-primary"
+                                ng-click="favouritesCtrl.saveRoutes()">
+                            <i class="fa fa-save"></i> Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Stops">
+            <div class="row form-group">
+                <div class="col-sm-6">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="stop in favouritesCtrl.displayedStops">
+                            <h4 class="list-group-item-heading">
+                                {{stop.Name}}
+                                <button type="button" class="btn btn-danger pull-right"
+                                        ng-click="favouritesCtrl.removeStop(stop.Id)">
+                                    <i class="fa fa-remove"></i> Remove
+                                </button>
+                            </h4>
+                            <p class="list-group-item-text">{{stop.StreetName}}, {{stop.CityName}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Find a stop to favourite</h4>
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter stop name"
+                                       ng-model="favouritesCtrl.stopFilter.StopNameFilter" name="stop" id="stop" required />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary"
+                                            ng-click="favouritesCtrl.filterStops()">
+                                        Filter
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <ul class="list-group">
+                                <li class="list-group-item"
+                                    ng-repeat="stop in favouritesCtrl.filteredStops">
+                                    <h4>
+                                        {{stop.Name}}
+                                        <button type="button" class="btn btn-danger pull-right"
+                                                ng-if="(favouritesCtrl.displayedStops | containsId:stop.Id) === true"
+                                                ng-click="favouritesCtrl.removeStop(stop.Id)">
+                                            <i class="fa fa-remove"></i> Remove
+                                        </button>
+                                        <button type="button" class="btn btn-success pull-right"
+                                                ng-if="(favouritesCtrl.displayedStops | containsId:stop.Id) === false"
+                                                ng-click="favouritesCtrl.addStop(stop)">
+                                            <i class="fa fa-plus"></i> Add
+                                        </button>
+                                    </h4>
+                                    <p class="list-group-item-text">{{stop.StreetName}}, {{stop.CityName}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default"
+                                ng-click="favouritesCtrl.undoStops()">
+                            <i class="fa fa-undo"></i> Undo changes
+                        </button>
+                        <button type="button" class="btn btn-primary"
+                                ng-click="favouritesCtrl.saveStops()">
+                            <i class="fa fa-save"></i> Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>

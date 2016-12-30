@@ -40,6 +40,17 @@ definitions:
       Message:
         type: string
         description: Message detailing the error cause.
+  FavouriteInfo:
+    type: object
+    properties:
+      UserName:
+        type: string
+        required: true
+        description: The username of the user sending the request to save changes to the favourites.
+      Changes:
+        type: object
+        request: true
+        description: This is a key-value pair. The key is an integer indicating the ID of a stop or route, and the value indicates whether the stop/route should be added to the favourite list (true) or removed from the list (false). This object can have multiple pairs.        
   MapMarker:
     type: object
     properties:
@@ -493,3 +504,109 @@ paths:
           description: The request sent by the user was invalid.
           schema:
             $ref: "#/definitions/ErrorMessage"
+  /user/favoriteroutes:
+    get:
+      description: Returns a list of an user's favourited routes
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of the user's favourited routes.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Route'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    post:
+      description: Saves changes of the user's favourite routes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+        - name: favouriteInfo
+          in: body
+          required: true
+          description: Information about the changes to be saved
+          schema:
+            $ref: '#/definitions/FavouriteInfo'
+      responses:
+        '200':
+          description: A list of the user's favourited routes after the update.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+  /user/favoritestops:
+    get:
+      description: Returns a list of an user's favourited stops
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of the user's favourited stops.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    post:
+      description: Saves changes of the user's favourite stops
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+        - name: favouriteInfo
+          in: body
+          required: true
+          description: Information about the changes to be saved
+          schema:
+            $ref: '#/definitions/FavouriteInfo'
+      responses:
+        '200':
+          description: A list of the user's favourited stops after the update.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'

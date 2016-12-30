@@ -164,3 +164,7 @@
     bottom: -7px;
     left: 50%;
 }
+
+.nav-pills {
+    margin-bottom: 10px;
+}

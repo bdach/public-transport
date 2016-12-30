@@ -76,22 +76,23 @@ namespace PublicTransport.WebAPI.Controllers
             }
 
             var stops = UserRepository.GetFavouriteStopsByUserName(username);
-            var stopsDto = stops.Select(StopConverter.GetDto).ToList();
+            var stopsDto = stops.Select(s => new StopInfo(s)).ToList();
             return Ok(stopsDto);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost, Route("user/favouritestops")]
         public IHttpActionResult UpdateFavouriteStops(HttpRequestMessage request, [FromBody]FavouriteInfo data)
         {
-            //var token = TokenHandler.GetTokenFromHeader(request);
-            //if (!TokenHandler.IsUserAuthorized(data.UserName, token))
-            //{
-            //    return Unauthorized();
-            //}
+            var token = TokenHandler.GetTokenFromHeader(request);
+            if (!TokenHandler.IsUserAuthorized(data.UserName, token))
+            {
+                return Unauthorized();
+            }
 
-            //UserRepository.UpdateFavouriteStops(data.Changes);
-            return Ok();
+            var result = UserRepository.UpdateFavouriteStops(data.Changes, data.UserName);
+            var resultDto = result.Select(s => new StopInfo(s)).ToList();
+            return Ok(resultDto);
         }
 
         [Authorize]
@@ -107,22 +108,23 @@ namespace PublicTransport.WebAPI.Controllers
             }
 
             var routes = UserRepository.GetFavouriteRoutesByUserName(username);
-            var routesDto = routes.Select(RouteConverter.GetDto).ToList();
+            var routesDto = routes.Select(r => new RouteInfo(r)).ToList();
             return Ok(routesDto);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost, Route("user/favouriteroutes")]
         public IHttpActionResult UpdateFavouriteRoutes(HttpRequestMessage request, [FromBody]FavouriteInfo data)
         {
-            //var token = TokenHandler.GetTokenFromHeader(request);
-            //if (!TokenHandler.IsUserAuthorized(data.UserName, token))
-            //{
-            //    return Unauthorized();
-            //}
+            var token = TokenHandler.GetTokenFromHeader(request);
+            if (!TokenHandler.IsUserAuthorized(data.UserName, token))
+            {
+                return Unauthorized();
+            }
 
-            //UserRepository.UpdateFavouriteRoutes(data.Changes);
-            return Ok();
+            var result = UserRepository.UpdateFavouriteRoutes(data.Changes, data.UserName);
+            var resultDto = result.Select(s => new RouteInfo(s)).ToList();
+            return Ok(resultDto);
         }
     }
 }

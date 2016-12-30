@@ -48,11 +48,11 @@ namespace PublicTransport.Domain.Entities
         /// <summary>
         ///     Returns a list of <see cref="Stop"/>s favourited by the user.
         /// </summary>
-        public IList<Stop> FavouriteStops { get; set; }
+        public List<Stop> FavouriteStops { get; set; }
 
         /// <summary>
         ///     Returns a list of <see cref="Route"/>s favourited by the user.
         /// </summary>
-        public IList<Route> FavouriteRoutes { get; set; }
+        public List<Route> FavouriteRoutes { get; set; }
     }
 }

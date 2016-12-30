@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using PublicTransport.Domain.Context;
 using PublicTransport.Domain.Entities;
@@ -201,27 +200,91 @@ namespace PublicTransport.Services.Repositories
         }
 
         /// <summary>
-        ///     Retrieves information about <see cref="Stop"/>s favourited by the user.
+        ///     Retrieves information about <see cref="Stop" />s favourited by the user.
         /// </summary>
         /// <param name="userName">Username (login) of the user that exists in the database.</param>
         /// <returns>List of favourited stops.</returns>
         public List<Stop> GetFavouriteStopsByUserName(string userName)
         {
-            return _db.Users.Include(u => u.FavouriteStops)
+            return _db.Users.Include(u => u.FavouriteStops.Select(s => s.Street.City))
                 .First(u => u.UserName == userName)
                 .FavouriteStops.ToList();
         }
 
         /// <summary>
-        ///     Retrieves information about <see cref="Route"/>s favourited by the user.
+        ///     Retrieves information about <see cref="Route" />s favourited by the user.
         /// </summary>
         /// <param name="userName">Username (login) of the user that exists in the database.</param>
         /// <returns>List of favourited routes.</returns>
         public List<Route> GetFavouriteRoutesByUserName(string userName)
         {
-            return _db.Users.Include(u => u.FavouriteRoutes)
+            return _db.Users.Include(u => u.FavouriteRoutes.Select(s => s.Agency.Street.City))
                 .First(u => u.UserName == userName)
                 .FavouriteRoutes.ToList();
+        }
+
+        /// <summary>
+        ///     Updates a user's list of favourite <see cref="Stop" />s.
+        /// </summary>
+        /// <param name="changes">
+        ///     A dictionary describing changes made by the user. The keys are stop IDs, and the values indicate whether the stop
+        ///     was added (true) or removed (false)
+        /// </param>
+        /// <param name="userName">The username of the user whose favourites are to be updated.</param>
+        /// <returns>Updated list of favorite stops.</returns>
+        public List<Stop> UpdateFavouriteStops(Dictionary<int, bool> changes, string userName)
+        {
+            var user = _db.Users.Include(u => u.FavouriteStops.Select(s => s.Street.City))
+                .FirstOrDefault(u => u.UserName == userName);
+            if (user == null)
+            {
+                throw new EntryNotFoundException();
+            }
+            var addedStops = changes.Where(kv => kv.Value)
+                .Select(kv => _db.Stops.Include(s => s.Street.City).First(s => s.Id == kv.Key))
+                .ToList();
+            var removedStops = user.FavouriteStops
+                .Where(s => changes.ContainsKey(s.Id));
+            var result = user.FavouriteStops
+                .Except(removedStops)
+                .Concat(addedStops)
+                .Distinct()
+                .ToList();
+            user.FavouriteStops = result;
+            _db.SaveChanges();
+            return result;
+        }
+
+        /// <summary>
+        ///     Updates a user's list of favourite <see cref="Route" />s.
+        /// </summary>
+        /// <param name="changes">
+        ///     A dictionary describing changes made by the user. The keys are route IDs, and the values indicate whether the route
+        ///     was added (true) or removed (false)
+        /// </param>
+        /// <param name="userName">The username of the user whose favourites are to be updated.</param>
+        /// <returns>Updated list of favorite routes.</returns>
+        public List<Route> UpdateFavouriteRoutes(Dictionary<int, bool> changes, string userName)
+        {
+            var user = _db.Users.Include(u => u.FavouriteRoutes.Select(r => r.Agency.Street.City))
+                .FirstOrDefault(u => u.UserName == userName);
+            if (user == null)
+            {
+                throw new EntryNotFoundException();
+            }
+            var addedRoutes = changes.Where(kv => kv.Value)
+                .Select(kv => _db.Routes.Include(r => r.Agency.Street.City).First(s => s.Id == kv.Key))
+                .ToList();
+            var removedRoutes = user.FavouriteRoutes
+                .Where(s => changes.ContainsKey(s.Id));
+            var result = user.FavouriteRoutes
+                .Except(removedRoutes)
+                .Concat(addedRoutes)
+                .Distinct()
+                .ToList();
+            user.FavouriteRoutes = result;
+            _db.SaveChanges();
+            return result;
         }
     }
 }
