@@ -14,6 +14,8 @@ namespace PublicTransport.Domain.Entities
         public User()
         {
             Roles = new List<Role>();
+            FavouriteStops = new List<Stop>();
+            FavouriteRoutes = new List<Route>();
         }
 
         /// <summary>
@@ -42,5 +44,15 @@ namespace PublicTransport.Domain.Entities
         ///     Returns a list of <see cref="Role"/>s assigned to the user.
         /// </summary>
         public IList<Role> Roles { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="Stop"/>s favourited by the user.
+        /// </summary>
+        public IList<Stop> FavouriteStops { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="Route"/>s favourited by the user.
+        /// </summary>
+        public IList<Route> FavouriteRoutes { get; set; }
     }
 }

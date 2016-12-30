@@ -20,5 +20,13 @@ namespace PublicTransport.WebAPI.Helpers
                 return user != null && user.LatestToken == token;
             }
         }
+
+        public static string GetUserNameByToken(string token)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                return db.Users.FirstOrDefault(u => u.LatestToken == token)?.UserName;
+            }
+        }
     }
 }

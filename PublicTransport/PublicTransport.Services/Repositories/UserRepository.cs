@@ -199,5 +199,29 @@ namespace PublicTransport.Services.Repositories
             users.ForEach(u => u.Password = null);
             return users;
         }
+
+        /// <summary>
+        ///     Retrieves information about <see cref="Stop"/>s favourited by the user.
+        /// </summary>
+        /// <param name="userName">Username (login) of the user that exists in the database.</param>
+        /// <returns>List of favourited stops.</returns>
+        public List<Stop> GetFavouriteStopsByUserName(string userName)
+        {
+            return _db.Users.Include(u => u.FavouriteStops)
+                .First(u => u.UserName == userName)
+                .FavouriteStops.ToList();
+        }
+
+        /// <summary>
+        ///     Retrieves information about <see cref="Route"/>s favourited by the user.
+        /// </summary>
+        /// <param name="userName">Username (login) of the user that exists in the database.</param>
+        /// <returns>List of favourited routes.</returns>
+        public List<Route> GetFavouriteRoutesByUserName(string userName)
+        {
+            return _db.Users.Include(u => u.FavouriteRoutes)
+                .First(u => u.UserName == userName)
+                .FavouriteRoutes.ToList();
+        }
     }
 }

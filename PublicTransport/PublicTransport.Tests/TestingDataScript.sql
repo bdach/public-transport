@@ -7,7 +7,7 @@ GO
 -- Clears data from the database.
 
 -- User data.
-DELETE FROM [UserRoles]
+DELETE FROM [RoleUsers]
 DELETE FROM [Roles]
 DELETE FROM [Users]
 
@@ -78,7 +78,7 @@ VALUES
 	('guest', 'gaavVO5tLzjDmFQSzaIufOSWJhzkiqblLYNZkN+BS56LEAI5')
 GO
 
-INSERT INTO [UserRoles]
+INSERT INTO RoleUsers
 	([User_Id], [Role_Id])
 VALUES
 	(1, 1), (1, 2),		-- User root is an administrator.
@@ -244,6 +244,18 @@ GO
 INSERT INTO [FareAttributes]
 	([FareRuleId], [Price], [Transfers], [TransferDuration])
 VALUES
-	(1, 2.20, 0, 4500),	-- ZTM 75-minute ticket with unlimited transfers.
+	(1, 2.20, 0, 4500),		-- ZTM 75-minute ticket with unlimited transfers.
 	(1, 1.70, 0, 1200)		-- ZTM 20-minute no-transfer ticket.
+GO
+
+INSERT INTO StopUsers
+	([User_Id], [Stop_Id])
+VALUES
+	(1, 1), (1, 2)			-- Favourite stops for root
+GO
+
+INSERT INTO UserRoutes
+	([User_Id], [Route_Id])
+VALUES
+	(1, 1), (1, 2)			-- Favourite routes for root
 GO

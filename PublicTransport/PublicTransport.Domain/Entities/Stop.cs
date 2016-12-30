@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PublicTransport.Domain.Entities
@@ -12,6 +13,14 @@ namespace PublicTransport.Domain.Entities
     /// </summary>
     public class Stop : Entity
     {
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        public Stop()
+        {
+            FavouritedBy = new List<User>();
+        }
+
         /// <summary>
         ///     Contains the name of a stop or station. Please use a name that people will understand in the local and tourist
         ///     vernacular.
@@ -60,5 +69,10 @@ namespace PublicTransport.Domain.Entities
         /// </summary>
         [Required(ErrorMessage = "Please specify whether the stop is a station.")]
         public bool IsStation { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="User"/>s who favourited this stop.
+        /// </summary>
+        public IList<User> FavouritedBy { get; set; }
     }
 }
