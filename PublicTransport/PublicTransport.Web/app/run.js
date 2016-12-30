@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module("myApp");
 
-    app.run(function ($rootScope, $state, access, eventAggregator, notify, spinner, utils) {
+    app.run(function ($rootScope, $state, access, eventAggregator, notify, session, spinner, utils) {
         eventAggregator.on("event:showLoadingSpinner", function () {
             spinner.visible = true;
             spinner.show();
@@ -23,11 +23,13 @@
                 if (fromState.name !== "login" && fromState.name !== "register" && fromState.name !== "error" && fromState.name !== "") {
                     utils.setToState(fromState.name);
                 }
-                if (fromState.name === "" && toState.name === "error") {
+                else {
                     $state.go("index.home");
                 }
             }
         });
+
+        session.restore();
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams, options) {
             spinner.visible = true;

@@ -120,5 +120,25 @@ namespace PublicTransport.Services
                 return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
             }
         }
+
+        /// <summary>
+        ///     Retrieves user info.
+        /// </summary>
+        /// <param name="token">Token of the user to find.</param>
+        /// <returns><see cref="UserInfo"/> object containing user information.</returns>
+        /// <exception cref="EntryNotFoundException">Thrown when the user could not be found.</exception>
+        public UserInfo GetUserInfoByToken(string token)
+        {
+            using (var db = new PublicTransportContext())
+            {
+                var user = db.Users.Include(u => u.Roles).FirstOrDefault(u => u.LatestToken == token);
+                if (user == null)
+                {
+                    throw new EntryNotFoundException();
+                }
+
+                return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
+            }
+        }
     }
 }
