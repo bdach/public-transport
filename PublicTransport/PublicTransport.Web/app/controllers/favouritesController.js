@@ -32,7 +32,6 @@
 
         var updateStops = function (response) {
             ctrl.stopChanges = {};
-            console.log(response.data);
             ctrl.displayedStops = response.data;
             ctrl.storedStops = response.data.slice(); // keep a copy
         };
@@ -42,18 +41,12 @@
         // FIX THIS
         $http({
             method: "GET",
-            url: utils.getApiBaseUrl() + "/user/favouriteroutes/",
-            headers: {
-                "Authorization": "Bearer " + session.getToken()
-            }
+            url: utils.getApiBaseUrl() + "/user/favouriteroutes/"
         }).then(updateRoutes)
         .then(function() {
             $http({
                 method: "GET",
-                url: utils.getApiBaseUrl() + "/user/favouritestops/",
-                headers: {
-                    "Authorization": "Bearer " + session.getToken()
-                }
+                url: utils.getApiBaseUrl() + "/user/favouritestops/"
             }).then(updateStops);
         })
 
@@ -64,7 +57,7 @@
 
         this.addRoute = function (route) {
             ctrl.displayedRoutes.push(route);
-            ctrl.stopChanges[route.Id] = true;
+            ctrl.routeChanges[route.Id] = true;
         }
 
         this.filterRoutes = function () {
@@ -89,9 +82,6 @@
                 data: {
                     "UserName": session.getUserName(),
                     "Changes": ctrl.routeChanges
-                },
-                headers: {
-                    "Authorization": "Bearer " + session.getToken()
                 }
             }).then(function (response) {
                 updateRoutes(response);
@@ -145,9 +135,6 @@
                 data: {
                     "UserName": session.getUserName(),
                     "Changes": ctrl.stopChanges
-                },
-                headers: {
-                    "Authorization": "Bearer " + session.getToken()
                 }
             }).then(function (response) {
                 updateStops(response);
