@@ -10,14 +10,19 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class StopController : ApiController
     {
-        private static readonly StopRepository StopRepository = new StopRepository(new PublicTransportContext());
+        private readonly StopRepository _stopRepository;
+
+        public StopController(PublicTransportContext db)
+        {
+            _stopRepository = new StopRepository(db);
+        }
 
         [HttpPost]
         public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]StopFilter filter)
         {
             if (filter != null && filter.IsValid)
             {
-                var stops = StopRepository.FilterStops(filter);
+                var stops = _stopRepository.FilterStops(filter);
                 var stopsDto = stops.Select(s => new StopInfo(s));
                 return Ok(stopsDto);
             }

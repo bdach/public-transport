@@ -10,14 +10,19 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class RouteController : ApiController
     {
-        private static readonly RouteRepository RouteRepository = new RouteRepository(new PublicTransportContext());
+        private readonly RouteRepository _routeRepository;
+        
+        public RouteController(PublicTransportContext db)
+        {
+            _routeRepository = new RouteRepository(db);
+        }
 
         [HttpPost]
         public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]RouteFilter filter)
         {
             if (filter != null && filter.IsValid)
             {
-                var routes = RouteRepository.FilterRoutes(filter);
+                var routes = _routeRepository.FilterRoutes(filter);
                 var routesDto = routes.Select(r => new RouteInfo(r));
                 return Ok(routesDto);
             }

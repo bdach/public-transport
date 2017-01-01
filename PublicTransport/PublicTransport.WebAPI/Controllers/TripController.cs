@@ -10,14 +10,19 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class TripController : ApiController
     {
-        private static readonly TripRepository TripRepository = new TripRepository(new PublicTransportContext());
+        private readonly TripRepository _tripRepository;
+
+        public TripController(PublicTransportContext db)
+        {
+            _tripRepository = new TripRepository(db);
+        }
 
         [HttpPost, Route("trip/search")]
         public IHttpActionResult Search(HttpRequestMessage request, [FromBody]RouteSearchFilter filter)
         {
             if (filter != null && filter.IsValid)
             {
-                var trips = TripRepository.FindTrips(filter);
+                var trips = _tripRepository.FindTrips(filter);
                 var tripsDto = trips.Select(t => new TripInfo(t)).ToList();
                 return Ok(tripsDto);
             }
@@ -29,7 +34,7 @@ namespace PublicTransport.WebAPI.Controllers
         {
             if (filter == null) return BadRequest("No filter was supplied");
             if (!filter.IsValid) return BadRequest("The supplied filter is invalid");
-            var stops = TripRepository.GetTripSegment(filter);
+            var stops = _tripRepository.GetTripSegment(filter);
             var stopsDto = stops.Where(st => st.Shape != null).Select(st => new MapMarker(st)).ToList();
             return Ok(stopsDto);
         }

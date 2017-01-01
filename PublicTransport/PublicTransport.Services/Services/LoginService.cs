@@ -13,6 +13,7 @@ namespace PublicTransport.Services
     /// </summary>
     public class LoginService : ILoginService
     {
+        private readonly PublicTransportContext _db;
 
         /// <summary>
         ///     Service providing password hashing capabilities.
@@ -22,18 +23,19 @@ namespace PublicTransport.Services
         /// <summary>
         ///     Default constructor.
         /// </summary>
-        public LoginService()
+        public LoginService(PublicTransportContext db) : this(new PasswordService(), db)
         {
-            _passwordService = new PasswordService();
         }
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="passwordService">Password service to use for hashing.</param>
-        public LoginService(IPasswordService passwordService)
+        /// <param name="db">Context to be used.</param>
+        public LoginService(IPasswordService passwordService, PublicTransportContext db)
         {
             _passwordService = passwordService;
+            _db = db;
         }
 
         /// <summary>
@@ -44,16 +46,13 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public UserInfo RequestLogin(LoginData loginData)
         {
-            using (var db = new PublicTransportContext())
+            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == loginData.UserName);
+            if (user == null || !_passwordService.CompareWithHash(loginData.Password, user.Password))
             {
-                var user = db.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserName == loginData.UserName);
-                if (user == null || !_passwordService.CompareWithHash(loginData.Password, user.Password))
-                {
-                    throw new InvalidCredentialsException();
-                }
-
-                return new UserInfo(user.UserName, user.Roles.Select(r => r.Name).ToList());
+                throw new InvalidCredentialsException();
             }
+
+            return new UserInfo(user.UserName, user.Roles.Select(r => r.Name).ToList());
         }
 
         /// <summary>
@@ -63,18 +62,15 @@ namespace PublicTransport.Services
         /// <exception cref="InvalidCredentialsException">Thrown when the credentials supplied by the user were invalid.</exception>
         public void RequestPasswordChange(PasswordChangeData data)
         {
-            using (var db = new PublicTransportContext())
+            var user = _db.Users.FirstOrDefault(u => u.UserName == data.UserName);
+            if (user == null || !_passwordService.CompareWithHash(data.OldPassword, user.Password))
             {
-                var user = db.Users.FirstOrDefault(u => u.UserName == data.UserName);
-                if (user == null || !_passwordService.CompareWithHash(data.OldPassword, user.Password))
-                {
-                    throw new InvalidCredentialsException();
-                }
-
-                var userRepository = new UserRepository(db);
-                user.Password = data.NewPassword;
-                userRepository.Update(user);
+                throw new InvalidCredentialsException();
             }
+
+            var userRepository = new UserRepository(_db);
+            user.Password = data.NewPassword;
+            userRepository.Update(user);
         }
 
         /// <summary>
@@ -84,11 +80,8 @@ namespace PublicTransport.Services
         /// <returns>A boolean value representing the validity of credentials.</returns>
         public bool ValidateCredentials(LoginData loginData)
         {
-            using (var db = new PublicTransportContext())
-            {
-                var user = db.Users.FirstOrDefault(u => u.UserName == loginData.UserName);
-                return user != null && _passwordService.CompareWithHash(loginData.Password, user.Password);
-            }
+            var user = _db.Users.FirstOrDefault(u => u.UserName == loginData.UserName);
+            return user != null && _passwordService.CompareWithHash(loginData.Password, user.Password);
         }
 
         /// <summary>
@@ -98,13 +91,10 @@ namespace PublicTransport.Services
         /// <param name="token">New token granted to user.</param>
         public void UpdateUserToken(string userName, string token)
         {
-            using (var db = new PublicTransportContext())
-            {
-                var user = db.Users.First(u => u.UserName == userName);
-                var userRepository = new UserRepository(db);
-                user.LatestToken = token;
-                userRepository.SimpleUpdate(user);
-            }
+            var user = _db.Users.First(u => u.UserName == userName);
+            var userRepository = new UserRepository(_db);
+            user.LatestToken = token;
+            userRepository.SimpleUpdate(user);
         }
 
         /// <summary>
@@ -114,11 +104,8 @@ namespace PublicTransport.Services
         /// <returns><see cref="UserInfo"/> object containing user information.</returns>
         public UserInfo GetUserInfoByUserName(string userName)
         {
-            using (var db = new PublicTransportContext())
-            {
-                var user = db.Users.Include(u => u.Roles).First(u => u.UserName == userName);
-                return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
-            }
+            var user = _db.Users.Include(u => u.Roles).First(u => u.UserName == userName);
+            return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
         }
 
         /// <summary>
@@ -129,16 +116,13 @@ namespace PublicTransport.Services
         /// <exception cref="EntryNotFoundException">Thrown when the user could not be found.</exception>
         public UserInfo GetUserInfoByToken(string token)
         {
-            using (var db = new PublicTransportContext())
+            var user = _db.Users.Include(u => u.Roles).FirstOrDefault(u => u.LatestToken == token);
+            if (user == null)
             {
-                var user = db.Users.Include(u => u.Roles).FirstOrDefault(u => u.LatestToken == token);
-                if (user == null)
-                {
-                    throw new EntryNotFoundException();
-                }
-
-                return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
+                throw new EntryNotFoundException();
             }
+
+            return new UserInfo(user.FullName, user.UserName, user.LatestToken, user.Roles.Select(r => r.Name).ToList());
         }
     }
 }

@@ -18,7 +18,7 @@ namespace PublicTransport.Tests.Services
         public void ServiceSetUp()
         {
             _passwordService = new Mock<IPasswordService>();
-            _loginService = new LoginService(_passwordService.Object);
+            _loginService = new LoginService(_passwordService.Object, DbContext);
         }
 
         [Test]

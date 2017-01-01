@@ -2,17 +2,23 @@
 using System.Security.Claims;
 using Microsoft.Owin.Security;
 using PublicTransport.Services;
+using PublicTransport.Services.Contracts;
 using PublicTransport.Services.DataTransfer;
 
 namespace PublicTransport.WebAPI.Identity
 {
     public class LoginProvider
     {
-        private static readonly LoginService LoginService = new LoginService();
+        private readonly ILoginService _loginService;
+
+        public LoginProvider(ILoginService loginService)
+        {
+            _loginService = loginService;
+        }
 
         public bool ValidateCredentials(LoginData loginData, out ClaimsIdentity identity)
         {
-            var isValid = LoginService.ValidateCredentials(loginData);
+            var isValid = _loginService.ValidateCredentials(loginData);
             if (isValid)
             {
                 identity = new ClaimsIdentity(Startup.OAuthOptions.AuthenticationType);
@@ -32,8 +38,8 @@ namespace PublicTransport.WebAPI.Identity
             DateTimeOffset ticketExpirationDate;
             CreateAuthenticationTicket(identity, out ticket, out ticketExpirationDate);
 
-            LoginService.UpdateUserToken(loginData.UserName, Startup.OAuthOptions.AccessTokenFormat.Protect(ticket));
-            return LoginService.GetUserInfoByUserName(loginData.UserName);
+            _loginService.UpdateUserToken(loginData.UserName, Startup.OAuthOptions.AccessTokenFormat.Protect(ticket));
+            return _loginService.GetUserInfoByUserName(loginData.UserName);
         }
 
         private static void CreateAuthenticationTicket(ClaimsIdentity identity, out AuthenticationTicket ticket, out DateTimeOffset ticketExpirationDate)
@@ -45,9 +51,9 @@ namespace PublicTransport.WebAPI.Identity
             ticket.Properties.ExpiresUtc = ticketExpirationDate;
         }
 
-        public static UserInfo RestoreSession(string token)
+        public UserInfo RestoreSession(string token)
         {
-            return LoginService.GetUserInfoByToken(token);
+            return _loginService.GetUserInfoByToken(token);
         }
     }
 }

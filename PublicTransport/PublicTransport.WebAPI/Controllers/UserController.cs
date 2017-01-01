@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Web.Http;
 using PublicTransport.Domain.Context;
 using PublicTransport.Services;
+using PublicTransport.Services.Contracts;
 using PublicTransport.Services.DataTransfer;
 using PublicTransport.Services.DataTransfer.Converters;
 using PublicTransport.Services.Exceptions;
@@ -14,9 +15,15 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class UserController : ApiController
     {
-        private static readonly UserRepository UserRepository = new UserRepository(new PublicTransportContext());
+        private readonly UserRepository _userRepository;
         private static readonly UserConverter UserConverter = new UserConverter();
-        private static readonly LoginService LoginService = new LoginService();
+        private readonly ILoginService _loginService;
+
+        public UserController(PublicTransportContext db, ILoginService loginService)
+        {
+            _userRepository = new UserRepository(db);
+            _loginService = loginService;
+        }
 
         [HttpPost, Route("user/register")]
         public IHttpActionResult Register(HttpRequestMessage request, [FromBody]UserDto user)
@@ -25,7 +32,7 @@ namespace PublicTransport.WebAPI.Controllers
             {
                 try
                 {
-                    UserRepository.Create(UserConverter.GetEntity(user));
+                    _userRepository.Create(UserConverter.GetEntity(user));
                     return Ok();
                 }
                 catch (UserAlreadyExistsException)
@@ -50,7 +57,7 @@ namespace PublicTransport.WebAPI.Controllers
 
                 try
                 {
-                    LoginService.RequestPasswordChange(data);
+                    _loginService.RequestPasswordChange(data);
                     return Ok();
                 }
                 catch (InvalidCredentialsException)
@@ -73,7 +80,7 @@ namespace PublicTransport.WebAPI.Controllers
                 return BadRequest("Provided username is invalid");
             }
 
-            var stops = UserRepository.GetFavouriteStopsByUserName(username);
+            var stops = _userRepository.GetFavouriteStopsByUserName(username);
             var stopsDto = stops.Select(s => new StopInfo(s)).ToList();
             return Ok(stopsDto);
         }
@@ -88,7 +95,7 @@ namespace PublicTransport.WebAPI.Controllers
                 return Unauthorized();
             }
 
-            var result = UserRepository.UpdateFavouriteStops(data.Changes, data.UserName);
+            var result = _userRepository.UpdateFavouriteStops(data.Changes, data.UserName);
             var resultDto = result.Select(s => new StopInfo(s)).ToList();
             return Ok(resultDto);
         }
@@ -105,7 +112,7 @@ namespace PublicTransport.WebAPI.Controllers
                 return BadRequest("Provided username is invalid");
             }
 
-            var routes = UserRepository.GetFavouriteRoutesByUserName(username);
+            var routes = _userRepository.GetFavouriteRoutesByUserName(username);
             var routesDto = routes.Select(r => new RouteInfo(r)).ToList();
             return Ok(routesDto);
         }
@@ -120,7 +127,7 @@ namespace PublicTransport.WebAPI.Controllers
                 return Unauthorized();
             }
 
-            var result = UserRepository.UpdateFavouriteRoutes(data.Changes, data.UserName);
+            var result = _userRepository.UpdateFavouriteRoutes(data.Changes, data.UserName);
             var resultDto = result.Select(s => new RouteInfo(s)).ToList();
             return Ok(resultDto);
         }

@@ -13,6 +13,7 @@ namespace PublicTransport.WebAPI
             ConfigureAuth(app);
 
             var config = new HttpConfiguration();
+            UnityConfig.RegisterComponents(config);
             WebApiConfig.Register(config);
             app.UseWebApi(config);
         }

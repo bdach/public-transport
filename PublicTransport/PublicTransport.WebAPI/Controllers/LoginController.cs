@@ -11,7 +11,12 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class LoginController : ApiController
     {
-        private static readonly LoginProvider LoginProvider = new LoginProvider();
+        private readonly LoginProvider _loginProvider;
+
+        public LoginController(LoginProvider loginProvider)
+        {
+            _loginProvider = loginProvider;
+        }
 
         [HttpPost, Route("token")]
         public IHttpActionResult Login(HttpRequestMessage request, [FromBody]LoginData loginData)
@@ -19,12 +24,12 @@ namespace PublicTransport.WebAPI.Controllers
             if (loginData != null)
             {
                 ClaimsIdentity identity;
-                if (!LoginProvider.ValidateCredentials(loginData, out identity))
+                if (!_loginProvider.ValidateCredentials(loginData, out identity))
                 {
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized, new { Message = "Invalid username or password" }));
                 }
 
-                var userInfo = LoginProvider.CreateUserInfo(loginData, identity);
+                var userInfo = _loginProvider.CreateUserInfo(loginData, identity);
                 return Ok(userInfo);
             }
             return BadRequest("Provided login data model is not valid");
@@ -38,7 +43,7 @@ namespace PublicTransport.WebAPI.Controllers
             try
             {
                 var token = TokenHandler.GetTokenFromHeader(request);
-                userInfo = LoginProvider.RestoreSession(token);
+                userInfo = _loginProvider.RestoreSession(token);
             }
             catch (EntryNotFoundException)
             {
