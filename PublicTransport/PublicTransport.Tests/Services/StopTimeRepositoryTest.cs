@@ -101,8 +101,29 @@ namespace PublicTransport.Tests.Services
             // given
             // when
             var timetable = _stopTimeRepository.GetFullTimetableByStopId(1);
-            // thenm
+            // then
             timetable.Count.ShouldBeEquivalentTo(1);
+            timetable.First().Value.Count.ShouldBeEquivalentTo(2);
+        }
+
+        [Test]
+        public void GetFullTimetableByStopId_InvalidId()
+        {
+            // given
+            // when
+            var timetable = _stopTimeRepository.GetFullTimetableByStopId(42);
+            // then
+            timetable.Should().BeEmpty();
+        }
+
+        [Test]
+        public void GetFullTimetableByRouteId()
+        {
+            // given
+            // when
+            var timetable = _stopTimeRepository.GetFullTimetableByRouteId(1);
+            // then
+            timetable.Count.ShouldBeEquivalentTo(9);
             timetable.First().Value.Count.ShouldBeEquivalentTo(2);
         }
     }

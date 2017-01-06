@@ -12,6 +12,8 @@ DELETE FROM [Roles]
 DELETE FROM [Users]
 
 -- Connection data.
+DELETE FROM [StopUsers]
+DELETE FROM [UserRoutes]
 DELETE FROM [FareAttributes]
 DELETE FROM [FareRules]
 DELETE FROM [StopTimes]
@@ -47,6 +49,8 @@ DBCC CHECKIDENT ('[Roles]', RESEED, 0)
 DBCC CHECKIDENT ('[Users]', RESEED, 0)
 
 -- Connection data.
+DBCC CHECKIDENT ('[StopUsers]', RESEED, 0)
+DBCC CHECKIDENT ('[UserRoutes]', RESEED, 0)
 DBCC CHECKIDENT ('[FareAttributes]', RESEED, 0)
 DBCC CHECKIDENT ('[FareRules]', RESEED, 0)
 DBCC CHECKIDENT ('[StopTimes]', RESEED, 0)
@@ -159,7 +163,8 @@ INSERT INTO [Routes]
 	([AgencyId], [ShortName], [LongName], [RouteType])
 VALUES
 	(1, N'E-1', N'Gocław-Metro Stadion Narodowy', 3),		-- 1; route type 3 is a Bus
-	(2, N'101', N'Zawiercie-Gliwice', 2)					-- 2; route type 2 is Rail
+	(2, N'101', N'Zawiercie-Gliwice', 2),					-- 2; route type 2 is Rail
+	(1, N'182', N'Witolin-Dworzec Zachodni', 3)				-- 3
 GO
 
 INSERT INTO [Calendars]

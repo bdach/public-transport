@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using PublicTransport.Domain.Entities;
+using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
 
 namespace PublicTransport.Tests.Services
@@ -27,7 +28,7 @@ namespace PublicTransport.Tests.Services
             // when
             var stops = _tripRepository.GetTripStops(trip);
             // then
-            stops.Count.ShouldBeEquivalentTo(9);
+            stops.Count.ShouldBeEquivalentTo(10);
             stops.Select(s => s.StopId).Should().ContainInOrder(Enumerable.Range(1, 9).Reverse());
         }
 
@@ -55,6 +56,41 @@ namespace PublicTransport.Tests.Services
                 existingStopTime.ArrivalTime,
                 newStopTime.ArrivalTime
             });
+        }
+
+        [Test]
+        public void GetTripSegment()
+        {
+            // given
+            var tripSegmentFilter = new TripSegmentFilter
+            {
+                TripId = 1,
+                OriginSequenceNumber = 3,
+                DestinationSequenceNumber = 8
+            };
+            // when
+            var tripSegment = _tripRepository.GetTripSegment(tripSegmentFilter);
+            // then
+            tripSegment.Count.ShouldBeEquivalentTo(6);
+            tripSegment.First().StopSequence.ShouldBeEquivalentTo(3);
+            tripSegment.Last().StopSequence.ShouldBeEquivalentTo(8);
+            tripSegment.Should().BeInAscendingOrder(st => st.StopSequence);
+        }
+
+        [Test]
+        public void GetTripSegment_InvalidSequenceNumbers()
+        {
+            // given
+            var tripSegmentFilter = new TripSegmentFilter
+            {
+                TripId = 2,
+                OriginSequenceNumber = 8,
+                DestinationSequenceNumber = 5
+            };
+            // when
+            var tripSegment = _tripRepository.GetTripSegment(tripSegmentFilter);
+            // then
+            tripSegment.Count.ShouldBeEquivalentTo(0);
         }
     }
 }
