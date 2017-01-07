@@ -11,9 +11,9 @@ namespace PublicTransport.WebAPI.Models
         {
             ArrivalTime = stopTime.ArrivalTime;
             DepartureTime = stopTime.DepartureTime;
-            ShortName = stopTime.Trip.ShortName;
-            Headsign = stopTime.Trip.Headsign;
-            Direction = stopTime.Trip.Direction;
+            ShortName = stopTime.Trip?.ShortName;
+            Headsign = stopTime.Trip?.Headsign;
+            Direction = stopTime.Trip?.Direction ?? false;
         }
 
         [DataMember]

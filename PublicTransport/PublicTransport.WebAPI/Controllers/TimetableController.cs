@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-using PublicTransport.Domain.Context;
 using PublicTransport.Services.Repositories;
 using PublicTransport.WebAPI.Models;
 
@@ -9,11 +8,11 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class TimetableController : ApiController
     {
-        private readonly StopTimeRepository _stopTimeRepository;
+        private readonly IStopTimeRepository _stopTimeRepository;
 
-        public TimetableController(PublicTransportContext db)
+        public TimetableController(IStopTimeRepository stopTimeRepository)
         {
-            _stopTimeRepository = new StopTimeRepository(db);
+            _stopTimeRepository = stopTimeRepository;
         }
 
         [HttpGet, Route("timetable/stop/{id}")]

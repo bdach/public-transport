@@ -1,5 +1,4 @@
-﻿using PublicTransport.Domain.Context;
-using PublicTransport.Services.DataTransfer.Filters;
+﻿using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
 using System.Linq;
 using System.Net.Http;
@@ -10,11 +9,11 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class TripController : ApiController
     {
-        private readonly TripRepository _tripRepository;
+        private readonly ITripRepository _tripRepository;
 
-        public TripController(PublicTransportContext db)
+        public TripController(ITripRepository tripRepository)
         {
-            _tripRepository = new TripRepository(db);
+            _tripRepository = tripRepository;
         }
 
         [HttpPost, Route("trip/search")]

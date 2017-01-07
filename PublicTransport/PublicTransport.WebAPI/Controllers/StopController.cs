@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-using PublicTransport.Domain.Context;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
 using PublicTransport.WebAPI.Models;
@@ -10,13 +9,13 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class StopController : ApiController
     {
-        private readonly StopRepository _stopRepository;
+        private readonly IStopRepository _stopRepository;
 
-        public StopController(PublicTransportContext db)
+        public StopController(IStopRepository stopRepository)
         {
-            _stopRepository = new StopRepository(db);
+            _stopRepository = stopRepository;
         }
-
+        
         [HttpPost]
         public IHttpActionResult Filter(HttpRequestMessage request, [FromBody]StopFilter filter)
         {

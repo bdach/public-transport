@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-using PublicTransport.Domain.Context;
 using PublicTransport.Services.DataTransfer.Filters;
 using PublicTransport.Services.Repositories;
 using PublicTransport.WebAPI.Models;
@@ -10,11 +9,11 @@ namespace PublicTransport.WebAPI.Controllers
 {
     public class RouteController : ApiController
     {
-        private readonly RouteRepository _routeRepository;
-        
-        public RouteController(PublicTransportContext db)
+        private readonly IRouteRepository _routeRepository;
+
+        public RouteController(IRouteRepository routeRepository)
         {
-            _routeRepository = new RouteRepository(db);
+            _routeRepository = routeRepository;
         }
 
         [HttpPost]

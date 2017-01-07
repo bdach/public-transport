@@ -9,10 +9,76 @@ using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services.Repositories
 {
+    public interface IStopTimeRepository
+    {
+        /// <summary>
+        ///     Inserts a <see cref="StopTime" /> record into the database.
+        /// </summary>
+        /// <param name="stopTime"><see cref="StopTime" /> object to insert into the database.</param>
+        /// <returns>The <see cref="StopTime" /> object corresponding to the inserted record.</returns>
+        StopTime Create(StopTime stopTime);
+
+        /// <summary>
+        ///     Returns the <see cref="StopTime" /> with the supplied <see cref="StopTime.Id" />.
+        /// </summary>
+        /// <param name="id">Identification number of the desired <see cref="StopTime" />.</param>
+        /// <returns>
+        ///     <see cref="StopTime" /> object with the supplied ID number, or null if the <see cref="StopTime" /> with the supplied ID
+        ///     could not be found in the database.
+        /// </returns>
+        StopTime Read(int id);
+
+        /// <summary>
+        ///     Updates all of the fields of the supplied <see cref="StopTime" />.
+        /// </summary>
+        /// <param name="stopTime"><see cref="StopTime" /> object to update.</param>
+        /// <returns>Updated <see cref="StopTime" /> object.</returns>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="StopTime" /> could not be found in the database.
+        /// </exception>
+        StopTime Update(StopTime stopTime);
+
+        /// <summary>
+        ///     Deletes the supplied <see cref="StopTime" /> from the database.
+        /// </summary>
+        /// <param name="stopTime"><see cref="StopTime" /> object to delete.</param>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="StopTime" /> could not be found in the database.
+        /// </exception>
+        void Delete(StopTime stopTime);
+
+        /// <summary>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/>.
+        /// </summary>
+        /// <param name="stopId">Id of the <see cref="Stop" />.</param>
+        /// <returns>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/>.
+        /// </returns>
+        Dictionary<Route, List<StopTime>> GetFullTimetableByStopId(int stopId);
+
+        /// <summary>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
+        /// </summary>
+        /// <returns>
+        ///     Returns a list of <see cref="StopTime" />s for a certain <see cref="Stop"/> which are associated with a specific <see cref="Route"/>.
+        /// </returns>
+        List<StopTime> GetRouteTimetableByStopId(StopTimeFilter filter);
+
+        /// <summary>
+        ///     Fetches the full timetable for the <see cref="Route"/> with the supplied ID.
+        /// </summary>
+        /// <param name="routeId">ID of the route for which the timetable should be fetched.</param>
+        /// <returns>
+        ///     Returns all <see cref="StopTime"/>s associated with a certain <see cref="Route"/>, grouped by 
+        ///     <see cref="Stop"/>s.
+        /// </returns>
+        Dictionary<Stop, List<StopTime>> GetFullTimetableByRouteId(int routeId);
+    }
+
     /// <summary>
     ///     Service for managing stop times.
     /// </summary>
-    public class StopTimeRepository
+    public class StopTimeRepository : IStopTimeRepository
     {
         /// <summary>
         ///     An instance of database context.

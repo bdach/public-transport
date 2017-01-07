@@ -13,7 +13,7 @@ namespace PublicTransport.WebAPI.Models
             ShortName = route.ShortName;
             LongName = route.LongName;
             RouteType = route.RouteType;
-            Agency = new AgencyInfo(route.Agency);
+            Agency = AgencyInfo.Convert(route.Agency);
         }
 
         [DataMember]

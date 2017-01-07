@@ -12,9 +12,9 @@ namespace PublicTransport.WebAPI.Models
             Phone = agency.Phone;
             Url = agency.Url;
             Regon = agency.Regon;
-            StreetName = agency.Street.Name;
+            StreetName = agency.Street?.Name;
             StreetNumber = agency.StreetNumber;
-            CityName = agency.Street.City.Name;
+            CityName = agency.Street?.City?.Name;
         }
 
         [DataMember]
@@ -31,5 +31,10 @@ namespace PublicTransport.WebAPI.Models
         public string StreetNumber { get; set; }
         [DataMember]
         public string CityName { get; set; }
+
+        public static AgencyInfo Convert(Agency agency)
+        {
+            return agency == null ? null : new AgencyInfo(agency);
+        }
     }
 }

@@ -78,6 +78,10 @@
       <HintPath>..\packages\Moq.4.5.23\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +103,12 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -120,6 +130,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
@@ -136,6 +151,10 @@
     <ProjectReference Include="..\PublicTransport.Services\PublicTransport.Services.csproj">
       <Project>{0cf2ec6c-0abc-42e3-847c-655b9ffc6593}</Project>
       <Name>PublicTransport.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PublicTransport.WebAPI\PublicTransport.WebAPI.csproj">
+      <Project>{65807cca-18ee-4a13-9703-9d3b2d07c967}</Project>
+      <Name>PublicTransport.WebAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +204,10 @@
     <Compile Include="Services\StreetRepositoryTest.cs" />
     <Compile Include="Services\TripRepositoryTest.cs" />
     <Compile Include="Services\UserRepositoryTest.cs" />
+    <Compile Include="WebAPI\RouteControllerTest.cs" />
+    <Compile Include="WebAPI\StopControllerTest.cs" />
+    <Compile Include="WebAPI\TimetableControllerTest.cs" />
+    <Compile Include="WebAPI\TripControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

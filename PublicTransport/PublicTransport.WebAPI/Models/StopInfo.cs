@@ -10,8 +10,8 @@ namespace PublicTransport.WebAPI.Models
         {
             Id = stop.Id;
             Name = stop.Name;
-            StreetName = stop.Street.Name;
-            CityName = stop.Street.City.Name;
+            StreetName = stop.Street?.Name;
+            CityName = stop.Street?.City?.Name;
             ParentStation = stop.ParentStation == null ? null : new StopInfo(stop.ParentStation);
             IsStation = stop.IsStation;
         }

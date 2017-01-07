@@ -9,10 +9,81 @@ using PublicTransport.Services.DataTransfer.Filters;
 
 namespace PublicTransport.Services.Repositories
 {
+    public interface ITripRepository
+    {
+        /// <summary>
+        ///     Inserts a <see cref="Trip" /> record into the database.
+        /// </summary>
+        /// <param name="trip"><see cref="Trip" /> object to insert into the database.</param>
+        /// <returns>The <see cref="Trip" /> object corresponding to the inserted record.</returns>
+        Trip Create(Trip trip);
+
+        /// <summary>
+        ///     Returns the <see cref="Trip" /> with the supplied <see cref="Trip.Id" />.
+        /// </summary>
+        /// <param name="id">Identification number of the desired <see cref="Trip" />.</param>
+        /// <returns>
+        ///     <see cref="Trip" /> object with the supplied ID number, or null if the <see cref="Trip" /> with the supplied ID
+        ///     could not be found in the database.
+        /// </returns>
+        Trip Read(int id);
+
+        /// <summary>
+        ///     Updates all of the fields of the supplied <see cref="Trip" />.
+        /// </summary>
+        /// <param name="trip"><see cref="Trip" /> object to update.</param>
+        /// <returns>Updated <see cref="Trip" /> object.</returns>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
+        /// </exception>
+        Trip Update(Trip trip);
+
+        /// <summary>
+        ///     Deletes the supplied <see cref="Trip" /> from the database.
+        /// </summary>
+        /// <param name="trip"><see cref="Trip" /> object to delete.</param>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Trip" /> could not be found in the database.
+        /// </exception>
+        void Delete(Trip trip);
+
+        /// <summary>
+        ///     Updates the <see cref="StopTime" /> associated with this trip.
+        /// </summary>
+        /// <param name="tripId">ID number of trip to update</param>
+        /// <param name="stops">The stops which should be saved.</param>
+        /// <returns>List of stops after saving.</returns>
+        List<StopTime> UpdateStops(int tripId, List<StopTime> stops);
+
+        /// <summary>
+        ///     Return a list of <see cref="Stop"/>s that are assinged to the provided <see cref="Trip"/>.
+        /// </summary>
+        /// <param name="trip"><see cref="Trip"/> to filter stops by.</param>
+        /// <returns>
+        ///     Return a list of <see cref="Stop"/>s that are assinged to the provided <see cref="Trip"/>.
+        /// </returns>
+        List<StopTime> GetTripStops(Trip trip);
+
+        /// <summary>
+        ///     Finds <see cref="Trip"/>s passing through the two <see cref="Stop"/>s supplied inside the 
+        ///     <see cref="RouteSearchFilter"/>, along with their origin and destination <see cref="StopTime"/>s.
+        /// </summary>
+        /// <param name="filter">Search filter for the trips.</param>
+        /// <returns>List of <see cref="Trip"/>s passing through the specified stops.</returns>
+        List<Tuple<Trip, StopTime, StopTime>> FindTrips(RouteSearchFilter filter);
+
+        /// <summary>
+        ///     Returns a list of <see cref="StopTime"/>s from a <see cref="Trip"/> with the supplied IDs, whose sequence numbers begin with <see cref="originSequenceNumber"/> and end with <see cref="destinationSequenceNumber"/>.
+        /// </summary>
+        /// <param name="filter">Object containing filtering parameters.</param>
+        /// <returns>List of <see cref="StopTime"/> representing the desired segment of the trip.</returns>
+        List<StopTime> GetTripSegment(TripSegmentFilter filter);
+    }
+
     /// <summary>
     ///     Service for managing trips.
     /// </summary>
-    public class TripRepository
+    public class TripRepository : ITripRepository
     {
         /// <summary>
         ///     An instance of database context.
