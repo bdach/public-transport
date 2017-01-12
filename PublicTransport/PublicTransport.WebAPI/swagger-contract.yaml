@@ -50,7 +50,18 @@ definitions:
       Changes:
         type: object
         request: true
-        description: This is a key-value pair. The key is an integer indicating the ID of a stop or route, and the value indicates whether the stop/route should be added to the favourite list (true) or removed from the list (false). This object can have multiple pairs.        
+        description: This is a key-value pair. The key is an integer indicating the ID of a stop or route, and the value indicates whether the stop/route should be added to the favourite list (true) or removed from the list (false). This object can have multiple pairs.
+  LoginData:
+    type: object
+    properties:
+      UserName:
+        type: string
+        required: true
+        description: The username of the user logging in.
+      Password:
+        type: string
+        required: true
+        description: The password of the user logging in.        
   MapMarker:
     type: object
     properties:
@@ -328,6 +339,30 @@ definitions:
         type: integer
         format: int64
         description: Identifies the order of the stops for a particular trip. The values must be non-negative integers, and they must increase along the trip.
+  UserInfo:
+    type: object
+    properties:
+      FullName:
+        type: string
+        required: true
+        description: The full name of the user.
+      UserName:
+        type: string
+        required: true
+        description: The username of the user.
+      Token:
+        type: string
+        required: true
+        description: Assigned OAuth token used for request authentication.
+      Roles:
+        type: array
+        required: true
+        items:
+          type: integer
+          enum:
+            - Employee
+            - Administrator
+          description: Contains the roles of the user.
 paths:
   # leaving login for now
   /route/filter:
@@ -355,6 +390,26 @@ paths:
           description: The supplied filter is invalid.
           schema:
             $ref: "#/definitions/ErrorMessage"
+  /session:
+    get:
+      description: Retrieves the user's previous session if it hasn't expired.
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token.
+          type: string
+      responses:
+        '200':
+          description: The user's previous session data.
+          schema:
+            $ref: '#/definitions/UserInfo'
+        '401':
+          description: The supplied authentication token has expired.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
   /stop/filter:
     post:
       description: Searches for stops in the database, using the supplied filtering criteria; at least one of the fields must be non-empty
@@ -412,6 +467,29 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RouteTimetableEntry'
+  /token:
+    post:
+      description: Fetches user information along with an authentication token for the desired user.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: loginData
+          in: body
+          required: true
+          description: The object containing the login information.
+          schema:
+            $ref: '#/definitions/LoginData'
+      responses:
+        '200':
+          description: Returns the user information for the desired user.
+          schema:
+            $ref: '#/definitions/UserInfo'
+        '401':
+          description: The supplied credentials were invalid.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
   /trip/mapData:
     post:
       description: Returns a list of map markers representing a part of the desired trip
@@ -462,27 +540,6 @@ paths:
           description: The request sent by the user was invalid.
           schema:
             $ref: "#/definitions/ErrorMessage"
-  /user/register:
-    post:
-      description: Registers a user for the application
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: registrationInfo
-          in: body
-          required: true
-          description: Object storing the registration request data
-          schema:
-            $ref: '#/definitions/RegistrationInfo'
-      responses:
-        '200':
-          description: The user was registered successfully.
-        '400':
-          description: The request sent by the user was invalid.
-          schema:
-            $ref: "#/definitions/ErrorMessage"
   /user/changepassword:
     post:
       description: Allows a user to change their account password
@@ -500,6 +557,27 @@ paths:
       responses:
         '200':
           description: The user's password was successfully changed.
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+  /user/register:
+    post:
+      description: Registers a user for the application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: registrationInfo
+          in: body
+          required: true
+          description: Object storing the registration request data
+          schema:
+            $ref: '#/definitions/RegistrationInfo'
+      responses:
+        '200':
+          description: The user was registered successfully.
         '400':
           description: The request sent by the user was invalid.
           schema:

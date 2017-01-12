@@ -49,8 +49,6 @@ DBCC CHECKIDENT ('[Roles]', RESEED, 0)
 DBCC CHECKIDENT ('[Users]', RESEED, 0)
 
 -- Connection data.
-DBCC CHECKIDENT ('[StopUsers]', RESEED, 0)
-DBCC CHECKIDENT ('[UserRoutes]', RESEED, 0)
 DBCC CHECKIDENT ('[FareAttributes]', RESEED, 0)
 DBCC CHECKIDENT ('[FareRules]', RESEED, 0)
 DBCC CHECKIDENT ('[StopTimes]', RESEED, 0)
@@ -214,7 +212,7 @@ VALUES
 	(1, 1, '09:01:00', '09:01:00', 1, 1),
 	(2, 1, '09:05:00', '09:05:00', 2, 2),
 	(3, 1, '09:07:00', '09:07:00', 3, 3),
-	(4, 1, '09:09:00', '09:07:00', 4, 4),
+	(4, 1, '09:09:00', '09:09:00', 4, 4),
 	(5, 1, '09:10:00', '09:10:00', 5, 5),
 	(6, 1, '09:11:00', '09:11:00', 6, 6),
 	(7, 1, '09:13:00', '09:13:00', 7, 7),
