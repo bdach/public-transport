@@ -535,6 +535,89 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 		\mbox{\hyperref[abbr:mspl]{MS-PL}} &
 		\cite{mahapps} \\
 		\hline
+		10 &
+		AngularJS, 1.5.9 &
+		Framework wspomagający tworzenie i rozwijanie Single Page Application. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{angularjs} \\
+		\hline
+		11 &
+		Angular Spinner, 1.5.9 &
+		Dyrektywa pokazująca animowany spinner ładowania. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{angularspinner} \\
+		\hline
+		12 &
+		Spin.js, 2.3.2.1 &
+		Biblioteka definiująca animowany spinner ładowania. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{spinjs} \\
+		\hline
+	\end{tabularx}
+\end{table}
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|r|l|X|l|c|}
+		\hline
+		13 &
+		Angular toastr, 2.1.1 &
+		Biblioteka pokazująca powiadomienia. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{toastr} \\
+		\hline
+		14 &
+		Angular event aggregator, 1.0.0 &
+		Biblioteka zawierająca implementację agregatora eventów. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{angularevent} \\
+		\hline
+		15 &
+		Angular UI Router, 0.3.1 &
+		Biblioteka wspomagająca nawigację na stronie. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{uirouter} \\
+		\hline
+		16 &
+		Angular UI Bootstrap, 2.3.2 &
+		Biblioteka dyrektyw dla Bootstrapa. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{uibootstrap} \\
+		\hline
+		17 &
+		Font Awesome, 4.7.0 &
+		Biblioteka czcionek i ikonek. &
+		Open Font License 1.1 &
+		\cite{fontawesome} \\
+		\hline
+		18 &
+		Bootstrap, 3.3.7 &
+		Framework CSS. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{bootstrap} \\
+		\hline
+		19 &
+		Ouath 2.0, 3.0.1 &
+		Protokół zabezpieczający API. &
+		Apache License 2.0 &
+		\cite{oauth} \\
+		\hline
+		20 &
+		Unity, 4.0.1 &
+		Kontener dependency injection. &
+		\mbox{\hyperref[abbr:mspl]{MS-PL}} &
+		\cite{unity} \\
+		\hline
+		21 &
+		AngularJS Google Maps, 1.17.0 &
+		Dyrektywa wspierająca mapy Google. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{ngmap} \\
+		\hline
+		22 &
+		jQuery, 3.1.1 &
+		Biblioteka ułatwiająca korzystanie z JavaScriptu. &
+		\mbox{\hyperref[abbr:mit]{MIT}} &
+		\cite{jquery} \\
+		\hline
 	\end{tabularx}
 	\caption{Lista użytych bibliotek i komponentów}
 \end{table}
@@ -793,14 +876,740 @@ Tworzenie kopii zapasowej bazy danych.
 \subsection{Raport odstępstw od specyfikacji wymagań}
 Brak.
 
-\begin{comment}
 \subsection{Dokumentacja usług Web Services}
-% Punkt obowiązkowy
-%
-% Niniejszy rozdział powinien w przypadku, gdy system udostępnia publiczne usługi web services
-% powinien zawierać dokumentację usług zamieszczone w formie opisowej lub np. wg specyfikacji
-% swagger.
-\end{comment}
+\begin{verbatim}
+swagger: "2.0"
+info:
+  title: Public Transport
+  version: 3.0.0
+  contact:
+    name: Bartłomiej Dach, Tymon Felski
+    url: http://github.com/bdach/public-transport/
+    email: dachb@student.mini.pw.edu.pl, felskit@student.mini.pw.edu.pl
+host: localhost:49878
+basePath: /api
+definitions:
+  Agency:
+    type: object
+    properties:
+      Name:
+        type: string
+        description: The full name of the transit agency.
+      Phone:
+        type: string
+        description: Contains a single voice telephone number for the specified agency.
+        pattern: "[0-9+#]+"
+      Url:
+        type: string
+        description: Contains the URL of the transit agency. The value must be a fully
+                     qualified URL that includes `http://` or `https://` and any special
+                     characters in the URL must be correctly escaped.
+      Regon:
+        type: string
+        description: Contains the REGON number of the transit agency.
+      StreetName:
+        type: string
+        description: Contains the name of the street the agency is located on.
+      StreetNumber:
+        type: string
+        description: Contains the street number of the agency.
+      CityName:
+        type: string
+        description: Contains the name of the city the agency is located in.
+  ErrorMessage:
+    type: object
+    properties:
+      Message:
+        type: string
+        description: Message detailing the error cause.
+  FavouriteInfo:
+    type: object
+    properties:
+      UserName:
+        type: string
+        required: true
+        description: The username of the user sending the request to save changes to
+                     the favourites.
+      Changes:
+        type: object
+        request: true
+        description: This is a key-value pair. The key is an integer indicating the ID
+                     of a stop or route, and the value indicates whether the stop/route
+                     should be added to the favourite list (true) or removed from
+                     the list (false). This object can have multiple pairs.
+  LoginData:
+    type: object
+    properties:
+      UserName:
+        type: string
+        required: true
+        description: The username of the user logging in.
+      Password:
+        type: string
+        required: true
+        description: The password of the user logging in.        
+  MapMarker:
+    type: object
+    properties:
+      Latitude:
+        type: number
+        minimum: 0
+        maximum: 90
+        exclusiveMaximum: false
+        description: The latitude of the point represented by the marker.
+      Longtitude:
+        type: number
+        minimum: -180
+        maximum: 180
+        exclusiveMaximum: false
+        description: The longtitude of the point represented by the marker.
+      DescriptionText:
+        type: string
+        description: String to be used as a description for the marker.
+      ArrivalTime:
+        type: string
+        description: The time of arrival at the marker's location.
+      DepartureTime:
+        type: string
+        description: The time of departure at the marker's location.
+  PasswordChangeRequest:
+    type: object
+    properties:
+      UserName:
+        type: string
+        description: The username of the user requesting a password change.
+        required: true
+      OldPassword:
+        type: string
+        description: The user's old password.
+        required: true
+      NewPassword:
+        type: string
+        description: The user's new password
+        required: true
+  RegistrationInfo:
+    type: object
+    properties:
+      FullName:
+        type: string
+        description: The user's full name to be stored by the app.
+        required: true
+      UserName:
+        type: string
+        description: Username to be used by the user to log in to the app.
+        required: true
+      Password:
+        type: string
+        description: The user's desired password, to be used when logging in.
+        required: true
+  Route:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+        description: The ID number of the route.
+      ShortName:
+        type: string
+        description: Contains the short name of a route. This often will be a short,
+                     abstract identifier like "32", "100X" or "Green" that riders
+                     use to identify a route, but which doesn't give any indication
+                     of what places the route serves.
+      LongName:
+        type: string
+        description: Contains the full name of a route. This name is generally more
+                     descriptive than the short name and will often include
+                     the route's destination or stop.
+      RouteType:
+        type: integer
+        description: Describes the type of transportation used on a route.
+        enum:
+          - Tram
+          - Subway
+          - Rail
+          - Bus
+          - Ferry
+      Agency:
+        $ref: '#/definitions/Agency'
+        description: Contains information about the agency operating the particular route.
+  RouteFilter:
+    type: object
+    properties:
+      AgencyNameFilter:
+        type: string
+        description: Agency name filter.
+      LongNameFilter:
+        type: string
+        description: Route long name filter.
+      ShortNameFilter:
+        type: string
+        description: Route short name filter.
+      RouteTypeFilter:
+        type: integer # these enums are borked rn - getting serialized into numbers
+        	  and not strings
+        enum:
+          - Tram
+          - Subway
+          - Rail
+          - Bus
+          - Ferry
+        description: Route type filter.
+  RouteTimetableEntry:
+    type: object
+    properties:
+      Key:
+        $ref: '#/definitions/Route'
+      Value:
+        type: array
+        items:
+          $ref: '#/definitions/TimetableEntry'
+  ServiceDetails:
+    type: object
+    properties:
+      Monday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Mondays in the date range.
+      Tuesday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Tuesdays in the date range.
+      Wednesday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Wednesdays in the date range.
+      Thursday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Thursdays in the date range.
+      Friday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Fridays in the date range.
+      Saturday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Saturdays in the date range.
+      Sunday:
+        type: boolean
+        description: Contains a binary value that indicates whether the service is valid
+                     for all Sundays in the date range.
+      StartDate:
+        type: string
+        format: date-time
+        description: Contains the start date for the service.
+      EndDate:
+        type: string
+        format: date-time
+        description: Contains the end date for the service.
+  Stop:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+        description: Contains the ID of the stop.
+      Name:
+        type: string
+        description: Contains the name of a stop or station.
+      StreetName:
+        type: string
+        description: Contains the name of the street the stop is located on.
+      CityName:
+        type: string
+        description: Contains the name of the city the stop is located in.
+      ParentStation:
+        $ref: '#/definitions/Stop'
+        description: For stops that are physically located inside stations, this field
+                     identifies the station associated with the stop. Used only if
+                     the value of `IsStation` is false.
+      IsStation:
+        type: boolean
+        description: Identifies whether this stop object represents a stop or station.
+  StopFilter:
+    type: object
+    properties:
+      StopNameFilter:
+        type: string
+        description: Contains the stop name string filter parameter.
+      StreetNameFilter:
+        type: string
+        description: Contains the street name string filter parameter.
+      CityNameFilter:
+        type: string
+        description: Contains the city name string filter parameter.
+      ZoneNameFilter:
+        type: string
+        description: Contains the zone name string filter parameter.
+      ParentStationNameFilter:
+        type: string
+        description: Contains the parent station name string filter parameter.
+      OnlyStations:
+        type: boolean
+        description: Limits the search query only to stops which are stations.
+  StopTimetableEntry:
+    type: object
+    properties:
+      Key:
+        $ref: '#/definitions/Route'
+      Value:
+        type: array
+        items:
+          $ref: '#/definitions/TimetableEntry'
+  TimetableEntry:
+    type: object
+    properties:
+      ArrivalTime:
+        type: string
+        format: date-time
+        description: Specifies the arrival time at a specific stop for a specific
+                     trip on a route.
+      DepartureTime:
+        type: string
+        format: date-time
+        description: Specifies the departure time at a specific stop for a specific
+                     trip on a route.
+      ShortName:
+        type: string
+        description: Contains the text that appears in   schedules and sign boards
+                     to identify the trip to passengers, for example, to identify
+                     train numbers for commuter rail trips. If riders do not commonly
+                     rely on trip names, this field will be left blank.
+      Headsign:
+        type: string
+        description: Contains the text that appears on a sign that identifies
+                     the trip's destination to passengers. This field is used to
+                     distinguish between different patterns of service in
+                     the same route.
+      Direction:
+        type: boolean
+        description: Contains a binary value that indicates the direction of travel
+                     for a trip. Use this field to distinguish between bi-directional
+                     trips on the same route. This field is not used for routing;
+                     it provides a way to separate trips by direction when publishing
+                     time tables.
+  TripInfo:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+        description: The ID of the trip.
+      OriginStop:
+        $ref: '#/definitions/TripStop'
+      DestinationStop:
+        $ref: '#/definitions/TripStop'
+      Route:
+        $ref: '#/definitions/Route'
+      ServiceDetails:
+        $ref: '#/definitions/ServiceDetails'
+  TripSearchFilter:
+    type: object
+    properties:
+      OriginStopIdFilter:
+        type: integer
+        format: int64
+        required: true
+        description: The ID of the origin stop.
+      DestinationStopIdFilter:
+        type: integer
+        format: int64
+        required: true
+        description: The ID of the destination stop.
+  TripSegmentFilter:
+    type: object
+    properties:
+      TripId:
+        type: integer
+        format: int64
+        required: true
+        min: 1
+        description: The ID of the trip for which to display the segment.
+      OriginSequenceNumber:
+        type: integer
+        format: int64
+        required: true
+        description: The lower bound of the sequence numbers in the trip.
+      DestinationSequenceNumber:
+        type: integer
+        format: int64
+        required: true
+        description: The upper bound of the sequence numbers in the trip.
+  TripStop:
+    type: object
+    properties:
+      Stop:
+        $ref: '#/definitions/Stop'
+      ArrivalTime:
+        type: string
+        format: date-time
+        description: Specifies the arrival time at a specific stop for a specific trip
+                     on a route.
+      DepartureTime:
+        type: string
+        format: date-time
+        description: Specifies the departure time at a specific stop for a specific trip
+                     on a route.
+      SequenceNumber:
+        type: integer
+        format: int64
+        description: Identifies the order of the stops for a particular trip. The values
+                     must be non-negative integers, and they must increase along the trip.
+  UserInfo:
+    type: object
+    properties:
+      FullName:
+        type: string
+        required: true
+        description: The full name of the user.
+      UserName:
+        type: string
+        required: true
+        description: The username of the user.
+      Token:
+        type: string
+        required: true
+        description: Assigned OAuth token used for request authentication.
+      Roles:
+        type: array
+        required: true
+        items:
+          type: integer
+          enum:
+            - Employee
+            - Administrator
+          description: Contains the roles of the user.
+paths:
+  # leaving login for now
+  /route/filter:
+    post:
+      description: Searches for routes in the database, using the supplied filtering
+                   criteria; at least one of the fields must be non-empty
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: routeFilter
+          in: body
+          required: true
+          description: Object containing the desired filtering criteria.
+          schema:
+            $ref: '#/definitions/RouteFilter'
+      responses:
+        '200':
+          description: Array containing routes which meet the supplied criteria.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Route"
+        '400':
+          description: The supplied filter is invalid.
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+  /session:
+    get:
+      description: Retrieves the user's previous session if it hasn't expired.
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token.
+          type: string
+      responses:
+        '200':
+          description: The user's previous session data.
+          schema:
+            $ref: '#/definitions/UserInfo'
+        '401':
+          description: The supplied authentication token has expired.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+  /stop/filter:
+    post:
+      description: Searches for stops in the database, using the supplied filtering
+                   criteria; at least one of the fields must be non-empty
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: stopFilter
+          in: body
+          required: true
+          description: Object containing the desired filtering criteria.
+          schema:
+            $ref: '#/definitions/StopFilter'
+      responses:
+        '200':
+          description: Array containing stops which meet the supplied criteria.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+  /timetable/stop/{stopId}:
+    get:
+      description: Fetches a timetable for the stop with the supplied ID number
+      produces:
+        - application/json
+      parameters:
+        - name: stopId
+          in: path
+          required: true
+          description: The ID of the stop for which to fetch the timetable.
+          type: integer
+      responses:
+        '200':
+          description: Array containing the timetable data.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StopTimetableEntry'
+  /timetable/route/{routeId}:
+    get:
+      description: Fetches a timetable for the route with the supplied ID number
+      produces:
+        - application/json
+      parameters:
+        - name: routeId
+          in: path
+          required: true
+          description: The ID of the route for which to fetch the timetable.
+          type: integer
+      responses:
+        '200':
+          description: Array containing the timetable data.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RouteTimetableEntry'
+  /token:
+    post:
+      description: Fetches user information along with an authentication token
+                   for the desired user.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: loginData
+          in: body
+          required: true
+          description: The object containing the login information.
+          schema:
+            $ref: '#/definitions/LoginData'
+      responses:
+        '200':
+          description: Returns the user information for the desired user.
+          schema:
+            $ref: '#/definitions/UserInfo'
+        '401':
+          description: The supplied credentials were invalid.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+  /trip/mapData:
+    post:
+      description: Returns a list of map markers representing a part of the desired trip
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: tripSegmentFilter
+          in: body
+          required: true
+          description: The object containing the query parameters.
+          schema:
+            $ref: '#/definitions/TripSegmentFilter'
+      responses:
+        '200':
+          description: A list of map markers representing the requested part of the trip.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MapMarker'
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+  /trip/search:
+    post:
+      description: Returns a list of trips that run between the two specified stops,
+                   along with their arrival/destination times and service
+                   availability information
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: tripSearchFilter
+          in: body
+          required: true
+          description: The object containing the query parameters.
+          schema:
+            $ref: '#/definitions/TripSearchFilter'
+      responses:
+        '200':
+          description: A list of trips running through the desired stops.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TripInfo'
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+  /user/changepassword:
+    post:
+      description: Allows a user to change their account password
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: passwordChangeRequest
+          in: body
+          required: true
+          description: Object containing request data.
+          schema:
+            $ref: '#/definitions/PasswordChangeRequest'
+      responses:
+        '200':
+          description: The user's password was successfully changed.
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+  /user/register:
+    post:
+      description: Registers a user for the application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: registrationInfo
+          in: body
+          required: true
+          description: Object storing the registration request data
+          schema:
+            $ref: '#/definitions/RegistrationInfo'
+      responses:
+        '200':
+          description: The user was registered successfully.
+        '400':
+          description: The request sent by the user was invalid.
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+  /user/favoriteroutes:
+    get:
+      description: Returns a list of an user's favourited routes
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of the user's favourited routes.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Route'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    post:
+      description: Saves changes of the user's favourite routes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+        - name: favouriteInfo
+          in: body
+          required: true
+          description: Information about the changes to be saved
+          schema:
+            $ref: '#/definitions/FavouriteInfo'
+      responses:
+        '200':
+          description: A list of the user's favourited routes after the update.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+  /user/favoritestops:
+    get:
+      description: Returns a list of an user's favourited stops
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of the user's favourited stops.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    post:
+      description: Saves changes of the user's favourite stops
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: OAuth token for the desired user
+          schema:
+            type: string
+        - name: favouriteInfo
+          in: body
+          required: true
+          description: Information about the changes to be saved
+          schema:
+            $ref: '#/definitions/FavouriteInfo'
+      responses:
+        '200':
+          description: A list of the user's favourited stops after the update.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Stop'
+        '401':
+          description: Authorization has been denied for this request.
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+\end{verbatim}
 
 \newpage
 \section{Dokumentacja końcowa (powykonawcza) -- punkty wymagane przez prowadzącego zajęcia}
@@ -839,6 +1648,33 @@ Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjn
 	\end{tabularx}
 \end{table}
 
+\subsubsection{Interfejs webowy}
+\begin{figure}[H]
+	\includegraphics[width=16cm]{Resources/PDF/sequence-web.pdf}
+	\caption{Diagram sekwencji -- komunikacja interfejsu webowego z serwerem aplikacyjnym}
+\end{figure}
+\begin{table}[H]
+	\begin{tabularx}{\textwidth}{|l|l|X|}
+		\hline
+		\textbf{Funkcjonalność} & \textbf{System} & \textbf{Opis} \\
+		\hline
+		Wywołanie akcji &
+		Interfejs webowy &
+		\textbf{Działanie biznesowe:} \\
+		& & Klient wykonuje akcję za pośrednictwem interfejsu webowego. \\
+		& & \textbf{Wejście:} Akcja wykonana w interfejsie webowym. \\
+		& & \textbf{Wyjście:} Wyświetlenie rezultatu akcji -- wyszukiwanych danych lub komunikatu o niepowodzeniu akcji. \\
+		\hline
+		Wywołanie funkcji interfejsu &
+		Obiekty serwisowe &
+		\textbf{Działanie biznesowe:} \\
+		& & Interfejs webowy przesyła dane dotyczące akcji podjętej przez użytkownika do warstwy serwisowej za pomocą jej interfejsu publicznego. \\
+		& & \textbf{Wejście:} Dane dotyczące podjętej akcji. \\
+		& & \textbf{Wyjście:} Obiekty transferu danych zawierające informacje o rezultacie danej akcji. \\
+		\hline
+	\end{tabularx}
+\end{table}
+
 \subsubsection{Serwer aplikacyjny}
 \begin{figure}[H]
 	\includegraphics[width=16cm]{Resources/PDF/sequence-server.pdf}
@@ -849,12 +1685,12 @@ Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjn
 		\hline
 		\textbf{Funkcjonalność} & \textbf{System} & \textbf{Opis} \\
 		\hline
-		Otrzymanie żądania od aplikacji klienckiej &
+		Otrzymanie żądania &
 		Serwer aplikacyjny &
 		\textbf{Działanie biznesowe:} \\
-		& & Serwer aplikacyjny otrzymuje żądanie od jednej z aplikacji klienckich za pośrednictwem protokołu HTTP. \\
+		& & Serwer aplikacyjny otrzymuje żądanie od jednej z aplikacji klienckich lub interfejsu webowego za pośrednictwem protokołu HTTP. \\
 		& & \textbf{Wejście:} Żądanie XML SOAP do wykonania. \\
-		& & \textbf{Wyjście:} Odpowiedź na żądanie aplikacji klienckiej. \\
+		& & \textbf{Wyjście:} Odpowiedź na żądanie aplikacji klienckiej lub interfejsu webowego. \\
 		\hline
 		Wywołanie funkcji repozytorium &
 		Obiekty serwisowe &
@@ -1134,6 +1970,71 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	MahApps,
 	\emph{Metro},
 	\url{https://mahapps.com}
+
+\bibitem{angularjs}
+	AngularJS,
+	Google,
+	\url{https://angularjs.org/}.
+
+\bibitem{angularspinner}
+	angular-spinner,
+	Uri Shaked,
+	\url{https://github.com/urish/angular-spinner}.
+
+\bibitem{spinjs}
+	spin.js,
+	Felix Gnass,
+	\url{http://spin.js.org/}.
+
+\bibitem{toastr}
+	angular-toastr,
+	Jesús Rodríguez,
+	\url{https://github.com/Foxandxss/angular-toastr}.
+
+\bibitem{angularevent}
+	angular-event-aggregator,
+	Vladimir Gurovich,
+	\url{https://github.com/vladgurovich/angular-event-aggregator}.
+
+\bibitem{uirouter}
+	Angular UI Router,
+	Angular UI Team,
+	\url{https://github.com/angular-ui/ui-router}.
+
+\bibitem{uibootstrap}
+	Angular UI Bootstrap,
+	Angular UI Team,
+	\url{https://github.com/angular-ui/bootstrap}.
+
+\bibitem{fontawesome}
+	Font Awesome,
+	Angular UI Team,
+	\url{http://fontawesome.io/}.
+
+\bibitem{bootstrap}
+	Bootstrap,
+	Dave Gandy,
+	\url{http://getbootstrap.com}.
+
+\bibitem{oauth}
+	OAuth 2.0,
+	OWIN,
+	\url{https://www.asp.net/aspnet/overview/owin-and-katana/owin-oauth-20-authorization-server}.
+
+\bibitem{unity}
+	Unity,
+	Microsoft,
+	\url{https://msdn.microsoft.com/en-us/library/dn507457(v=pandp.30).aspx}.
+
+\bibitem{ngmap}
+	AngularJS Google Maps,
+	Allen Kim,
+	\url{https://github.com/allenhwkim/angularjs-google-maps}.
+
+\bibitem{jquery}
+	jQuery,
+ 	The jQuery Foundation,
+	\url{http://jquery.com/}.
 
 \bibitem{sqlserver}
 	Installing SQL Server 2014 Step By Step Tutorial,
