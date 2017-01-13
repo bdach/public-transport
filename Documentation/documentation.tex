@@ -211,10 +211,6 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		& Wyświetlanie rozkładu jazdy wybranej linii
 		& Widok zawierający informacje o przejazdach na wybranej linii \\
 		\cline{2-4}
-		& Wyświetlanie połączeń przewoźnika
-		& Wyświetlanie połączeń obsługiwanych przez danego przewoźnika
-		& Widok zawierający informacje o liniach danej firmy \\
-		\cline{2-4}
 		& Wyświetlanie rozkładu przystanku
 		& Wyświetlanie rozkładu jazdy dla wybranego przystanku
 		& Widok zawierający informacje o liniach dla wybranego przystanku \\
@@ -292,8 +288,6 @@ Poszczególne przypadki są opisane szerzej w poniższej tabeli:
 		 	\item Jako dowolny użytkownik wyświetlam rozkład jazdy danej linii. \\
 			    Dowolny użytkownik (zalogowany lub nie) może wyszukać rozkład jazdy danej linii
 			    komunikacyjnej i go wyświetlić.
-	    	\item Jako dowolny użytkownik wyświetlam połączenia dla danego przewoźnika. \\
-			    Dowolny użytkownik (zalogowany lub nie) może wyświetlić połączenia od danego przewoźnika.
 		 	\item Jako dowolny użytkownik wyświetlam rozkład jazdy dla danego przystanku. \\
 			    Dowolny użytkownik (zalogowany lub nie) może wyświetlić rozkład jazdy dla danego przystanku.
 		 	\item Jako dowolny użytkownik wyświetlam połączenia pomiędzy wybranymi punktami. \\
@@ -577,7 +571,9 @@ Na stacji roboczej możemy wówczas uruchomić aplikację, aby połączyć się 
 
 \subsection{Instrukcja użycia}
 
-\subsubsection{Logowanie do systemu}
+\subsubsection{Aplikacja dla pracowników}
+
+\paragraph{Logowanie do systemu}
 Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predefiniowane są następujące konta użytkowników:
 \begin{itemize}
 	\item użytkownik \texttt{root}, hasło \texttt{root}: konto z uprawnieniami administratora,
@@ -590,7 +586,7 @@ Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predef
 	\caption{Okno logowania do systemu}
 \end{figure}
 
-\subsubsection{Główne okno aplikacji}
+\paragraph{Główne okno aplikacji}
 Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zostaje główne okno aplikacji. Po lewej stronie znajduje się menu nawigacyjne, które umożliwia dostęp do poszczególnych części systemu, zaś pod menu znajduje się zaś przycisk odpowiadający za wylogowanie użytkownika z systemu.
 \begin{figure}[H]
 	\centering
@@ -608,7 +604,7 @@ Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się 
 	\item \textbf{Users} -- zawiera informacje o użytkownikach; widok ten dostępny jest tylko dla administratorów.
 \end{itemize}
 
-\subsubsection{Wyszukiwanie}
+\paragraph{Wyszukiwanie}
 W przypadku wszystkich wyżej wymienionych opcji, po wybraniu po prawej stronie pokazuje się widok pozwalający na przeszukiwanie danych zawartych w bazie dotyczących wybranej zakładki.
 \begin{figure}[H]
 	\centering
@@ -619,7 +615,7 @@ Po wybraniu opcji lista znalezionych rekordów w bazie będzie pusta. Aby rozpoc
 
 Poniżej listy umieszczony jest pasek narzędziowy, umożliwiający dodanie nowego rekordu (\textbf{Add New}) oraz edycję (\textbf{Edit Selected}) bądź usunięcie (\textbf{Delete Selected}) obecnie zaznaczonego rekordu. Pierwszy z tych przycisków jest aktywny zawsze, zaś pozostałe uaktywniają się, gdy zaznaczony jest jeden z elementów listy z wynikami wyszukiwania.
 
-\subsubsection{Edycja}
+\paragraph{Edycja}
 Po wybraniu opcji dodania lub edycji rekordu, po prawej stronie wyświetli się formularz umożliwiający na wprowadzenie danych nowego rekordu.
 \begin{figure}[H]
 	\centering
@@ -643,7 +639,7 @@ Na dole ekranu znajdują się przyciski zapisu (\textbf{Save}) umożliwiający z
 	\caption{Błąd zapisu}
 \end{figure}
 
-\subsubsection{Wyświetlanie rozkładu jazdy wybranej linii}
+\paragraph{Wyświetlanie rozkładu jazdy wybranej linii}
 Szczególnym widokiem aplikacji jest widok rozkładu jazdy wybranej linii transportowej. Aby wyświetlić rozkład, należy przejść do zakładki \textbf{Routes}, wyszukać i wybrać jedną z tras, i wreszcie wybrać przycisk \textbf{View Timetable}.
 \begin{figure}[H]
 	\centering
@@ -658,7 +654,7 @@ Widok rozkładu podzielony jest na dwie części. Po lewej stronie znajdują si�
 \end{figure}
 Pod listami przystanków i godzin widoczne są jeszcze dwa pola, które umożliwiają wyszukiwanie połączeń w konkretnych dniach oraz o godzinach późniejszych niż godzina wybrana w polu \textbf{Time}. Dodatkowo, dostępne są opcje dodawania (\textbf{Add Trip}), edycji (\textbf{Edit Trip}) oraz usuwania (\textbf{Delete Trip}) wybranego przejazdu.
 
-\subsubsection{Wyświetlanie rozkładu jazdy dla wybranego przystanku}
+\paragraph{Wyświetlanie rozkładu jazdy dla wybranego przystanku}
 W podobny sposób można wyświetlić rozkład jazdy wszystkich linii dla jednego z przystanków, wybierając zakładkę \textbf{Stops}, wyszukując i wybierając jeden z przystanków, i wciskając przycisk \textbf{View Timetable}.
 \begin{figure}[H]
 	\centering
@@ -671,7 +667,7 @@ W podobny sposób można wyświetlić rozkład jazdy wszystkich linii dla jedneg
 	\caption{Rozkład jazdy dla wybranego przystanku}
 \end{figure}
 
-\subsubsection{Edycja przejazdu}
+\paragraph{Edycja przejazdu}
 Poniżej widoczny jest ekran edycji pojedynczego kursu.
 \begin{figure}[H]
 	\centering
@@ -687,7 +683,7 @@ Przycisk \textbf{Edit...} obok etykiety \textbf{Schedule details} pozwala na edy
 	\caption{Widok edycji harmonogramu}
 \end{figure}
 
-\subsubsection{Wyszukiwanie tras między wybranymi przystankami}
+\paragraph{Wyszukiwanie tras między wybranymi przystankami}
 Aplikacja umożliwia wyszukiwanie tras przejeżdżających przez wybrane przystanki. Funkcjonalność ta dostępna jest z poziomu opcji \textbf{Search Routes} po lewej stronie okna.
 \begin{figure}[H]
 	\centering
@@ -696,7 +692,7 @@ Aplikacja umożliwia wyszukiwanie tras przejeżdżających przez wybrane przysta
 \end{figure}
 Aby dokonać wyszukiwania, należy wpisać nazwy przystanków: startowego oraz docelowego w pola \textbf{Origin stop name} oraz \textbf{Destination stop name} odpowiednio, wybrać jeden z sugerowanych elementów, a następnie wcisnąć przycisk \textbf{Find Routes}.
 
-\subsubsection{Edycja użytkowników}
+\paragraph{Edycja użytkowników}
 Konta administratorów mają dostęp również do widoku edycji użytkowników.
 \begin{figure}[H]
 	\centering
@@ -704,6 +700,72 @@ Konta administratorów mają dostęp również do widoku edycji użytkowników.
 	\caption{Widok edycji użytkowników}
 \end{figure}
 W widoku tym można przydzielać oraz odbierać danym użytkownikom role oraz resetować ich hasło, podając hasło tymczasowe (nie ma możliwości wyświetlenia hasła danego użytkownika). Aby zmiany zostały wprowadzone, dany użytkownik musi wylogować się z aplikacji i zalogować się ponownie.
+
+\subsubsection{Aplikacja webowa}
+
+\paragraph{Strona główna -- wyszukiwanie połączeń}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/24_main_page.png}
+	\caption{Strona główna aplikacji}
+\end{figure}
+Strona główna aplikacji webowej składa się z paska nawigacyjnego, umożliwiającego przejście do pozostałych podstron witryny, oraz widoku głównego, odpowiedzialnego za wyszukiwanie połączeń. Aby wyszukać połączenie między wybranymi przystankami, należy rozpocząć wprowadzanie ich nazw do odpowiednich pól tekstowych \textbf{From} i \textbf{To}; po około pół sekundy w menu rozwijanym pojawią się sugestie dla użytkownika. Właściwe wyszukiwanie dokonywane jest po wciśnięciu przycisku \textbf{Search}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/26_main_search_results.png}
+	\caption{Wyświetlone wyniki wyszukiwania}
+\end{figure}
+Po wciśnięciu przycisku \textbf{Search} ukaże się powiadomienie o sukcesie (lub braku połączeń spełniających podane kryteria) oraz wyniki wyszukiwania, zawierające informacje takie, jak: nazwa i identyfikator połączenia, godzina odjazdu z przystanku źródłowego, godzina przyjazdu na przystanek końcowy, nazwę agencji transportowej obsługującą połączenie oraz dni tygodnia, w które odbywa się kurs. Dodatkowo, po wciśnięciu przycisku \textbf{Show map} w prawym górnym rogu można wyświetlić w oknie modalnym trasę w postaci mapy.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/27_map.png}
+	\caption{Widok mapy}
+\end{figure}
+
+\paragraph{Rozkłady jazdy}
+Wybierając w menu nawigacyjnym u góry opcję \textbf{Timetable}, otrzymujemy dostęp do menu rozwijanego umożliwiającego przejście do widoków odpowiedzialnych za wyświetlanie rozkładów jazdy dla poszczególnych przystanków (\textbf{Search by stop}) oraz tras (\textbf{Search by route}). Po wybraniu jednej z tych opcji nastąpi przejście do widoku składającego się z dwóch części. Po lewej znajduje się pole tekstowe, w które należy wpisać nazwę wyszukiwanej trasy; po kliknięciu przycisku \textbf{Filter} poniżej pola pojawi się lista tras, których nazwa zawiera wprowadzony ciąg znaków.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/28_stops_timetable.png}
+	\caption{Wyszukiwanie rozkładów dla tras}
+\end{figure}
+Kliknięcie na dowolny z wyników wyszukiwania spowoduje pojawienie się po prawej stronie ekranu menu rozwijanego, z którego można wybrać przystanek trasy, dla którego chcemy sprawdzić rozkład jazdy. Po wybraniu jednej z opcji menu rozkład pojawi się poniżej w formie tabeli.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/29_select_stop.png}
+	\caption{Menu rozwijane wyboru przystanku i widok rozkładu}
+\end{figure}
+
+\paragraph{Rejestracja}
+Aby utworzyć konto w serwisie, należy wybrać opcję \textbf{Register} na pasku nawigacyjnym.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/30_registration.png}
+	\caption{Okno rejestracji}
+\end{figure}
+Użytkownik zostanie poproszony o wprowadzenie swojego imienia, nazwiska, żądanej nazwy konta oraz wprowadzenie i potwierdzenie hasła do konta. Po pomyślnym wypełnieniu formularza i wciśnięciu przycisku \textbf{Register} użytkownik otrzyma powiadomienie, że może zalogować się już do swojego konta.
+
+\paragraph{Logowanie}
+Opcja zalogowania się do serwisu jest dostępna pod przyciskiem \textbf{Login} na pasku nawigacyjnym.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/31_login.png}
+	\caption{Okno logowania}
+\end{figure}
+Po wprowadzeniu nazwy użytkownika oraz hasła użytkownik zostanie zalogowany do systemu.
+
+Po zalogowaniu w prawym górnym rogu ekranu pojawi się menu rozwijane dla użytkownika, umożliwiające wylogowanie z systemu (\textbf{Logout}) oraz zmianę hasła za pomocą przycisku \textbf{Settings}.
+
+\paragraph{Ulubione}
+Zarejestrowani użytkownicy mają możliwość zapisywania wybranych tras oraz przystanków jako ulubione, aby uniknąć powtarzających się wyszukiwań. Aby zmodyfikować ulubione, po zalogowaniu się należy wybrać opcję \textbf{Favourites} na pasku nawigacyjnym.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{Resources/Images/32_favourites.png}
+	\caption{Widok dodawania ulubionych}
+\end{figure}
+Pod nagłówkiem znajdują się dwa przyciski, które umożliwiają przełączanie się między zakładkami dla przystanków oraz tras. Po lewej stronie widoczne są obecne ulubione, zaś po prawej można wyszukać inne trasy i dodać (przycisk \textbf{Add}) lub usunąć (\textbf{Remove}) je z ulubionych. Aby zatwierdzić dokonane zmiany, należy wcisnąć przycisk \textbf{Save changes}; zmiany można też bezpiecznie cofnąć, klikając \textbf{Undo changes} lub opuszczając stronę bez kliknięcia przycisku \textbf{Save changes}.
+
+Dodatkowo, dla tras lub przystanków wybranych jako ulubione, można bezpośrednio przejść do ich rozkładu jazdy, wybierając przycisk \textbf{Timetable}.
 
 \subsection{Instrukcja utrzymania}
 Uruchamianie, restartowanie lub zatrzymywanie serwera aplikacyjnego.
@@ -816,7 +878,7 @@ Przebieg komunikacji klienta z relacyjną bazą danych poprzez serwer aplikacyjn
 Model danych użyty w systemie został przedstawiony w formie diagramu relacji na poniższej grafice:
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale = 0.33]{Resources/Images/data-model.jpg}
+	\includegraphics[scale = 0.4]{Resources/Images/data-model.jpg}
 	\caption{Diagram relacji}
 \end{figure}
 Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w systemie.
@@ -829,9 +891,14 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	\item Należy również określić konkretne czasy postojów na trasie przejazdu. Tym zajmuje się tabela \textbf{StopTimes}, w której zdefiniowane poszczególne postoje są skojarzone z konkretnym przejazdem i przystankiem. To powoduje, że relacje \textbf{Trip - StopTime} oraz \textbf{Stop - StopTime} są jeden do wielu.
 	\item Należy równiez zdefiniować strefy przejazdu, czym zajmuje się tabela \textbf{Zones}. Każdy przystanek ma przypisaną konkretną strefę w której się znajduje, więc relacja \textbf{Zone - Stop} jest jeden do wielu.
 	\item Każda trasa może mieć inny cennik, a cena biletu może się zmieniać w zależności od początkowej i końcowej strefy. Stąd relacja \textbf{Route - FareAttribute} jest jeden do wielu. Ponadto wiele tras może korzystać z jednego cennika, dlatego relacja \textbf{FareRule - FareAttribute} jest również jeden do wielu.
+	\item Z tabelą \textbf{StopTimes} powiązana jest tabela \textbf{Shapes}, która zawiera dane określające położenie geograficzne dla poszczególnych postojów. Dane te wykorzystywane są do generowania map.
+	\item Tabele \textbf{UserRoutes} i \textbf{StopUsers} odpowiadają za przechowywanie ulubionych tras i przystanków użytkowników.
 \end{enumerate}
 
 \subsection{Scenariusze testów akceptacyjnych i raport z ich przeprowadzenia}
+
+\subsubsection{Aplikacja wewnętrzna}
+
 \begin{tabularx}{\textwidth}{|X|X|X|X|l|}
 	\hline
 	\textbf{Rola} & \textbf{Testowana funkcjonalność} & \textbf{Opis czynności} & \textbf{Oczekiwany rezultat} & \textbf{Wynik testu} \\
@@ -930,6 +997,67 @@ Poniżej opisano znaczenie i rodzaj relacji zachodzących pomiędzy encjami w sy
 	Wyszukiwanie połączeń pomiędzy dwoma przystankami &
 	Wybranie zakładki \textbf{Search Routes} na bocznym pasku aplikacji, wybranie dwóch przystanków i wciśnięcie przycisku \textbf{Find Routes}. &
 	Linie połączeń, którymi można przejechać pomiędzy podanymi przystankami. &
+	Pozytywny \\
+	\hline
+\end{tabularx}
+
+\subsubsection{Aplikacja webowa}
+\begin{tabularx}{\textwidth}{|X|X|X|l|}
+	\hline
+	\textbf{Testowana funkcjonalność} & \textbf{Opis czynności} & \textbf{Oczekiwany rezultat} & \textbf{Wynik} \\
+	\hline
+	\multicolumn{4}{|c|}{\textbf{Niezalogowany użytkownik}} \\
+	\hline
+	Wyszukanie trasy &
+	Otwarcie witryny w przeglądarce, wpisanie nazwy i wybranie dwóch przystanków i wciśnięcie przycisku \textbf{Search}. &
+	Wyświetlenie na dole strony listy tras kursujących między wybranymi przystankami. &
+	Pozytywny \\
+	\hline
+	Wyświetlenie mapy dla połączenia &
+	Otwarcie witryny w przeglądarce, wpisanie nazwy, wybranie dwóch przystanków i wciśnięcie przycisku \textbf{Search} i wciśnięcie przycisku \textbf{Show map} dla jednego z wyników wyszukiwania. &
+	Okno dialogowe pokazujące na mapie trasę wybranego połączenia. &
+	Pozytywny \\
+	\hline
+	Wyświetlanie rozkładu dla trasy &
+	Wybranie opcji \textbf{Timetable $\rightarrow$ Search by route}, wyszukanie i wybranie trasy oraz przystanku. &
+	Pojawienie się listy rozwijanej z przystankami trasy, pojawienie się rozkładu po wybraniu przystanku. &
+	Pozytywny \\
+	\hline
+	Wyświetlanie rozkładu dla trasy &
+	Wybranie opcji \textbf{Timetable $\rightarrow$ Search by stop}, wyszukanie i wybranie przystanku oraz trasy. &
+	Pojawienie się listy rozwijanej z trasami przejeżdżającymi przez dany przystanek, pojawienie się rozkładu po wybraniu trasy. &
+	Pozytywny \\
+	\hline
+	Rejestracja konta &
+	Wybranie opcji \textbf{Register}, wypełnienie formularza, wciśnięcie przycisku \textbf{Register}. &
+	Komunikat o pomyślnym utworzeniu konta. &
+	Pozytywny \\
+	\hline
+	Logowanie &
+	Wybranie opcji \textbf{Login}, wprowadzenie nazwy użytkownika oraz hasła, wciśnięcie przycisku \textbf{Login}. &
+	Komunikat o pomyślnym zalogowaniu do aplikacji. &
+	Pozytywny \\
+	\hline
+	\multicolumn{4}{|c|}{\textbf{Zalogowany użytkownik}} \\
+	\hline
+	Dodanie, usunięcie ulubionego przystanku &
+	Wybranie opcji \textbf{Favourites}, usunięcie jednego oraz dodanie innego przystanku w zakładce \textbf{Stops}, kliknięcie przycisku \textbf{Save changes}. &
+	Komunikat o zapisaniu zmian w ulubionych. &
+	Pozytywny \\
+	\hline
+	Dodanie, usunięcie ulubionej trasy &
+	Wybranie opcji \textbf{Favourites}, usunięcie jednej oraz dodanie innej trasy w zakładce \textbf{Routes}, kliknięcie przycisku \textbf{Save changes}. &
+	Komunikat o zapisaniu zmian w ulubionych. &
+	Pozytywny \\
+	\hline
+	Zmiana hasła &
+	Wybranie opcji \textbf{Settings} z menu rozwijanego w prawym górnym rogu etykietowanego nazwą użytkownika, wypełnienie formularza zmiany hasła, wciśnięcie przycisku \textbf{Save changes}, wylogowanie się i zalogowanie z nowym hasłem. &
+	Pomyślne zalogowanie się do systemu. &
+	Pozytywny \\
+	\hline
+	Wylogowanie &
+	Wybranie opcji \textbf{Logout}  z menu rozwijanego w prawym górnym rogu etykietowanego nazwą użytkownika. &
+	Powiadomienie o wylogowaniu się z aplikacja, zniknięcie opcji \textbf{Favourites} i menu rozwijanego z paska nawigacyjnego. &
 	Pozytywny \\
 	\hline
 \end{tabularx}
