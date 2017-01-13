@@ -26,7 +26,7 @@
 	\vspace{0.5cm}
 	{\Large Bartłomiej Dach, Tymon Felski \par}
 	\vspace{1.5cm}
-	{\Large Wersja 3.1 \par}
+	{\Large Wersja 3.3 \par}
 	\vspace{1.5cm}
 	{\Large \today \par}
 \end{titlepage}
@@ -64,6 +64,10 @@ Lista zmian w dokumencie:
 	16.12.2016 & Bartłomiej Dach & Rozszerzenie opisu biznesowego i wymagań funkcjonalnych (dodanie nowych przypadków użycia i user stories) & 3.0 \\
 	\hline
 	19.12.2016 & Tymon Felski & Aktualizacja wymaganiań niefunkcjonalnych, harmonogramu prac i architektury rozwiązania & 3.1 \\
+	\hline
+	13.01.2017 & Tymon Felski & Aktualizacja użytych bibliotek oraz diagramów sekwencji, dodanie dokumentacji Web Services & 3.2 \\
+	\hline
+	13.01.2017 & Bartłomiej Dach & Aktualizacja modelu danych, dodanie instrukcji obsługi oraz testów akceptacyjnych dla aplikacji webowej & 3.3 \\
 	\hline
 \end{tabularx}
 \end{table}
@@ -595,7 +599,7 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 		\cite{bootstrap} \\
 		\hline
 		19 &
-		Ouath 2.0, 3.0.1 &
+		OAuth 2.0, 3.0.1 &
 		Protokół zabezpieczający API. &
 		Apache License 2.0 &
 		\cite{oauth} \\
@@ -673,7 +677,7 @@ Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predef
 Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zostaje główne okno aplikacji. Po lewej stronie znajduje się menu nawigacyjne, które umożliwia dostęp do poszczególnych części systemu, zaś pod menu znajduje się zaś przycisk odpowiadający za wylogowanie użytkownika z systemu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{Resources/Images/02_main_window.png}
+	\includegraphics[width=15cm]{Res	rces/Images/02_main_window.png}
 	\caption{Główny widok aplikacji}
 \end{figure}
 Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się formularz wyszukiwania odpowiadający wybranej opcji. Dostępne opcje to:
