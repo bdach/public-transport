@@ -26,7 +26,7 @@
 	\vspace{0.5cm}
 	{\Large Bartłomiej Dach, Tymon Felski \par}
 	\vspace{1.5cm}
-	{\Large Wersja 3.3 \par}
+	{\Large Wersja 3.4 \par}
 	\vspace{1.5cm}
 	{\Large \today \par}
 \end{titlepage}
@@ -68,6 +68,8 @@ Lista zmian w dokumencie:
 	13.01.2017 & Tymon Felski & Aktualizacja użytych bibliotek oraz diagramów sekwencji, dodanie dokumentacji Web Services & 3.2 \\
 	\hline
 	13.01.2017 & Bartłomiej Dach & Aktualizacja modelu danych, dodanie instrukcji obsługi oraz testów akceptacyjnych dla aplikacji webowej & 3.3 \\
+	\hline
+	14.01.2017 & Bartłomiej Dach, Tymon Felski & Aktualizacja instrukcji instalacji oraz uruchomienia uwzględniająca aplikację webową & 3.4 \\
 	\hline
 \end{tabularx}
 \end{table}
@@ -413,6 +415,7 @@ Kamienie milowe:
 \end{enumerate}
 
 \subsection{Architektura rozwiązania}
+\label{subsec:architecture}
 Docelowym środowiskiem aplikacji są małe lub średnie firmy pośredniczące w sprzedaży biletów komunikacyjnych, tzn. przedsiębiorstwa zatrudniające do 250 pracowników, z czego dostęp do systemu miałby dość niski procent tej liczby (w założeniach ok. 20-30\%). Dane, których przechowywanie jest niezbędne do spełnienia wymagań funkcjonalnych mają dość małą zmienność - stosunkowo rzadko ulegają zmianom lub przedawnieniom. Dodatkowo, ze względu na wewnętrzny charakter przechowywanych danych, system powinien być scentralizowany i znajdować się w jednym fizycznym położeniu.
 \begin{figure}[H]
 	\centering
@@ -630,16 +633,19 @@ W budowie aplikacji zostały użyte następujące biblioteki oraz komponenty fir
 Aby zainstalować aplikację na serwerze aplikacyjnym, należy wykonać następujące kroki:
 \begin{enumerate}
 	\item Zainstalowanie \textbf{.NET Framework w wersji 4.0 lub późniejszej}, usług \textbf{Internet Information Service w wersji 8 lub późniejszej}, \textbf{Microsoft SQL Server w wersji 2014 lub późniejszej} oraz \textbf{ASP.NET} na serwerze aplikacyjnym. \\
-	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}. Instalacja usługi IIS można znaleźć w pozycji \cite{iis}. Konfiguracja usługi ASP.NET można znaleźć w pozycji \cite{aspnet}.
+	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}. Instrukcję instalacji usługi IIS można znaleźć w pozycji \cite{iis}. Instrukcję konfiguracji usługi ASP.NET można znaleźć w pozycji \cite{aspnet}.
 	\item \textbf{Instalacja serwisów WCF, kontrolerów API oraz Web na serwerze aplikacyjnym} \\
 	Po skopiowaniu plików dostarczonych jako część aplikacji do wybranej lokalizacji na serwerze, należy otworzyć aplikację \textbf{IIS Manager}. Tworzymy nową stronę w zakładce \textbf{Sites} po lewej, po czym klikamy \textbf{View Applications} po prawej stronie. Następnie z prawej strony wybieramy \textbf{Add Application}. W okienku wpisujemy \textbf{Alias}, który będzie służyć jako prefiks endpointów oraz podajemy ścieżkę do plików serwisowych aplikacji. Proces dodawania strony internetowej powtarzamy dla każdej strony, którą chcemy później uruchomić (WCF, API, Web).
+	\begin{itemize}
+		\item \textbf{Uwaga:} Serwisy WCF powinny zostać zainstalowane na osobnym serwerze, zaś API oraz witryna Web -- na innym. Serwer obsługujący serwisy WCF powinien być odseparowany od publicznego Internetu. Szczegółowe informacje znajdują się w sekcji \ref{subsec:architecture}.
+	\end{itemize}
 	\item \textbf{Konfiguracja connection stringów} \\
 	Po dodaniu aplikacji należy kliknąć na nią po lewej stronie w okienku \textbf{Connections}, następnie na \textbf{Connection strings} i wyedytować connection string, aby wskazywał on na zainstalowaną instancję bazy.
 	\item \textbf{Konfiguracja API URL i Google Maps Token} \\
 	W pliku \textbf{app.config.js} znajduje się adres dostępu do API pod zmienną \textbf{baseApiUrl} oraz token konieczny do korzystania z Google Maps pod zmienną \textbf{googleMapsToken}. Należy je odpowiednio uzupełnić przed uruchomieniem strony.
 	\item \textbf{Uruchomienie serwera} \\
 	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \textbf{SQL Server Configuration Manager} i sprawdzając, czy status usługi \textbf{MSSQLSERVER} to \textbf{Running}.
-	\item \textbf{Pierwsze uruchomienie} \\
+	\item \textbf{Pierwsze uruchomienie grubego klienta} \\
 	Po uruchomieniu aplikacji należy wpisać dowolne dane logowania i wcisnąć przycisk \textbf{Login}. W tym momencie przycisk powinien się zablokować, a po kilkunastu sekundach powinien pojawić się komunikat o błędnych danych logowania. Oznacza to, że schemat bazy danych został pomyślnie utworzony; aby to potwierdzić, należy uruchomić \textbf{SQL Server Management Studio} i zweryfikować, że schemat bazy danych został utworzony.
 	\item \textbf{Wykonanie skryptu z przykładowymi danymi} \\
 	Po wykonaniu poprzedniego kroku, należy za pośrednictwem \textbf{SQL Server Management Studio} wykonać dostarczony skrypt T-SQL, aby dodać do bazy danych przykładowe dane. Wówczas można zalogować się do aplikacji używając danych wyspecyfikowanych w poniższej sekcji, a następnie dokonywać dalszego dostosowywania systemu do własnych potrzeb.
