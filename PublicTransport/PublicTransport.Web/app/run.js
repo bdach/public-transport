@@ -29,7 +29,9 @@
             }
         });
 
-        session.restore();
+        $.getScript("https://maps.google.com/maps/api/js?key=" + configuration.googleMapsToken, function () {
+            session.restore();
+        });
 
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams, options) {
             spinner.visible = true;

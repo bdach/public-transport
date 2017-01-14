@@ -2,7 +2,7 @@
     var app = angular.module("myApp");
 
     app.factory("utils", function () {
-        var apiBaseUrl = "http://localhost:49878/api";
+        var apiBaseUrl = configuration.apiBaseUrl;
         var error = false;
         var toState = "index.home";
         var route = null;

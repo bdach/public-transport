@@ -631,10 +631,12 @@ Aby zainstalować aplikację na serwerze aplikacyjnym, należy wykonać następu
 \begin{enumerate}
 	\item Zainstalowanie \textbf{.NET Framework w wersji 4.0 lub późniejszej}, usług \textbf{Internet Information Service w wersji 8 lub późniejszej}, \textbf{Microsoft SQL Server w wersji 2014 lub późniejszej} oraz \textbf{ASP.NET} na serwerze aplikacyjnym. \\
 	Aplikacja do funkcjonowania wymaga instalacji serwera bazy danych Microsoft SQL Server w wersji 2014 lub późniejszej. Instrukcję instalacji SQL Server można znaleźć w pozycji bibliografii \cite{sqlserver}. Instalacja usługi IIS można znaleźć w pozycji \cite{iis}. Konfiguracja usługi ASP.NET można znaleźć w pozycji \cite{aspnet}.
-	\item \textbf{Instalacja serwisów WCF na serwerze aplikacyjnym} \\
-	Po skopiowaniu plików serwisowych dostarczonych jako część aplikacji do wybranej lokalizacji na serwerze, należy otworzyć aplikację \textbf{IIS Manager}. Tworzymy nową stronę w zakładce \textbf{Sites} po lewej, po czym klikamy \textbf{View Applications} po prawej stronie. Następnie z prawej strony wybieramy \textbf{Add Application}. W okienku wpisujemy \textbf{Alias}, który będzie służyć jako prefiks endpointów oraz podajemy ścieżkę do plików serwisowych aplikacji.
+	\item \textbf{Instalacja serwisów WCF, kontrolerów API oraz Web na serwerze aplikacyjnym} \\
+	Po skopiowaniu plików dostarczonych jako część aplikacji do wybranej lokalizacji na serwerze, należy otworzyć aplikację \textbf{IIS Manager}. Tworzymy nową stronę w zakładce \textbf{Sites} po lewej, po czym klikamy \textbf{View Applications} po prawej stronie. Następnie z prawej strony wybieramy \textbf{Add Application}. W okienku wpisujemy \textbf{Alias}, który będzie służyć jako prefiks endpointów oraz podajemy ścieżkę do plików serwisowych aplikacji. Proces dodawania strony internetowej powtarzamy dla każdej strony, którą chcemy później uruchomić (WCF, API, Web).
 	\item \textbf{Konfiguracja connection stringów} \\
 	Po dodaniu aplikacji należy kliknąć na nią po lewej stronie w okienku \textbf{Connections}, następnie na \textbf{Connection strings} i wyedytować connection string, aby wskazywał on na zainstalowaną instancję bazy.
+	\item \textbf{Konfiguracja API URL i Google Maps Token} \\
+	W pliku \textbf{app.config.js} znajduje się adres dostępu do API pod zmienną \textbf{baseApiUrl} oraz token konieczny do korzystania z Google Maps pod zmienną \textbf{googleMapsToken}. Należy je odpowiednio uzupełnić przed uruchomieniem strony.
 	\item \textbf{Uruchomienie serwera} \\
 	Przed pierwszym uruchomieniem aplikacji należy upewnić się, że serwer działa, uruchamiając \textbf{SQL Server Configuration Manager} i sprawdzając, czy status usługi \textbf{MSSQLSERVER} to \textbf{Running}.
 	\item \textbf{Pierwsze uruchomienie} \\
@@ -650,11 +652,13 @@ Na serwerze aplikacyjnym należy upenić się, że usługa IIS dla naszej strony
 	\item Otwórz konsolę \textbf{IIS}.
 	\item Wybierz swoją stronę po lewej stronie okna.
 	\item Po prawej stronie okna wybierz opcję \textbf{Start}, jeżeli usługa nie jest uruchomiona.
+	\item Powtórz punkty 3. i 4. dla wszystkich stron, które chcesz uruchomić (WCF, API, Web).
 \end{enumerate}
 Na stacji roboczej możemy wówczas uruchomić aplikację, aby połączyć się z serwerem aplikacyjnym.
 \begin{enumerate}
 	\item Klikamy dwukrotnie plik wykonywalny \textbf{PublicTransport.exe}, aby uruchomić aplikację.
 \end{enumerate}
+Po uruchomieniu stron API oraz Web, można korzystać z interfejsu webowego, wchodząc na odpowiedni adres w przeglądarce internetowej.
 
 \subsection{Instrukcja użycia}
 
@@ -677,7 +681,7 @@ Po uruchomieniu aplikacji przez użytkownika pojawia się okno logowania. Predef
 Po podaniu prawidłowej kombinacji nazwy użytkownika i hasła, wyświetlony zostaje główne okno aplikacji. Po lewej stronie znajduje się menu nawigacyjne, które umożliwia dostęp do poszczególnych części systemu, zaś pod menu znajduje się zaś przycisk odpowiadający za wylogowanie użytkownika z systemu.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{Res	rces/Images/02_main_window.png}
+	\includegraphics[width=15cm]{Resources/Images/02_main_window.png}
 	\caption{Główny widok aplikacji}
 \end{figure}
 Po kliknięciu dowolnej opcji menu, po prawej stronie aplikacji wyświetla się formularz wyszukiwania odpowiadający wybranej opcji. Dostępne opcje to:
