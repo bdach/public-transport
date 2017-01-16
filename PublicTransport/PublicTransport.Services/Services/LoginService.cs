@@ -23,6 +23,14 @@ namespace PublicTransport.Services
         /// <summary>
         ///     Default constructor.
         /// </summary>
+        public LoginService() : this(new PasswordService(), new PublicTransportContext())
+        {
+        }
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="db">Context to be used.</param>
         public LoginService(PublicTransportContext db) : this(new PasswordService(), db)
         {
         }
