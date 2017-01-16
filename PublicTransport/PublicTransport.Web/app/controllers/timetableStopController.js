@@ -25,7 +25,12 @@
                 data: ctrl.stopFilter
             }).then(function (response) {
                 ctrl.filteredStops = response.data;
-                notify.success("Successfully filtered stops", "Response received");
+                if (ctrl.filteredStops.length > 0) {
+                    notify.success("Found " + ctrl.filteredStops.length + " stops matching the search criteria.",
+                        "Successfully filtered stops");
+                } else {
+                    notify.info("No stops matching the search criteria were found.", "No results found");
+                }
             });
         };
 

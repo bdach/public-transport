@@ -23,7 +23,12 @@
                 data: ctrl.routeFilter
             }).then(function (response) {
                 ctrl.filteredRoutes = response.data;
-                notify.success("Successfully filtered routes", "Response received");
+                if (ctrl.filteredRoutes.length > 0) {
+                    notify.success("Found " + ctrl.filteredRoutes.length + " routes matching the search criteria.",
+                        "Successfully filtered routes");
+                } else {
+                    notify.info("No routes matching the search criteria were found.", "No results found");
+                }
             });
         };
 
