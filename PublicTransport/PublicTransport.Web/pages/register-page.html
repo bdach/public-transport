@@ -1,0 +1,45 @@
+﻿<div class="outer">
+    <div class="middle">
+        <form class="login-container" role="form" name="registerForm"
+              ng-submit="registerCtrl.processRegister()" novalidate>
+            <div class="text-center" style="margin: 10px 0 25px;">
+                <img src="/img/logo-color.png" alt="logo" height="68">
+            </div>
+            <input class="form-control register-control" type="text"
+                   placeholder="Name"
+                   ng-model="registerCtrl.user.Name"
+                   ng-class="{'input-error': registerForm.name.$invalid &&
+                                            (registerForm.name.$dirty || registerForm.attempted)}"
+                   name="name" id="name" required autofocus />
+            <input class="form-control register-control" type="text"
+                   placeholder="Surname"
+                   ng-model="registerCtrl.user.Surname"
+                   ng-class="{'input-error': registerForm.surname.$invalid &&
+                                            (registerForm.surname.$dirty || registerForm.attempted)}"
+                   name="surname" id="surname" required />
+            <input class="form-control register-control" type="text"
+                    placeholder="Username"
+                    ng-model="registerCtrl.user.UserName"
+                    ng-class="{'input-error': registerForm.username.$invalid &&
+                                             (registerForm.username.$dirty || registerForm.attempted)}"
+                    name="username" id="username" required />
+            <input class="form-control register-control" type="password"
+                    placeholder="Password"
+                    ng-model="registerCtrl.user.Password"
+                    ng-class="{'input-error': registerForm.password.$invalid &&
+                                             (registerForm.password.$dirty || registerForm.attempted)}"
+                    name="password" id="password" required />
+            <input class="form-control register-control" type="password"
+                   placeholder="Repeat password"
+                   ng-model="registerCtrl.user.PasswordRepeat"
+                   ng-class="{'input-error': registerForm.passwordRepeat.$invalid &&
+                                            (registerForm.passwordRepeat.$dirty || registerForm.attempted)}"
+                   name="passwordRepeat" id="passwordRepeat" required /><br />
+            <div class="input-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Register
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

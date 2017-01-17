@@ -1,0 +1,41 @@
+﻿<div class="outer">
+    <div class="middle">
+        <form class="login-container" role="form" name="loginForm"
+              ng-submit="loginCtrl.processLogin()" novalidate>
+            <div class="text-center" style="margin: 10px 0 25px;">
+                <img src="/img/logo-color.png" alt="logo" height="68">
+            </div>
+            <div class="input-group">
+                <div class="input-group-addon" aria-hidden="true"
+                     ng-class="{'input-error': loginForm.username.$invalid &&
+                                              (loginForm.username.$dirty || loginForm.attempted)}">
+                    <i class="fa fa-user"></i>
+                </div>
+                <input class="form-control" type="text"
+                       placeholder="Username"
+                       ng-model="loginCtrl.user.UserName"
+                       ng-class="{'input-error': loginForm.username.$invalid &&
+                                                (loginForm.username.$dirty || loginForm.attempted)}"
+                       name="username" id="username" required autofocus />
+            </div>
+            <div class="input-group">
+                <div class="input-group-addon" aria-hidden="true"
+                     ng-class="{'input-error': loginForm.password.$invalid &&
+                                              (loginForm.password.$dirty || loginForm.attempted)}">
+                    <i class="fa fa-lock"></i>
+                </div>
+                <input class="form-control" type="password"
+                       placeholder="Password"
+                       ng-model="loginCtrl.user.Password"
+                       ng-class="{'input-error': loginForm.password.$invalid &&
+                                                (loginForm.password.$dirty || loginForm.attempted)}"
+                       name="password" id="password" required />
+            </div><br />
+            <div class="input-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

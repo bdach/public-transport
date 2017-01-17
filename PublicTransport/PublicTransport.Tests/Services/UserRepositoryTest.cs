@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -57,7 +58,6 @@ namespace PublicTransport.Tests.Services
             // when
             _userRepository.Update(user);
             // then
-            // TODO: Check why fails
             _passwordService.Verify(ps => ps.GenerateHash("new"));
             var updatedUser = DbContext.Users.Find(2);
             updatedUser.Roles.Should().ContainSingle(s => s.Name == RoleType.Administrator);
@@ -87,6 +87,66 @@ namespace PublicTransport.Tests.Services
             var users = _userRepository.FilterUsers(_userFilter);
             // then
             users.Should().ContainSingle(u => u.UserName == "root");
+        }
+
+        [Test]
+        public void GetFavouriteRoutesByUserName()
+        {
+            // given
+            // when
+            var favourites = _userRepository.GetFavouriteRoutesByUserName("root");
+            // then
+            favourites.Count.ShouldBeEquivalentTo(2);
+            favourites.Should().ContainSingle(r => r.ShortName == "E-1");
+            favourites.Should().ContainSingle(r => r.ShortName == "101");
+        }
+
+        [Test]
+        public void GetFavouriteStopsByUserName()
+        {
+            // given
+            // when
+            var favourites = _userRepository.GetFavouriteStopsByUserName("root");
+            // then
+            favourites.Count.ShouldBeEquivalentTo(2);
+            favourites.Should().ContainSingle(s => s.Id == 1);
+            favourites.Should().ContainSingle(s => s.Id == 2);
+        }
+
+        [Test]
+        public void UpdateFavouriteRoutes()
+        {
+            // given
+            const string userName = "root";
+            var changes = new Dictionary<int, bool>
+            {
+                { 1, false },
+                { 3, true }
+            };
+            // when
+            _userRepository.UpdateFavouriteRoutes(changes, userName);
+            // then
+            var user = DbContext.Users.First(u => u.UserName == userName);
+            user.FavouriteRoutes.Should().NotContain(s => s.Id == 1);
+            user.FavouriteRoutes.Should().ContainSingle(s => s.Id == 3);
+        }
+
+        [Test]
+        public void UpdateFavouriteStops()
+        {
+            // given
+            const string userName = "root";
+            var changes = new Dictionary<int, bool>
+            {
+                { 1, false },
+                { 4, true }
+            };
+            // when
+            _userRepository.UpdateFavouriteStops(changes, userName);
+            // then
+            var user = DbContext.Users.First(u => u.UserName == userName);
+            user.FavouriteStops.Should().NotContain(s => s.Id == 1);
+            user.FavouriteStops.Should().ContainSingle(s => s.Id == 4);
         }
     }
 }

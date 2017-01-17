@@ -14,7 +14,14 @@ namespace PublicTransport.Domain.Entities
         public User()
         {
             Roles = new List<Role>();
+            FavouriteStops = new List<Stop>();
+            FavouriteRoutes = new List<Route>();
         }
+
+        /// <summary>
+        ///     Contains the full name of the user.
+        /// </summary>
+        public string FullName { get; set; }
 
         /// <summary>
         ///     Contains the username (login) of the user.
@@ -29,8 +36,23 @@ namespace PublicTransport.Domain.Entities
         public string Password { get; set; }
 
         /// <summary>
+        ///     Contains the latest session token granted to the user by OAuth.
+        /// </summary>
+        public string LatestToken { get; set; }
+
+        /// <summary>
         ///     Returns a list of <see cref="Role"/>s assigned to the user.
         /// </summary>
         public IList<Role> Roles { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="Stop"/>s favourited by the user.
+        /// </summary>
+        public List<Stop> FavouriteStops { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="Route"/>s favourited by the user.
+        /// </summary>
+        public List<Route> FavouriteRoutes { get; set; }
     }
 }

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="appController as appCtrl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Public Transport System">
+    <meta name="author" content="Tymon Felski, Bartłomiej Dach">
+    <title>Public Transport</title>
+
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-yeti.css">
+    <link rel="stylesheet" href="css/angular-toastr.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/underscore.min.js"></script>
+
+    <script type="text/javascript" src="scripts/spin.min.js"></script>
+    <script type="text/javascript" src="scripts/angular.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-event-aggregator.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-spinner.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-animate.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-toastr.tpls.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="scripts/ng-map.min.js"></script>
+
+    <script type="text/javascript" src="app.config.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/config.js"></script>
+    <script type="text/javascript" src="app/run.js"></script>
+
+    <script type="text/javascript" src="app/services/access.js"></script>
+    <script type="text/javascript" src="app/services/httpInterceptor.js"></script>
+    <script type="text/javascript" src="app/services/notify.js"></script>
+    <script type="text/javascript" src="app/services/session.js"></script>
+    <script type="text/javascript" src="app/services/spinner.js"></script>
+    <script type="text/javascript" src="app/services/stringBuilder.js"></script>
+    <script type="text/javascript" src="app/services/utils.js"></script>
+
+    <script type="text/javascript" src="app/controllers/appController.js"></script>
+    <script type="text/javascript" src="app/controllers/favouritesController.js"></script>
+    <script type="text/javascript" src="app/controllers/homeController.js"></script>
+    <script type="text/javascript" src="app/controllers/loginController.js"></script>
+    <script type="text/javascript" src="app/controllers/registerController.js"></script>
+    <script type="text/javascript" src="app/controllers/settingsController.js"></script>
+    <script type="text/javascript" src="app/controllers/timetableRouteController.js"></script>
+    <script type="text/javascript" src="app/controllers/timetableStopController.js"></script>
+    <script type="text/javascript" src="app/controllers/mapController.js"></script>
+
+    <script type="text/javascript" src="app/directives/navbarSection.js"></script>
+</head>
+<body>
+    <span us-spinner spinner-key="loading"></span>
+    <div class="full-overlay" ng-show="appCtrl.isBusy()"></div>
+    <div ui-view></div>
+</body>
+</html>

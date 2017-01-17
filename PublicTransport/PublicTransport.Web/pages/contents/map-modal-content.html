@@ -1,0 +1,25 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="close"
+                ng-click="mapCtrl.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Route map</h4>
+    </div>
+    <div class="modal-body">
+        <ng-map default-style="false" style="height: 600px;" zoom-to-include-markers="auto">
+            <directions draggable="false"
+                        origin="{{mapCtrl.origin}}"
+                        destination="{{mapCtrl.destination}}"
+                        waypoints="{{mapCtrl.waypoints}}"
+                        suppress-markers="true"></directions>
+            <custom-marker ng-repeat="marker in mapCtrl.markers track by $index"
+                           id="custom-marker-{{$index}}"
+                           position="{{marker.Latitude}},{{marker.Longtitude}}">
+                <h5>{{marker.DescriptionText}}</h5>
+                <p>Arrival: <strong>{{marker.ArrivalTime}}</strong></p>
+                <p>Departure: <strong>{{marker.DepartureTime}}</strong></p>
+            </custom-marker>
+        </ng-map>
+    </div>
+</div>

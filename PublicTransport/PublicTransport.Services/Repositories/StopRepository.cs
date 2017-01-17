@@ -8,10 +8,67 @@ using PublicTransport.Services.Exceptions;
 
 namespace PublicTransport.Services.Repositories
 {
+    public interface IStopRepository
+    {
+        /// <summary>
+        ///     Inserts a <see cref="Stop" /> record into the database.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop" /> object to insert into the database.</param>
+        /// <returns>The <see cref="Stop" /> object corresponding to the inserted record.</returns>
+        Stop Create(Stop stop);
+
+        /// <summary>
+        ///     Returns the <see cref="Stop" /> with the supplied <see cref="Stop.Id" />.
+        /// </summary>
+        /// <param name="id">Identification number of the desired <see cref="Stop" />.</param>
+        /// <returns>
+        ///     <see cref="Stop" /> object with the supplied ID number, or null if the <see cref="Stop" /> with the supplied ID
+        ///     could not be found in the database.
+        /// </returns>
+        Stop Read(int id);
+
+        /// <summary>
+        ///     Updates all of the fields of the supplied <see cref="Stop" />.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop" /> object to update.</param>
+        /// <returns>Updated <see cref="Stop" /> object.</returns>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        Stop Update(Stop stop);
+
+        /// <summary>
+        ///     Deletes the supplied <see cref="Stop" /> from the database.
+        /// </summary>
+        /// <param name="stop"><see cref="Stop" /> object to delete.</param>
+        /// <exception cref="EntryNotFoundException">
+        ///     Thrown when the supplied <see cref="Stop" /> could not be found in the database.
+        /// </exception>
+        void Delete(Stop stop);
+
+        /// <summary>
+        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
+        /// </summary>
+        /// <param name="routeId">Id of the <see cref="Route"/>.</param>
+        /// <returns>
+        ///     Returns a list of <see cref="Stop"/>s associated with a certain <see cref="Route"/>.
+        /// </returns>
+        List<Stop> GetStopsByRouteId(int routeId);
+
+        /// <summary>
+        ///     Selects all the <see cref="Stop" /> objects that match all the criteria specified by the
+        ///     <see cref="StopFilter" /> object. The returned name strings all contain the
+        ///     parameters supplied in the <see cref="filter" /> parameter.
+        /// </summary>
+        /// <param name="filter">Object containing the query parameters.</param>
+        /// <returns>List of items satisfying the supplied query.</returns>
+        List<Stop> FilterStops(StopFilter filter);
+    }
+
     /// <summary>
     ///     Service for managing stops.
     /// </summary>
-    public class StopRepository
+    public class StopRepository : IStopRepository
     {
         /// <summary>
         ///     An instance of database context.

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PublicTransport.Domain.Enums;
 
@@ -9,6 +10,14 @@ namespace PublicTransport.Domain.Entities
     /// </summary>
     public class Route : Entity
     {
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        public Route()
+        {
+            FavouritedBy = new List<User>();
+        }
+
         /// <summary>
         ///     Defines an agency for the specified route.
         /// </summary>
@@ -40,5 +49,10 @@ namespace PublicTransport.Domain.Entities
         /// </summary>
         [Required(ErrorMessage = "The route type is required.")]
         public RouteType RouteType { get; set; }
+
+        /// <summary>
+        ///     Returns a list of <see cref="User"/>s who favourited this route.
+        /// </summary>
+        public IList<User> FavouritedBy { get; set; }
     }
 }

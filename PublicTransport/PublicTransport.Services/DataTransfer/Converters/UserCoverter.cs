@@ -18,6 +18,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
             return new UserDto
             {
                 Id = entity.Id,
+                FullName = entity.FullName,
                 UserName = entity.UserName,
                 Password = entity.Password,
                 Roles = entity.Roles.Select(r => _roleConverter.GetDto(r)).ToList()
@@ -29,6 +30,7 @@ namespace PublicTransport.Services.DataTransfer.Converters
             return new User
             {
                 Id = dto.Id,
+                FullName = dto.FullName,
                 UserName = dto.UserName,
                 Password = dto.Password,
                 Roles = dto.Roles.Select(r => _roleConverter.GetEntity(r)).ToList()

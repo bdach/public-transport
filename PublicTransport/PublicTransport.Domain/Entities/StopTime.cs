@@ -54,5 +54,16 @@ namespace PublicTransport.Domain.Entities
         [Required(ErrorMessage = "The stop sequence number is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "The stop sequence number must be non-negative.")]
         public int StopSequence { get; set; }
+
+        /// <summary>
+        ///     Associates the stop time with a <see cref="Entities.Shape"/>.
+        /// </summary>
+        public int? ShapeId { get; set; }
+
+        /// <summary>
+        ///     The <see cref="Entities.Shape"/> associated with the stop time.
+        /// </summary>
+        [ForeignKey("ShapeId")]
+        public Shape Shape { get; set; }
     }
 }
